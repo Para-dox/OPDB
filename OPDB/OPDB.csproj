@@ -193,6 +193,7 @@
     <Compile Include="Controllers\ActividadesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RecursosController.cs" />
+    <Compile Include="Controllers\UnidadesController.cs" />
     <Compile Include="Controllers\UsuariosController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
@@ -457,6 +458,11 @@
     <Content Include="Views\Recursos\Crear.cshtml" />
     <Content Include="Views\Recursos\Editar.cshtml" />
     <Content Include="Views\Recursos\Remover.cshtml" />
+    <Content Include="Views\Unidades\Index.cshtml" />
+    <Content Include="Views\Unidades\Detalles.cshtml" />
+    <Content Include="Views\Unidades\Crear.cshtml" />
+    <Content Include="Views\Unidades\Editar.cshtml" />
+    <Content Include="Views\Unidades\Remover.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

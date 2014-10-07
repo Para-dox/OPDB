@@ -1,0 +1,85 @@
+﻿@model OPDB.Models.Unit
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Unit</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.UnitName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.UnitName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Building)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Building)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.RoomNumber)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.RoomNumber)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.PhoneNumber)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PhoneNumber)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Extension)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Extension)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.User.UserPassword)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.User.UserPassword)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.CreateDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CreateDate)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.User1.UserPassword)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.User1.UserPassword)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.UpdateDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.UpdateDate)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.DeletionDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DeletionDate)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.UnitID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
