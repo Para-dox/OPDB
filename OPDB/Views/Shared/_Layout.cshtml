@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Alcance RUM - @ViewBag.Title</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+    
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <link href="~/Content/foundation/foundation.css" rel="stylesheet" />
+    <link href="~/Content/multi-select/multi-select.css" rel="stylesheet" />
+    <link href="~/Content/fullcalendar/fullcalendar.css" rel="stylesheet" />
+    @*<link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />*@
+
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.8.24.min.js"></script>
+    <script src="~/Scripts/multi-select/jquery.multi-select.js"></script>
+    <script src="~/Scripts/foundation/foundation.js"></script>
+    <script src="~/Scripts/foundation/foundation.dropdown.js"></script>
+    <script src="~/Scripts/foundation/foundation.topbar.js"></script>
+    
+</head>
+<body>
+    <header>
+        <div class="content-wrapper">         
+            <nav class="top-bar" data-topbar role="navigation" >
+                <ul class="title-area">
+                    <li class="name">
+                        <h1>@Html.ActionLink("Alcance RUM", "Index", "Home")</h1>
+                    </li>
+               </ul>
+
+                <section class="top-bar-section">
+                    <!-- Right Nav Section -->
+                    <ul class="right">
+                        <li class="name">@Html.ActionLink("Calendario", "Calendario", "Home")</li>
+                        <li class="has-dropdown not-click">
+                            <a href="#">Navegar</a>
+                            <ul class="dropdown">
+                                <li><a href="#">Alcance</a></li>
+                                <li>@Html.ActionLink("Actividades", "Index", "Actividades")</li>
+                                <li><a href="#">Unidades</a></li>
+                                <li><a href="#">Escuelas</a></li>
+                                <li>@Html.ActionLink("Usuarios", "Index", "Usuarios")</li>
+                            </ul>
+                        </li>
+                        @*<li class="name">@Html.ActionLink("Contact", "Contact", "Home")</li>*@
+                        <li class="has-form">
+                            <div class="row collapse">
+                                <div class="large-8 small-9 columns">
+                                    <input type="text" placeholder="Buscar">
+                                </div>
+                                <div class="large-4 small-3 columns">
+                                    <a href="#" class="alert button expand">Ir</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="name">@Html.ActionLink("Busqueda Avanzada", "", "")</li>
+                        <li class="name">@Html.Partial("_LoginPartial")</li>
+                      
+                    </ul>
+
+                    <!-- Left Nav Section -->
+                    @*<ul class="left"></ul>*@
+                </section>
+            </nav>
+               
+                <br /><br /><br />
+            </div>
+
+
+       
+
+    </header>
+
+    <div id="body">
+        @*@RenderSection("featured", required: false)*@
+        <section class="content-wrapper">
+            @RenderBody()
+        </section>
+    </div>
+    <footer id="foot">
+        <div class="content-wrapper">
+            <div>
+                <p style="font-size:0.6em">&copy; @DateTime.Now.Year - Paradox Solutions</p>
+            </div>
+        </div>
+    </footer>
+
+
+    @RenderSection("scripts", required: false)
+
+    <!-- Modal Popup -->
+    @*<div id="ajax-modal" class="modal hide fade notes" aria-hidden="true" style="display: none;" data-backdrop="static" data-keyboard="false">
+        <div class="modal-header" style="margin: -10px 10px 0 10px !important; height: 30px;">
+            <i onclick="modalClose()" class='fa fa-times-circle fa-lg' style="float: right; margin: 5px -2px; cursor: pointer; "></i>
+            <h3></h3>
+        </div><ul id="validation" style="color: red; width: 100%; list-style-type: none;"></ul>
+        <div class="modal-body">
+        </div>
+    </div>*@
+
+
+
+
+    <script>
+
+        // Tooltip
+        $(function () {
+            $(document).tooltip({
+                track: true
+            });
+        });
+
+        //$(document).foundation();
+
+
+    </script>
+</body>
+</html>

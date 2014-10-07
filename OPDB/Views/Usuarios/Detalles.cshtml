@@ -1,0 +1,71 @@
+﻿@model OPDB.Models.User
+
+@{
+    ViewBag.Title = "Detalles";
+}
+
+<h2>Detalles</h2>
+
+<fieldset>
+    <legend>User</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.UserType.UserType1)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.UserType.UserType1)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.UserPassword)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.UserPassword)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Email)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Email)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.PhoneNumber)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PhoneNumber)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.CreateDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CreateDate)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.UpdateDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.UpdateDate)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.DeletionDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DeletionDate)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.UserStatus)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.UserStatus)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.UserID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

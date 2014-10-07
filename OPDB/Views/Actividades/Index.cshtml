@@ -1,0 +1,93 @@
+﻿@model IEnumerable<OPDB.Models.Activity>
+
+@{
+    ViewBag.Title = "Actividades";
+}
+
+<h2>Actividades</h2>
+
+<p>
+    @Html.ActionLink("Nueva Actividad", "Crear")
+</p>
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ActivityType.ActivityType1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.User.UserID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Purpose)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Location)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ActivityDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ActivityTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.School.SchoolName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreateDate)
+        </th>
+       <th>
+            @Html.DisplayNameFor(model => model.UpdateDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DeletionDate)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ActivityType.ActivityType1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.User.UserID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Purpose)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Location)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ActivityDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ActivityTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.School.SchoolName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CreateDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UpdateDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DeletionDate)
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "Editar", new { id=item.ActivityID }) |
+            @Html.ActionLink("Detalles", "Detalles", new { id=item.ActivityID }) |
+            @Html.ActionLink("Remover", "Remover", new { id = item.ActivityID })
+        </td>
+    </tr>
+}
+
+</table>

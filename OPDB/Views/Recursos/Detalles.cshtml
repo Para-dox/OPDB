@@ -1,0 +1,64 @@
+﻿@model OPDB.Models.Resource
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Resource</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Resource1)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Resource1)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Unit.UnitName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Unit.UnitName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.User.UserPassword)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.User.UserPassword)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.CreateDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CreateDate)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.User1.UserPassword)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.User1.UserPassword)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.UpdateDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.UpdateDate)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.DeletionDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DeletionDate)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.ResourceID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

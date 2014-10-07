@@ -1,0 +1,75 @@
+﻿@model IEnumerable<OPDB.Models.User>
+
+@{
+    ViewBag.Title = "Usuarios";
+}
+
+<h2>Usuarios</h2>
+
+<p>
+    @Html.ActionLink("Nuevo Usuario", "Crear")
+</p>
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.UserType.UserType1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserPassword)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreateDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UpdateDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DeletionDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserStatus)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserType.UserType1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserPassword)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PhoneNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CreateDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UpdateDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DeletionDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserStatus)
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "Editar", new { id=item.UserID }) |
+            @Html.ActionLink("Detalles", "Detalles", new { id=item.UserID }) |
+            @Html.ActionLink("Remover", "Remover", new { id = item.UserID })
+        </td>
+    </tr>
+}
+
+</table>
