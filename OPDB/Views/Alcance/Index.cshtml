@@ -1,0 +1,87 @@
+﻿@model IEnumerable<OPDB.Models.OutreachEntityDetail>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.User.UserPassword)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OutreachEntityType.OureachEntityType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OutreachEntityName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Mission)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Vision)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Objectives)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Location)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreateDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UpdateDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DeletionDate)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.User.UserPassword)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OutreachEntityType.OureachEntityType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OutreachEntityName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Mission)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Vision)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Objectives)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Location)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CreateDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UpdateDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DeletionDate)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.OutreachEntityDetailID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.OutreachEntityDetailID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.OutreachEntityDetailID })
+        </td>
+    </tr>
+}
+
+</table>

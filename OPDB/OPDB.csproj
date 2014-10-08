@@ -191,6 +191,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ActividadesController.cs" />
+    <Compile Include="Controllers\AlcanceController.cs" />
     <Compile Include="Controllers\EscuelasController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RecursosController.cs" />
@@ -469,6 +470,11 @@
     <Content Include="Views\Escuelas\Crear.cshtml" />
     <Content Include="Views\Escuelas\Editar.cshtml" />
     <Content Include="Views\Escuelas\Remover.cshtml" />
+    <Content Include="Views\Alcance\Index.cshtml" />
+    <Content Include="Views\Alcance\Detalles.cshtml" />
+    <Content Include="Views\Alcance\Crear.cshtml" />
+    <Content Include="Views\Alcance\Editar.cshtml" />
+    <Content Include="Views\Alcance\Remover.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
