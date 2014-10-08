@@ -1,0 +1,78 @@
+﻿@model OPDB.Models.School
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>School</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.SchoolName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SchoolName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Address)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Address)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Town)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Town)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.PhoneNumber)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PhoneNumber)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.User.UserPassword)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.User.UserPassword)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.CreateDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CreateDate)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.User1.UserPassword)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.User1.UserPassword)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.UpdateDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.UpdateDate)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.DeletionDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DeletionDate)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.SchoolID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
