@@ -1,20 +1,20 @@
 ﻿@model OPDB.Models.School
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Crear";
 }
 
-<h2>Create</h2>
+<h2>Crear</h2>
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>School</legend>
+        <legend>Escuela</legend>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.SchoolName)
+            @Html.LabelFor(model => model.SchoolName, "Escuela")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.SchoolName)
@@ -86,7 +86,7 @@
         </div>
 
         <p>
-            <input type="submit" value="Create" />
+            <input type="Someter" value="Crear" />
         </p>
     </fieldset>
 }
