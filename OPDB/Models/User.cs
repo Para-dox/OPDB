@@ -66,6 +66,8 @@ namespace OPDB.Models
         public int UserID { get; set; }
         public int UserTypeID { get; set; }
         public string UserPassword { get; set; }
+
+        //[Required()]
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public System.DateTime CreateDate { get; set; }

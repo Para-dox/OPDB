@@ -1,0 +1,11 @@
+﻿@model OPDB.Models.SearchViewModel
+
+ <div class="row collapse">
+        @using (Html.BeginForm("Buscar", "Home"))
+        {<div class="large-8 small-9 columns">
+                @Html.TextBoxFor(model => model.searchText, new { type = "text", placeholder = "Buscar" })
+          </div>
+            <div class="large-4 small-3 columns">
+                <input value="Ir" type="submit" class="alert button expand" />
+            </div>}
+    </div>

@@ -3,138 +3,149 @@
 @{
     ViewBag.Title = "Crear";
 }
+<style>
+    .text-box{
 
+        width:500px;
+    }
+
+    .editor-label{
+        text-align: left;
+    }
+</style>
 <h2>Registro</h2>
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
-    <fieldset>
-        <legend>User</legend>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.user.UserTypeID, "UserType")
-        </div>
-        <div class="editor-field">
-            @Html.DropDownListFor(model => model.user.UserTypeID, Model.userTypes)
-            @Html.ValidationMessageFor(model => model.user.UserTypeID)
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.userDetail.FirstName, "Nombre")
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.userDetail.FirstName)
-            @Html.ValidationMessageFor(model => model.userDetail.FirstName)
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.userDetail.LastName, "Apellido")
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.userDetail.LastName)
-            @Html.ValidationMessageFor(model => model.userDetail.LastName)
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.userDetail.MiddleInitial, "Inicial")
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.userDetail.MiddleInitial)
-            @Html.ValidationMessageFor(model => model.userDetail.MiddleInitial)
-        </div>
-      <div class="editor-label">
-            @Html.LabelFor(model => model.user.Email, "Correo Electronico")
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.user.Email)
-            @Html.ValidationMessageFor(model => model.user.Email)
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.user.UserPassword, "Contraseña")
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.user.UserPassword)
-            @Html.ValidationMessageFor(model => model.user.UserPassword)
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.userDetail.Gender, "Genero")
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.userDetail.Gender)
-            @Html.ValidationMessageFor(model => model.userDetail.Gender)
-        </div>
-        @*<div class="editor-label">
-            @Html.LabelFor(model => model.UserTypeID, "UserType")
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("UserTypeID", String.Empty)
-            @Html.ValidationMessageFor(model => model.UserTypeID)
-        </div>
+    <center>
+        <fieldset style="width:500px;">
+            <legend>User</legend>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.user.UserTypeID, "Tipo de Usuario")
+            </div>
+            <div class="editor-field">
+                @Html.DropDownListFor(model => model.user.UserTypeID, Model.userTypes, new { @style = "width: 500px !important;", @id = "userType", @onchange = "getValue()" })
+                @Html.ValidationMessageFor(model => model.user.UserTypeID)
+            </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.user.Email, "Correo Electrónico")
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.user.Email, new { @style = "width: 500px !important;" })
+                @Html.ValidationMessageFor(model => model.user.Email)
+            </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.user.UserPassword, "Contraseña")
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.user.UserPassword, new { @style = "width: 500px !important;" })
+                @Html.ValidationMessageFor(model => model.user.UserPassword)
+            </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.UserPassword)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.UserPassword)
-            @Html.ValidationMessageFor(model => model.UserPassword)
-        </div>
+            <div id="user">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.userDetail.FirstName, "Nombre")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.userDetail.FirstName, new { @style = "width: 500px !important;" })
+                    @Html.ValidationMessageFor(model => model.userDetail.FirstName)
+                </div>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.userDetail.LastName, "Apellido")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.userDetail.LastName, new { @style = "width: 500px !important;" })
+                    @Html.ValidationMessageFor(model => model.userDetail.LastName)
+                </div>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.userDetail.MiddleInitial, "Inicial")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.userDetail.MiddleInitial, new { @style = "width: 500px !important;" })
+                    @Html.ValidationMessageFor(model => model.userDetail.MiddleInitial)
+                </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Email)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Email)
-            @Html.ValidationMessageFor(model => model.Email)
-        </div>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.userDetail.Gender, "Género")
+                </div>
+                <div class="editor-field" style="text-align:left !important;">
+                    @Html.RadioButtonFor(model => model.userDetail.Gender, "M")<label>Masculino</label>&nbsp;&nbsp;@Html.RadioButtonFor(model => model.userDetail.Gender, "F")<label>Femenino</label>
+                    @Html.ValidationMessageFor(model => model.userDetail.Gender)
+                </div>
+            </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.PhoneNumber)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.PhoneNumber)
-            @Html.ValidationMessageFor(model => model.PhoneNumber)
-        </div>
+            <div id="outreachEntity">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.outreachEntity.OutreachEntityTypeID, "Tipo de Entidad")
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(model => model.outreachEntity.OutreachEntityTypeID, Model.outreachTypes, new { @style = "width: 500px !important;" })
+                    @Html.ValidationMessageFor(model => model.outreachEntity.OutreachEntityTypeID)
+                </div>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.outreachEntity.OutreachEntityName, "Nombre")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.outreachEntity.OutreachEntityName, new { @style = "width: 500px !important;" })
+                    @Html.ValidationMessageFor(model => model.outreachEntity.OutreachEntityName)
+                </div>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.outreachEntity.Mission, "Misión")
+                </div>
+                <div class="editor-field">
+                    @Html.TextAreaFor(model => model.outreachEntity.Mission, new { @style = "resize:none; width: 500px !important; height: 100px !important;" })
+                    @Html.ValidationMessageFor(model => model.outreachEntity.Mission)
+                </div>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.outreachEntity.Vision, "Visión")
+                </div>
+                <div class="editor-field">
+                    @Html.TextAreaFor(model => model.outreachEntity.Vision, new { @style = "resize:none; width: 500px !important; height: 100px !important;" })
+                    @Html.ValidationMessageFor(model => model.outreachEntity.Vision)
+                </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.CreateDate)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.CreateDate)
-            @Html.ValidationMessageFor(model => model.CreateDate)
-        </div>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.outreachEntity.Objectives, "Objetivos")
+                </div>
+                <div class="editor-field">
+                    @Html.TextAreaFor(model => model.outreachEntity.Objectives, new { @style = "resize:none; width: 500px !important; height: 100px !important;" })
+                    @Html.ValidationMessageFor(model => model.outreachEntity.Objectives)
+                </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.UpdateDate)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.UpdateDate)
-            @Html.ValidationMessageFor(model => model.UpdateDate)
-        </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.DeletionDate)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.DeletionDate)
-            @Html.ValidationMessageFor(model => model.DeletionDate)
-        </div>
+            </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.UserStatus)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.UserStatus)
-            @Html.ValidationMessageFor(model => model.UserStatus)
-        </div>*@
+            <p style="text-align:left;">
+                <input type="submit" value="Crear" /> <input type="button" value="Cancelar" onclick="window.location='@Url.Action("Index", "Usuarios")'" />
+            </p>
 
-        <p>
-            <input type="submit" value="Crear" />
-        </p>
-    </fieldset>
+
+
+
+
+        </fieldset>
+    </center>
+
 }
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+    
+
 }
+
+<script src="~/Scripts/myScripts.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        getValue();
+    })
+
+   
+
+
+
+</script>

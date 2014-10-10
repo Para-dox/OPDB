@@ -10,17 +10,25 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
+    <link href="~/Content/dataTables/jquery.dataTables.css" rel="stylesheet" />
     <link href="~/Content/foundation/foundation.css" rel="stylesheet" />
     <link href="~/Content/multi-select/multi-select.css" rel="stylesheet" />
     <link href="~/Content/fullcalendar/fullcalendar.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    
+    
     @*<link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />*@
 
+   
     <script src="~/Scripts/jquery-1.8.2.min.js"></script>
     <script src="~/Scripts/jquery-ui-1.8.24.min.js"></script>
+    <script src="~/Scripts/dataTables/jquery.dataTables.js"></script>
     <script src="~/Scripts/multi-select/jquery.multi-select.js"></script>
     <script src="~/Scripts/foundation/foundation.js"></script>
     <script src="~/Scripts/foundation/foundation.dropdown.js"></script>
     <script src="~/Scripts/foundation/foundation.topbar.js"></script>
+
+    
     
 </head>
 <body>
@@ -45,19 +53,11 @@
                                 <li><a href="#">Unidades</a></li>
                                 <li><a href="#">Escuelas</a></li>
                                 <li>@Html.ActionLink("Usuarios", "Index", "Usuarios")</li>
+                                <li>@Html.ActionLink("Recursos", "Index", "Recursos")</li>
                             </ul>
                         </li>
                         @*<li class="name">@Html.ActionLink("Contact", "Contact", "Home")</li>*@
-                        <li class="has-form">
-                            <div class="row collapse">
-                                <div class="large-8 small-9 columns">
-                                    <input type="text" placeholder="Buscar">
-                                </div>
-                                <div class="large-4 small-3 columns">
-                                    <a href="#" class="alert button expand">Ir</a>
-                                </div>
-                            </div>
-                        </li>
+                        <li class="has-form busqueda"></li>
                         <li class="name">@Html.ActionLink("Busqueda Avanzada", "", "")</li>
                         <li class="name">@Html.Partial("_LoginPartial")</li>
                       
@@ -106,16 +106,22 @@
 
 
 
-    <script>
+    <script type="text/javascript">
 
-        // Tooltip
-        $(function () {
-            $(document).tooltip({
-                track: true
-            });
-        });
+        $(document).ready(function () {
+            $('.busqueda').load("@Url.Action("_Buscar", "Home")");
+	    });
 
-        //$(document).foundation();
+  
+
+    // Tooltip
+    //$(function () {
+    //    $(document).tooltip({
+    //        track: true
+    //    });
+    //});
+
+    //$(document).foundation();
 
 
     </script>

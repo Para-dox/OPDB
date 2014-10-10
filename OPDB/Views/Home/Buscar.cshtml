@@ -1,0 +1,48 @@
+﻿@model OPDB.Models.SearchViewModel
+
+@{
+    ViewBag.Title = "Resultados";
+}
+
+<h2>Resultados de Busqueda</h2>
+<fieldset>
+    <h3>Usuarios</h3>
+    <ul>
+        @foreach (var user in Model.users)
+        {
+            <li>
+                @Html.ActionLink(user.FirstName + " " + user.LastName, "Detalles", "Usuarios", new { id = user.UserID }, null)
+            </li>
+        }
+    </ul>
+    <br />
+    <h3>Entidades de Alcance</h3>
+    <ul>
+        @foreach (var outreach in Model.outreachEntities)
+        {
+            <li>
+                @Html.ActionLink(outreach.OutreachEntityName, "Detalles", "Alcance")
+            </li>
+        }
+    </ul>
+    <br />
+    <h3>Actividades</h3>
+    <ul>
+        @foreach (var activity in Model.activities)
+        {
+            <li>
+                @Html.ActionLink(activity.Title, "Detalles", "Actividades")
+            </li>
+        }
+    </ul>
+    <br />
+    <h3>Unidades</h3>
+    <ul>
+        @foreach (var unit in Model.units)
+        {
+            <li>
+                @Html.ActionLink(unit.UnitName, "Detalles", "Unidades")
+            </li>
+        }
+    </ul>
+</fieldset>

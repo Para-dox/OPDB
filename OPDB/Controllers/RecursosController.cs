@@ -18,7 +18,7 @@ namespace OPDB.Controllers
 
         public ActionResult Index()
         {
-            var resources = db.Resources.Include(r => r.Unit).Include(r => r.User).Include(r => r.User1);
+            var resources = db.Resources.Include(r => r.Unit);
             return View(resources.ToList());
         }
 
@@ -41,8 +41,6 @@ namespace OPDB.Controllers
         public ActionResult Crear()
         {
             ViewBag.UnitID = new SelectList(db.Units, "UnitID", "UnitName");
-            ViewBag.CreateUser = new SelectList(db.Users, "UserID", "UserPassword");
-            ViewBag.UpdateUser = new SelectList(db.Users, "UserID", "UserPassword");
             return View();
         }
 
@@ -55,14 +53,14 @@ namespace OPDB.Controllers
         {
             if (ModelState.IsValid)
             {
+                resource.CreateDate = DateTime.Now;
+                resource.UpdateDate = DateTime.Now;
                 db.Resources.Add(resource);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
             ViewBag.UnitID = new SelectList(db.Units, "UnitID", "UnitName", resource.UnitID);
-            ViewBag.CreateUser = new SelectList(db.Users, "UserID", "UserPassword", resource.CreateUser);
-            ViewBag.UpdateUser = new SelectList(db.Users, "UserID", "UserPassword", resource.UpdateUser);
             return View(resource);
         }
 
@@ -77,8 +75,6 @@ namespace OPDB.Controllers
                 return HttpNotFound();
             }
             ViewBag.UnitID = new SelectList(db.Units, "UnitID", "UnitName", resource.UnitID);
-            ViewBag.CreateUser = new SelectList(db.Users, "UserID", "UserPassword", resource.CreateUser);
-            ViewBag.UpdateUser = new SelectList(db.Users, "UserID", "UserPassword", resource.UpdateUser);
             return View(resource);
         }
 
@@ -91,19 +87,19 @@ namespace OPDB.Controllers
         {
             if (ModelState.IsValid)
             {
+                resource.UpdateDate = DateTime.Now;
                 db.Entry(resource).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
             ViewBag.UnitID = new SelectList(db.Units, "UnitID", "UnitName", resource.UnitID);
-            ViewBag.CreateUser = new SelectList(db.Users, "UserID", "UserPassword", resource.CreateUser);
-            ViewBag.UpdateUser = new SelectList(db.Users, "UserID", "UserPassword", resource.UpdateUser);
             return View(resource);
         }
 
         //
         // GET: /Recursos/Delete/5
 
+        [HttpPost]
         public ActionResult Remover(int id = 0)
         {
             Resource resource = db.Resources.Find(id);
@@ -111,21 +107,27 @@ namespace OPDB.Controllers
             {
                 return HttpNotFound();
             }
-            return View(resource);
+            else
+            {
+                resource.DeletionDate = DateTime.Now;
+                db.Entry(resource).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            return RedirectToAction("Index");
         }
 
         //
         // POST: /Recursos/Delete/5
 
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Resource resource = db.Resources.Find(id);
-            db.Resources.Remove(resource);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult DeleteConfirmed(int id)
+        //{
+        //    Resource resource = db.Resources.Find(id);
+        //    db.Resources.Remove(resource);
+        //    db.SaveChanges();
+        //    return RedirectToAction("Index");
+        //}
 
         protected override void Dispose(bool disposing)
         {
