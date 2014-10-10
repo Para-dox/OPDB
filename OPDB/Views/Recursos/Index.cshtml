@@ -1,69 +1,89 @@
 ﻿@model IEnumerable<OPDB.Models.Resource>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Recursos";
 }
 
-<h2>Index</h2>
+<style>
+    select {
+        width: 50px !important;
+        padding: 0.2rem !important;
+        height: 1.5rem !important;
+        margin: 0 !important;
+    }
 
-<p>
-    @Html.ActionLink("Create New", "Crear")
-</p>
-<table>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Resource1)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Unit.UnitName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.User.UserPassword)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreateDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.User1.UserPassword)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UpdateDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DeletionDate)
-        </th>
-        <th></th>
-    </tr>
+    label {
+        width: 100% !important;
+    }
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Resource1)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Unit.UnitName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.User.UserPassword)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreateDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.User1.UserPassword)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UpdateDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DeletionDate)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Editar", new { id=item.ResourceID }) |
-            @Html.ActionLink("Details", "Detalles", new { id=item.ResourceID }) |
-            @Html.ActionLink("Delete", "Remover", new { id=item.ResourceID })
-        </td>
-    </tr>
-}
+    input[type="search"] {
+        padding: 0.2rem;
+    }
+
+    th, td {
+        text-align: center !important;
+    }
+</style>
+
+<h2>Recursos</h2>
+
+
+<table id="recursos">
+    <thead>
+        <tr>
+            <th>Recurso</th>
+            <th style="width:20%;">Unidad</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Resource1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Unit.UnitName)
+                </td>
+                <td>
+                    <a href="@Url.Action("Detalles", "Usuarios", new { id = item.ResourceID })"><i class="fa fa-info-circle" title="Ver Detalles"></i></a>
+                    <a href="@Url.Action("Editar", "Usuarios", new { id = item.ResourceID })"><i class="fa fa-pencil" title="Editar"></i></a>
+                    <i title="Remover" class="fa fa-remove" onclick="removeRecord(this)" data-url="@Url.Action("Remover", "Usuarios", new { id = item.ResourceID })"></i>
+
+                </td>
+            </tr>
+        }
+    </tbody>
 
 </table>
+<br />
+<p>
+    @Html.ActionLink("Nuevo Recurso", "Crear")
+</p>
+
+
+<script src="~/Scripts/myScripts.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $('#recursos').DataTable({
+            "sDom": '<"top"lf>t<"bottom"ipr><"clear">',
+            "sPaginationType": "full_numbers",
+            "bProcessing": false,
+            "iDisplayLength": 12,
+            "aaSorting": [[1, "asc"]],
+            "columnDefs": [
+                {
+                    "orderable": false,
+                    "targets": 2
+                }
+
+
+            ]
+        });
+    });
+
+
+</script>

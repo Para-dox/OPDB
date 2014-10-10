@@ -20,7 +20,8 @@ namespace OPDB.Controllers
 
         public ActionResult Index()
         {
-            var users = db.Users.Include(u => u.UserType);
+            var users = from u in db.Users.Include(u => u.UserType).Include(u => u.UserDetails) where u.UserTypeID != 3 select u;
+            //var users = from u in db.Users.Include(u => u.UserType).Include(u => u.UserDetails) where u.UserTypeID != 3 && u.DeletionDate == null select u;
             return View(users.ToList());
         }
 
@@ -43,7 +44,13 @@ namespace OPDB.Controllers
         public ActionResult Crear()
         {
            
-            UserViewModel user = new UserViewModel{userTypes = getUserTypes()};            
+            UserViewModel user = new UserViewModel{
+                
+                userTypes = getUserTypes(),
+                outreachTypes = getOutreachTypes()
+                        
+            };            
+
             return View(user);
         }
 
@@ -60,12 +67,28 @@ namespace OPDB.Controllers
                 {
                     userViewModel.user.CreateDate = DateTime.Now;
                     userViewModel.user.UpdateDate = DateTime.Now;
-                    userViewModel.user.UserStatus = true;
-                    userViewModel.userDetail.CreateDate = DateTime.Now;
-                    userViewModel.userDetail.UpdateDate = DateTime.Now;
-                    userViewModel.user.UserDetails = new List<UserDetail>();
-                    userViewModel.user.UserDetails.Add(userViewModel.userDetail);
-                    db.Users.Add(userViewModel.user);
+                    userViewModel.user.UserStatus = false;
+
+                    if (userViewModel.user.UserTypeID == 3) {
+                        
+                        userViewModel.outreachEntity.CreateDate = DateTime.Now;
+                        userViewModel.outreachEntity.UpdateDate = DateTime.Now;
+                        userViewModel.user.OutreachEntityDetails = new List<OutreachEntityDetail>();
+                        userViewModel.user.OutreachEntityDetails.Add(userViewModel.outreachEntity);
+                        db.Users.Add(userViewModel.user);
+                    }
+
+                    else
+                    {
+                        
+                        userViewModel.userDetail.CreateDate = DateTime.Now;
+                        userViewModel.userDetail.UpdateDate = DateTime.Now;
+                        userViewModel.user.UserDetails = new List<UserDetail>();
+                        userViewModel.user.UserDetails.Add(userViewModel.userDetail);
+                        db.Users.Add(userViewModel.user);
+
+                    }
+
                     db.SaveChanges();
                     return RedirectToAction("Index");
 
@@ -84,6 +107,7 @@ namespace OPDB.Controllers
 
             //ViewBag.UserTypeID = new SelectList(db.UserTypes, "UserTypeID", "UserType1", userViewModel.user.UserTypeID);
             userViewModel.userTypes = getUserTypes();
+            userViewModel.outreachTypes = getOutreachTypes();
             return View(userViewModel);
         }
 
@@ -96,14 +120,22 @@ namespace OPDB.Controllers
             UserViewModel user = new UserViewModel
             {
                 user = db.Users.Find(id),
-                userDetail = db.UserDetails.FirstOrDefault(i => i.UserID == id),
-                userTypes = getUserTypes()
-
             };
 
             if (user == null)
             {
                 return HttpNotFound();
+            }
+
+            else if (user.user.UserTypeID == 3)
+            {
+                user.outreachEntity = db.OutreachEntityDetails.FirstOrDefault(i => i.UserID == id);
+                user.outreachTypes = getOutreachTypes();
+
+            }
+            else {
+
+                user.userDetail = db.UserDetails.FirstOrDefault(i => i.UserID == id);
             }
 
             //ViewBag.UserTypeID = new SelectList(db.UserTypes, "UserTypeID", "UserType1", user.UserTypeID);
@@ -133,28 +165,38 @@ namespace OPDB.Controllers
         //
         // GET: /Usuarios/Delete/5
 
+        [HttpPost]
         public ActionResult Remover(int id = 0)
         {
             User user = db.Users.Find(id);
+            UserDetail userDetail = db.UserDetails.FirstOrDefault(i => i.UserID == id);
             if (user == null)
             {
                 return HttpNotFound();
             }
-            return View(user);
+            else
+            {
+                user.DeletionDate = DateTime.Now;
+                userDetail.DeletionDate = DateTime.Now;
+                db.Entry(user).State = EntityState.Modified;
+                db.Entry(userDetail).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            return RedirectToAction("Index");
         }
 
         //
         // POST: /Usuarios/Delete/5
 
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            User user = db.Users.Find(id);
-            db.Users.Remove(user);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+        
+        //[ValidateAntiForgeryToken]
+        //public ActionResult DeleteConfirmed(int id)
+        //{
+        //    User user = db.Users.Find(id);
+        //    db.Users.Remove(user);
+        //    db.SaveChanges();
+        //    return RedirectToAction("Index");
+        //}
 
         protected override void Dispose(bool disposing)
         {
@@ -182,5 +224,26 @@ namespace OPDB.Controllers
             return types;
 
         }
+
+        private List<SelectListItem> getOutreachTypes()
+        {
+            List<SelectListItem> types = new List<SelectListItem>();
+            foreach (var outreachType in db.OutreachEntityTypes)
+            {
+
+                types.Add(new SelectListItem()
+                    {
+                        Text = outreachType.OureachEntityType,
+                        Value = outreachType.OutreachEntityTypeID + ""
+
+                    });
+                
+            }
+
+            return types;
+
+        }
+
+       
     }
 }

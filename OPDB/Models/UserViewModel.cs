@@ -9,7 +9,11 @@ namespace OPDB.Models
     public class UserViewModel
     {
         public User user { get; set; }
+        public UserType userType { get; set; }
         public UserDetail userDetail { get; set; }
+        public OutreachEntityDetail outreachEntity { get; set; }
         public List<SelectListItem> userTypes { get; set; }
+        public List<SelectListItem> outreachTypes { get; set; }
+        
     }
 }
