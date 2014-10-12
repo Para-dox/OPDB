@@ -1,0 +1,50 @@
+﻿@model OPDB.Models.SearchViewModel
+
+<style>
+    .text-box, .editor-field {
+        width: 400px;
+    }
+
+    .editor-label {
+        text-align: left;
+    }
+</style>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Actividad</legend>
+
+        @*<div class="editor-label">
+            @Html.LabelFor(model => model.ActivityTypeID, "ActivityType")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("ActivityTypeID", String.Empty)
+            @Html.ValidationMessageFor(model => model.ActivityTypeID)
+        </div>*@
+
+       
+        <div class="editor-label">
+            @Html.LabelFor(model => model.activity.Title, "Título")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.activity.Title)
+            @Html.ValidationMessageFor(model => model.activity.Title)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.activity.Purpose, "Proposito")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.activity.Purpose)
+            @Html.ValidationMessageFor(model => model.activity.Purpose)
+        </div>
+                    
+        <p style="float:right;">
+            <input type="submit" value="Buscar" />
+        </p>
+    </fieldset>
+}

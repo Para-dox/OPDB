@@ -1,0 +1,29 @@
+﻿@model OPDB.Models.SearchViewModel
+
+<style>
+     .text-box, .editor-field {
+        width: 400px;
+    }
+</style>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Unit</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.unit.UnitName, "Nombre de la Unidad")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.unit.UnitName)
+            @Html.ValidationMessageFor(model => model.unit.UnitName)
+        </div>
+
+        <p style="float:right;">
+            <input type="submit" value="Buscar" />
+        </p>
+    </fieldset>
+}

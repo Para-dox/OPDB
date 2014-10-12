@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "Búsqueda Avanzada";
+}
+
+<style>
+    .side-nav{
+        width: 200px;
+        float: left;
+    }
+</style>
+<h2>Búsqueda Avanzada</h2>
+
+<ul class="side-nav">
+    <li id="alcance"><a onclick="getAdvancedSearchForm(this)" data-url="@Url.Action("_PartialViewLoad", "Home", new { view = "_Alcance" })">Alcance</a></li>
+    <li id="actividades"><a onclick="getAdvancedSearchForm(this)" data-url="@Url.Action("_PartialViewLoad", "Home", new { view = "_Actividades" })">Actividades</a></li>
+    <li id="escuelas"><a onclick="getAdvancedSearchForm(this)" data-url="@Url.Action("_PartialViewLoad", "Home", new { view = "_Escuelas" })">Escuelas</a></li>
+    <li id="unidades"><a onclick="getAdvancedSearchForm(this)" data-url="@Url.Action("_PartialViewLoad", "Home", new { view = "_Unidades" })">Unidades</a></li>
+    <li id="usuarios"><a onclick="getAdvancedSearchForm(this)" data-url="@Url.Action("_PartialViewLoad", "Home", new { view = "_Usuarios" })">Usuarios</a></li>
+</ul>
+
+<div id="searchForm" style="float: left;">
+
+
+</div>
+
+<script src="~/Scripts/myScripts.js"></script>
