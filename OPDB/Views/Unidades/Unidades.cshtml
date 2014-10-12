@@ -30,12 +30,10 @@
 <table id="units">
     <thead>
         <tr>
-            <th style="width:50%;">Unidad</th>
-            <th style="width:10%;">Edificio</th>
-            <th style="width:10%;">Oficina</th>
-            <th style="width:12%;">Teléfono</th>
-            <th style="width:10%;">Extensión</th>
-            <th style="width:8%;"></th>
+            <th style="width:60%;">Unidad</th>
+            <th style="width:25%;">Teléfono</th>
+            <th style="width:15%;">Extensión</th>
+            @*<th style="width:8%;"></th>*@
         </tr>
     </thead>
     <tbody>
@@ -46,28 +44,10 @@
                     @Html.DisplayFor(modelItem => item.UnitName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Building)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RoomNumber)
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => item.PhoneNumber)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Extension)
-                </td>
-                <td>
-                    <a href="@Url.Action("Detalles", "Unidades", new { id = item.UnitID})"><i class="fa fa-info-circle" title="Ver Detalles"></i></a>
-                    <a href="@Url.Action("Editar", "Usuarios", new { id = item.UnitID })"><i class="fa fa-pencil" title="Editar"></i></a>
-                    @if (item.DeletionDate == null)
-                    {
-                        <i title="Remover" class="fa fa-remove" onclick="removeRecord(this)" data-url="@Url.Action("Remover", "Usuarios", new { id = item.UnitID })"></i>
-                    }
-                    else
-                    {
-                        <i title="Restaurar" class="fa fa-plus"></i>
-                    }
                 </td>
             </tr>
         }
@@ -75,9 +55,11 @@
 </table>
 <br />
 
-<p>
-    @Html.ActionLink("Nuevo Usuario", "Crear")
-</p>
+@*
+    <p>
+        @Html.ActionLink("Nuevo Usuario", "Crear")
+    </p>
+*@
 
 <script src="~/Scripts/myScripts.js"></script>
 <script>
