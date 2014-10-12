@@ -15,6 +15,9 @@
             @Html.DisplayNameFor(model => model.SchoolName)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.SchoolID)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.Address)
         </th>
         <th>
@@ -23,21 +26,6 @@
         <th>
             @Html.DisplayNameFor(model => model.PhoneNumber)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.User.UserPassword)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreateDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.User1.UserPassword)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UpdateDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DeletionDate)
-        </th>
         <th></th>
     </tr>
 
@@ -45,6 +33,9 @@
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.SchoolName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SchoolID)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Address)
@@ -56,24 +47,9 @@
             @Html.DisplayFor(modelItem => item.PhoneNumber)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.User.UserPassword)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreateDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.User1.UserPassword)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UpdateDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DeletionDate)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.SchoolID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.SchoolID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.SchoolID })
+            @Html.ActionLink("Editar", "Editar", new { id=item.SchoolID }) |
+            @Html.ActionLink("Detalles", "Detalles", new { id=item.SchoolID }) |
+            @Html.ActionLink("Remover", "Remover", new { id=item.SchoolID })
         </td>
     </tr>
 }

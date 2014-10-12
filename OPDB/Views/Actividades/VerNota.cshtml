@@ -1,0 +1,36 @@
+﻿@model OPDB.Models.ActivityNote
+
+@{
+    ViewBag.Title = "Ver Nota";
+}
+
+<h2>Ver Nota</h2>
+
+<fieldset>
+    <legend>SchoolNote</legend>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.NoteType.NoteType1)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.NoteType.NoteType1)
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.Activity.Title)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Activity.Title)
+    </div>
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.Note)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Note)
+    </div>
+</fieldset>
+
+<p>
+    @Html.ActionLink("Editar", "Editar", new { id = Model.ActivityNoteID }) |
+    @Html.ActionLink("Devuelta", "Index")
+</p>

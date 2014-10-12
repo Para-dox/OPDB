@@ -1,0 +1,58 @@
+﻿@model OPDB.Models.OutreachEntityDetail
+
+@{
+    ViewBag.Title = "Detalles";
+}
+
+<h2>Detalles</h2>
+
+<fieldset>
+    <legend>OutreachEntityDetail</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.OutreachEntityType.OureachEntityType)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.OutreachEntityType.OureachEntityType)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.OutreachEntityName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.OutreachEntityName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Mission)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Mission)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Vision)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Vision)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Objectives)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Objectives)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Location)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Location)
+    </div>
+
+</fieldset>
+<p>
+    @Html.ActionLink("Editar", "Editar", new { id=Model.OutreachEntityDetailID }) |
+    @Html.ActionLink("Devuelta", "Index")
+</p>

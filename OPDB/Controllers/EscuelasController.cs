@@ -25,20 +25,25 @@ namespace OPDB.Controllers
         //
         // GET: /Escuelas/Details/5
 
-        public ActionResult Details(int id = 0)
+        public ActionResult Detalles(int id = 0)
         {
-            School school = db.Schools.Find(id);
-            if (school == null)
+            SchoolViewModel schoolViewModel = new SchoolViewModel
+            {
+                school = db.Schools.Find(id),
+                Notes = from note in db.SchoolNotes.Include(note => note.NoteType) where note.SchoolID == id && note.DeletionDate == null select note
+            };
+
+            if (schoolViewModel.school == null)
             {
                 return HttpNotFound();
             }
-            return View(school);
+            return View(schoolViewModel);
         }
 
         //
         // GET: /Escuelas/Create
 
-        public ActionResult Create()
+        public ActionResult Crear()
         {
             ViewBag.CreateUser = new SelectList(db.Users, "UserID", "UserPassword");
             ViewBag.UpdateUser = new SelectList(db.Users, "UserID", "UserPassword");
@@ -50,10 +55,16 @@ namespace OPDB.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(School school)
+        public ActionResult Crear(School school)
         {
             if (ModelState.IsValid)
             {
+                school.UpdateDate = DateTime.Now;
+                school.CreateDate = DateTime.Now;
+
+                school.CreateUser = 2;
+                school.UpdateUser = 2;
+
                 db.Schools.Add(school);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -67,7 +78,7 @@ namespace OPDB.Controllers
         //
         // GET: /Escuelas/Edit/5
 
-        public ActionResult Edit(int id = 0)
+        public ActionResult Editar(int id = 0)
         {
             School school = db.Schools.Find(id);
             if (school == null)
@@ -84,7 +95,7 @@ namespace OPDB.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(School school)
+        public ActionResult Editar(School school)
         {
             if (ModelState.IsValid)
             {
@@ -100,7 +111,7 @@ namespace OPDB.Controllers
         //
         // GET: /Escuelas/Delete/5
 
-        public ActionResult Delete(int id = 0)
+        public ActionResult Remover(int id = 0)
         {
             School school = db.Schools.Find(id);
             if (school == null)
@@ -108,6 +119,15 @@ namespace OPDB.Controllers
                 return HttpNotFound();
             }
             return View(school);
+        }
+
+        public ActionResult RemoverNota(int id)
+        {
+            var note = db.SchoolNotes.Find(id);
+            note.DeletionDate = DateTime.Now;
+            db.Entry(note).State = EntityState.Modified;
+            db.SaveChanges();
+            return RedirectToAction ("Detalles", "Escuelas", note.SchoolID);
         }
 
         //
@@ -127,6 +147,60 @@ namespace OPDB.Controllers
         {
             db.Dispose();
             base.Dispose(disposing);
+        }
+
+        [HttpPost]
+        public ActionResult GuardarNota(SchoolViewModel schoolViewModel)
+        {
+            schoolViewModel.note.CreateDate = DateTime.Now;
+            schoolViewModel.note.UpdateDate = DateTime.Now;
+            schoolViewModel.note.SchoolID = schoolViewModel.school.SchoolID;
+
+            schoolViewModel.note.CreateUser = 2;
+            schoolViewModel.note.UpdateUser = 2;
+            schoolViewModel.note.UserID = 2;
+
+            db.SchoolNotes.Add(schoolViewModel.note);
+            db.SaveChanges();
+
+            //schoolViewModel.school = db.Schools.Find(schoolViewModel.school.SchoolID);
+            //schoolViewModel.Notes = from n in db.SchoolNotes where n.SchoolID == schoolViewModel.school.SchoolID select n;
+
+            return RedirectToAction("Detalles", "Escuelas", schoolViewModel.school.SchoolID);
+        }
+
+        public ActionResult CrearNota(int id)
+        {
+            SchoolViewModel schoolViewModel = new SchoolViewModel
+            {
+
+                NoteTypes = GetNoteTypes(),
+                school = new School
+                {
+
+                    SchoolID = id
+                }
+            };
+
+            return View(schoolViewModel);
+        }
+
+        private List<SelectListItem> GetNoteTypes()
+        {
+            List<SelectListItem> types = new List<SelectListItem>();
+
+            foreach (var type in db.NoteTypes)
+            {
+                types.Add(new SelectListItem()
+                {
+
+                    Text = type.NoteType1, 
+                    Value = type.NoteTypeID + ""
+
+                });
+            }
+
+            return types;
         }
     }
 }

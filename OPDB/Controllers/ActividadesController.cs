@@ -27,12 +27,17 @@ namespace OPDB.Controllers
 
         public ActionResult Detalles(int id = 0)
         {
-            Activity activity = db.Activities.Find(id);
-            if (activity == null)
+            ActivityViewModel activityViewModel = new ActivityViewModel
+            {
+                activity = db.Activities.Find(id),
+                Notes = from note in db.ActivityNotes.Include(note => note.NoteType) where note.ActivityID == id && note.DeletionDate == null select note
+            };
+            
+            if (activityViewModel.activity == null)
             {
                 return HttpNotFound();
             }
-            return View(activity);
+            return View(activityViewModel);
         }
 
         //
@@ -49,7 +54,7 @@ namespace OPDB.Controllers
         }
 
         //
-        // POST: /Actividades/Create
+        // POST: /Escuelas/Create
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -57,20 +62,20 @@ namespace OPDB.Controllers
         {
             if (ModelState.IsValid)
             {
+                activity.UpdateDate = DateTime.Now;
+                activity.CreateDate = DateTime.Now;
+
+                activity.CreateUser = 2;
+                activity.UpdateUser = 2;
+
                 db.Activities.Add(activity);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ActivityTypeID = new SelectList(db.ActivityTypes, "ActivityTypeID", "ActivityType1", activity.ActivityTypeID);
-            ViewBag.SchoolID = new SelectList(db.Schools, "SchoolID", "SchoolName", activity.SchoolID);
-            ViewBag.CreateUser = new SelectList(db.Users, "UserID", "UserPassword", activity.CreateUser);
-            ViewBag.UpdateUser = new SelectList(db.Users, "UserID", "UserPassword", activity.UpdateUser);
-            ViewBag.UserID = new SelectList(db.Users, "UserID", "UserPassword", activity.UserID);
             return View(activity);
         }
 
-        //
         // GET: /Actividades/Edit/5
 
         public ActionResult Editar(int id = 0)
@@ -122,6 +127,15 @@ namespace OPDB.Controllers
             return View(activity);
         }
 
+        public ActionResult RemoverNota(int id)
+        {
+            var note = db.Activities.Find(id);
+            note.DeletionDate = DateTime.Now;
+            db.Entry(note).State = EntityState.Modified;
+            db.SaveChanges();
+            return RedirectToAction ("Detalles", "Actividades", note.ActivityID);
+        }
+
         //
         // POST: /Actividades/Delete/5
 
@@ -133,6 +147,60 @@ namespace OPDB.Controllers
             db.Activities.Remove(activity);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult GuardarNota(ActivityViewModel activityViewModel)
+        {
+            activityViewModel.note.CreateDate = DateTime.Now;
+            activityViewModel.note.UpdateDate = DateTime.Now;
+            activityViewModel.note.ActivityID = activityViewModel.activity.ActivityID;
+
+            activityViewModel.note.CreateUser = 2;
+            activityViewModel.note.UpdateUser = 2;
+            activityViewModel.note.UserID = 2;
+
+            db.ActivityNotes.Add(activityViewModel.note);
+            db.SaveChanges();
+
+            //activityViewModel.activity = db.Activities.Find(activityViewModel.activity.ActivityID);
+            //activityViewModel.Notes = from n in db.ActivityNotes where n.ActivityID == activityViewModel.activity.ActivityID select n;
+
+            return RedirectToAction("Detalles", "Actividades", activityViewModel.activity.ActivityID);
+        }
+
+        public ActionResult CrearNota(int id)
+        {
+            ActivityViewModel activityViewModel = new ActivityViewModel
+            {
+
+                NoteTypes = GetNoteTypes(),
+                activity = new Activity
+                {
+
+                    ActivityID = id
+                }
+            };
+
+            return View(activityViewModel);
+        }
+
+        private List<SelectListItem> GetNoteTypes()
+        {
+            List<SelectListItem> types = new List<SelectListItem>();
+
+            foreach (var type in db.NoteTypes)
+            {
+                types.Add(new SelectListItem()
+                {
+
+                    Text = type.NoteType1,
+                    Value = type.NoteTypeID + ""
+
+                });
+            }
+
+            return types;
         }
 
         protected override void Dispose(bool disposing)
