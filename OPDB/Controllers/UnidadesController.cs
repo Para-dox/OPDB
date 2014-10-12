@@ -16,8 +16,6 @@ namespace OPDB.Controllers
         //
         // GET: /Unidades/
 
-        // test comment!
-
         public ActionResult Index()
         {
             var units = db.Units.Include(u => u.User).Include(u => u.User1);

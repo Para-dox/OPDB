@@ -530,6 +530,7 @@
     <Content Include="Views\Alcance\Remover.cshtml" />
     <Content Include="Views\Home\Buscar.cshtml" />
     <Content Include="Views\Shared\_Buscar.cshtml" />
+    <Content Include="Views\Unidades\Unidades.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
