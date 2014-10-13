@@ -1,4 +1,4 @@
-﻿@model OPDB.Models.Activity
+﻿@model OPDB.Models.ActivityViewModel
 
 @{
     ViewBag.Title = "Detalles";
@@ -10,97 +10,50 @@
     <legend>Activity</legend>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.ActivityType.ActivityType1)
+         @Html.DisplayNameFor(model => model.activity.Title)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.ActivityType.ActivityType1)
+        @Html.DisplayFor(model => model.activity.Title)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.User2.UserPassword)
+         @Html.DisplayNameFor(model => model.activity.Purpose)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.User2.UserPassword)
+        @Html.DisplayFor(model => model.activity.Purpose)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Title)
+         @Html.DisplayNameFor(model => model.activity.Location)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Title)
+        @Html.DisplayFor(model => model.activity.Location)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Purpose)
+         @Html.DisplayNameFor(model => model.activity.ActivityDate)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Purpose)
+        @Html.DisplayFor(model => model.activity.ActivityDate)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Location)
+         @Html.DisplayNameFor(model => model.activity.ActivityTime)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Location)
+        @Html.DisplayFor(model => model.activity.ActivityTime)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.ActivityDate)
+         @Html.DisplayNameFor(model => model.activity.School.SchoolName)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.ActivityDate)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.ActivityTime)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.ActivityTime)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.School.SchoolName)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.School.SchoolName)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.User.UserPassword)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.User.UserPassword)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.CreateDate)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.CreateDate)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.User1.UserPassword)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.User1.UserPassword)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.UpdateDate)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.UpdateDate)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.DeletionDate)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.DeletionDate)
+        @Html.DisplayFor(model => model.activity.School.SchoolName)
     </div>
 </fieldset>
+
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.ActivityID }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Editar", "Editar", new { id=Model.activity.ActivityID }) |
+    @Html.ActionLink("Añadir Nota", "CrearNota", new { id = Model.activity.ActivityID }) |
+    @Html.ActionLink("Devuelta", "Index")
 </p>

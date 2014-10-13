@@ -4,26 +4,24 @@
     ViewBag.Title = "Usuarios";
 }
 <style>
-    select{
+    select {
         width: 50px !important;
         padding: 0.2rem !important;
         height: 1.5rem !important;
         margin: 0 !important;
     }
-    label{
+
+    label {
         width: 100% !important;
     }
 
-    input[type="search"]{
+    input[type="search"] {
         padding: 0.2rem;
-
     }
 
-    th, td{
+    th, td {
         text-align: center !important;
     }
-
-    
 </style>
 <h2>Usuarios</h2>
 
@@ -47,7 +45,7 @@
                     @Html.DisplayFor(modelItem => item.UserType.UserType1)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.UserDetails.FirstOrDefault(i => i.UserID == item.UserID).FirstName) @Html.DisplayFor(modelItem => item.UserDetails.FirstOrDefault(i => i.UserID == item.UserID).MiddleInitial) @Html.DisplayFor(modelItem => item.UserDetails.FirstOrDefault(i => i.UserID == item.UserID).LastName)
+                    @Html.ActionLink(item.UserDetails.FirstOrDefault(i => i.UserID == item.UserID).FirstName + " " + item.UserDetails.FirstOrDefault(i => i.UserID == item.UserID).MiddleInitial + " " + item.UserDetails.FirstOrDefault(i => i.UserID == item.UserID).LastName, "Detalles", "Usuarios", new { id = item.UserID }, null)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Email)
@@ -55,24 +53,24 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.PhoneNumber)
                 </td>
-               @if(item.DeletionDate == null){
-                   <td>No</td>
-               }
-               else
-               {
+                @if (item.DeletionDate == null)
+                {
+                    <td>No</td>
+                }
+                else
+                {
                     <td>Si</td>
-               }
-               @if (item.UserStatus == true)
-               {
-                <td>Aprobado</td>
-               }
-               else
-               {
-                   <td>Pendiente</td>
-               }
-                 
+                }
+                @if (item.UserStatus == true)
+                {
+                    <td>Aprobado</td>
+                }
+                else
+                {
+                    <td>Pendiente</td>
+                }
+
                 <td>
-                    <a href="@Url.Action("Detalles", "Usuarios", new { id = item.UserID })"><i class="fa fa-info-circle" title="Ver Detalles"></i></a>
                     <a href="@Url.Action("Editar", "Usuarios", new { id = item.UserID })"><i class="fa fa-pencil" title="Editar"></i></a>
                     @if (item.DeletionDate == null)
                     {
@@ -82,7 +80,7 @@
                     {
                         <i title="Restaurar" class="fa fa-plus"></i>
                     }
-                 </td>
+                </td>
             </tr>
 
         }
@@ -102,25 +100,25 @@
             "sPaginationType": "full_numbers",
             "bProcessing": false,
             "iDisplayLength": 12,
-            "aaSorting":[[1, "asc"]],
+            "aaSorting": [[1, "asc"]],
             "columnDefs": [
                 {
                     "orderable": false,
                     "targets": 3
                 },
                  {
-                    "orderable": false,
-                    "targets": 4
+                     "orderable": false,
+                     "targets": 4
                  },
                  {
                      "orderable": false,
                      "targets": 6
                  }
 
-			
+
             ]
         });
     });
 
-    
+
 </script>

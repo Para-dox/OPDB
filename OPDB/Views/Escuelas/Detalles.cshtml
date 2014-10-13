@@ -1,78 +1,109 @@
-﻿@model OPDB.Models.School
-
+﻿@model OPDB.Models.SchoolViewModel
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Detalles";
 }
 
-<h2>Details</h2>
+<h2>Detalles</h2>
 
-<fieldset>
-    <legend>School</legend>
+<div class="row">
+    <div class="large-5 columns">
+        <legend>School</legend>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.SchoolName)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.SchoolName)
-    </div>
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.school.SchoolName)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.school.SchoolName)
+        </div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Address)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Address)
-    </div>
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.school.SchoolID)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.school.SchoolID)
+        </div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Town)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Town)
-    </div>
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.school.Address)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.school.Address)
+        </div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.PhoneNumber)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.PhoneNumber)
-    </div>
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.school.Town)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.school.Town)
+        </div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.User.UserPassword)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.User.UserPassword)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.CreateDate)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.CreateDate)
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.school.PhoneNumber)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.school.PhoneNumber)
+        </div>
     </div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.User1.UserPassword)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.User1.UserPassword)
-    </div>
+    <div class="large-7 columns">
+        <table id="notes">
+            <thead>
+                <tr>
+                    <th>
+                        Tipo de Nota
+                    </th>
+                    <th>
+                        Contenido
+                    </th>
+                    <th>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.UpdateDate)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.UpdateDate)
-    </div>
+                    </th>
+                </tr> 
+            </thead>
+            <tbody>
+                @foreach (var note in Model.Notes)
+                {
+                    <tr>
+                        <td>@note.NoteType.NoteType1</td>
+                        <td>@note.Note</td>
+                        <td>
+                            <a href="@Url.Action("VerNota", "Escuelas", new { id = note.SchoolNoteID })"><i class="fa fa-info-circle" title="Ver Detalles"></i></a>
+                            <a href="@Url.Action("EditarNota", "Escuelas", new { id = note.SchoolNoteID })"><i class="fa fa-pencil" title="Editar"></i></a>
+                            
+                            <i title="Remover" class="fa fa-remove" onclick="removeRecord(this)" data-url="@Url.Action("RemoverNota", "Escuelas", new { id = note.SchoolNoteID })"></i>
+  
+                        </td>
+                    </tr>
+                }
+            </tbody>
+             
+        </table>
+</div>
+</div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.DeletionDate)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.DeletionDate)
-    </div>
-</fieldset>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.SchoolID }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Editar", "Editar", new { id=Model.school.SchoolID }) |
+    @Html.ActionLink("Añadir Nota", "CrearNota", new { id = Model.school.SchoolID }) |
+    @Html.ActionLink("Devuelta", "Index")
 </p>
+                    
+<script src="~/Scripts/myScripts.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $('#notes').DataTable({
+            "sDom": '<"top"lf>t<"bottom"ipr><"clear">',
+            "sPaginationType": "full_numbers",
+            "bProcessing": false,
+            "iDisplayLength": 12,
+            "aaSorting":[[1, "asc"]],
+            "columnDefs": [
+                {
+                    "orderable": false,
+                    "targets": 2
+                }
+            ]
+        });
+    });
+
+</script>

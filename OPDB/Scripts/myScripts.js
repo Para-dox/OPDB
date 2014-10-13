@@ -22,3 +22,28 @@ function removeRecord(e) {
 
 }
 
+function getAdvancedSearchForm(e) {
+    debugger;
+    var url = $(e).attr('data-url');
+    var id = url.split("/Home/_PartialViewLoad?view=_")[1];
+    
+    if (id == "Alcance") {
+        $('.active').removeClass("active");
+        $('#alcance').addClass("active");
+    } else if (id == "Actividades") {
+        $('.active').removeClass("active");
+        $('#actividades').addClass("active");
+    } else if (id == "Escuelas") {
+        $('.active').removeClass("active");
+        $('#escuelas').addClass("active");
+    } else if (id == "Unidades") {
+        $('.active').removeClass("active");
+        $('#unidades').addClass("active");
+    } else {
+        $('.active').removeClass("active");
+        $('#usuarios').addClass("active");
+    }
+
+    $('#searchForm').load(url);
+}
+

@@ -39,7 +39,13 @@ namespace OPDB.Controllers
         public ActionResult Buscar(string searchText)
         {
             SearchViewModel searchViewModel = new SearchViewModel();
-            
+
+            searchViewModel.buscarActividades = true;
+            searchViewModel.buscarAlcance = true;
+            searchViewModel.buscarEscuelas = true;
+            searchViewModel.buscarUnidades = true;
+            searchViewModel.buscarUsuarios = true;
+
             searchViewModel.users = from user in db.UserDetails
                                     where user.FirstName.Contains(searchText)
                                         || user.LastName.Contains(searchText)
@@ -59,7 +65,6 @@ namespace OPDB.Controllers
 
             searchViewModel.units = from unit in db.Units where unit.UnitName.Contains(searchText) select unit;
 
-            //return View("Search", searchViewModel);
             return View(searchViewModel);
 
 
@@ -70,5 +75,41 @@ namespace OPDB.Controllers
             SearchViewModel search = new SearchViewModel();
             return PartialView("_Buscar", search);
         }
+
+
+        public ActionResult _PartialViewLoad(string view)
+        {
+            //SearchViewModel searchViewModel = new SearchViewModel();
+
+            //if(view == "")
+            
+            return PartialView(view);
+
+        }
+
+        public ActionResult BusquedaAvanzada()
+        {
+
+            return View();
+
+        }
+
+        [HttpPost]
+        public ActionResult BuscarUsuarios(SearchViewModel searchViewModel)
+        {
+            searchViewModel.buscarUsuarios = true;
+
+            searchViewModel.users = from user in db.UserDetails
+                                    where user.FirstName.Contains(searchViewModel.user.FirstName)
+                                        || user.LastName.Contains(searchViewModel.user.LastName) || user.Role.Contains(searchViewModel.user.Role)
+                                        || user.Major.Contains(searchViewModel.user.Major)
+                                    select user;
+
+            
+            return View("Buscar", searchViewModel);
+
+
+        }
+
     }
 }

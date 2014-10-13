@@ -1,0 +1,38 @@
+﻿@model OPDB.Models.SearchViewModel
+
+<style>
+     .text-box, .editor-field {
+        width: 400px;
+    }
+</style>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>School</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.school.SchoolName, "Nombre")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.school.SchoolName)
+            @Html.ValidationMessageFor(model => model.school.SchoolName)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.school.Town, "Pueblo")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.school.Town)
+            @Html.ValidationMessageFor(model => model.school.Town)
+        </div>
+
+        
+
+        <p style="float:right;">
+            <input type="submit" value="Buscar" />
+        </p>
+    </fieldset>
+}

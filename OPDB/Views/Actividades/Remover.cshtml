@@ -18,13 +18,6 @@
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.User2.UserPassword)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.User2.UserPassword)
-    </div>
-
-    <div class="display-label">
          @Html.DisplayNameFor(model => model.Title)
     </div>
     <div class="display-field">
@@ -65,46 +58,11 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.School.SchoolName)
     </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.User.UserPassword)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.User.UserPassword)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.CreateDate)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.CreateDate)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.User1.UserPassword)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.User1.UserPassword)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.UpdateDate)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.UpdateDate)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.DeletionDate)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.DeletionDate)
-    </div>
 </fieldset>
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
     <p>
-        <input type="submit" value="Delete" /> |
-        @Html.ActionLink("Back to List", "Index")
+        <input type="submit" value="Remover" /> |
+        @Html.ActionLink("Devuelta", "Index")
     </p>
 }

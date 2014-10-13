@@ -1,0 +1,54 @@
+﻿@model OPDB.Models.ActivityViewModel
+
+@{
+    ViewBag.Title = "Crear Nota";
+}
+
+<style>
+    .text-box, .editor-field {
+        width: 500px;
+    }
+
+    .editor-label {
+        text-align: left;
+    }
+</style>
+
+<h2>Crear Nota</h2>
+@using (Html.BeginForm("GuardarNota", "Actividades", FormMethod.Post)) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.activity.ActivityID)
+    <fieldset>
+        <legend>Activity Note</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.note.NoteTypeID, "Tipo de Nota")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.note.NoteTypeID, Model.NoteTypes)
+            @Html.ValidationMessageFor(model => model.note.NoteTypeID)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.note.Note, "Nota")
+        </div>
+        <div class="editor-field">
+            @Html.TextAreaFor(model => model.note.Note, new {@style = "resize: none; height: 100px;" })
+            @Html.ValidationMessageFor(model => model.note.Note)
+        </div>
+
+        <p>
+            <input type="submit" value="Crear" />
+        </p>
+    </fieldset>
+    
+}
+
+    <div>
+        @Html.ActionLink("Devuelta", "Index")
+    </div>
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }

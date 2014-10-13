@@ -30,7 +30,14 @@ namespace OPDB.Controllers
 
         public ActionResult Detalles(int id = 0)
         {
-            User user = db.Users.Find(id);
+
+            UserViewModel user = new UserViewModel
+            {
+                user = db.Users.Find(id),
+                userDetail = (from ud in db.UserDetails where ud.UserID == id select ud).SingleOrDefault()
+
+            };
+            
             if (user == null)
             {
                 return HttpNotFound();

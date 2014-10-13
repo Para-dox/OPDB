@@ -1,71 +1,63 @@
-﻿@model OPDB.Models.User
+﻿@model OPDB.Models.UserViewModel
 
 @{
     ViewBag.Title = "Detalles";
 }
 
-<h2>Detalles</h2>
+<style>
+    label{
+        cursor: default !important;
+    }
+</style>
 
-<fieldset>
-    <legend>User</legend>
+<h2>@Html.DisplayFor(model => model.userDetail.FirstName)&nbsp;@if (Model.userDetail.MiddleInitial != null){@Html.DisplayFor(model => model.userDetail.MiddleInitial)<r>&nbsp;</r>}@Html.DisplayFor(model => model.userDetail.LastName)</h2>
+<div class="panel callout radius large-6 columns">
+        <div class="display-label">
+            @Html.LabelFor(model => model.user.UserType.UserType1, "Tipo de Usuario")
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.user.UserType.UserType1)
+        </div>
+        <br />
+        <div class="display-label">
+            @Html.LabelFor(model => model.user.Email, "Correo Electrónico")
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.user.Email)
+        </div>
+        <br />
+        <div class="display-label">
+            @Html.LabelFor(model => model.user.PhoneNumber, "Número Telefónico")
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.user.PhoneNumber)
+        </div>
 
+</div>
+<div class="large-6 columns">
+    @if (Model.userDetail.Major != null) {
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.UserType.UserType1)
+        @Html.LabelFor(model => model.userDetail.Major, "Concentración")
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.UserType.UserType1)
+        @Html.DisplayFor(model => model.userDetail.Major)
     </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.UserPassword)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.UserPassword)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Email)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Email)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.PhoneNumber)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.PhoneNumber)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.CreateDate)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.CreateDate)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.UpdateDate)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.UpdateDate)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.DeletionDate)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.DeletionDate)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.UserStatus)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.UserStatus)
-    </div>
-</fieldset>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.UserID }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+    <br />
+    }
+    else if (Model.userDetail.Role != null)
+    {
+        <div class="display-label">
+            @Html.LabelFor(model => model.userDetail.Role, "Rol")
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.userDetail.Role)
+        </div>
+        <br />
+    }
+</div>
+<div class="large-12 columns">
+    <p>
+        
+        <input type="button" value="Editar" onclick="location.href='@Url.Action("Editar", "Usuarios", new { id = Model.user.UserID })'"/>
+        <input type="button" value="Devuelta" onclick="location.href='@Url.Action("Index", "Usuarios")'"></p>
+</div>
