@@ -25,7 +25,7 @@ namespace OPDB.Controllers
         //
         // GET: /Unidades/Details/5
 
-        public ActionResult Details(int id = 0)
+        public ActionResult Detalles(int id = 0)
         {
             Unit unit = db.Units.Find(id);
             if (unit == null)
@@ -38,11 +38,11 @@ namespace OPDB.Controllers
         //
         // GET: /Unidades/Create
 
-        public ActionResult Create()
+        public ActionResult Crear()
         {
-            ViewBag.CreateUser = new SelectList(db.Users, "UserID", "UserPassword");
-            ViewBag.UpdateUser = new SelectList(db.Users, "UserID", "UserPassword");
-            return View();
+            Unit unit = new Unit { };
+
+            return View(unit);
         }
 
         //
@@ -50,32 +50,37 @@ namespace OPDB.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Unit unit)
+        public ActionResult Crear(Unit unitModel)
         {
             if (ModelState.IsValid)
             {
-                db.Units.Add(unit);
+                // TODO create logic that extracts user ID
+                unitModel.CreateDate = DateTime.Now;
+                unitModel.CreateUser = 1;
+                unitModel.UpdateDate = DateTime.Now;
+                unitModel.UpdateUser = 1;
+
+                db.Units.Add(unitModel);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.CreateUser = new SelectList(db.Users, "UserID", "UserPassword", unit.CreateUser);
-            ViewBag.UpdateUser = new SelectList(db.Users, "UserID", "UserPassword", unit.UpdateUser);
-            return View(unit);
+            return View(unitModel);
         }
 
         //
         // GET: /Unidades/Edit/5
 
-        public ActionResult Edit(int id = 0)
+        public ActionResult Editar(int id = 0)
         {
             Unit unit = db.Units.Find(id);
             if (unit == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.CreateUser = new SelectList(db.Users, "UserID", "UserPassword", unit.CreateUser);
-            ViewBag.UpdateUser = new SelectList(db.Users, "UserID", "UserPassword", unit.UpdateUser);
+            //these are not needed?
+            //ViewBag.CreateUser = new SelectList(db.Users, "UserID", "UserPassword", unit.CreateUser);
+            //ViewBag.UpdateUser = new SelectList(db.Users, "UserID", "UserPassword", unit.UpdateUser);
             return View(unit);
         }
 
@@ -84,30 +89,39 @@ namespace OPDB.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Unit unit)
+        public ActionResult Editar(Unit unit)
         {
             if (ModelState.IsValid)
             {
+                unit.UpdateDate = DateTime.Now;
+                unit.UpdateUser = 1; // TODO get actual user
                 db.Entry(unit).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.CreateUser = new SelectList(db.Users, "UserID", "UserPassword", unit.CreateUser);
-            ViewBag.UpdateUser = new SelectList(db.Users, "UserID", "UserPassword", unit.UpdateUser);
+
             return View(unit);
         }
 
         //
         // GET: /Unidades/Delete/5
 
-        public ActionResult Delete(int id = 0)
+        public ActionResult Remover(int id = 0)
         {
             Unit unit = db.Units.Find(id);
+
             if (unit == null)
             {
                 return HttpNotFound();
             }
-            return View(unit);
+            else
+            {
+                unit.DeletionDate = DateTime.Now;
+                db.Entry(unit).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("Index");
         }
 
         //
