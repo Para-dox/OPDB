@@ -544,6 +544,8 @@
     <Content Include="Views\Home\_Escuelas.cshtml" />
     <Content Include="Views\Home\_Unidades.cshtml" />
     <Content Include="Views\Home\_Usuarios.cshtml" />
+    <Content Include="Views\Usuarios\CrearNota.cshtml" />
+    <Content Include="Views\Usuarios\EditarNota.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

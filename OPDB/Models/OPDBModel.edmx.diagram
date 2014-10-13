@@ -23,15 +23,11 @@
         <EntityTypeShape EntityType="OPDBModel.School" Width="1.5" PointX="5.25" PointY="58.25" IsExpanded="true" />
         <EntityTypeShape EntityType="OPDBModel.SchoolNote" Width="1.5" PointX="10.5" PointY="46.25" IsExpanded="true" />
         <EntityTypeShape EntityType="OPDBModel.Unit" Width="1.5" PointX="5.25" PointY="62.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="OPDBModel.User" Width="1.5" PointX="3" PointY="34.25" IsExpanded="true" />
         <EntityTypeShape EntityType="OPDBModel.UserDetail" Width="1.5" PointX="7.5" PointY="37.75" IsExpanded="true" />
         <EntityTypeShape EntityType="OPDBModel.UserNote" Width="1.5" PointX="5.25" PointY="67.125" IsExpanded="true" />
         <EntityTypeShape EntityType="OPDBModel.UserType" Width="1.5" PointX="0.75" PointY="38.875" IsExpanded="true" />
         <AssociationConnector Association="OPDBModel.Activity_ibfk_2" ManuallyRouted="false" />
         <AssociationConnector Association="OPDBModel.Activity_ibfk_3" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.Activity_ibfk_4" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.Activity_ibfk_5" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.Activity_ibfk_6" ManuallyRouted="false" />
         <AssociationConnector Association="OPDBModel.ActivityNote_ibfk_4" ManuallyRouted="false" />
         <AssociationConnector Association="OPDBModel.ActivityResource_ibfk_1" ManuallyRouted="false" />
         <AssociationConnector Association="OPDBModel.Contact_ibfk_1" ManuallyRouted="false" />
@@ -40,56 +36,62 @@
         <AssociationConnector Association="OPDBModel.Interest_ibfk_1" ManuallyRouted="false" />
         <AssociationConnector Association="OPDBModel.Media_ibfk_1" ManuallyRouted="false" />
         <AssociationConnector Association="OPDBModel.ActivityNote_ibfk_3" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.ActivityNote_ibfk_5" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.ActivityNote_ibfk_6" ManuallyRouted="false" />
         <AssociationConnector Association="OPDBModel.ActivityResource_ibfk_2" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.ActivityResource_ibfk_3" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.ActivityResource_ibfk_4" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.ActivityType_ibfk_1" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.ActivityType_ibfk_2" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.AffiliateType_ibfk_1" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.AffiliateType_ibfk_2" ManuallyRouted="false" />
         <AssociationConnector Association="OPDBModel.UserDetail_ibfk_4" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.Contact_ibfk_2" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.Contact_ibfk_3" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.Contact_ibfk_4" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.Document_ibfk_1" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.Document_ibfk_3" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.Document_ibfk_4" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.Feedback_ibfk_2" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.Feedback_ibfk_3" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.Feedback_ibfk_4" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.Goal_ibfk_1" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.Goal_ibfk_2" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.Goal_ibfk_3" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.Interest_ibfk_2" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.Interest_ibfk_3" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.Interest_ibfk_4" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.Media_ibfk_2" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.Media_ibfk_3" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.NoteType_ibfk_1" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.NoteType_ibfk_2" ManuallyRouted="false" />
         <AssociationConnector Association="OPDBModel.SchoolNote_ibfk_1" ManuallyRouted="false" />
         <AssociationConnector Association="OPDBModel.OutreachEntityDetail_ibfk_1" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.OutreachEntityDetail_ibfk_2" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.OutreachEntityType_ibfk_1" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.OutreachEntityType_ibfk_2" ManuallyRouted="false" />
         <AssociationConnector Association="OPDBModel.Resource_ibfk_1" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.Resource_ibfk_2" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.Resource_ibfk_3" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.School_ibfk_1" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.School_ibfk_2" ManuallyRouted="false" />
         <AssociationConnector Association="OPDBModel.SchoolNote_ibfk_2" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.SchoolNote_ibfk_3" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.Unit_ibfk_1" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.Unit_ibfk_2" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.User_ibfk_1" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.UserDetail_ibfk_5" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.UserNote_ibfk_1" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.UserNote_ibfk_2" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.UserNote_ibfk_3" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.UserNote_ibfk_4" ManuallyRouted="false" />
-      </Diagram>
+        <EntityTypeShape EntityType="OPDBModel.User" Width="1.5" PointX="3" PointY="34.125" />
+        <AssociationConnector Association="OPDBModel.Activity_ibfk_21" />
+        <AssociationConnector Association="OPDBModel.Activity_ibfk_4" />
+        <AssociationConnector Association="OPDBModel.Activity_ibfk_5" />
+        <AssociationConnector Association="OPDBModel.ActivityNote_ibfk_31" />
+        <AssociationConnector Association="OPDBModel.ActivityNote_ibfk_41" />
+        <AssociationConnector Association="OPDBModel.ActivityNote_ibfk_5" />
+        <AssociationConnector Association="OPDBModel.ActivityResource_ibfk_3" />
+        <AssociationConnector Association="OPDBModel.ActivityResource_ibfk_4" />
+        <AssociationConnector Association="OPDBModel.ActivityType_ibfk_1" />
+        <AssociationConnector Association="OPDBModel.ActivityType_ibfk_2" />
+        <AssociationConnector Association="OPDBModel.AffiliateType_ibfk_1" />
+        <AssociationConnector Association="OPDBModel.AffiliateType_ibfk_2" />
+        <AssociationConnector Association="OPDBModel.Contact_ibfk_2" />
+        <AssociationConnector Association="OPDBModel.Contact_ibfk_3" />
+        <AssociationConnector Association="OPDBModel.Contact_ibfk_4" />
+        <AssociationConnector Association="OPDBModel.Document_ibfk_1" />
+        <AssociationConnector Association="OPDBModel.Document_ibfk_3" />
+        <AssociationConnector Association="OPDBModel.Document_ibfk_4" />
+        <AssociationConnector Association="OPDBModel.Feedback_ibfk_2" />
+        <AssociationConnector Association="OPDBModel.Feedback_ibfk_3" />
+        <AssociationConnector Association="OPDBModel.Feedback_ibfk_4" />
+        <AssociationConnector Association="OPDBModel.Goal_ibfk_1" />
+        <AssociationConnector Association="OPDBModel.Goal_ibfk_2" />
+        <AssociationConnector Association="OPDBModel.Goal_ibfk_3" />
+        <AssociationConnector Association="OPDBModel.Interest_ibfk_2" />
+        <AssociationConnector Association="OPDBModel.Interest_ibfk_3" />
+        <AssociationConnector Association="OPDBModel.Interest_ibfk_4" />
+        <AssociationConnector Association="OPDBModel.Media_ibfk_2" />
+        <AssociationConnector Association="OPDBModel.Media_ibfk_3" />
+        <AssociationConnector Association="OPDBModel.NoteType_ibfk_1" />
+        <AssociationConnector Association="OPDBModel.NoteType_ibfk_2" />
+        <AssociationConnector Association="OPDBModel.OutreachEntityDetail_ibfk_2" />
+        <AssociationConnector Association="OPDBModel.OutreachEntityType_ibfk_1" />
+        <AssociationConnector Association="OPDBModel.OutreachEntityType_ibfk_2" />
+        <AssociationConnector Association="OPDBModel.Resource_ibfk_2" />
+        <AssociationConnector Association="OPDBModel.Resource_ibfk_3" />
+        <AssociationConnector Association="OPDBModel.School_ibfk_1" />
+        <AssociationConnector Association="OPDBModel.School_ibfk_2" />
+        <AssociationConnector Association="OPDBModel.SchoolNote_ibfk_3" />
+        <AssociationConnector Association="OPDBModel.Unit_ibfk_1" />
+        <AssociationConnector Association="OPDBModel.Unit_ibfk_2" />
+        <AssociationConnector Association="OPDBModel.User_ibfk_1" />
+        <AssociationConnector Association="OPDBModel.UserDetail_ibfk_5" />
+        <AssociationConnector Association="OPDBModel.UserNote_ibfk_1" />
+        <AssociationConnector Association="OPDBModel.UserNote_ibfk_2" />
+        <AssociationConnector Association="OPDBModel.UserNote_ibfk_3" />
+        <AssociationConnector Association="OPDBModel.UserNote_ibfk_4" />
+        <AssociationConnector Association="OPDBModel.UserNote_ibfk_5" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

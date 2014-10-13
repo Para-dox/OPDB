@@ -127,7 +127,7 @@ namespace OPDB.Controllers
             note.DeletionDate = DateTime.Now;
             db.Entry(note).State = EntityState.Modified;
             db.SaveChanges();
-            return RedirectToAction ("Detalles", "Escuelas", note.SchoolID);
+            return RedirectToAction("Detalles", "Escuelas", new { id = note.SchoolID });
         }
 
         //
@@ -183,7 +183,7 @@ namespace OPDB.Controllers
             SchoolViewModel schoolViewModel = new SchoolViewModel
             {
 
-                NoteTypes = GetNoteTypes(),
+                NoteTypes = getNoteTypes(),
                 school = new School
                 {
 
@@ -200,14 +200,14 @@ namespace OPDB.Controllers
             SchoolViewModel schoolViewModel = new SchoolViewModel
             {
 
-                NoteTypes = GetNoteTypes(),
+                NoteTypes = getNoteTypes(),
                 note = db.SchoolNotes.Find(id)
             };
 
             return View(schoolViewModel);
         }
 
-        private List<SelectListItem> GetNoteTypes()
+        public List<SelectListItem> getNoteTypes()
         {
             List<SelectListItem> types = new List<SelectListItem>();
 

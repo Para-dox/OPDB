@@ -21,6 +21,7 @@ namespace OPDB.Models
             this.Activities2 = new HashSet<Activity>();
             this.ActivityNotes = new HashSet<ActivityNote>();
             this.ActivityNotes1 = new HashSet<ActivityNote>();
+            this.ActivityNotes2 = new HashSet<ActivityNote>();
             this.ActivityResources = new HashSet<ActivityResource>();
             this.ActivityResources1 = new HashSet<ActivityResource>();
             this.ActivityTypes = new HashSet<ActivityType>();
@@ -66,20 +67,19 @@ namespace OPDB.Models
         public int UserID { get; set; }
         public int UserTypeID { get; set; }
         public string UserPassword { get; set; }
-
-        //[Required()]
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
+        public bool UserStatus { get; set; }
         public System.DateTime CreateDate { get; set; }
         public System.DateTime UpdateDate { get; set; }
         public Nullable<System.DateTime> DeletionDate { get; set; }
-        public bool UserStatus { get; set; }
     
         public virtual ICollection<Activity> Activities { get; set; }
         public virtual ICollection<Activity> Activities1 { get; set; }
         public virtual ICollection<Activity> Activities2 { get; set; }
         public virtual ICollection<ActivityNote> ActivityNotes { get; set; }
         public virtual ICollection<ActivityNote> ActivityNotes1 { get; set; }
+        public virtual ICollection<ActivityNote> ActivityNotes2 { get; set; }
         public virtual ICollection<ActivityResource> ActivityResources { get; set; }
         public virtual ICollection<ActivityResource> ActivityResources1 { get; set; }
         public virtual ICollection<ActivityType> ActivityTypes { get; set; }

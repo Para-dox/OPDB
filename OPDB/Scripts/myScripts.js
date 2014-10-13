@@ -11,14 +11,14 @@ function getValue() {
     }
 }
 
-function removeRecord(e) {
+function removeRecord(e, table) {
     debugger;
     var url = $(e).attr('data-url');
     if (confirm("Este record será removido del sistema. ¿Esta seguro(a) que desea proceder?")) {
         $.post(url);
-        window.location.reload();
-
     }
+
+    $(table).dataTable().fnDraw();
 
 }
 

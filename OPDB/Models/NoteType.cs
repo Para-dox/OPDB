@@ -18,6 +18,7 @@ namespace OPDB.Models
         {
             this.ActivityNotes = new HashSet<ActivityNote>();
             this.SchoolNotes = new HashSet<SchoolNote>();
+            this.UserNotes = new HashSet<UserNote>();
         }
     
         public int NoteTypeID { get; set; }
@@ -29,8 +30,9 @@ namespace OPDB.Models
         public Nullable<System.DateTime> DeletionDate { get; set; }
     
         public virtual ICollection<ActivityNote> ActivityNotes { get; set; }
+        public virtual ICollection<SchoolNote> SchoolNotes { get; set; }
         public virtual User User { get; set; }
         public virtual User User1 { get; set; }
-        public virtual ICollection<SchoolNote> SchoolNotes { get; set; }
+        public virtual ICollection<UserNote> UserNotes { get; set; }
     }
 }

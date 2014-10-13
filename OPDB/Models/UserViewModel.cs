@@ -14,6 +14,10 @@ namespace OPDB.Models
         public OutreachEntityDetail outreachEntity { get; set; }
         public List<SelectListItem> userTypes { get; set; }
         public List<SelectListItem> outreachTypes { get; set; }
+
+        public UserNote note { get; set; }
+        public List<SelectListItem> NoteTypes { get; set; }
+        public IEnumerable<UserNote> Notes { get; set; }
         
     }
 }
