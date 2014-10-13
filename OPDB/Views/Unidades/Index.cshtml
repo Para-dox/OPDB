@@ -59,10 +59,10 @@
                 </td>
                 <td>
                     <a href="@Url.Action("Detalles", "Unidades", new { id = item.UnitID})"><i class="fa fa-info-circle" title="Ver Detalles"></i></a>
-                    <a href="@Url.Action("Editar", "Usuarios", new { id = item.UnitID })"><i class="fa fa-pencil" title="Editar"></i></a>
+                    <a href="@Url.Action("Editar", "Unidades", new { id = item.UnitID })"><i class="fa fa-pencil" title="Editar"></i></a>
                     @if (item.DeletionDate == null)
                     {
-                        <i title="Remover" class="fa fa-remove" onclick="removeRecord(this)" data-url="@Url.Action("Remover", "Usuarios", new { id = item.UnitID })"></i>
+                        <i title="Remover" class="fa fa-remove" onclick="removeRecord(this)" data-url="@Url.Action("Remover", "Unidades", new { id = item.UnitID })"></i>
                     }
                     else
                     {
@@ -76,7 +76,7 @@
 <br />
 
 <p>
-    @Html.ActionLink("Nuevo Usuario", "Crear")
+    @Html.ActionLink("Añadir nueva unidad...", "Crear")
 </p>
 
 <script src="~/Scripts/myScripts.js"></script>

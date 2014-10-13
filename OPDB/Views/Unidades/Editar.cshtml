@@ -1,10 +1,10 @@
 ﻿@model OPDB.Models.Unit
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Editar";
 }
 
-<h2>Edit</h2>
+<h2>Editar Unidad</h2>
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
@@ -16,7 +16,7 @@
         @Html.HiddenFor(model => model.UnitID)
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.UnitName)
+            @Html.LabelFor(model => model.UnitName, "Nombre de Unidad")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.UnitName)
@@ -24,7 +24,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Building)
+            @Html.LabelFor(model => model.Building, "Edificio")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.Building)
@@ -32,7 +32,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.RoomNumber)
+            @Html.LabelFor(model => model.RoomNumber, "Número de Oficina o Salón")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.RoomNumber)
@@ -40,7 +40,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.PhoneNumber)
+            @Html.LabelFor(model => model.PhoneNumber, "Teléfono")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.PhoneNumber)
@@ -48,52 +48,18 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Extension)
+            @Html.LabelFor(model => model.Extension, "Extensión")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.Extension)
             @Html.ValidationMessageFor(model => model.Extension)
         </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.CreateUser, "User")
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("CreateUser", String.Empty)
-            @Html.ValidationMessageFor(model => model.CreateUser)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.CreateDate)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.CreateDate)
-            @Html.ValidationMessageFor(model => model.CreateDate)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.UpdateUser, "User1")
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("UpdateUser", String.Empty)
-            @Html.ValidationMessageFor(model => model.UpdateUser)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.UpdateDate)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.UpdateDate)
-            @Html.ValidationMessageFor(model => model.UpdateDate)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.DeletionDate)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.DeletionDate)
-            @Html.ValidationMessageFor(model => model.DeletionDate)
-        </div>
+        @Html.HiddenFor(model => model.CreateUser)
+        @Html.HiddenFor(model => model.CreateDate)
+        @Html.HiddenFor(model => model.UpdateUser)
+        @Html.HiddenFor(model => model.UpdateDate)
+        @Html.HiddenFor(model => model.DeletionDate)
 
         <p>
             <input type="submit" value="Save" />
@@ -102,7 +68,7 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Regresar", "Index")
 </div>
 
 @section Scripts {
