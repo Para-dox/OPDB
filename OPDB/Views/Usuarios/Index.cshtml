@@ -28,8 +28,8 @@
 <table id="users">
     <thead>
         <tr>
-            <th style="width:20%;">Tipo de Usuario</th>
             <th style="width:20%;">Nombre</th>
+            <th style="width:20%;">Tipo de Usuario</th>
             <th style="width:20%;">Correo Electrónico</th>
             <th>Teléfono</th>
             <th>Removido</th>
@@ -42,10 +42,10 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.UserType.UserType1)
+                    @Html.ActionLink(item.UserDetails.FirstOrDefault(i => i.UserID == item.UserID).FirstName + " " + item.UserDetails.FirstOrDefault(i => i.UserID == item.UserID).MiddleInitial + " " + item.UserDetails.FirstOrDefault(i => i.UserID == item.UserID).LastName, "Detalles", "Usuarios", new { id = item.UserID }, null)
                 </td>
                 <td>
-                    @Html.ActionLink(item.UserDetails.FirstOrDefault(i => i.UserID == item.UserID).FirstName + " " + item.UserDetails.FirstOrDefault(i => i.UserID == item.UserID).MiddleInitial + " " + item.UserDetails.FirstOrDefault(i => i.UserID == item.UserID).LastName, "Detalles", "Usuarios", new { id = item.UserID }, null)
+                    @Html.DisplayFor(modelItem => item.UserType.UserType1)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Email)
