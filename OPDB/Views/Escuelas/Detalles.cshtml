@@ -3,61 +3,80 @@
     ViewBag.Title = "Detalles";
 }
 
-<h2>Detalles</h2>
+<style>
+ select {
+        width: 50px !important;
+        padding: 0.2rem !important;
+        height: 1.5rem !important;
+        margin: 0 !important;
+    }
 
+    label {
+        width: 100% !important;
+    }
+
+    input[type="search"] {
+        padding: 0.2rem;
+    }
+
+    th, td {
+        text-align: center !important;
+    }
+
+     .last, .first, .previous, .next{
+        display: none !important;
+    }
+
+</style>
+
+<h2 style="text-align:center;">@Model.school.SchoolName</h2>
+<br />
 <div class="row">
     <div class="large-5 columns">
-        <legend>School</legend>
-
+        <h3>Información</h3>
         <div class="display-label">
-            @Html.DisplayNameFor(model => model.school.SchoolName)
-        </div>
-        <div class="display-field">
-            @Html.DisplayFor(model => model.school.SchoolName)
-        </div>
-
-        <div class="display-label">
-            @Html.DisplayNameFor(model => model.school.SchoolID)
+            @Html.LabelFor(model => model.school.SchoolID, "Número de Identificación")
         </div>
         <div class="display-field">
             @Html.DisplayFor(model => model.school.SchoolID)
         </div>
-
+        <br />
         <div class="display-label">
-            @Html.DisplayNameFor(model => model.school.Address)
+            @Html.LabelFor(model => model.school.Address, "Dirección")
         </div>
         <div class="display-field">
             @Html.DisplayFor(model => model.school.Address)
         </div>
-
+        <br />
         <div class="display-label">
-            @Html.DisplayNameFor(model => model.school.Town)
+            @Html.LabelFor(model => model.school.Town, "Pueblo")
         </div>
         <div class="display-field">
             @Html.DisplayFor(model => model.school.Town)
         </div>
-
+        <br />
         <div class="display-label">
-            @Html.DisplayNameFor(model => model.school.PhoneNumber)
+            @Html.LabelFor(model => model.school.PhoneNumber, "Número Telefónico")
         </div>
         <div class="display-field">
             @Html.DisplayFor(model => model.school.PhoneNumber)
         </div>
+        <br />
+        <p>
+            <input type="button" value="Editar" onclick="location.href='@Url.Action("Editar", "Escuelas", new { id = Model.school.SchoolID })'" />
+            <input type="button" value="Añadir Nota" onclick="location.href='@Url.Action("CrearNota", "Escuelas", new { id = Model.school.SchoolID })'" />
+            <input type="button" value="Devuelta" onclick="location.href='@Url.Action("Index", "Escuelas")'" />
+        </p>
     </div>
 
     <div class="large-7 columns">
+        <h3>Notas</h3>
         <table id="notes">
             <thead>
                 <tr>
-                    <th>
-                        Tipo de Nota
-                    </th>
-                    <th>
-                        Contenido
-                    </th>
-                    <th>
-
-                    </th>
+                    <th>Tipo</th>
+                    <th style="width:70%;">Nota</th>
+                    <th style="width:10%;"></th>
                 </tr> 
             </thead>
             <tbody>
@@ -67,9 +86,7 @@
                         <td>@note.NoteType.NoteType1</td>
                         <td>@note.Note</td>
                         <td>
-                            <a href="@Url.Action("VerNota", "Escuelas", new { id = note.SchoolNoteID })"><i class="fa fa-info-circle" title="Ver Detalles"></i></a>
-                            <a href="@Url.Action("EditarNota", "Escuelas", new { id = note.SchoolNoteID })"><i class="fa fa-pencil" title="Editar"></i></a>
-                            
+                            <a href="@Url.Action("EditarNota", "Escuelas", new { id = note.SchoolNoteID })"><i class="fa fa-pencil" title="Editar"></i></a>                            
                             <i title="Remover" class="fa fa-remove" onclick="removeRecord(this)" data-url="@Url.Action("RemoverNota", "Escuelas", new { id = note.SchoolNoteID })"></i>
   
                         </td>
@@ -81,18 +98,14 @@
 </div>
 </div>
 
-<p>
-    @Html.ActionLink("Editar", "Editar", new { id=Model.school.SchoolID }) |
-    @Html.ActionLink("Añadir Nota", "CrearNota", new { id = Model.school.SchoolID }) |
-    @Html.ActionLink("Devuelta", "Index")
-</p>
+
                     
 <script src="~/Scripts/myScripts.js"></script>
 <script>
     $(document).ready(function () {
 
         $('#notes').DataTable({
-            "sDom": '<"top"lf>t<"bottom"ipr><"clear">',
+            "sDom": '<"top"lf>t<"bottom"pr><"clear">',
             "sPaginationType": "full_numbers",
             "bProcessing": false,
             "iDisplayLength": 12,

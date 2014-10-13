@@ -62,16 +62,13 @@
             @Html.EditorFor(model => model.PhoneNumber, new { @style = "width: 1000px !important;" })
             @Html.ValidationMessageFor(model => model.PhoneNumber)
         </div>
-
+        <br />
         <p>
-            <input type="submit" value="Someter" />
+            <input type="submit" value="Someter" /> <input type="button" value="Cancelar" onclick="location.href='@Url.Action("Index", "Escuelas")'"/>
         </p>
     </fieldset>
 }
 
-<div>
-    @Html.ActionLink("Devuelta", "Index")
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

@@ -85,8 +85,7 @@ namespace OPDB.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.CreateUser = new SelectList(db.Users, "UserID", "UserPassword", school.CreateUser);
-            ViewBag.UpdateUser = new SelectList(db.Users, "UserID", "UserPassword", school.UpdateUser);
+            
             return View(school);
         }
 
@@ -99,12 +98,13 @@ namespace OPDB.Controllers
         {
             if (ModelState.IsValid)
             {
+                school.UpdateUser = 2;
+                school.UpdateDate = DateTime.Now;
                 db.Entry(school).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.CreateUser = new SelectList(db.Users, "UserID", "UserPassword", school.CreateUser);
-            ViewBag.UpdateUser = new SelectList(db.Users, "UserID", "UserPassword", school.UpdateUser);
+           
             return View(school);
         }
 
@@ -152,23 +152,32 @@ namespace OPDB.Controllers
         [HttpPost]
         public ActionResult GuardarNota(SchoolViewModel schoolViewModel)
         {
-            schoolViewModel.note.CreateDate = DateTime.Now;
-            schoolViewModel.note.UpdateDate = DateTime.Now;
-            schoolViewModel.note.SchoolID = schoolViewModel.school.SchoolID;
-
-            schoolViewModel.note.CreateUser = 2;
+            
             schoolViewModel.note.UpdateUser = 2;
-            schoolViewModel.note.UserID = 2;
+            schoolViewModel.note.UpdateDate = DateTime.Now;
 
-            db.SchoolNotes.Add(schoolViewModel.note);
+            if (schoolViewModel.note.SchoolNoteID == null){  
+
+                schoolViewModel.note.CreateDate = DateTime.Now;
+                schoolViewModel.note.SchoolID = schoolViewModel.school.SchoolID;
+
+                schoolViewModel.note.UserID = 2;
+                schoolViewModel.note.CreateUser = 2;
+               
+                db.SchoolNotes.Add(schoolViewModel.note);
+
+            }
+            else
+            {
+                db.Entry(schoolViewModel.note).State = EntityState.Modified;
+            }
+
             db.SaveChanges();
 
-            //schoolViewModel.school = db.Schools.Find(schoolViewModel.school.SchoolID);
-            //schoolViewModel.Notes = from n in db.SchoolNotes where n.SchoolID == schoolViewModel.school.SchoolID select n;
-
-            return RedirectToAction("Detalles", "Escuelas", schoolViewModel.school.SchoolID);
+            return RedirectToAction("Detalles", "Escuelas", new { id = schoolViewModel.school.SchoolID});
         }
 
+        
         public ActionResult CrearNota(int id)
         {
             SchoolViewModel schoolViewModel = new SchoolViewModel
@@ -180,6 +189,19 @@ namespace OPDB.Controllers
 
                     SchoolID = id
                 }
+            };
+
+            return View(schoolViewModel);
+        }
+
+        public ActionResult EditarNota(int id)
+        {
+
+            SchoolViewModel schoolViewModel = new SchoolViewModel
+            {
+
+                NoteTypes = GetNoteTypes(),
+                note = db.SchoolNotes.Find(id)
             };
 
             return View(schoolViewModel);

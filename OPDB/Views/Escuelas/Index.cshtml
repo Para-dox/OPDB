@@ -3,55 +3,90 @@
 @{
     ViewBag.Title = "Escuelas";
 }
+<style>
+    select {
+        width: 50px !important;
+        padding: 0.2rem !important;
+        height: 1.5rem !important;
+        margin: 0 !important;
+    }
 
+    label {
+        width: 100% !important;
+    }
+
+    input[type="search"] {
+        padding: 0.2rem;
+    }
+
+    th, td {
+        text-align: center !important;
+    }
+</style>
 <h2>Escuelas</h2>
-
+<br />
+<table id="schools">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Identificación</th>
+            <th>Dirección</th>
+            <th>Pueblo</th>
+            <th>Número Telefonico</th>
+            <th style="width:10%;"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SchoolName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SchoolID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Town)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                </td>
+                <td>
+                    <a href="@Url.Action("Editar", "Escuelas", new { id = item.SchoolID })"><i class="fa fa-pencil" title="Editar"></i></a>
+                    <i title="Remover" class="fa fa-remove" onclick="removeRecord(this)" data-url="@Url.Action("Remover", "Escuelas", new { id = item.SchoolID })"></i>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<br />
 <p>
     @Html.ActionLink("Nueva Escuela", "Crear")
 </p>
-<table>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.SchoolName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SchoolID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Address)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Town)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PhoneNumber)
-        </th>
-        <th></th>
-    </tr>
+<script src="~/Scripts/myScripts.js"></script>
+<script>
+    $(document).ready(function () {
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.SchoolName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SchoolID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Address)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Town)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PhoneNumber)
-        </td>
-        <td>
-            @Html.ActionLink("Editar", "Editar", new { id=item.SchoolID }) |
-            @Html.ActionLink("Detalles", "Detalles", new { id=item.SchoolID }) |
-            @Html.ActionLink("Remover", "Remover", new { id=item.SchoolID })
-        </td>
-    </tr>
-}
+        $('#schools').DataTable({
+            "sDom": '<"top"lf>t<"bottom"ipr><"clear">',
+            "sPaginationType": "full_numbers",
+            "bProcessing": false,
+            "iDisplayLength": 12,
+            "aaSorting": [[1, "asc"]],
+            "columnDefs": [
+                {
+                    "orderable": false,
+                    "targets": 5
+                }
 
-</table>
+
+            ]
+        });
+    });
+
+
+</script>
