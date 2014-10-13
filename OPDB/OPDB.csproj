@@ -532,9 +532,8 @@
     <Content Include="Views\Alcance\Remover.cshtml" />
     <Content Include="Views\Home\Buscar.cshtml" />
     <Content Include="Views\Shared\_Buscar.cshtml" />
-    <Content Include="Views\Escuelas\VerNota.cshtml" />
     <Content Include="Views\Escuelas\CrearNota.cshtml" />
-    <Content Include="Views\Escuelas\EditarNotas.cshtml" />
+    <Content Include="Views\Escuelas\EditarNota.cshtml" />
     <Content Include="Views\Actividades\CrearNota.cshtml" />
     <Content Include="Views\Actividades\EditarNotas.cshtml" />
     <Content Include="Views\Actividades\VerNota.cshtml" />

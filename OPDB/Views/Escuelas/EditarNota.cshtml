@@ -1,0 +1,57 @@
+﻿@model OPDB.Models.SchoolViewModel
+
+@{
+    ViewBag.Title = "Editar";
+}
+
+<style>
+     .text-box, .editor-field {
+        width: 500px;
+    }
+
+    .editor-label {
+        text-align: left;
+    }
+</style>
+
+<h2>Editar Nota</h2>
+
+@using (Html.BeginForm("GuardarNota", "Escuelas", FormMethod.Post)) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        @Html.HiddenFor(model => model.note.SchoolNoteID)
+        @Html.HiddenFor(model => model.school.SchoolID)
+        @Html.HiddenFor(model => model.note.CreateDate)
+        @Html.HiddenFor(model => model.note.CreateUser)
+        @Html.HiddenFor(model => model.note.UserID)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.note.NoteTypeID, "Tipo de Nota")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.note.NoteTypeID, Model.NoteTypes)
+            @Html.ValidationMessageFor(model => model.note.NoteTypeID)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.note.Note, "Nota")
+        </div>
+        <div class="editor-field">
+            @Html.TextAreaFor(model => model.note.Note, new { @style="resize:none; height:100px;" })
+            @Html.ValidationMessageFor(model => model.note.Note)
+        </div>
+
+        <p>
+            <input type="submit" value="Guardar" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Devuelta", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

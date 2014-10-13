@@ -6,54 +6,110 @@
 
 <h2>Detalles</h2>
 
-<fieldset>
-    <legend>Activity</legend>
+<div class="large-5 columns">
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.activity.Title)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.activity.Title)
+        </div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.activity.Title)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.activity.Title)
-    </div>
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.activity.Purpose)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.activity.Purpose)
+        </div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.activity.Purpose)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.activity.Purpose)
-    </div>
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.activity.Location)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.activity.Location)
+        </div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.activity.Location)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.activity.Location)
-    </div>
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.activity.ActivityDate)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.activity.ActivityDate)
+        </div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.activity.ActivityDate)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.activity.ActivityDate)
-    </div>
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.activity.ActivityTime)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.activity.ActivityTime)
+        </div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.activity.ActivityTime)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.activity.ActivityTime)
-    </div>
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.activity.School.SchoolName)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.activity.School.SchoolName)
+        </div>
+</div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.activity.School.SchoolName)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.activity.School.SchoolName)
-    </div>
-</fieldset>
+<div class="large-7 columns">
+    <table id="notes">
+        <thead>
+            <tr>
+                <th>
+                    Tipo de Nota
+                </th>
+                <th>
+                    Contenido
+                </th>
+                <th>
 
-<p>
-    @Html.ActionLink("Editar", "Editar", new { id=Model.activity.ActivityID }) |
-    @Html.ActionLink("Añadir Nota", "CrearNota", new { id = Model.activity.ActivityID }) |
-    @Html.ActionLink("Devuelta", "Index")
-</p>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var note in Model.Notes)
+            {
+                <tr>
+                    <td>@note.NoteType.NoteType1</td>
+                    <td>@note.Note</td>
+                    <td>
+                        <a href="@Url.Action("VerNota", "Actividades", new { id = note.ActivityNoteID })"><i class="fa fa-info-circle" title="Ver Detalles"></i></a>
+                        <a href="@Url.Action("EditarNota", "Actividades", new { id = note.ActivityNoteID })"><i class="fa fa-pencil" title="Editar"></i></a>
+
+                        <i title="Remover" class="fa fa-remove" onclick="removeRecord(this)" data-url="@Url.Action("RemoverNota", "Actividades", new { id = note.ActivityNoteID })"></i>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+</div>
+<div class="large-12 columns">
+    <p>
+        @Html.ActionLink("Editar", "Editar", new { id = Model.activity.ActivityID }) |
+        @Html.ActionLink("Añadir Nota", "CrearNota", new { id = Model.activity.ActivityID }) |
+        @Html.ActionLink("Devuelta", "Index")
+    </p>
+</div>
+
+
+<script src="~/Scripts/myScripts.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $('#notes').DataTable({
+            "sDom": '<"top"lf>t<"bottom"ipr><"clear">',
+            "sPaginationType": "full_numbers",
+            "bProcessing": false,
+            "iDisplayLength": 12,
+            "aaSorting": [[1, "asc"]],
+            "columnDefs": [
+                {
+                    "orderable": false,
+                    "targets": 2
+                }
+            ]
+        });
+    });
+
+</script>

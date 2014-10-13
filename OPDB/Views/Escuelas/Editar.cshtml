@@ -24,9 +24,11 @@
         <legend>School</legend>
 
         @Html.HiddenFor(model => model.SchoolID)
-
+        @Html.HiddenFor(model => model.CreateUser)
+        @Html.HiddenFor(model => model.CreateDate)
+        
         <div class="editor-label">
-            @Html.LabelFor(model => model.SchoolName)
+            @Html.LabelFor(model => model.SchoolName, "Escuela")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.SchoolName)
@@ -34,7 +36,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Address)
+            @Html.LabelFor(model => model.Address, "Dirección")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.Address)
@@ -42,7 +44,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Town)
+            @Html.LabelFor(model => model.Town, "Pueblo")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.Town)
@@ -50,22 +52,18 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.PhoneNumber)
+            @Html.LabelFor(model => model.PhoneNumber, "Número Telefónico")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.PhoneNumber)
             @Html.ValidationMessageFor(model => model.PhoneNumber)
         </div>
+        <br />
         <p>
-            <input type="submit" value="Guardar" />
+            <input type="submit" value="Guardar" /><input type="button" value="Cancelar" onclick="location.href='@Url.Action("Index", "Escuelas")'"/>
         </p>
     </fieldset>
 }   
-
-<div>
-    @Html.ActionLink("Devuelta", "Index")
-</div>
-
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

@@ -152,6 +152,7 @@ namespace OPDB.Controllers
         [HttpPost]
         public ActionResult GuardarNota(ActivityViewModel activityViewModel)
         {
+            var id = activityViewModel.activity.ActivityID;
             activityViewModel.note.CreateDate = DateTime.Now;
             activityViewModel.note.UpdateDate = DateTime.Now;
             activityViewModel.note.ActivityID = activityViewModel.activity.ActivityID;
@@ -163,10 +164,7 @@ namespace OPDB.Controllers
             db.ActivityNotes.Add(activityViewModel.note);
             db.SaveChanges();
 
-            //activityViewModel.activity = db.Activities.Find(activityViewModel.activity.ActivityID);
-            //activityViewModel.Notes = from n in db.ActivityNotes where n.ActivityID == activityViewModel.activity.ActivityID select n;
-
-            return RedirectToAction("Detalles", "Actividades", activityViewModel.activity.ActivityID);
+            return RedirectToAction("Detalles", "Actividades", new {id = activityViewModel.activity.ActivityID});
         }
 
         public ActionResult CrearNota(int id)
