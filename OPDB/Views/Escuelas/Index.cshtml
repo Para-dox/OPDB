@@ -22,6 +22,12 @@
     th, td {
         text-align: center !important;
     }
+
+    .previous, .next{
+        display: none !important;
+    }
+
+    
 </style>
 <h2>Escuelas</h2>
 <br />
@@ -41,7 +47,7 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.SchoolName)
+                    @Html.ActionLink(item.SchoolName + " ", "Detalles", "Escuelas", new { id = item.SchoolID }, null)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.SchoolID)
@@ -58,6 +64,7 @@
                 <td>
                     <a href="@Url.Action("Editar", "Escuelas", new { id = item.SchoolID })"><i class="fa fa-pencil" title="Editar"></i></a>
                     <i title="Remover" class="fa fa-remove" onclick="removeRecord(this)" data-url="@Url.Action("Remover", "Escuelas", new { id = item.SchoolID })"></i>
+        
                 </td>
             </tr>
         }
@@ -65,7 +72,9 @@
 </table>
 <br />
 <p>
-    @Html.ActionLink("Nueva Escuela", "Crear")
+   
+        <input type="button" value="Nueva Escuela" onclick="location.href='@Url.Action("Crear", "Escuelas")'" /> 
+   
 </p>
 <script src="~/Scripts/myScripts.js"></script>
 <script>
