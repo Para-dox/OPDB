@@ -26,7 +26,7 @@
             @foreach (var outreach in Model.outreachEntities)
             {
                 <li>
-                    @Html.ActionLink(outreach.OutreachEntityName, "Detalles", "Alcance")
+                    @Html.ActionLink(outreach.OutreachEntityName, "Detalles", "Alcance", new { id = outreach.OutreachEntityDetailID }, null)
                 </li>
             }
         </ul>
@@ -39,7 +39,7 @@
             @foreach (var activity in Model.activities)
             {
                 <li>
-                    @Html.ActionLink(activity.Title, "Detalles", "Actividades")
+                    @Html.ActionLink(activity.Title, "Detalles", "Actividades", new { id = activity.ActivityID }, null)
                 </li>
             }
         </ul>
@@ -52,7 +52,7 @@
             @foreach (var unit in Model.units)
             {
                 <li>
-                    @Html.ActionLink(unit.UnitName, "Detalles", "Unidades")
+                    @Html.ActionLink(unit.UnitName, "Detalles", "Unidades", new { id = unit.UnitID }, null)
                 </li>
             }
         </ul>
@@ -66,7 +66,7 @@
             @foreach (var school in Model.schools)
             {
                 <li>
-                    @Html.ActionLink(school.SchoolName, "Detalles", "Unidades")
+                    @Html.ActionLink(school.SchoolName, "Detalles", "Escuelas", new { id = school.SchoolID }, null)
                 </li>
             }
         </ul>

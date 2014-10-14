@@ -10,7 +10,7 @@
     }
 </style>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("BuscarActividades", "Home", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)

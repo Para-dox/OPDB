@@ -6,7 +6,7 @@
     }
 </style>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("BuscarEscuelas", "Home", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
