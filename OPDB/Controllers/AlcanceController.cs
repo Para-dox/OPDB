@@ -69,7 +69,7 @@ namespace OPDB.Controllers
 
         public ActionResult Editar(int id = 0)
         {
-            OutreachEntityDetail outreachentitydetail = db.OutreachEntityDetails.Find(id);
+            OutreachEntityDetail outreachentitydetail = db.OutreachEntityDetails.FirstOrDefault(i => i.UserID == id); 
             if (outreachentitydetail == null)
             {
                 return HttpNotFound();
@@ -88,6 +88,7 @@ namespace OPDB.Controllers
         {
             if (ModelState.IsValid)
             {
+                outreachentitydetail.UpdateDate = DateTime.Now;
                 db.Entry(outreachentitydetail).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

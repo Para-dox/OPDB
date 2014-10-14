@@ -140,6 +140,7 @@ namespace OPDB.Controllers
                 user.outreachTypes = getOutreachTypes();
 
             }
+
             else {
 
                 user.userDetail = db.UserDetails.FirstOrDefault(i => i.UserID == id);

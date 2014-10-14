@@ -14,14 +14,8 @@
         <legend>OutreachEntityDetail</legend>
 
         @Html.HiddenFor(model => model.OutreachEntityDetailID)
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.UserID, "Usuario")
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("UserID", String.Empty)
-            @Html.ValidationMessageFor(model => model.UserID)
-        </div>
+        @Html.HiddenFor(model => model.CreateDate)
+        @Html.HiddenFor(model => model.UserID)
 
         <div class="editor-label">
             @Html.LabelFor(model => model.OutreachEntityTypeID, "Tipo de Organización")

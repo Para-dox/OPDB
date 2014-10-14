@@ -40,10 +40,8 @@
         <tr>
             <th>Tipo de Organización</th>
             <th>Nombre de Organización</th>
-            <th>Misión</th>
-            <th>Visión</th>
-            <th>Objectives</th>
-            <th>Location</th>
+            <th>Email</th>
+            <th>Número de Teléfono</th>
             <th style="width:10%;"></th>
         </tr>
     </thead>
@@ -58,16 +56,10 @@
                     @Html.ActionLink(item.OutreachEntityName + " ", "Detalles", "Alcance", new { id = item.UserID}, null)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Mission)
+                    @Html.DisplayFor(modelItem => item.User.Email)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Vision)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Objectives)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Location)
+                    @Html.DisplayFor(modelItem => item.User.PhoneNumber)
                 </td>
                 <td>
                     <a href="@Url.Action("Editar", "Alcance", new { id = item.UserID })"><i class="fa fa-pencil" title="Editar"></i></a>
@@ -96,7 +88,7 @@
             "columnDefs": [
                 {
                     "orderable": false,
-                    "targets": 5
+                    "targets": 4
                 }
 
 

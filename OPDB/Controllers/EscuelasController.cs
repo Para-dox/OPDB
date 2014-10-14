@@ -25,6 +25,19 @@ namespace OPDB.Controllers
         //
         // GET: /Escuelas/Details/5
 
+        /// <summary>
+        /// This method is responsible for searching for the particular Notes associated with a particular school,
+        /// by means of using its specific id (the parameter recevied by the method).
+        /// </summary>
+        /// 
+        /// <param name="id">
+        /// A unique integer that identifies each individual school.
+        /// </param>
+        /// 
+        /// <returns> 
+        /// Returns a schoolViewModel 
+        /// </returns>
+
         public ActionResult Detalles(int id = 0)
         {
             SchoolViewModel schoolViewModel = new SchoolViewModel
@@ -42,6 +55,14 @@ namespace OPDB.Controllers
 
         //
         // GET: /Escuelas/Create
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// 
+        /// <returns>
+        /// 
+        /// </returns>
 
         public ActionResult Crear()
         {
