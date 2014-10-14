@@ -109,19 +109,7 @@ namespace OPDB.Controllers
             }
             return View(outreachentitydetail);
         }
-
-        //
-        // POST: /Alcance/Delete/5
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            OutreachEntityDetail outreachentitydetail = db.OutreachEntityDetails.Find(id);
-            db.OutreachEntityDetails.Remove(outreachentitydetail);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+               
 
         protected override void Dispose(bool disposing)
         {

@@ -530,7 +530,6 @@
     <Content Include="Views\Alcance\Detalles.cshtml" />
     <Content Include="Views\Alcance\Crear.cshtml" />
     <Content Include="Views\Alcance\Editar.cshtml" />
-    <Content Include="Views\Alcance\Remover.cshtml" />
     <Content Include="Views\Home\Buscar.cshtml" />
     <Content Include="Views\Shared\_Buscar.cshtml" />
     <Content Include="Views\Escuelas\CrearNota.cshtml" />
