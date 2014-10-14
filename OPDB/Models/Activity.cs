@@ -42,9 +42,6 @@ namespace OPDB.Models
     
         public virtual ActivityType ActivityType { get; set; }
         public virtual School School { get; set; }
-        public virtual User User { get; set; }
-        public virtual User User1 { get; set; }
-        public virtual User User2 { get; set; }
         public virtual ICollection<ActivityNote> ActivityNotes { get; set; }
         public virtual ICollection<ActivityResource> ActivityResources { get; set; }
         public virtual ICollection<Contact> Contacts { get; set; }
@@ -52,5 +49,8 @@ namespace OPDB.Models
         public virtual ICollection<Feedback> Feedbacks { get; set; }
         public virtual ICollection<Interest> Interests { get; set; }
         public virtual ICollection<Medium> Media { get; set; }
+        public virtual User User { get; set; }
+        public virtual User User1 { get; set; }
+        public virtual User User2 { get; set; }
     }
 }

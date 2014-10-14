@@ -30,12 +30,23 @@
                 @Html.ValidationMessageFor(model => model.user.UserTypeID)
             </div>
             <div class="editor-label">
-                @Html.LabelFor(model => model.user.Email, "Correo Electrónico")
+               @Html.LabelFor(model => model.user.Email, "Correo Electrónico")
             </div>
             <div class="editor-field">
-                @Html.EditorFor(model => model.user.Email, new { @style = "width: 500px !important;" })
-                @Html.ValidationMessageFor(model => model.user.Email)
-            </div>
+                <div class="row">
+                    <div class="large-6 columns">
+                        <div class="row collapse prefix-radius">
+                            @*<div class="small-3 columns">
+                                <span class="prefix" style="height:34px;"><i class="fa fa-envelope"></i></span>
+                            </div>*@
+                            <div class="small-9 columns">
+                                @Html.EditorFor(model => model.user.Email, new { @style = "width: 500px !important;" })
+                            </div>
+                        </div>
+                    </div>
+                    
+                    @Html.ValidationMessageFor(model => model.user.Email)
+                </div>
             <div class="editor-label">
                 @Html.LabelFor(model => model.user.UserPassword, "Contraseña")
             </div>

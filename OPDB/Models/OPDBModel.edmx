@@ -266,7 +266,7 @@
           <Property Name="UserTypeID" Type="int" Nullable="false" />
           <Property Name="UserPassword" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="PhoneNumber" Type="varchar" MaxLength="10" />
+          <Property Name="PhoneNumber" Type="varchar" MaxLength="12" />
           <Property Name="UserStatus" Type="bit" Nullable="false" />
           <Property Name="CreateDate" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="UpdateDate" Type="datetime" Precision="0" Nullable="false" />
@@ -297,6 +297,7 @@
             <PropertyRef Name="UserNoteID" />
           </Key>
           <Property Name="UserNoteID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NoteTypeID" Type="int" Nullable="false" />
           <Property Name="SubjectID" Type="int" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="Note" Type="text" Nullable="false" />
@@ -316,7 +317,7 @@
           <Property Name="UpdateDate" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="DeletionDate" Type="datetime" Precision="0" />
         </EntityType>
-        <Association Name="Activity_ibfk_2">
+        <Association Name="Activity_ibfk_1">
           <End Role="ActivityType" Type="Self.ActivityType" Multiplicity="1" />
           <End Role="Activity" Type="Self.Activity" Multiplicity="*" />
           <ReferentialConstraint>
@@ -325,6 +326,18 @@
             </Principal>
             <Dependent Role="Activity">
               <PropertyRef Name="ActivityTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Activity_ibfk_2">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Activity" Type="Self.Activity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Activity">
+              <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -364,19 +377,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="Activity_ibfk_6">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Activity" Type="Self.Activity" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Activity">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="ActivityNote_ibfk_3">
+        <Association Name="ActivityNote_ibfk_1">
           <End Role="NoteType" Type="Self.NoteType" Multiplicity="1" />
           <End Role="ActivityNote" Type="Self.ActivityNote" Multiplicity="*" />
           <ReferentialConstraint>
@@ -388,7 +389,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="ActivityNote_ibfk_4">
+        <Association Name="ActivityNote_ibfk_2">
           <End Role="Activity" Type="Self.Activity" Multiplicity="1" />
           <End Role="ActivityNote" Type="Self.ActivityNote" Multiplicity="*" />
           <ReferentialConstraint>
@@ -400,7 +401,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="ActivityNote_ibfk_5">
+        <Association Name="ActivityNote_ibfk_3">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="ActivityNote" Type="Self.ActivityNote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ActivityNote">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ActivityNote_ibfk_4">
           <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="ActivityNote" Type="Self.ActivityNote" Multiplicity="*" />
           <ReferentialConstraint>
@@ -412,7 +425,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="ActivityNote_ibfk_6">
+        <Association Name="ActivityNote_ibfk_5">
           <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="ActivityNote" Type="Self.ActivityNote" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1057,6 +1070,18 @@
             </Principal>
             <Dependent Role="UserNote">
               <PropertyRef Name="UpdateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserNote_ibfk_5">
+          <End Role="NoteType" Type="Self.NoteType" Multiplicity="1" />
+          <End Role="UserNote" Type="Self.UserNote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NoteType">
+              <PropertyRef Name="NoteTypeID" />
+            </Principal>
+            <Dependent Role="UserNote">
+              <PropertyRef Name="NoteTypeID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1863,8 +1888,12 @@
           <EntitySet Name="UserDetail" EntityType="Self.UserDetail" Schema="OPDB" store:Type="Tables" />
           <EntitySet Name="UserNote" EntityType="Self.UserNote" Schema="OPDB" store:Type="Tables" />
           <EntitySet Name="UserType" EntityType="Self.UserType" Schema="OPDB" store:Type="Tables" />
-          <AssociationSet Name="Activity_ibfk_2" Association="Self.Activity_ibfk_2">
+          <AssociationSet Name="Activity_ibfk_1" Association="Self.Activity_ibfk_1">
             <End Role="ActivityType" EntitySet="ActivityType" />
+            <End Role="Activity" EntitySet="Activity" />
+          </AssociationSet>
+          <AssociationSet Name="Activity_ibfk_2" Association="Self.Activity_ibfk_2">
+            <End Role="User" EntitySet="User" />
             <End Role="Activity" EntitySet="Activity" />
           </AssociationSet>
           <AssociationSet Name="Activity_ibfk_3" Association="Self.Activity_ibfk_3">
@@ -1879,23 +1908,23 @@
             <End Role="User" EntitySet="User" />
             <End Role="Activity" EntitySet="Activity" />
           </AssociationSet>
-          <AssociationSet Name="Activity_ibfk_6" Association="Self.Activity_ibfk_6">
-            <End Role="User" EntitySet="User" />
-            <End Role="Activity" EntitySet="Activity" />
-          </AssociationSet>
-          <AssociationSet Name="ActivityNote_ibfk_3" Association="Self.ActivityNote_ibfk_3">
+          <AssociationSet Name="ActivityNote_ibfk_1" Association="Self.ActivityNote_ibfk_1">
             <End Role="NoteType" EntitySet="NoteType" />
             <End Role="ActivityNote" EntitySet="ActivityNote" />
           </AssociationSet>
-          <AssociationSet Name="ActivityNote_ibfk_4" Association="Self.ActivityNote_ibfk_4">
+          <AssociationSet Name="ActivityNote_ibfk_2" Association="Self.ActivityNote_ibfk_2">
             <End Role="Activity" EntitySet="Activity" />
             <End Role="ActivityNote" EntitySet="ActivityNote" />
           </AssociationSet>
-          <AssociationSet Name="ActivityNote_ibfk_5" Association="Self.ActivityNote_ibfk_5">
+          <AssociationSet Name="ActivityNote_ibfk_3" Association="Self.ActivityNote_ibfk_3">
             <End Role="User" EntitySet="User" />
             <End Role="ActivityNote" EntitySet="ActivityNote" />
           </AssociationSet>
-          <AssociationSet Name="ActivityNote_ibfk_6" Association="Self.ActivityNote_ibfk_6">
+          <AssociationSet Name="ActivityNote_ibfk_4" Association="Self.ActivityNote_ibfk_4">
+            <End Role="User" EntitySet="User" />
+            <End Role="ActivityNote" EntitySet="ActivityNote" />
+          </AssociationSet>
+          <AssociationSet Name="ActivityNote_ibfk_5" Association="Self.ActivityNote_ibfk_5">
             <End Role="User" EntitySet="User" />
             <End Role="ActivityNote" EntitySet="ActivityNote" />
           </AssociationSet>
@@ -2111,6 +2140,10 @@
             <End Role="User" EntitySet="User" />
             <End Role="UserNote" EntitySet="UserNote" />
           </AssociationSet>
+          <AssociationSet Name="UserNote_ibfk_5" Association="Self.UserNote_ibfk_5">
+            <End Role="NoteType" EntitySet="NoteType" />
+            <End Role="UserNote" EntitySet="UserNote" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -2136,9 +2169,6 @@
           <Property Name="DeletionDate" Type="DateTime" />
           <NavigationProperty Name="ActivityType" Relationship="Self.Activity_ibfk_2" FromRole="Activity" ToRole="ActivityType" />
           <NavigationProperty Name="School" Relationship="Self.Activity_ibfk_3" FromRole="Activity" ToRole="School" />
-          <NavigationProperty Name="User" Relationship="Self.Activity_ibfk_4" FromRole="Activity" ToRole="User" />
-          <NavigationProperty Name="User1" Relationship="Self.Activity_ibfk_5" FromRole="Activity" ToRole="User" />
-          <NavigationProperty Name="User2" Relationship="Self.Activity_ibfk_6" FromRole="Activity" ToRole="User" />
           <NavigationProperty Name="ActivityNotes" Relationship="Self.ActivityNote_ibfk_4" FromRole="Activity" ToRole="ActivityNote" />
           <NavigationProperty Name="ActivityResources" Relationship="Self.ActivityResource_ibfk_1" FromRole="Activity" ToRole="ActivityResource" />
           <NavigationProperty Name="Contacts" Relationship="Self.Contact_ibfk_1" FromRole="Activity" ToRole="Contact" />
@@ -2146,6 +2176,9 @@
           <NavigationProperty Name="Feedbacks" Relationship="Self.Feedback_ibfk_1" FromRole="Activity" ToRole="Feedback" />
           <NavigationProperty Name="Interests" Relationship="Self.Interest_ibfk_1" FromRole="Activity" ToRole="Interest" />
           <NavigationProperty Name="Media" Relationship="Self.Media_ibfk_1" FromRole="Activity" ToRole="Media" />
+          <NavigationProperty Name="User" Relationship="OPDBModel.Activity_ibfk_21" FromRole="Activity" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="OPDBModel.Activity_ibfk_4" FromRole="Activity" ToRole="User" />
+          <NavigationProperty Name="User2" Relationship="OPDBModel.Activity_ibfk_5" FromRole="Activity" ToRole="User" />
         </EntityType>
         <EntityType Name="ActivityNote">
           <Key>
@@ -2163,9 +2196,10 @@
           <Property Name="DeletionDate" Type="DateTime" />
           <NavigationProperty Name="Activity" Relationship="Self.ActivityNote_ibfk_4" FromRole="ActivityNote" ToRole="Activity" />
           <NavigationProperty Name="NoteType" Relationship="Self.ActivityNote_ibfk_3" FromRole="ActivityNote" ToRole="NoteType" />
-          <NavigationProperty Name="User" Relationship="Self.ActivityNote_ibfk_5" FromRole="ActivityNote" ToRole="User" />
-          <NavigationProperty Name="User1" Relationship="Self.ActivityNote_ibfk_6" FromRole="ActivityNote" ToRole="User" />
-        </EntityType>
+          <NavigationProperty Name="User" Relationship="OPDBModel.ActivityNote_ibfk_31" FromRole="ActivityNote" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="OPDBModel.ActivityNote_ibfk_41" FromRole="ActivityNote" ToRole="User" />
+          <NavigationProperty Name="User2" Relationship="OPDBModel.ActivityNote_ibfk_5" FromRole="ActivityNote" ToRole="User" />
+          </EntityType>
         <EntityType Name="ActivityResource">
           <Key>
             <PropertyRef Name="ActivityResourceID" />
@@ -2181,8 +2215,8 @@
           <Property Name="DeletionDate" Type="DateTime" />
           <NavigationProperty Name="Activity" Relationship="Self.ActivityResource_ibfk_1" FromRole="ActivityResource" ToRole="Activity" />
           <NavigationProperty Name="Resource" Relationship="Self.ActivityResource_ibfk_2" FromRole="ActivityResource" ToRole="Resource" />
-          <NavigationProperty Name="User" Relationship="Self.ActivityResource_ibfk_3" FromRole="ActivityResource" ToRole="User" />
-          <NavigationProperty Name="User1" Relationship="Self.ActivityResource_ibfk_4" FromRole="ActivityResource" ToRole="User" />
+          <NavigationProperty Name="User" Relationship="OPDBModel.ActivityResource_ibfk_3" FromRole="ActivityResource" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="OPDBModel.ActivityResource_ibfk_4" FromRole="ActivityResource" ToRole="User" />
         </EntityType>
         <EntityType Name="ActivityType">
           <Key>
@@ -2196,8 +2230,8 @@
           <Property Name="UpdateDate" Type="DateTime" Nullable="false" />
           <Property Name="DeletionDate" Type="DateTime" />
           <NavigationProperty Name="Activities" Relationship="Self.Activity_ibfk_2" FromRole="ActivityType" ToRole="Activity" />
-          <NavigationProperty Name="User" Relationship="Self.ActivityType_ibfk_1" FromRole="ActivityType" ToRole="User" />
-          <NavigationProperty Name="User1" Relationship="Self.ActivityType_ibfk_2" FromRole="ActivityType" ToRole="User" />
+          <NavigationProperty Name="User" Relationship="OPDBModel.ActivityType_ibfk_1" FromRole="ActivityType" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="OPDBModel.ActivityType_ibfk_2" FromRole="ActivityType" ToRole="User" />
         </EntityType>
         <EntityType Name="AffiliateType">
           <Key>
@@ -2210,9 +2244,9 @@
           <Property Name="UpdateUser" Type="Int32" Nullable="false" />
           <Property Name="UpdateDate" Type="DateTime" Nullable="false" />
           <Property Name="DeletionDate" Type="DateTime" />
-          <NavigationProperty Name="User" Relationship="Self.AffiliateType_ibfk_1" FromRole="AffiliateType" ToRole="User" />
-          <NavigationProperty Name="User1" Relationship="Self.AffiliateType_ibfk_2" FromRole="AffiliateType" ToRole="User" />
           <NavigationProperty Name="UserDetails" Relationship="Self.UserDetail_ibfk_4" FromRole="AffiliateType" ToRole="UserDetail" />
+          <NavigationProperty Name="User" Relationship="OPDBModel.AffiliateType_ibfk_1" FromRole="AffiliateType" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="OPDBModel.AffiliateType_ibfk_2" FromRole="AffiliateType" ToRole="User" />
         </EntityType>
         <EntityType Name="Contact">
           <Key>
@@ -2227,9 +2261,9 @@
           <Property Name="UpdateDate" Type="DateTime" Nullable="false" />
           <Property Name="DeletionDate" Type="DateTime" />
           <NavigationProperty Name="Activity" Relationship="Self.Contact_ibfk_1" FromRole="Contact" ToRole="Activity" />
-          <NavigationProperty Name="User" Relationship="Self.Contact_ibfk_2" FromRole="Contact" ToRole="User" />
-          <NavigationProperty Name="User1" Relationship="Self.Contact_ibfk_3" FromRole="Contact" ToRole="User" />
-          <NavigationProperty Name="User2" Relationship="Self.Contact_ibfk_4" FromRole="Contact" ToRole="User" />
+          <NavigationProperty Name="User" Relationship="OPDBModel.Contact_ibfk_2" FromRole="Contact" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="OPDBModel.Contact_ibfk_3" FromRole="Contact" ToRole="User" />
+          <NavigationProperty Name="User2" Relationship="OPDBModel.Contact_ibfk_4" FromRole="Contact" ToRole="User" />
         </EntityType>
         <EntityType Name="Document">
           <Key>
@@ -2246,9 +2280,9 @@
           <Property Name="UpdateDate" Type="DateTime" Nullable="false" />
           <Property Name="DeletionDate" Type="DateTime" />
           <NavigationProperty Name="Activity" Relationship="Self.Document_ibfk_2" FromRole="Document" ToRole="Activity" />
-          <NavigationProperty Name="User" Relationship="Self.Document_ibfk_1" FromRole="Document" ToRole="User" />
-          <NavigationProperty Name="User1" Relationship="Self.Document_ibfk_3" FromRole="Document" ToRole="User" />
-          <NavigationProperty Name="User2" Relationship="Self.Document_ibfk_4" FromRole="Document" ToRole="User" />
+          <NavigationProperty Name="User" Relationship="OPDBModel.Document_ibfk_1" FromRole="Document" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="OPDBModel.Document_ibfk_3" FromRole="Document" ToRole="User" />
+          <NavigationProperty Name="User2" Relationship="OPDBModel.Document_ibfk_4" FromRole="Document" ToRole="User" />
         </EntityType>
         <EntityType Name="Feedback">
           <Key>
@@ -2264,9 +2298,9 @@
           <Property Name="UpdateDate" Type="DateTime" Nullable="false" />
           <Property Name="DeletionDate" Type="DateTime" />
           <NavigationProperty Name="Activity" Relationship="Self.Feedback_ibfk_1" FromRole="Feedback" ToRole="Activity" />
-          <NavigationProperty Name="User" Relationship="Self.Feedback_ibfk_2" FromRole="Feedback" ToRole="User" />
-          <NavigationProperty Name="User1" Relationship="Self.Feedback_ibfk_3" FromRole="Feedback" ToRole="User" />
-          <NavigationProperty Name="User2" Relationship="Self.Feedback_ibfk_4" FromRole="Feedback" ToRole="User" />
+          <NavigationProperty Name="User" Relationship="OPDBModel.Feedback_ibfk_2" FromRole="Feedback" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="OPDBModel.Feedback_ibfk_3" FromRole="Feedback" ToRole="User" />
+          <NavigationProperty Name="User2" Relationship="OPDBModel.Feedback_ibfk_4" FromRole="Feedback" ToRole="User" />
         </EntityType>
         <EntityType Name="Goal">
           <Key>
@@ -2280,10 +2314,10 @@
           <Property Name="UpdateUser" Type="Int32" Nullable="false" />
           <Property Name="UpdateDate" Type="DateTime" Nullable="false" />
           <Property Name="DeletionDate" Type="DateTime" />
-          <NavigationProperty Name="User" Relationship="Self.Goal_ibfk_1" FromRole="Goal" ToRole="User" />
-          <NavigationProperty Name="User1" Relationship="Self.Goal_ibfk_2" FromRole="Goal" ToRole="User" />
-          <NavigationProperty Name="User2" Relationship="Self.Goal_ibfk_3" FromRole="Goal" ToRole="User" />
-        </EntityType>
+          <NavigationProperty Name="User" Relationship="OPDBModel.Goal_ibfk_1" FromRole="Goal" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="OPDBModel.Goal_ibfk_2" FromRole="Goal" ToRole="User" />
+          <NavigationProperty Name="User2" Relationship="OPDBModel.Goal_ibfk_3" FromRole="Goal" ToRole="User" />
+          </EntityType>
         <EntityType Name="Interest">
           <Key>
             <PropertyRef Name="InterestID" />
@@ -2297,10 +2331,10 @@
           <Property Name="UpdateDate" Type="DateTime" Nullable="false" />
           <Property Name="DeletionDate" Type="DateTime" />
           <NavigationProperty Name="Activity" Relationship="Self.Interest_ibfk_1" FromRole="Interest" ToRole="Activity" />
-          <NavigationProperty Name="User" Relationship="Self.Interest_ibfk_2" FromRole="Interest" ToRole="User" />
-          <NavigationProperty Name="User1" Relationship="Self.Interest_ibfk_3" FromRole="Interest" ToRole="User" />
-          <NavigationProperty Name="User2" Relationship="Self.Interest_ibfk_4" FromRole="Interest" ToRole="User" />
-        </EntityType>
+          <NavigationProperty Name="User" Relationship="OPDBModel.Interest_ibfk_2" FromRole="Interest" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="OPDBModel.Interest_ibfk_3" FromRole="Interest" ToRole="User" />
+          <NavigationProperty Name="User2" Relationship="OPDBModel.Interest_ibfk_4" FromRole="Interest" ToRole="User" />
+          </EntityType>
         <EntityType Name="Medium">
           <Key>
             <PropertyRef Name="MediaID" />
@@ -2315,8 +2349,8 @@
           <Property Name="UpdateDate" Type="DateTime" Nullable="false" />
           <Property Name="DeletionDate" Type="DateTime" />
           <NavigationProperty Name="Activity" Relationship="Self.Media_ibfk_1" FromRole="Media" ToRole="Activity" />
-          <NavigationProperty Name="User" Relationship="Self.Media_ibfk_2" FromRole="Media" ToRole="User" />
-          <NavigationProperty Name="User1" Relationship="Self.Media_ibfk_3" FromRole="Media" ToRole="User" />
+          <NavigationProperty Name="User" Relationship="OPDBModel.Media_ibfk_2" FromRole="Medium" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="OPDBModel.Media_ibfk_3" FromRole="Medium" ToRole="User" />
         </EntityType>
         <EntityType Name="NoteType">
           <Key>
@@ -2330,9 +2364,10 @@
           <Property Name="UpdateDate" Type="DateTime" Nullable="false" />
           <Property Name="DeletionDate" Type="DateTime" />
           <NavigationProperty Name="ActivityNotes" Relationship="Self.ActivityNote_ibfk_3" FromRole="NoteType" ToRole="ActivityNote" />
-          <NavigationProperty Name="User" Relationship="Self.NoteType_ibfk_1" FromRole="NoteType" ToRole="User" />
-          <NavigationProperty Name="User1" Relationship="Self.NoteType_ibfk_2" FromRole="NoteType" ToRole="User" />
           <NavigationProperty Name="SchoolNotes" Relationship="Self.SchoolNote_ibfk_1" FromRole="NoteType" ToRole="SchoolNote" />
+          <NavigationProperty Name="User" Relationship="OPDBModel.NoteType_ibfk_1" FromRole="NoteType" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="OPDBModel.NoteType_ibfk_2" FromRole="NoteType" ToRole="User" />
+          <NavigationProperty Name="UserNotes" Relationship="OPDBModel.UserNote_ibfk_5" FromRole="NoteType" ToRole="UserNote" />
         </EntityType>
         <EntityType Name="OutreachEntityDetail">
           <Key>
@@ -2350,7 +2385,7 @@
           <Property Name="UpdateDate" Type="DateTime" Nullable="false" />
           <Property Name="DeletionDate" Type="DateTime" />
           <NavigationProperty Name="OutreachEntityType" Relationship="Self.OutreachEntityDetail_ibfk_1" FromRole="OutreachEntityDetail" ToRole="OutreachEntityType" />
-          <NavigationProperty Name="User" Relationship="Self.OutreachEntityDetail_ibfk_2" FromRole="OutreachEntityDetail" ToRole="User" />
+          <NavigationProperty Name="User" Relationship="OPDBModel.OutreachEntityDetail_ibfk_2" FromRole="OutreachEntityDetail" ToRole="User" />
         </EntityType>
         <EntityType Name="OutreachEntityType">
           <Key>
@@ -2364,8 +2399,8 @@
           <Property Name="UpdateDate" Type="DateTime" Nullable="false" />
           <Property Name="DeletionDate" Type="DateTime" />
           <NavigationProperty Name="OutreachEntityDetails" Relationship="Self.OutreachEntityDetail_ibfk_1" FromRole="OutreachEntityType" ToRole="OutreachEntityDetail" />
-          <NavigationProperty Name="User" Relationship="Self.OutreachEntityType_ibfk_1" FromRole="OutreachEntityType" ToRole="User" />
-          <NavigationProperty Name="User1" Relationship="Self.OutreachEntityType_ibfk_2" FromRole="OutreachEntityType" ToRole="User" />
+          <NavigationProperty Name="User" Relationship="OPDBModel.OutreachEntityType_ibfk_1" FromRole="OutreachEntityType" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="OPDBModel.OutreachEntityType_ibfk_2" FromRole="OutreachEntityType" ToRole="User" />
         </EntityType>
         <EntityType Name="Resource">
           <Key>
@@ -2381,8 +2416,8 @@
           <Property Name="DeletionDate" Type="DateTime" />
           <NavigationProperty Name="ActivityResources" Relationship="Self.ActivityResource_ibfk_2" FromRole="Resource" ToRole="ActivityResource" />
           <NavigationProperty Name="Unit" Relationship="Self.Resource_ibfk_1" FromRole="Resource" ToRole="Unit" />
-          <NavigationProperty Name="User" Relationship="Self.Resource_ibfk_2" FromRole="Resource" ToRole="User" />
-          <NavigationProperty Name="User1" Relationship="Self.Resource_ibfk_3" FromRole="Resource" ToRole="User" />
+          <NavigationProperty Name="User" Relationship="OPDBModel.Resource_ibfk_2" FromRole="Resource" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="OPDBModel.Resource_ibfk_3" FromRole="Resource" ToRole="User" />
         </EntityType>
         <EntityType Name="School">
           <Key>
@@ -2399,9 +2434,9 @@
           <Property Name="UpdateDate" Type="DateTime" Nullable="false" />
           <Property Name="DeletionDate" Type="DateTime" />
           <NavigationProperty Name="Activities" Relationship="Self.Activity_ibfk_3" FromRole="School" ToRole="Activity" />
-          <NavigationProperty Name="User" Relationship="Self.School_ibfk_1" FromRole="School" ToRole="User" />
-          <NavigationProperty Name="User1" Relationship="Self.School_ibfk_2" FromRole="School" ToRole="User" />
           <NavigationProperty Name="SchoolNotes" Relationship="Self.SchoolNote_ibfk_2" FromRole="School" ToRole="SchoolNote" />
+          <NavigationProperty Name="User" Relationship="OPDBModel.School_ibfk_1" FromRole="School" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="OPDBModel.School_ibfk_2" FromRole="School" ToRole="User" />
         </EntityType>
         <EntityType Name="SchoolNote">
           <Key>
@@ -2419,7 +2454,7 @@
           <Property Name="DeletionDate" Type="DateTime" />
           <NavigationProperty Name="NoteType" Relationship="Self.SchoolNote_ibfk_1" FromRole="SchoolNote" ToRole="NoteType" />
           <NavigationProperty Name="School" Relationship="Self.SchoolNote_ibfk_2" FromRole="SchoolNote" ToRole="School" />
-          <NavigationProperty Name="User" Relationship="Self.SchoolNote_ibfk_3" FromRole="SchoolNote" ToRole="User" />
+          <NavigationProperty Name="User" Relationship="OPDBModel.SchoolNote_ibfk_3" FromRole="SchoolNote" ToRole="User" />
         </EntityType>
         <EntityType Name="Unit">
           <Key>
@@ -2437,68 +2472,8 @@
           <Property Name="UpdateDate" Type="DateTime" Nullable="false" />
           <Property Name="DeletionDate" Type="DateTime" />
           <NavigationProperty Name="Resources" Relationship="Self.Resource_ibfk_1" FromRole="Unit" ToRole="Resource" />
-          <NavigationProperty Name="User" Relationship="Self.Unit_ibfk_1" FromRole="Unit" ToRole="User" />
-          <NavigationProperty Name="User1" Relationship="Self.Unit_ibfk_2" FromRole="Unit" ToRole="User" />
-        </EntityType>
-        <EntityType Name="User">
-          <Key>
-            <PropertyRef Name="UserID" />
-          </Key>
-          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserTypeID" Type="Int32" Nullable="false" />
-          <Property Name="UserPassword" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="PhoneNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="CreateDate" Type="DateTime" Nullable="false" />
-          <Property Name="UpdateDate" Type="DateTime" Nullable="false" />
-          <Property Name="DeletionDate" Type="DateTime" />
-          <NavigationProperty Name="Activities" Relationship="Self.Activity_ibfk_4" FromRole="User" ToRole="Activity" />
-          <NavigationProperty Name="Activities1" Relationship="Self.Activity_ibfk_5" FromRole="User" ToRole="Activity" />
-          <NavigationProperty Name="Activities2" Relationship="Self.Activity_ibfk_6" FromRole="User" ToRole="Activity" />
-          <NavigationProperty Name="ActivityNotes" Relationship="Self.ActivityNote_ibfk_5" FromRole="User" ToRole="ActivityNote" />
-          <NavigationProperty Name="ActivityNotes1" Relationship="Self.ActivityNote_ibfk_6" FromRole="User" ToRole="ActivityNote" />
-          <NavigationProperty Name="ActivityResources" Relationship="Self.ActivityResource_ibfk_3" FromRole="User" ToRole="ActivityResource" />
-          <NavigationProperty Name="ActivityResources1" Relationship="Self.ActivityResource_ibfk_4" FromRole="User" ToRole="ActivityResource" />
-          <NavigationProperty Name="ActivityTypes" Relationship="Self.ActivityType_ibfk_1" FromRole="User" ToRole="ActivityType" />
-          <NavigationProperty Name="ActivityTypes1" Relationship="Self.ActivityType_ibfk_2" FromRole="User" ToRole="ActivityType" />
-          <NavigationProperty Name="AffiliateTypes" Relationship="Self.AffiliateType_ibfk_1" FromRole="User" ToRole="AffiliateType" />
-          <NavigationProperty Name="AffiliateTypes1" Relationship="Self.AffiliateType_ibfk_2" FromRole="User" ToRole="AffiliateType" />
-          <NavigationProperty Name="Contacts" Relationship="Self.Contact_ibfk_2" FromRole="User" ToRole="Contact" />
-          <NavigationProperty Name="Contacts1" Relationship="Self.Contact_ibfk_3" FromRole="User" ToRole="Contact" />
-          <NavigationProperty Name="Contacts2" Relationship="Self.Contact_ibfk_4" FromRole="User" ToRole="Contact" />
-          <NavigationProperty Name="Documents" Relationship="Self.Document_ibfk_1" FromRole="User" ToRole="Document" />
-          <NavigationProperty Name="Documents1" Relationship="Self.Document_ibfk_3" FromRole="User" ToRole="Document" />
-          <NavigationProperty Name="Documents2" Relationship="Self.Document_ibfk_4" FromRole="User" ToRole="Document" />
-          <NavigationProperty Name="Feedbacks" Relationship="Self.Feedback_ibfk_2" FromRole="User" ToRole="Feedback" />
-          <NavigationProperty Name="Feedbacks1" Relationship="Self.Feedback_ibfk_3" FromRole="User" ToRole="Feedback" />
-          <NavigationProperty Name="Feedbacks2" Relationship="Self.Feedback_ibfk_4" FromRole="User" ToRole="Feedback" />
-          <NavigationProperty Name="Goals" Relationship="Self.Goal_ibfk_1" FromRole="User" ToRole="Goal" />
-          <NavigationProperty Name="Goals1" Relationship="Self.Goal_ibfk_2" FromRole="User" ToRole="Goal" />
-          <NavigationProperty Name="Goals2" Relationship="Self.Goal_ibfk_3" FromRole="User" ToRole="Goal" />
-          <NavigationProperty Name="Interests" Relationship="Self.Interest_ibfk_2" FromRole="User" ToRole="Interest" />
-          <NavigationProperty Name="Interests1" Relationship="Self.Interest_ibfk_3" FromRole="User" ToRole="Interest" />
-          <NavigationProperty Name="Interests2" Relationship="Self.Interest_ibfk_4" FromRole="User" ToRole="Interest" />
-          <NavigationProperty Name="Media" Relationship="Self.Media_ibfk_2" FromRole="User" ToRole="Media" />
-          <NavigationProperty Name="Media1" Relationship="Self.Media_ibfk_3" FromRole="User" ToRole="Media" />
-          <NavigationProperty Name="NoteTypes" Relationship="Self.NoteType_ibfk_1" FromRole="User" ToRole="NoteType" />
-          <NavigationProperty Name="NoteTypes1" Relationship="Self.NoteType_ibfk_2" FromRole="User" ToRole="NoteType" />
-          <NavigationProperty Name="OutreachEntityDetails" Relationship="Self.OutreachEntityDetail_ibfk_2" FromRole="User" ToRole="OutreachEntityDetail" />
-          <NavigationProperty Name="OutreachEntityTypes" Relationship="Self.OutreachEntityType_ibfk_1" FromRole="User" ToRole="OutreachEntityType" />
-          <NavigationProperty Name="OutreachEntityTypes1" Relationship="Self.OutreachEntityType_ibfk_2" FromRole="User" ToRole="OutreachEntityType" />
-          <NavigationProperty Name="Resources" Relationship="Self.Resource_ibfk_2" FromRole="User" ToRole="Resource" />
-          <NavigationProperty Name="Resources1" Relationship="Self.Resource_ibfk_3" FromRole="User" ToRole="Resource" />
-          <NavigationProperty Name="Schools" Relationship="Self.School_ibfk_1" FromRole="User" ToRole="School" />
-          <NavigationProperty Name="Schools1" Relationship="Self.School_ibfk_2" FromRole="User" ToRole="School" />
-          <NavigationProperty Name="SchoolNotes" Relationship="Self.SchoolNote_ibfk_3" FromRole="User" ToRole="SchoolNote" />
-          <NavigationProperty Name="Units" Relationship="Self.Unit_ibfk_1" FromRole="User" ToRole="Unit" />
-          <NavigationProperty Name="Units1" Relationship="Self.Unit_ibfk_2" FromRole="User" ToRole="Unit" />
-          <NavigationProperty Name="UserType" Relationship="Self.User_ibfk_1" FromRole="User" ToRole="UserType" />
-          <NavigationProperty Name="UserDetails" Relationship="Self.UserDetail_ibfk_5" FromRole="User" ToRole="UserDetail" />
-          <NavigationProperty Name="UserNotes" Relationship="Self.UserNote_ibfk_1" FromRole="User" ToRole="UserNote" />
-          <NavigationProperty Name="UserNotes1" Relationship="Self.UserNote_ibfk_2" FromRole="User" ToRole="UserNote" />
-          <NavigationProperty Name="UserNotes2" Relationship="Self.UserNote_ibfk_3" FromRole="User" ToRole="UserNote" />
-          <NavigationProperty Name="UserNotes3" Relationship="Self.UserNote_ibfk_4" FromRole="User" ToRole="UserNote" />
-          <Property Name="UserStatus" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="OPDBModel.Unit_ibfk_1" FromRole="Unit" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="OPDBModel.Unit_ibfk_2" FromRole="Unit" ToRole="User" />
         </EntityType>
         <EntityType Name="UserDetail">
           <Key>
@@ -2520,7 +2495,7 @@
           <Property Name="AffiliateID" Type="Int32" />
           <Property Name="AffiliateTypeID" Type="Int32" />
           <NavigationProperty Name="AffiliateType" Relationship="Self.UserDetail_ibfk_4" FromRole="UserDetail" ToRole="AffiliateType" />
-          <NavigationProperty Name="User" Relationship="Self.UserDetail_ibfk_5" FromRole="UserDetail" ToRole="User" />
+          <NavigationProperty Name="User" Relationship="OPDBModel.UserDetail_ibfk_5" FromRole="UserDetail" ToRole="User" />
         </EntityType>
         <EntityType Name="UserNote">
           <Key>
@@ -2535,10 +2510,12 @@
           <Property Name="UpdateUser" Type="Int32" Nullable="false" />
           <Property Name="UpdateDate" Type="DateTime" Nullable="false" />
           <Property Name="DeletionDate" Type="DateTime" />
-          <NavigationProperty Name="User" Relationship="Self.UserNote_ibfk_1" FromRole="UserNote" ToRole="User" />
-          <NavigationProperty Name="User1" Relationship="Self.UserNote_ibfk_2" FromRole="UserNote" ToRole="User" />
-          <NavigationProperty Name="User2" Relationship="Self.UserNote_ibfk_3" FromRole="UserNote" ToRole="User" />
-          <NavigationProperty Name="User3" Relationship="Self.UserNote_ibfk_4" FromRole="UserNote" ToRole="User" />
+          <NavigationProperty Name="User" Relationship="OPDBModel.UserNote_ibfk_1" FromRole="UserNote" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="OPDBModel.UserNote_ibfk_2" FromRole="UserNote" ToRole="User" />
+          <NavigationProperty Name="User2" Relationship="OPDBModel.UserNote_ibfk_3" FromRole="UserNote" ToRole="User" />
+          <NavigationProperty Name="User3" Relationship="OPDBModel.UserNote_ibfk_4" FromRole="UserNote" ToRole="User" />
+          <Property Name="NoteTypeID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="NoteType" Relationship="OPDBModel.UserNote_ibfk_5" FromRole="UserNote" ToRole="NoteType" />
         </EntityType>
         <EntityType Name="UserType">
           <Key>
@@ -2549,7 +2526,7 @@
           <Property Name="CreateDate" Type="DateTime" Nullable="false" />
           <Property Name="UpdateDate" Type="DateTime" Nullable="false" />
           <Property Name="DeletionDate" Type="DateTime" />
-          <NavigationProperty Name="Users" Relationship="Self.User_ibfk_1" FromRole="UserType" ToRole="User" />
+          <NavigationProperty Name="Users" Relationship="OPDBModel.User_ibfk_1" FromRole="UserType" ToRole="User" />
         </EntityType>
         <Association Name="Activity_ibfk_2">
           <End Role="ActivityType" Type="Self.ActivityType" Multiplicity="1" />
@@ -2572,42 +2549,6 @@
             </Principal>
             <Dependent Role="Activity">
               <PropertyRef Name="SchoolID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Activity_ibfk_4">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Activity" Type="Self.Activity" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Activity">
-              <PropertyRef Name="CreateUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Activity_ibfk_5">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Activity" Type="Self.Activity" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Activity">
-              <PropertyRef Name="UpdateUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Activity_ibfk_6">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Activity" Type="Self.Activity" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Activity">
-              <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2707,30 +2648,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="ActivityNote_ibfk_5">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="ActivityNote" Type="Self.ActivityNote" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="ActivityNote">
-              <PropertyRef Name="CreateUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="ActivityNote_ibfk_6">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="ActivityNote" Type="Self.ActivityNote" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="ActivityNote">
-              <PropertyRef Name="UpdateUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="ActivityResource_ibfk_2">
           <End Role="Resource" Type="Self.Resource" Multiplicity="1" />
           <End Role="ActivityResource" Type="Self.ActivityResource" Multiplicity="*" />
@@ -2743,78 +2660,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="ActivityResource_ibfk_3">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="ActivityResource" Type="Self.ActivityResource" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="ActivityResource">
-              <PropertyRef Name="CreateUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="ActivityResource_ibfk_4">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="ActivityResource" Type="Self.ActivityResource" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="ActivityResource">
-              <PropertyRef Name="UpdateUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="ActivityType_ibfk_1">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="ActivityType" Type="Self.ActivityType" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="ActivityType">
-              <PropertyRef Name="CreateUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="ActivityType_ibfk_2">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="ActivityType" Type="Self.ActivityType" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="ActivityType">
-              <PropertyRef Name="UpdateUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="AffiliateType_ibfk_1">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="AffiliateType" Type="Self.AffiliateType" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="AffiliateType">
-              <PropertyRef Name="CreateUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="AffiliateType_ibfk_2">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="AffiliateType" Type="Self.AffiliateType" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="AffiliateType">
-              <PropertyRef Name="UpdateUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="UserDetail_ibfk_4">
           <End Role="AffiliateType" Type="Self.AffiliateType" Multiplicity="0..1" />
           <End Role="UserDetail" Type="Self.UserDetail" Multiplicity="*" />
@@ -2824,234 +2669,6 @@
             </Principal>
             <Dependent Role="UserDetail">
               <PropertyRef Name="AffiliateTypeID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Contact_ibfk_2">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Contact" Type="Self.Contact" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Contact">
-              <PropertyRef Name="CreateUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Contact_ibfk_3">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Contact" Type="Self.Contact" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Contact">
-              <PropertyRef Name="UpdateUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Contact_ibfk_4">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Contact" Type="Self.Contact" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Contact">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Document_ibfk_1">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Document" Type="Self.Document" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Document">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Document_ibfk_3">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Document" Type="Self.Document" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Document">
-              <PropertyRef Name="CreateUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Document_ibfk_4">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Document" Type="Self.Document" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Document">
-              <PropertyRef Name="UpdateUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Feedback_ibfk_2">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Feedback" Type="Self.Feedback" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Feedback">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Feedback_ibfk_3">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Feedback" Type="Self.Feedback" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Feedback">
-              <PropertyRef Name="CreateUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Feedback_ibfk_4">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Feedback" Type="Self.Feedback" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Feedback">
-              <PropertyRef Name="UpdateUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Goal_ibfk_1">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Goal" Type="Self.Goal" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Goal">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Goal_ibfk_2">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Goal" Type="Self.Goal" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Goal">
-              <PropertyRef Name="CreateUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Goal_ibfk_3">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Goal" Type="Self.Goal" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Goal">
-              <PropertyRef Name="UpdateUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Interest_ibfk_2">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Interest" Type="Self.Interest" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Interest">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Interest_ibfk_3">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Interest" Type="Self.Interest" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Interest">
-              <PropertyRef Name="CreateUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Interest_ibfk_4">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Interest" Type="Self.Interest" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Interest">
-              <PropertyRef Name="UpdateUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Media_ibfk_2">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Media" Type="Self.Medium" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Media">
-              <PropertyRef Name="CreateUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Media_ibfk_3">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Media" Type="Self.Medium" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Media">
-              <PropertyRef Name="UpdateUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="NoteType_ibfk_1">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="NoteType" Type="Self.NoteType" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="NoteType">
-              <PropertyRef Name="CreateUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="NoteType_ibfk_2">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="NoteType" Type="Self.NoteType" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="NoteType">
-              <PropertyRef Name="UpdateUser" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3079,42 +2696,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="OutreachEntityDetail_ibfk_2">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="OutreachEntityDetail" Type="Self.OutreachEntityDetail" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="OutreachEntityDetail">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="OutreachEntityType_ibfk_1">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="OutreachEntityType" Type="Self.OutreachEntityType" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="OutreachEntityType">
-              <PropertyRef Name="CreateUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="OutreachEntityType_ibfk_2">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="OutreachEntityType" Type="Self.OutreachEntityType" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="OutreachEntityType">
-              <PropertyRef Name="UpdateUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="Resource_ibfk_1">
           <End Role="Unit" Type="Self.Unit" Multiplicity="1" />
           <End Role="Resource" Type="Self.Resource" Multiplicity="*" />
@@ -3127,54 +2708,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="Resource_ibfk_2">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Resource" Type="Self.Resource" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Resource">
-              <PropertyRef Name="CreateUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Resource_ibfk_3">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Resource" Type="Self.Resource" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Resource">
-              <PropertyRef Name="UpdateUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="School_ibfk_1">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="School" Type="Self.School" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="School">
-              <PropertyRef Name="CreateUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="School_ibfk_2">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="School" Type="Self.School" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="School">
-              <PropertyRef Name="UpdateUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="SchoolNote_ibfk_2">
           <End Role="School" Type="Self.School" Multiplicity="1" />
           <End Role="SchoolNote" Type="Self.SchoolNote" Multiplicity="*" />
@@ -3184,114 +2717,6 @@
             </Principal>
             <Dependent Role="SchoolNote">
               <PropertyRef Name="SchoolID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="SchoolNote_ibfk_3">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="SchoolNote" Type="Self.SchoolNote" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="SchoolNote">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Unit_ibfk_1">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Unit" Type="Self.Unit" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Unit">
-              <PropertyRef Name="CreateUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Unit_ibfk_2">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Unit" Type="Self.Unit" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Unit">
-              <PropertyRef Name="UpdateUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="User_ibfk_1">
-          <End Role="UserType" Type="Self.UserType" Multiplicity="1" />
-          <End Role="User" Type="Self.User" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserType">
-              <PropertyRef Name="UserTypeID" />
-            </Principal>
-            <Dependent Role="User">
-              <PropertyRef Name="UserTypeID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="UserDetail_ibfk_5">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="UserDetail" Type="Self.UserDetail" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="UserDetail">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="UserNote_ibfk_1">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="UserNote" Type="Self.UserNote" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="UserNote">
-              <PropertyRef Name="SubjectID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="UserNote_ibfk_2">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="UserNote" Type="Self.UserNote" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="UserNote">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="UserNote_ibfk_3">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="UserNote" Type="Self.UserNote" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="UserNote">
-              <PropertyRef Name="CreateUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="UserNote_ibfk_4">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="UserNote" Type="Self.UserNote" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="UserNote">
-              <PropertyRef Name="UpdateUser" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3314,7 +2739,6 @@
           <EntitySet Name="Schools" EntityType="Self.School" />
           <EntitySet Name="SchoolNotes" EntityType="Self.SchoolNote" />
           <EntitySet Name="Units" EntityType="Self.Unit" />
-          <EntitySet Name="Users" EntityType="Self.User" />
           <EntitySet Name="UserDetails" EntityType="Self.UserDetail" />
           <EntitySet Name="UserNotes" EntityType="Self.UserNote" />
           <EntitySet Name="UserTypes" EntityType="Self.UserType" />
@@ -3324,18 +2748,6 @@
           </AssociationSet>
           <AssociationSet Name="Activity_ibfk_3" Association="Self.Activity_ibfk_3">
             <End Role="School" EntitySet="Schools" />
-            <End Role="Activity" EntitySet="Activities" />
-          </AssociationSet>
-          <AssociationSet Name="Activity_ibfk_4" Association="Self.Activity_ibfk_4">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Activity" EntitySet="Activities" />
-          </AssociationSet>
-          <AssociationSet Name="Activity_ibfk_5" Association="Self.Activity_ibfk_5">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Activity" EntitySet="Activities" />
-          </AssociationSet>
-          <AssociationSet Name="Activity_ibfk_6" Association="Self.Activity_ibfk_6">
-            <End Role="User" EntitySet="Users" />
             <End Role="Activity" EntitySet="Activities" />
           </AssociationSet>
           <AssociationSet Name="ActivityNote_ibfk_4" Association="Self.ActivityNote_ibfk_4">
@@ -3370,121 +2782,13 @@
             <End Role="NoteType" EntitySet="NoteTypes" />
             <End Role="ActivityNote" EntitySet="ActivityNotes" />
           </AssociationSet>
-          <AssociationSet Name="ActivityNote_ibfk_5" Association="Self.ActivityNote_ibfk_5">
-            <End Role="User" EntitySet="Users" />
-            <End Role="ActivityNote" EntitySet="ActivityNotes" />
-          </AssociationSet>
-          <AssociationSet Name="ActivityNote_ibfk_6" Association="Self.ActivityNote_ibfk_6">
-            <End Role="User" EntitySet="Users" />
-            <End Role="ActivityNote" EntitySet="ActivityNotes" />
-          </AssociationSet>
           <AssociationSet Name="ActivityResource_ibfk_2" Association="Self.ActivityResource_ibfk_2">
             <End Role="Resource" EntitySet="Resources" />
             <End Role="ActivityResource" EntitySet="ActivityResources" />
           </AssociationSet>
-          <AssociationSet Name="ActivityResource_ibfk_3" Association="Self.ActivityResource_ibfk_3">
-            <End Role="User" EntitySet="Users" />
-            <End Role="ActivityResource" EntitySet="ActivityResources" />
-          </AssociationSet>
-          <AssociationSet Name="ActivityResource_ibfk_4" Association="Self.ActivityResource_ibfk_4">
-            <End Role="User" EntitySet="Users" />
-            <End Role="ActivityResource" EntitySet="ActivityResources" />
-          </AssociationSet>
-          <AssociationSet Name="ActivityType_ibfk_1" Association="Self.ActivityType_ibfk_1">
-            <End Role="User" EntitySet="Users" />
-            <End Role="ActivityType" EntitySet="ActivityTypes" />
-          </AssociationSet>
-          <AssociationSet Name="ActivityType_ibfk_2" Association="Self.ActivityType_ibfk_2">
-            <End Role="User" EntitySet="Users" />
-            <End Role="ActivityType" EntitySet="ActivityTypes" />
-          </AssociationSet>
-          <AssociationSet Name="AffiliateType_ibfk_1" Association="Self.AffiliateType_ibfk_1">
-            <End Role="User" EntitySet="Users" />
-            <End Role="AffiliateType" EntitySet="AffiliateTypes" />
-          </AssociationSet>
-          <AssociationSet Name="AffiliateType_ibfk_2" Association="Self.AffiliateType_ibfk_2">
-            <End Role="User" EntitySet="Users" />
-            <End Role="AffiliateType" EntitySet="AffiliateTypes" />
-          </AssociationSet>
           <AssociationSet Name="UserDetail_ibfk_4" Association="Self.UserDetail_ibfk_4">
             <End Role="AffiliateType" EntitySet="AffiliateTypes" />
             <End Role="UserDetail" EntitySet="UserDetails" />
-          </AssociationSet>
-          <AssociationSet Name="Contact_ibfk_2" Association="Self.Contact_ibfk_2">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Contact" EntitySet="Contacts" />
-          </AssociationSet>
-          <AssociationSet Name="Contact_ibfk_3" Association="Self.Contact_ibfk_3">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Contact" EntitySet="Contacts" />
-          </AssociationSet>
-          <AssociationSet Name="Contact_ibfk_4" Association="Self.Contact_ibfk_4">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Contact" EntitySet="Contacts" />
-          </AssociationSet>
-          <AssociationSet Name="Document_ibfk_1" Association="Self.Document_ibfk_1">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Document" EntitySet="Documents" />
-          </AssociationSet>
-          <AssociationSet Name="Document_ibfk_3" Association="Self.Document_ibfk_3">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Document" EntitySet="Documents" />
-          </AssociationSet>
-          <AssociationSet Name="Document_ibfk_4" Association="Self.Document_ibfk_4">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Document" EntitySet="Documents" />
-          </AssociationSet>
-          <AssociationSet Name="Feedback_ibfk_2" Association="Self.Feedback_ibfk_2">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Feedback" EntitySet="Feedbacks" />
-          </AssociationSet>
-          <AssociationSet Name="Feedback_ibfk_3" Association="Self.Feedback_ibfk_3">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Feedback" EntitySet="Feedbacks" />
-          </AssociationSet>
-          <AssociationSet Name="Feedback_ibfk_4" Association="Self.Feedback_ibfk_4">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Feedback" EntitySet="Feedbacks" />
-          </AssociationSet>
-          <AssociationSet Name="Goal_ibfk_1" Association="Self.Goal_ibfk_1">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Goal" EntitySet="Goals" />
-          </AssociationSet>
-          <AssociationSet Name="Goal_ibfk_2" Association="Self.Goal_ibfk_2">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Goal" EntitySet="Goals" />
-          </AssociationSet>
-          <AssociationSet Name="Goal_ibfk_3" Association="Self.Goal_ibfk_3">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Goal" EntitySet="Goals" />
-          </AssociationSet>
-          <AssociationSet Name="Interest_ibfk_2" Association="Self.Interest_ibfk_2">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Interest" EntitySet="Interests" />
-          </AssociationSet>
-          <AssociationSet Name="Interest_ibfk_3" Association="Self.Interest_ibfk_3">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Interest" EntitySet="Interests" />
-          </AssociationSet>
-          <AssociationSet Name="Interest_ibfk_4" Association="Self.Interest_ibfk_4">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Interest" EntitySet="Interests" />
-          </AssociationSet>
-          <AssociationSet Name="Media_ibfk_2" Association="Self.Media_ibfk_2">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Media" EntitySet="Media" />
-          </AssociationSet>
-          <AssociationSet Name="Media_ibfk_3" Association="Self.Media_ibfk_3">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Media" EntitySet="Media" />
-          </AssociationSet>
-          <AssociationSet Name="NoteType_ibfk_1" Association="Self.NoteType_ibfk_1">
-            <End Role="User" EntitySet="Users" />
-            <End Role="NoteType" EntitySet="NoteTypes" />
-          </AssociationSet>
-          <AssociationSet Name="NoteType_ibfk_2" Association="Self.NoteType_ibfk_2">
-            <End Role="User" EntitySet="Users" />
-            <End Role="NoteType" EntitySet="NoteTypes" />
           </AssociationSet>
           <AssociationSet Name="SchoolNote_ibfk_1" Association="Self.SchoolNote_ibfk_1">
             <End Role="NoteType" EntitySet="NoteTypes" />
@@ -3494,79 +2798,845 @@
             <End Role="OutreachEntityType" EntitySet="OutreachEntityTypes" />
             <End Role="OutreachEntityDetail" EntitySet="OutreachEntityDetails" />
           </AssociationSet>
-          <AssociationSet Name="OutreachEntityDetail_ibfk_2" Association="Self.OutreachEntityDetail_ibfk_2">
-            <End Role="User" EntitySet="Users" />
-            <End Role="OutreachEntityDetail" EntitySet="OutreachEntityDetails" />
-          </AssociationSet>
-          <AssociationSet Name="OutreachEntityType_ibfk_1" Association="Self.OutreachEntityType_ibfk_1">
-            <End Role="User" EntitySet="Users" />
-            <End Role="OutreachEntityType" EntitySet="OutreachEntityTypes" />
-          </AssociationSet>
-          <AssociationSet Name="OutreachEntityType_ibfk_2" Association="Self.OutreachEntityType_ibfk_2">
-            <End Role="User" EntitySet="Users" />
-            <End Role="OutreachEntityType" EntitySet="OutreachEntityTypes" />
-          </AssociationSet>
           <AssociationSet Name="Resource_ibfk_1" Association="Self.Resource_ibfk_1">
             <End Role="Unit" EntitySet="Units" />
             <End Role="Resource" EntitySet="Resources" />
-          </AssociationSet>
-          <AssociationSet Name="Resource_ibfk_2" Association="Self.Resource_ibfk_2">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Resource" EntitySet="Resources" />
-          </AssociationSet>
-          <AssociationSet Name="Resource_ibfk_3" Association="Self.Resource_ibfk_3">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Resource" EntitySet="Resources" />
-          </AssociationSet>
-          <AssociationSet Name="School_ibfk_1" Association="Self.School_ibfk_1">
-            <End Role="User" EntitySet="Users" />
-            <End Role="School" EntitySet="Schools" />
-          </AssociationSet>
-          <AssociationSet Name="School_ibfk_2" Association="Self.School_ibfk_2">
-            <End Role="User" EntitySet="Users" />
-            <End Role="School" EntitySet="Schools" />
           </AssociationSet>
           <AssociationSet Name="SchoolNote_ibfk_2" Association="Self.SchoolNote_ibfk_2">
             <End Role="School" EntitySet="Schools" />
             <End Role="SchoolNote" EntitySet="SchoolNotes" />
           </AssociationSet>
-          <AssociationSet Name="SchoolNote_ibfk_3" Association="Self.SchoolNote_ibfk_3">
+          <EntitySet Name="Users" EntityType="OPDBModel.User" />
+          <AssociationSet Name="Activity_ibfk_21" Association="OPDBModel.Activity_ibfk_21">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Activity" EntitySet="Activities" />
+          </AssociationSet>
+          <AssociationSet Name="Activity_ibfk_4" Association="OPDBModel.Activity_ibfk_4">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Activity" EntitySet="Activities" />
+          </AssociationSet>
+          <AssociationSet Name="Activity_ibfk_5" Association="OPDBModel.Activity_ibfk_5">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Activity" EntitySet="Activities" />
+          </AssociationSet>
+          <AssociationSet Name="ActivityNote_ibfk_31" Association="OPDBModel.ActivityNote_ibfk_31">
+            <End Role="User" EntitySet="Users" />
+            <End Role="ActivityNote" EntitySet="ActivityNotes" />
+          </AssociationSet>
+          <AssociationSet Name="ActivityNote_ibfk_41" Association="OPDBModel.ActivityNote_ibfk_41">
+            <End Role="User" EntitySet="Users" />
+            <End Role="ActivityNote" EntitySet="ActivityNotes" />
+          </AssociationSet>
+          <AssociationSet Name="ActivityNote_ibfk_5" Association="OPDBModel.ActivityNote_ibfk_5">
+            <End Role="User" EntitySet="Users" />
+            <End Role="ActivityNote" EntitySet="ActivityNotes" />
+          </AssociationSet>
+          <AssociationSet Name="ActivityResource_ibfk_3" Association="OPDBModel.ActivityResource_ibfk_3">
+            <End Role="User" EntitySet="Users" />
+            <End Role="ActivityResource" EntitySet="ActivityResources" />
+          </AssociationSet>
+          <AssociationSet Name="ActivityResource_ibfk_4" Association="OPDBModel.ActivityResource_ibfk_4">
+            <End Role="User" EntitySet="Users" />
+            <End Role="ActivityResource" EntitySet="ActivityResources" />
+          </AssociationSet>
+          <AssociationSet Name="ActivityType_ibfk_1" Association="OPDBModel.ActivityType_ibfk_1">
+            <End Role="User" EntitySet="Users" />
+            <End Role="ActivityType" EntitySet="ActivityTypes" />
+          </AssociationSet>
+          <AssociationSet Name="ActivityType_ibfk_2" Association="OPDBModel.ActivityType_ibfk_2">
+            <End Role="User" EntitySet="Users" />
+            <End Role="ActivityType" EntitySet="ActivityTypes" />
+          </AssociationSet>
+          <AssociationSet Name="AffiliateType_ibfk_1" Association="OPDBModel.AffiliateType_ibfk_1">
+            <End Role="User" EntitySet="Users" />
+            <End Role="AffiliateType" EntitySet="AffiliateTypes" />
+          </AssociationSet>
+          <AssociationSet Name="AffiliateType_ibfk_2" Association="OPDBModel.AffiliateType_ibfk_2">
+            <End Role="User" EntitySet="Users" />
+            <End Role="AffiliateType" EntitySet="AffiliateTypes" />
+          </AssociationSet>
+          <AssociationSet Name="Contact_ibfk_2" Association="OPDBModel.Contact_ibfk_2">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Contact" EntitySet="Contacts" />
+          </AssociationSet>
+          <AssociationSet Name="Contact_ibfk_3" Association="OPDBModel.Contact_ibfk_3">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Contact" EntitySet="Contacts" />
+          </AssociationSet>
+          <AssociationSet Name="Contact_ibfk_4" Association="OPDBModel.Contact_ibfk_4">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Contact" EntitySet="Contacts" />
+          </AssociationSet>
+          <AssociationSet Name="Document_ibfk_1" Association="OPDBModel.Document_ibfk_1">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Document" EntitySet="Documents" />
+          </AssociationSet>
+          <AssociationSet Name="Document_ibfk_3" Association="OPDBModel.Document_ibfk_3">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Document" EntitySet="Documents" />
+          </AssociationSet>
+          <AssociationSet Name="Document_ibfk_4" Association="OPDBModel.Document_ibfk_4">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Document" EntitySet="Documents" />
+          </AssociationSet>
+          <AssociationSet Name="Feedback_ibfk_2" Association="OPDBModel.Feedback_ibfk_2">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Feedback" EntitySet="Feedbacks" />
+          </AssociationSet>
+          <AssociationSet Name="Feedback_ibfk_3" Association="OPDBModel.Feedback_ibfk_3">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Feedback" EntitySet="Feedbacks" />
+          </AssociationSet>
+          <AssociationSet Name="Feedback_ibfk_4" Association="OPDBModel.Feedback_ibfk_4">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Feedback" EntitySet="Feedbacks" />
+          </AssociationSet>
+          <AssociationSet Name="Goal_ibfk_1" Association="OPDBModel.Goal_ibfk_1">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Goal" EntitySet="Goals" />
+          </AssociationSet>
+          <AssociationSet Name="Goal_ibfk_2" Association="OPDBModel.Goal_ibfk_2">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Goal" EntitySet="Goals" />
+          </AssociationSet>
+          <AssociationSet Name="Goal_ibfk_3" Association="OPDBModel.Goal_ibfk_3">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Goal" EntitySet="Goals" />
+          </AssociationSet>
+          <AssociationSet Name="Interest_ibfk_2" Association="OPDBModel.Interest_ibfk_2">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Interest" EntitySet="Interests" />
+          </AssociationSet>
+          <AssociationSet Name="Interest_ibfk_3" Association="OPDBModel.Interest_ibfk_3">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Interest" EntitySet="Interests" />
+          </AssociationSet>
+          <AssociationSet Name="Interest_ibfk_4" Association="OPDBModel.Interest_ibfk_4">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Interest" EntitySet="Interests" />
+          </AssociationSet>
+          <AssociationSet Name="Media_ibfk_2" Association="OPDBModel.Media_ibfk_2">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Medium" EntitySet="Media" />
+          </AssociationSet>
+          <AssociationSet Name="Media_ibfk_3" Association="OPDBModel.Media_ibfk_3">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Medium" EntitySet="Media" />
+          </AssociationSet>
+          <AssociationSet Name="NoteType_ibfk_1" Association="OPDBModel.NoteType_ibfk_1">
+            <End Role="User" EntitySet="Users" />
+            <End Role="NoteType" EntitySet="NoteTypes" />
+          </AssociationSet>
+          <AssociationSet Name="NoteType_ibfk_2" Association="OPDBModel.NoteType_ibfk_2">
+            <End Role="User" EntitySet="Users" />
+            <End Role="NoteType" EntitySet="NoteTypes" />
+          </AssociationSet>
+          <AssociationSet Name="OutreachEntityDetail_ibfk_2" Association="OPDBModel.OutreachEntityDetail_ibfk_2">
+            <End Role="User" EntitySet="Users" />
+            <End Role="OutreachEntityDetail" EntitySet="OutreachEntityDetails" />
+          </AssociationSet>
+          <AssociationSet Name="OutreachEntityType_ibfk_1" Association="OPDBModel.OutreachEntityType_ibfk_1">
+            <End Role="User" EntitySet="Users" />
+            <End Role="OutreachEntityType" EntitySet="OutreachEntityTypes" />
+          </AssociationSet>
+          <AssociationSet Name="OutreachEntityType_ibfk_2" Association="OPDBModel.OutreachEntityType_ibfk_2">
+            <End Role="User" EntitySet="Users" />
+            <End Role="OutreachEntityType" EntitySet="OutreachEntityTypes" />
+          </AssociationSet>
+          <AssociationSet Name="Resource_ibfk_2" Association="OPDBModel.Resource_ibfk_2">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Resource" EntitySet="Resources" />
+          </AssociationSet>
+          <AssociationSet Name="Resource_ibfk_3" Association="OPDBModel.Resource_ibfk_3">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Resource" EntitySet="Resources" />
+          </AssociationSet>
+          <AssociationSet Name="School_ibfk_1" Association="OPDBModel.School_ibfk_1">
+            <End Role="User" EntitySet="Users" />
+            <End Role="School" EntitySet="Schools" />
+          </AssociationSet>
+          <AssociationSet Name="School_ibfk_2" Association="OPDBModel.School_ibfk_2">
+            <End Role="User" EntitySet="Users" />
+            <End Role="School" EntitySet="Schools" />
+          </AssociationSet>
+          <AssociationSet Name="SchoolNote_ibfk_3" Association="OPDBModel.SchoolNote_ibfk_3">
             <End Role="User" EntitySet="Users" />
             <End Role="SchoolNote" EntitySet="SchoolNotes" />
           </AssociationSet>
-          <AssociationSet Name="Unit_ibfk_1" Association="Self.Unit_ibfk_1">
+          <AssociationSet Name="Unit_ibfk_1" Association="OPDBModel.Unit_ibfk_1">
             <End Role="User" EntitySet="Users" />
             <End Role="Unit" EntitySet="Units" />
           </AssociationSet>
-          <AssociationSet Name="Unit_ibfk_2" Association="Self.Unit_ibfk_2">
+          <AssociationSet Name="Unit_ibfk_2" Association="OPDBModel.Unit_ibfk_2">
             <End Role="User" EntitySet="Users" />
             <End Role="Unit" EntitySet="Units" />
           </AssociationSet>
-          <AssociationSet Name="User_ibfk_1" Association="Self.User_ibfk_1">
+          <AssociationSet Name="User_ibfk_1" Association="OPDBModel.User_ibfk_1">
             <End Role="UserType" EntitySet="UserTypes" />
             <End Role="User" EntitySet="Users" />
           </AssociationSet>
-          <AssociationSet Name="UserDetail_ibfk_5" Association="Self.UserDetail_ibfk_5">
+          <AssociationSet Name="UserDetail_ibfk_5" Association="OPDBModel.UserDetail_ibfk_5">
             <End Role="User" EntitySet="Users" />
             <End Role="UserDetail" EntitySet="UserDetails" />
           </AssociationSet>
-          <AssociationSet Name="UserNote_ibfk_1" Association="Self.UserNote_ibfk_1">
+          <AssociationSet Name="UserNote_ibfk_1" Association="OPDBModel.UserNote_ibfk_1">
             <End Role="User" EntitySet="Users" />
             <End Role="UserNote" EntitySet="UserNotes" />
           </AssociationSet>
-          <AssociationSet Name="UserNote_ibfk_2" Association="Self.UserNote_ibfk_2">
+          <AssociationSet Name="UserNote_ibfk_2" Association="OPDBModel.UserNote_ibfk_2">
             <End Role="User" EntitySet="Users" />
             <End Role="UserNote" EntitySet="UserNotes" />
           </AssociationSet>
-          <AssociationSet Name="UserNote_ibfk_3" Association="Self.UserNote_ibfk_3">
+          <AssociationSet Name="UserNote_ibfk_3" Association="OPDBModel.UserNote_ibfk_3">
             <End Role="User" EntitySet="Users" />
             <End Role="UserNote" EntitySet="UserNotes" />
           </AssociationSet>
-          <AssociationSet Name="UserNote_ibfk_4" Association="Self.UserNote_ibfk_4">
+          <AssociationSet Name="UserNote_ibfk_4" Association="OPDBModel.UserNote_ibfk_4">
             <End Role="User" EntitySet="Users" />
             <End Role="UserNote" EntitySet="UserNotes" />
           </AssociationSet>
-        </EntityContainer>
+          <AssociationSet Name="UserNote_ibfk_5" Association="OPDBModel.UserNote_ibfk_5">
+            <End Role="NoteType" EntitySet="NoteTypes" />
+            <End Role="UserNote" EntitySet="UserNotes" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserTypeID" Type="Int32" Nullable="false" />
+          <Property Name="UserPassword" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+          <Property Name="UserStatus" Type="Boolean" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" />
+          <Property Name="UpdateDate" Type="DateTime" Nullable="false" />
+          <Property Name="DeletionDate" Type="DateTime" />
+          <NavigationProperty Name="Activities" Relationship="OPDBModel.Activity_ibfk_21" FromRole="User" ToRole="Activity" />
+          <NavigationProperty Name="Activities1" Relationship="OPDBModel.Activity_ibfk_4" FromRole="User" ToRole="Activity" />
+          <NavigationProperty Name="Activities2" Relationship="OPDBModel.Activity_ibfk_5" FromRole="User" ToRole="Activity" />
+          <NavigationProperty Name="ActivityNotes" Relationship="OPDBModel.ActivityNote_ibfk_31" FromRole="User" ToRole="ActivityNote" />
+          <NavigationProperty Name="ActivityNotes1" Relationship="OPDBModel.ActivityNote_ibfk_41" FromRole="User" ToRole="ActivityNote" />
+          <NavigationProperty Name="ActivityNotes2" Relationship="OPDBModel.ActivityNote_ibfk_5" FromRole="User" ToRole="ActivityNote" />
+          <NavigationProperty Name="ActivityResources" Relationship="OPDBModel.ActivityResource_ibfk_3" FromRole="User" ToRole="ActivityResource" />
+          <NavigationProperty Name="ActivityResources1" Relationship="OPDBModel.ActivityResource_ibfk_4" FromRole="User" ToRole="ActivityResource" />
+          <NavigationProperty Name="ActivityTypes" Relationship="OPDBModel.ActivityType_ibfk_1" FromRole="User" ToRole="ActivityType" />
+          <NavigationProperty Name="ActivityTypes1" Relationship="OPDBModel.ActivityType_ibfk_2" FromRole="User" ToRole="ActivityType" />
+          <NavigationProperty Name="AffiliateTypes" Relationship="OPDBModel.AffiliateType_ibfk_1" FromRole="User" ToRole="AffiliateType" />
+          <NavigationProperty Name="AffiliateTypes1" Relationship="OPDBModel.AffiliateType_ibfk_2" FromRole="User" ToRole="AffiliateType" />
+          <NavigationProperty Name="Contacts" Relationship="OPDBModel.Contact_ibfk_2" FromRole="User" ToRole="Contact" />
+          <NavigationProperty Name="Contacts1" Relationship="OPDBModel.Contact_ibfk_3" FromRole="User" ToRole="Contact" />
+          <NavigationProperty Name="Contacts2" Relationship="OPDBModel.Contact_ibfk_4" FromRole="User" ToRole="Contact" />
+          <NavigationProperty Name="Documents" Relationship="OPDBModel.Document_ibfk_1" FromRole="User" ToRole="Document" />
+          <NavigationProperty Name="Documents1" Relationship="OPDBModel.Document_ibfk_3" FromRole="User" ToRole="Document" />
+          <NavigationProperty Name="Documents2" Relationship="OPDBModel.Document_ibfk_4" FromRole="User" ToRole="Document" />
+          <NavigationProperty Name="Feedbacks" Relationship="OPDBModel.Feedback_ibfk_2" FromRole="User" ToRole="Feedback" />
+          <NavigationProperty Name="Feedbacks1" Relationship="OPDBModel.Feedback_ibfk_3" FromRole="User" ToRole="Feedback" />
+          <NavigationProperty Name="Feedbacks2" Relationship="OPDBModel.Feedback_ibfk_4" FromRole="User" ToRole="Feedback" />
+          <NavigationProperty Name="Goals" Relationship="OPDBModel.Goal_ibfk_1" FromRole="User" ToRole="Goal" />
+          <NavigationProperty Name="Goals1" Relationship="OPDBModel.Goal_ibfk_2" FromRole="User" ToRole="Goal" />
+          <NavigationProperty Name="Goals2" Relationship="OPDBModel.Goal_ibfk_3" FromRole="User" ToRole="Goal" />
+          <NavigationProperty Name="Interests" Relationship="OPDBModel.Interest_ibfk_2" FromRole="User" ToRole="Interest" />
+          <NavigationProperty Name="Interests1" Relationship="OPDBModel.Interest_ibfk_3" FromRole="User" ToRole="Interest" />
+          <NavigationProperty Name="Interests2" Relationship="OPDBModel.Interest_ibfk_4" FromRole="User" ToRole="Interest" />
+          <NavigationProperty Name="Media" Relationship="OPDBModel.Media_ibfk_2" FromRole="User" ToRole="Medium" />
+          <NavigationProperty Name="Media1" Relationship="OPDBModel.Media_ibfk_3" FromRole="User" ToRole="Medium" />
+          <NavigationProperty Name="NoteTypes" Relationship="OPDBModel.NoteType_ibfk_1" FromRole="User" ToRole="NoteType" />
+          <NavigationProperty Name="NoteTypes1" Relationship="OPDBModel.NoteType_ibfk_2" FromRole="User" ToRole="NoteType" />
+          <NavigationProperty Name="OutreachEntityDetails" Relationship="OPDBModel.OutreachEntityDetail_ibfk_2" FromRole="User" ToRole="OutreachEntityDetail" />
+          <NavigationProperty Name="OutreachEntityTypes" Relationship="OPDBModel.OutreachEntityType_ibfk_1" FromRole="User" ToRole="OutreachEntityType" />
+          <NavigationProperty Name="OutreachEntityTypes1" Relationship="OPDBModel.OutreachEntityType_ibfk_2" FromRole="User" ToRole="OutreachEntityType" />
+          <NavigationProperty Name="Resources" Relationship="OPDBModel.Resource_ibfk_2" FromRole="User" ToRole="Resource" />
+          <NavigationProperty Name="Resources1" Relationship="OPDBModel.Resource_ibfk_3" FromRole="User" ToRole="Resource" />
+          <NavigationProperty Name="Schools" Relationship="OPDBModel.School_ibfk_1" FromRole="User" ToRole="School" />
+          <NavigationProperty Name="Schools1" Relationship="OPDBModel.School_ibfk_2" FromRole="User" ToRole="School" />
+          <NavigationProperty Name="SchoolNotes" Relationship="OPDBModel.SchoolNote_ibfk_3" FromRole="User" ToRole="SchoolNote" />
+          <NavigationProperty Name="Units" Relationship="OPDBModel.Unit_ibfk_1" FromRole="User" ToRole="Unit" />
+          <NavigationProperty Name="Units1" Relationship="OPDBModel.Unit_ibfk_2" FromRole="User" ToRole="Unit" />
+          <NavigationProperty Name="UserType" Relationship="OPDBModel.User_ibfk_1" FromRole="User" ToRole="UserType" />
+          <NavigationProperty Name="UserDetails" Relationship="OPDBModel.UserDetail_ibfk_5" FromRole="User" ToRole="UserDetail" />
+          <NavigationProperty Name="UserNotes" Relationship="OPDBModel.UserNote_ibfk_1" FromRole="User" ToRole="UserNote" />
+          <NavigationProperty Name="UserNotes1" Relationship="OPDBModel.UserNote_ibfk_2" FromRole="User" ToRole="UserNote" />
+          <NavigationProperty Name="UserNotes2" Relationship="OPDBModel.UserNote_ibfk_3" FromRole="User" ToRole="UserNote" />
+          <NavigationProperty Name="UserNotes3" Relationship="OPDBModel.UserNote_ibfk_4" FromRole="User" ToRole="UserNote" />
+        </EntityType>
+        <Association Name="Activity_ibfk_21">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.Activity" Role="Activity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Activity">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Activity_ibfk_4">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.Activity" Role="Activity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Activity">
+              <PropertyRef Name="CreateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Activity_ibfk_5">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.Activity" Role="Activity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Activity">
+              <PropertyRef Name="UpdateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ActivityNote_ibfk_31">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.ActivityNote" Role="ActivityNote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ActivityNote">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ActivityNote_ibfk_41">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.ActivityNote" Role="ActivityNote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ActivityNote">
+              <PropertyRef Name="CreateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ActivityNote_ibfk_5">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.ActivityNote" Role="ActivityNote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ActivityNote">
+              <PropertyRef Name="UpdateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ActivityResource_ibfk_3">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.ActivityResource" Role="ActivityResource" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ActivityResource">
+              <PropertyRef Name="CreateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ActivityResource_ibfk_4">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.ActivityResource" Role="ActivityResource" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ActivityResource">
+              <PropertyRef Name="UpdateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ActivityType_ibfk_1">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.ActivityType" Role="ActivityType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ActivityType">
+              <PropertyRef Name="CreateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ActivityType_ibfk_2">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.ActivityType" Role="ActivityType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ActivityType">
+              <PropertyRef Name="UpdateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AffiliateType_ibfk_1">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.AffiliateType" Role="AffiliateType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="AffiliateType">
+              <PropertyRef Name="CreateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AffiliateType_ibfk_2">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.AffiliateType" Role="AffiliateType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="AffiliateType">
+              <PropertyRef Name="UpdateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Contact_ibfk_2">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.Contact" Role="Contact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Contact">
+              <PropertyRef Name="CreateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Contact_ibfk_3">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.Contact" Role="Contact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Contact">
+              <PropertyRef Name="UpdateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Contact_ibfk_4">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.Contact" Role="Contact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Contact">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Document_ibfk_1">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.Document" Role="Document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Document">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Document_ibfk_3">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.Document" Role="Document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Document">
+              <PropertyRef Name="CreateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Document_ibfk_4">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.Document" Role="Document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Document">
+              <PropertyRef Name="UpdateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Feedback_ibfk_2">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.Feedback" Role="Feedback" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Feedback">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Feedback_ibfk_3">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.Feedback" Role="Feedback" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Feedback">
+              <PropertyRef Name="CreateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Feedback_ibfk_4">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.Feedback" Role="Feedback" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Feedback">
+              <PropertyRef Name="UpdateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Goal_ibfk_1">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.Goal" Role="Goal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Goal">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Goal_ibfk_2">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.Goal" Role="Goal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Goal">
+              <PropertyRef Name="CreateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Goal_ibfk_3">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.Goal" Role="Goal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Goal">
+              <PropertyRef Name="UpdateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Interest_ibfk_2">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.Interest" Role="Interest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Interest">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Interest_ibfk_3">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.Interest" Role="Interest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Interest">
+              <PropertyRef Name="CreateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Interest_ibfk_4">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.Interest" Role="Interest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Interest">
+              <PropertyRef Name="UpdateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Media_ibfk_2">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.Medium" Role="Medium" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Medium">
+              <PropertyRef Name="CreateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Media_ibfk_3">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.Medium" Role="Medium" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Medium">
+              <PropertyRef Name="UpdateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="NoteType_ibfk_1">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.NoteType" Role="NoteType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="NoteType">
+              <PropertyRef Name="CreateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="NoteType_ibfk_2">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.NoteType" Role="NoteType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="NoteType">
+              <PropertyRef Name="UpdateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="OutreachEntityDetail_ibfk_2">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.OutreachEntityDetail" Role="OutreachEntityDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="OutreachEntityDetail">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="OutreachEntityType_ibfk_1">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.OutreachEntityType" Role="OutreachEntityType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="OutreachEntityType">
+              <PropertyRef Name="CreateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="OutreachEntityType_ibfk_2">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.OutreachEntityType" Role="OutreachEntityType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="OutreachEntityType">
+              <PropertyRef Name="UpdateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Resource_ibfk_2">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.Resource" Role="Resource" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Resource">
+              <PropertyRef Name="CreateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Resource_ibfk_3">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.Resource" Role="Resource" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Resource">
+              <PropertyRef Name="UpdateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="School_ibfk_1">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.School" Role="School" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="School">
+              <PropertyRef Name="CreateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="School_ibfk_2">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.School" Role="School" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="School">
+              <PropertyRef Name="UpdateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SchoolNote_ibfk_3">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.SchoolNote" Role="SchoolNote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="SchoolNote">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Unit_ibfk_1">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.Unit" Role="Unit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Unit">
+              <PropertyRef Name="CreateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Unit_ibfk_2">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.Unit" Role="Unit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Unit">
+              <PropertyRef Name="UpdateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="User_ibfk_1">
+          <End Type="OPDBModel.UserType" Role="UserType" Multiplicity="1" />
+          <End Type="OPDBModel.User" Role="User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserType">
+              <PropertyRef Name="UserTypeID" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="UserTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserDetail_ibfk_5">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.UserDetail" Role="UserDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserDetail">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserNote_ibfk_1">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.UserNote" Role="UserNote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserNote">
+              <PropertyRef Name="SubjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserNote_ibfk_2">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.UserNote" Role="UserNote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserNote">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserNote_ibfk_3">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.UserNote" Role="UserNote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserNote">
+              <PropertyRef Name="CreateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserNote_ibfk_4">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.UserNote" Role="UserNote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserNote">
+              <PropertyRef Name="UpdateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserNote_ibfk_5">
+          <End Type="OPDBModel.NoteType" Role="NoteType" Multiplicity="1" />
+          <End Type="OPDBModel.UserNote" Role="UserNote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NoteType">
+              <PropertyRef Name="NoteTypeID" />
+            </Principal>
+            <Dependent Role="UserNote">
+              <PropertyRef Name="NoteTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3844,21 +3914,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Users">
-            <EntityTypeMapping TypeName="OPDBModel.User">
-              <MappingFragment StoreEntitySet="User">
-                <ScalarProperty Name="UserStatus" ColumnName="UserStatus" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="UserTypeID" ColumnName="UserTypeID" />
-                <ScalarProperty Name="UserPassword" ColumnName="UserPassword" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-                <ScalarProperty Name="DeletionDate" ColumnName="DeletionDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="UserDetails">
             <EntityTypeMapping TypeName="OPDBModel.UserDetail">
               <MappingFragment StoreEntitySet="UserDetail">
@@ -3883,6 +3938,7 @@
           <EntitySetMapping Name="UserNotes">
             <EntityTypeMapping TypeName="OPDBModel.UserNote">
               <MappingFragment StoreEntitySet="UserNote">
+                <ScalarProperty Name="NoteTypeID" ColumnName="NoteTypeID" />
                 <ScalarProperty Name="UserNoteID" ColumnName="UserNoteID" />
                 <ScalarProperty Name="SubjectID" ColumnName="SubjectID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
@@ -3903,6 +3959,21 @@
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="DeletionDate" ColumnName="DeletionDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="OPDBModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="DeletionDate" ColumnName="DeletionDate" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UserStatus" ColumnName="UserStatus" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="UserPassword" ColumnName="UserPassword" />
+                <ScalarProperty Name="UserTypeID" ColumnName="UserTypeID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -231,6 +231,7 @@
     <Compile Include="Models\Goal.cs">
       <DependentUpon>OPDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\HomeViewModel.cs" />
     <Compile Include="Models\Interest.cs">
       <DependentUpon>OPDBModel.tt</DependentUpon>
     </Compile>
@@ -544,7 +545,8 @@
     <Content Include="Views\Home\_Escuelas.cshtml" />
     <Content Include="Views\Home\_Unidades.cshtml" />
     <Content Include="Views\Home\_Usuarios.cshtml" />
-    <Content Include="Views\Actividades\Actividades.cshtml" />
+    <Content Include="Views\Escuelas\Lista.cshtml" />
+    <Content Include="Views\Usuarios\Lista.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

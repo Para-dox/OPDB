@@ -27,8 +27,8 @@ namespace OPDB.Models
         public System.DateTime UpdateDate { get; set; }
         public Nullable<System.DateTime> DeletionDate { get; set; }
     
+        public virtual ICollection<UserDetail> UserDetails { get; set; }
         public virtual User User { get; set; }
         public virtual User User1 { get; set; }
-        public virtual ICollection<UserDetail> UserDetails { get; set; }
     }
 }

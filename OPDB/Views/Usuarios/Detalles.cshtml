@@ -4,14 +4,36 @@
     ViewBag.Title = "Detalles";
 }
 
+
 <style>
+     select {
+        width: 50px !important;
+        padding: 0.2rem !important;
+        height: 1.5rem !important;
+        margin: 0 !important;
+    }
+
     label{
         cursor: default !important;
+        width: 100% !important;
+    }
+
+    input[type="search"] {
+        padding: 0.2rem;
+    }
+
+    th, td {
+        text-align: center !important;
+    }
+
+     .last, .first, .previous, .next{
+        display: none !important;
     }
 </style>
 
 <h2>@Html.DisplayFor(model => model.userDetail.FirstName)&nbsp;@if (Model.userDetail.MiddleInitial != null){@Html.DisplayFor(model => model.userDetail.MiddleInitial)<r>&nbsp;</r>}@Html.DisplayFor(model => model.userDetail.LastName)</h2>
-<div class="panel callout radius large-6 columns">
+<div class="panel callout radius large-5 columns">
+    <h3>Información</h3>
         <div class="display-label">
             @Html.LabelFor(model => model.user.UserType.UserType1, "Tipo de Usuario")
         </div>
@@ -32,17 +54,15 @@
         <div class="display-field">
             @Html.DisplayFor(model => model.user.PhoneNumber)
         </div>
-
-</div>
-<div class="large-6 columns">
-    @if (Model.userDetail.Major != null) {
-    <div class="display-label">
-        @Html.LabelFor(model => model.userDetail.Major, "Concentración")
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.userDetail.Major)
-    </div>
-    <br />
+    @if (Model.userDetail.Major != null)
+    {
+        <div class="display-label">
+            @Html.LabelFor(model => model.userDetail.Major, "Concentración")
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.userDetail.Major)
+        </div>
+        <br />
     }
     else if (Model.userDetail.Role != null)
     {
@@ -54,10 +74,61 @@
         </div>
         <br />
     }
+
+</div>
+<div class="large-7 columns">
+    <h3>Notas</h3>
+    <table id="userNotes">
+        <thead>
+            <tr>
+                <th>Tipo</th>
+                <th style="width:70%;">Nota</th>
+                <th style="width:10%;"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var note in Model.Notes)
+            {
+                <tr>
+                    <td>@note.NoteType.NoteType1</td>
+                    <td>@note.Note</td>
+                    <td>
+                        <a href="@Url.Action("EditarNota", "Usuarios", new { id = note.UserNoteID })"><i class="fa fa-pencil" title="Editar"></i></a>
+                        <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this, 'userNotes')" data-url="@Url.Action("RemoverNota", "Usuarios", new { id = note.UserNoteID })"></i>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
 </div>
 <div class="large-12 columns">
     <p>
         
         <input type="button" value="Editar" onclick="location.href='@Url.Action("Editar", "Usuarios", new { id = Model.user.UserID })'"/>
+        <input type="button" value="Añadir Nota" onclick="location.href='@Url.Action("CrearNota", "Usuarios", new { id = Model.user.UserID })'"/>
         <input type="button" value="Devuelta" onclick="location.href='@Url.Action("Index", "Usuarios")'"></p>
 </div>
+
+
+<script src="~/Scripts/myScripts.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $('#userNotes').DataTable({
+            "sDom": '<"top"lf>t<"bottom"pr><"clear">',
+            "sPaginationType": "full_numbers",
+            "bProcessing": false,
+            "iDisplayLength": 12,
+            "aaSorting": [[1, "asc"]],
+            "columnDefs": [
+                {
+                    "orderable": false,
+                    "targets": 2
+                }
+            ]
+        });
+    });
+
+</script>

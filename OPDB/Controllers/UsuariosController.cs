@@ -34,7 +34,8 @@ namespace OPDB.Controllers
             UserViewModel user = new UserViewModel
             {
                 user = db.Users.Find(id),
-                userDetail = (from ud in db.UserDetails where ud.UserID == id select ud).SingleOrDefault()
+                userDetail = (from ud in db.UserDetails where ud.UserID == id select ud).SingleOrDefault(),
+                Notes = from note in db.UserNotes.Include(note => note.NoteType) where note.SubjectID == id && note.DeletionDate == null select note
 
             };
             
@@ -112,7 +113,6 @@ namespace OPDB.Controllers
                 }
             }
 
-            //ViewBag.UserTypeID = new SelectList(db.UserTypes, "UserTypeID", "UserType1", userViewModel.user.UserTypeID);
             userViewModel.userTypes = getUserTypes();
             userViewModel.outreachTypes = getOutreachTypes();
             return View(userViewModel);
@@ -192,19 +192,16 @@ namespace OPDB.Controllers
             return RedirectToAction("Index");
         }
 
-        //
-        // POST: /Usuarios/Delete/5
+        public ActionResult RemoverNota(int id)
+        {
+            var note = db.UserNotes.Find(id);
+            note.DeletionDate = DateTime.Now;
+            db.Entry(note).State = EntityState.Modified;
+            db.SaveChanges();
+            return RedirectToAction("Detalles", "Usuarios", new { id = note.SubjectID });
+        }
 
         
-        //[ValidateAntiForgeryToken]
-        //public ActionResult DeleteConfirmed(int id)
-        //{
-        //    User user = db.Users.Find(id);
-        //    db.Users.Remove(user);
-        //    db.SaveChanges();
-        //    return RedirectToAction("Index");
-        //}
-
         protected override void Dispose(bool disposing)
         {
             db.Dispose();
@@ -248,6 +245,76 @@ namespace OPDB.Controllers
             }
 
             return types;
+
+        }
+
+        public ActionResult CrearNota(int id)
+        {
+            EscuelasController controller = new EscuelasController();
+
+            UserViewModel userViewModel = new UserViewModel
+            {
+
+                NoteTypes = controller.getNoteTypes(),
+                note = new UserNote
+                {
+
+                    SubjectID = id
+                }
+            };
+
+            return View(userViewModel);
+        }
+
+
+        [HttpPost]
+        public ActionResult GuardarNota(UserViewModel userViewModel)
+        {
+
+            userViewModel.note.UpdateUser = 2;
+            userViewModel.note.UpdateDate = DateTime.Now;
+
+            if (userViewModel.note.UserNoteID == 0)
+            {
+
+                userViewModel.note.CreateDate = DateTime.Now;
+
+                userViewModel.note.UserID = 2;
+                userViewModel.note.CreateUser = 2;
+
+                db.UserNotes.Add(userViewModel.note);
+
+            }
+            else
+            {
+                db.Entry(userViewModel.note).State = EntityState.Modified;
+            }
+
+            db.SaveChanges();
+
+            return RedirectToAction("Detalles", "Usuarios", new { id = userViewModel.note.SubjectID });
+        }
+
+
+        public ActionResult EditarNota(int id)
+        {
+            EscuelasController controller = new EscuelasController();
+
+            UserViewModel userViewModel = new UserViewModel
+            {
+
+                NoteTypes = controller.getNoteTypes(),
+                note = db.UserNotes.Find(id)
+            };
+
+            return View(userViewModel);
+        }
+
+        public ActionResult Lista()
+        {
+            var users = from u in db.Users.Include(u => u.UserType).Include(u => u.UserDetails) where u.UserTypeID != 3 select u;
+            
+            return View(users.ToList());
 
         }
 

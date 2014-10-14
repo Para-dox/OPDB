@@ -133,7 +133,7 @@ namespace OPDB.Controllers
             note.DeletionDate = DateTime.Now;
             db.Entry(note).State = EntityState.Modified;
             db.SaveChanges();
-            return RedirectToAction ("Detalles", "Actividades", note.ActivityID);
+            return RedirectToAction("Detalles", "Actividades", new { id = note.ActivityID });
         }
 
         //
@@ -169,10 +169,12 @@ namespace OPDB.Controllers
 
         public ActionResult CrearNota(int id)
         {
+            EscuelasController controller = new EscuelasController();
+
             ActivityViewModel activityViewModel = new ActivityViewModel
             {
 
-                NoteTypes = GetNoteTypes(),
+                NoteTypes = controller.getNoteTypes(),
                 activity = new Activity
                 {
 
@@ -183,25 +185,7 @@ namespace OPDB.Controllers
             return View(activityViewModel);
         }
 
-        private List<SelectListItem> GetNoteTypes()
-        {
-            List<SelectListItem> types = new List<SelectListItem>();
-
-            foreach (var type in db.NoteTypes)
-            {
-                types.Add(new SelectListItem()
-                {
-
-                    Text = type.NoteType1,
-                    Value = type.NoteTypeID + ""
-
-                });
-            }
-
-            return types;
-        }
-
-        protected override void Dispose(bool disposing)
+       protected override void Dispose(bool disposing)
         {
             db.Dispose();
             base.Dispose(disposing);

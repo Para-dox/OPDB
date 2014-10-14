@@ -1,4 +1,4 @@
-﻿@model OPDB.Models.SchoolViewModel
+﻿@model OPDB.Models.UserViewModel
 
 @{
     ViewBag.Title = "Crear";
@@ -16,10 +16,11 @@
 
 <h2>Añadir Nota</h2>
 
-@using (Html.BeginForm("GuardarNota", "Escuelas", FormMethod.Post)) {
+@using (Html.BeginForm("GuardarNota", "Usuarios", FormMethod.Post))
+{
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
-    @Html.HiddenFor(model => model.school.SchoolID)
+    @Html.HiddenFor(model => model.note.SubjectID)
     <fieldset>
         <legend>SchoolNote</legend>
 
@@ -35,19 +36,15 @@
             @Html.LabelFor(model => model.note.Note, "Nota")
         </div>
         <div class="editor-field">
-            @Html.TextAreaFor(model => model.note.Note, new {@style = "resize: none; height: 100px;" })
+            @Html.TextAreaFor(model => model.note.Note, new { @style = "resize: none; height: 100px;" })
             @Html.ValidationMessageFor(model => model.note.Note)
         </div>
 
         <p>
-            <input type="submit" value="Crear" />
+            <input type="submit" value="Crear" /> <input type="button" value="Cancelar" onclick="location.href='@Url.Action("Index", "Usuarios")'"/>
         </p>
     </fieldset>
 }
-
-<div>
-    @Html.ActionLink("Devuelta", "Index")
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
