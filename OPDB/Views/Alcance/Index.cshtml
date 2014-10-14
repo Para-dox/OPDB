@@ -4,60 +4,104 @@
     ViewBag.Title = "Index";
 }
 
+<style>
+    select {
+        width: 50px !important;
+        padding: 0.2rem !important;
+        height: 1.5rem !important;
+        margin: 0 !important;
+    }
+
+    label {
+        width: 100% !important;
+    }
+
+    input[type="search"] {
+        padding: 0.2rem;
+    }
+
+    th, td {
+        text-align: center !important;
+    }
+
+    .previous, .next {
+        display: none !important;
+    }
+
+</style>
+
 <h2>Organizaciones de Alcance</h2>
 
 <p>
     @Html.ActionLink("Añadir Nueva Organizacion", "Crear")
 </p>
-<table>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.OutreachEntityType.OureachEntityType)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.OutreachEntityName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Mission)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Vision)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Objectives)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Location)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.OutreachEntityType.OureachEntityType)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.OutreachEntityName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Mission)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Vision)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Objectives)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Location)
-        </td>
-        <td>
-            @Html.ActionLink("Editar", "Editar", new { id=item.OutreachEntityDetailID }) |
-            @Html.ActionLink("Detalles", "Detalles", new { id=item.OutreachEntityDetailID }) |
-            @Html.ActionLink("Remover", "Remover", new { id=item.OutreachEntityDetailID })
-        </td>
-    </tr>
-}
-
+<table id="outreach">
+    <thead>
+        <tr>
+            <th>Tipo de Organización</th>
+            <th>Nombre de Organización</th>
+            <th>Misión</th>
+            <th>Visión</th>
+            <th>Objectives</th>
+            <th>Location</th>
+            <th style="width:10%;"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OutreachEntityType.OureachEntityType)
+                </td>
+                <td>
+                    @Html.ActionLink(item.OutreachEntityName + " ", "Detalles", "Alcance", new { id = item.UserID}, null)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Mission)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Vision)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Objectives)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Location)
+                </td>
+                <td>
+                    <a href="@Url.Action("Editar", "Alcance", new { id = item.UserID })"><i class="fa fa-pencil" title="Editar"></i></a>
+                    <i title="Remover" class="fa fa-remove" onclick="removeRecord(this)" data-url="@Url.Action("Remover", "Alcance", new { id = item.UserID })"></i>
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>
+<br />
+<p>
+
+    <input type="button" value="Nueva Organización" onclick="location.href='@Url.Action("Crear", "Alcance")'" /> 
+
+</p>
+<script src="~/Scripts/myScripts.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $('#outreach').DataTable({
+            "sDom": '<"top"lf>t<"bottom"ipr><"clear">',
+            "sPaginationType": "full_numbers",
+            "bProcessing": false,
+            "iDisplayLength": 12,
+            "aaSorting": [[1, "asc"]],
+            "columnDefs": [
+                {
+                    "orderable": false,
+                    "targets": 5
+                }
+
+
+            ]
+        });
+    });
+
+</script>

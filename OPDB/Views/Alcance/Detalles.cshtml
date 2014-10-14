@@ -1,20 +1,13 @@
 ﻿@model OPDB.Models.OutreachEntityDetail
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Detalles";
 }
 
-<h2>Details</h2>
+<h2>Detalles</h2>
 
 <fieldset>
     <legend>OutreachEntityDetail</legend>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.User.UserPassword)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.User.UserPassword)
-    </div>
 
     <div class="display-label">
          @Html.DisplayNameFor(model => model.OutreachEntityType.OureachEntityType)
@@ -58,28 +51,8 @@
         @Html.DisplayFor(model => model.Location)
     </div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.CreateDate)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.CreateDate)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.UpdateDate)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.UpdateDate)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.DeletionDate)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.DeletionDate)
-    </div>
 </fieldset>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.OutreachEntityDetailID }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Editar", "Editar", new { id=Model.OutreachEntityDetailID }) |
+    @Html.ActionLink("Devuelta", "Index")
 </p>

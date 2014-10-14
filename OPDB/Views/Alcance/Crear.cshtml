@@ -1,10 +1,10 @@
 ﻿@model OPDB.Models.OutreachEntityDetail
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Crear";
 }
 
-<h2>Create</h2>
+<h2>Crear</h2>
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
@@ -14,15 +14,7 @@
         <legend>OutreachEntityDetail</legend>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.UserID, "User")
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("UserID", String.Empty)
-            @Html.ValidationMessageFor(model => model.UserID)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.OutreachEntityTypeID, "OutreachEntityType")
+            @Html.LabelFor(model => model.OutreachEntityTypeID, "Tipo de Organización")
         </div>
         <div class="editor-field">
             @Html.DropDownList("OutreachEntityTypeID", String.Empty)
@@ -30,7 +22,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.OutreachEntityName)
+            @Html.LabelFor(model => model.OutreachEntityName, "Nombre de Organización")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.OutreachEntityName)
@@ -38,7 +30,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Mission)
+            @Html.LabelFor(model => model.Mission, "Misión")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.Mission)
@@ -46,7 +38,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Vision)
+            @Html.LabelFor(model => model.Vision, "Visión")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.Vision)
@@ -54,7 +46,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Objectives)
+            @Html.LabelFor(model => model.Objectives, "Objetivos")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.Objectives)
@@ -62,45 +54,21 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Location)
+            @Html.LabelFor(model => model.Location, "Localización")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.Location)
             @Html.ValidationMessageFor(model => model.Location)
         </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.CreateDate)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.CreateDate)
-            @Html.ValidationMessageFor(model => model.CreateDate)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.UpdateDate)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.UpdateDate)
-            @Html.ValidationMessageFor(model => model.UpdateDate)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.DeletionDate)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.DeletionDate)
-            @Html.ValidationMessageFor(model => model.DeletionDate)
-        </div>
-
         <p>
-            <input type="submit" value="Create" />
+            <input type="submit" value="Crear" />
         </p>
     </fieldset>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Devuelta", "Index")
 </div>
 
 @section Scripts {
