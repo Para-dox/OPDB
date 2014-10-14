@@ -1,10 +1,10 @@
 ﻿@model OPDB.Models.OutreachEntityDetail
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Editar";
 }
 
-<h2>Edit</h2>
+<h2>Editar</h2>
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
@@ -16,7 +16,7 @@
         @Html.HiddenFor(model => model.OutreachEntityDetailID)
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.UserID, "User")
+            @Html.LabelFor(model => model.UserID, "Usuario")
         </div>
         <div class="editor-field">
             @Html.DropDownList("UserID", String.Empty)

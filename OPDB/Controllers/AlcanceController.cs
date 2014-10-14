@@ -25,7 +25,7 @@ namespace OPDB.Controllers
         //
         // GET: /Alcance/Details/5
 
-        public ActionResult Details(int id = 0)
+        public ActionResult Detalles(int id = 0)
         {
             OutreachEntityDetail outreachentitydetail = db.OutreachEntityDetails.Find(id);
             if (outreachentitydetail == null)
@@ -38,7 +38,7 @@ namespace OPDB.Controllers
         //
         // GET: /Alcance/Create
 
-        public ActionResult Create()
+        public ActionResult Crear()
         {
             ViewBag.OutreachEntityTypeID = new SelectList(db.OutreachEntityTypes, "OutreachEntityTypeID", "OureachEntityType");
             ViewBag.UserID = new SelectList(db.Users, "UserID", "UserPassword");
@@ -50,7 +50,7 @@ namespace OPDB.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(OutreachEntityDetail outreachentitydetail)
+        public ActionResult Crear(OutreachEntityDetail outreachentitydetail)
         {
             if (ModelState.IsValid)
             {
@@ -67,7 +67,7 @@ namespace OPDB.Controllers
         //
         // GET: /Alcance/Edit/5
 
-        public ActionResult Edit(int id = 0)
+        public ActionResult Editar(int id = 0)
         {
             OutreachEntityDetail outreachentitydetail = db.OutreachEntityDetails.Find(id);
             if (outreachentitydetail == null)
@@ -84,7 +84,7 @@ namespace OPDB.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(OutreachEntityDetail outreachentitydetail)
+        public ActionResult Editar(OutreachEntityDetail outreachentitydetail)
         {
             if (ModelState.IsValid)
             {
@@ -100,7 +100,7 @@ namespace OPDB.Controllers
         //
         // GET: /Alcance/Delete/5
 
-        public ActionResult Delete(int id = 0)
+        public ActionResult Remover(int id = 0)
         {
             OutreachEntityDetail outreachentitydetail = db.OutreachEntityDetails.Find(id);
             if (outreachentitydetail == null)
