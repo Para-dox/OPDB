@@ -310,6 +310,14 @@ namespace OPDB.Controllers
             return View(userViewModel);
         }
 
+        public ActionResult Lista()
+        {
+            var users = from u in db.Users.Include(u => u.UserType).Include(u => u.UserDetails) where u.UserTypeID != 3 select u;
+            
+            return View(users.ToList());
+
+        }
+
        
     }
 }

@@ -51,7 +51,7 @@
 </div>
 
 <div class="large-7 columns">
-    <table id="notes">
+    <table id="activityNotes">
         <thead>
             <tr>
                 <th>
@@ -75,7 +75,7 @@
                         <a href="@Url.Action("VerNota", "Actividades", new { id = note.ActivityNoteID })"><i class="fa fa-info-circle" title="Ver Detalles"></i></a>
                         <a href="@Url.Action("EditarNota", "Actividades", new { id = note.ActivityNoteID })"><i class="fa fa-pencil" title="Editar"></i></a>
 
-                        <i title="Remover" class="fa fa-remove" onclick="removeRecord(this)" data-url="@Url.Action("RemoverNota", "Actividades", new { id = note.ActivityNoteID })"></i>
+                        <i title="Remover" class="fa fa-remove" onclick="removeRecord(this, 'activityNotes')" data-url="@Url.Action("RemoverNota", "Actividades", new { id = note.ActivityNoteID })"></i>
 
                     </td>
                 </tr>
@@ -97,7 +97,7 @@
 <script>
     $(document).ready(function () {
 
-        $('#notes').DataTable({
+        $('#activityNotes').DataTable({
             "sDom": '<"top"lf>t<"bottom"ipr><"clear">',
             "sPaginationType": "full_numbers",
             "bProcessing": false,

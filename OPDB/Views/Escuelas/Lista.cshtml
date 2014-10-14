@@ -1,0 +1,73 @@
+﻿@model IEnumerable<OPDB.Models.School>
+
+@{
+    ViewBag.Title = "Escuelas";
+}
+
+<style>
+    select {
+        width: 50px !important;
+        padding: 0.2rem !important;
+        height: 1.5rem !important;
+        margin: 0 !important;
+    }
+
+    input[type="search"] {
+        padding: 0.2rem;
+    }
+
+    label{
+        width:100%;
+    }
+
+    tr, td{
+        background-color: #e2e2e2 !important;
+    }
+
+    table{
+        border: none !important;
+    }
+
+      .last, .first, .previous, .next{
+        display: none !important;
+    }
+</style>
+
+<h2>Escuelas</h2><br />
+<table id="schoolList">
+    <thead hidden>
+        <tr><th></th></tr>
+    </thead>
+    <tbody>
+        @foreach (var school in Model)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(school.SchoolName, "Detalles", "Escuelas", new { id = school.SchoolID }, null)<br />
+                    <span>Dirección: </span> @school.Address<br />
+                    <span>Pueblo: </span> @school.Town<br />
+                    @if (school.PhoneNumber != null)
+                    {
+                        <span>Telefono: </span> @school.PhoneNumber
+                    }
+                </td>
+            </tr>
+
+        }
+    </tbody>
+</table>
+
+<script src="~/Scripts/myScripts.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $('#schoolList').DataTable({
+            "sDom": '<"top"lf>t<"bottom"ipr><"clear">',
+            "sPaginationType": "full_numbers",
+            "bProcessing": false,
+            "oLanguage": { "sSearch": "Filter:" }
+        });
+    });
+
+
+</script>

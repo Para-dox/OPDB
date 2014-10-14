@@ -1,22 +1,41 @@
-﻿@{
+﻿@model OPDB.Models.HomeViewModel
+
+@{
     ViewBag.Title = "Inicio";
 }
 
-<h3>Actividades Nuevas</h3>
-<ol class="round">
-    <li class="one">
-        <h5>Mark's Magic Gathering</h5>
-        Because he's a jew...
-        <a href="#">Learn more…</a>
-    </li>
+<style>
+    span{
+        font-size: 0.875rem;
+        color: #4d4d4d;
+    }
 
-    <li class="two">
-        <h5>Why is Mark a Jew?</h5>
-        <a href="#">Learn more…</a>
-    </li>
+    h4{
+         color: #4d4d4d;
+    }
 
-    <li class="three">
-        <h5>The Holocaust</h5>
-        <a href="#">Learn more…</a>
-    </li>
-</ol>
+    r{
+         font-size: 0.875rem;
+    }
+</style>
+
+<h3>Actividades Nuevas</h3><br />
+
+@foreach (var activity in Model.activities)
+{
+
+    <div class="large-6 columns panel">
+        <h4>@activity.Title</h4>
+        <span>Propósito: </span><r>@activity.Purpose</r><br />
+        <span>Tipo: </span><r>@activity.ActivityType.ActivityType1</r><br />
+        @if (activity.Location != null)
+        {<span>Lugar: </span><r>@activity.Location</r><br /> }
+        @if (activity.ActivityDate != null)
+        { <span>Fecha: </span><r>@activity.ActivityDate</r><br />}
+        @if (activity.ActivityTime != null)
+        { <span>Hora: </span><r>@activity.ActivityTime</r><br />}
+    </div>
+
+
+}
+<br />

@@ -224,5 +224,11 @@ namespace OPDB.Controllers
 
             return types;
         }
+
+        public ActionResult Lista()
+        {
+            var schools = db.Schools.Include(s => s.User).Include(s => s.User1);
+            return View(schools.ToList());
+        }
     }
 }

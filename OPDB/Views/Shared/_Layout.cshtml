@@ -33,13 +33,13 @@
 </head>
 <body>
     <header>
-        <div class="content-wrapper">         
-            <nav class="top-bar" data-topbar role="navigation" >
+        <div>         
+            <nav class="top-bar docs-bar hide-for-small" data-topbar role="navigation">
                 <ul class="title-area">
                     <li class="name">
                         <h1>@Html.ActionLink("Alcance RUM", "Index", "Home")</h1>
                     </li>
-               </ul>
+                </ul>
 
                 <section class="top-bar-section">
                     <!-- Right Nav Section -->
@@ -50,17 +50,21 @@
                             <ul class="dropdown">
                                 <li>@Html.ActionLink("Alcance", "Index", "Alcance")</li>
                                 <li>@Html.ActionLink("Actividades", "Index", "Actividades")</li>
-                                <li>@Html.ActionLink("Escuelas", "Index", "Escuelas")</li>
+                                <li>@Html.ActionLink("Escuelas", "Lista", "Escuelas")</li>
                                 <li>@Html.ActionLink("Unidades", "Index", "Unidades")</li>
-                                <li>@Html.ActionLink("Usuarios", "Index", "Usuarios")</li>
+                                <li>@Html.ActionLink("Usuarios", "Lista", "Usuarios")</li>
                                 <li>@Html.ActionLink("Recursos", "Index", "Recursos")</li>
                             </ul>
                         </li>
                         @*<li class="name">@Html.ActionLink("Contact", "Contact", "Home")</li>*@
                         <li class="has-form busqueda"></li>
                         <li class="name">@Html.ActionLink("Busqueda Avanzada", "BusquedaAvanzada", "Home")</li>
-                        <li class="name">@Html.Partial("_LoginPartial")</li>
-                      
+                        <li class="has-dropdown not-click">
+                            <a href="#">Sesión</a>
+                            <ul class="dropdown">
+                                <li class="name">@Html.Partial("_LoginPartial")</li>
+                            </ul>
+                        </li>
                     </ul>
 
                     <!-- Left Nav Section -->

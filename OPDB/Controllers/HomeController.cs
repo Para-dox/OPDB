@@ -16,9 +16,14 @@ namespace OPDB.Controllers
 
         public ActionResult Index()
         {
-            ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
+            HomeViewModel homeViewModel = new HomeViewModel
+            {
 
-            return View();
+                activities = (from activity in db.Activities.Include(a => a.ActivityType) orderby activity.UpdateDate descending select activity).Take(6).ToList()
+
+            };
+
+            return View(homeViewModel);
         }
 
         public ActionResult Calendario()

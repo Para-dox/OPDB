@@ -78,7 +78,7 @@
 </div>
 <div class="large-7 columns">
     <h3>Notas</h3>
-    <table id="notes">
+    <table id="userNotes">
         <thead>
             <tr>
                 <th>Tipo</th>
@@ -94,7 +94,7 @@
                     <td>@note.Note</td>
                     <td>
                         <a href="@Url.Action("EditarNota", "Usuarios", new { id = note.UserNoteID })"><i class="fa fa-pencil" title="Editar"></i></a>
-                        <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this, 'notes')" data-url="@Url.Action("RemoverNota", "Usuarios", new { id = note.UserNoteID })"></i>
+                        <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this, 'userNotes')" data-url="@Url.Action("RemoverNota", "Usuarios", new { id = note.UserNoteID })"></i>
 
                     </td>
                 </tr>
@@ -116,7 +116,7 @@
 <script>
     $(document).ready(function () {
 
-        $('#notes').DataTable({
+        $('#userNotes').DataTable({
             "sDom": '<"top"lf>t<"bottom"pr><"clear">',
             "sPaginationType": "full_numbers",
             "bProcessing": false,
