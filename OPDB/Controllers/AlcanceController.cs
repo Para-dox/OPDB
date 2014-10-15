@@ -28,6 +28,7 @@ namespace OPDB.Controllers
         public ActionResult Detalles(int id = 0)
         {
             OutreachEntityDetail outreachentitydetail = db.OutreachEntityDetails.Find(id);
+            
             if (outreachentitydetail == null)
             {
                 return HttpNotFound();

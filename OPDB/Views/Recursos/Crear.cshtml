@@ -1,4 +1,4 @@
-﻿@model OPDB.Models.Resource
+﻿@model OPDB.Models.ResourceViewModel
 
 @{
     ViewBag.Title = "Create";
@@ -25,19 +25,19 @@
             <legend>Resource</legend>
 
             <div class="editor-label">
-                @Html.LabelFor(model => model.Resource1, "Recurso")
+                @Html.LabelFor(model => model.resource.Resource1, "Recurso")
             </div>
             <div class="editor-field">
-                @Html.EditorFor(model => model.Resource1)
-                @Html.ValidationMessageFor(model => model.Resource1)
+                @Html.EditorFor(model => model.resource.Resource1)
+                @Html.ValidationMessageFor(model => model.resource.Resource1)
             </div>
 
             <div class="editor-label">
-                @Html.LabelFor(model => model.UnitID, "Unidad")
+                @Html.LabelFor(model => model.resource.UnitID, "Unidad")
             </div>
             <div class="editor-field" style="width:500px;">
-                @Html.DropDownList("UnitID", String.Empty)
-                @Html.ValidationMessageFor(model => model.UnitID)
+                @Html.DropDownListFor(model => model.resource.UnitID, Model.units)
+                @Html.ValidationMessageFor(model => model.resource.UnitID)
             </div>
 
             <p style="text-align:left;">

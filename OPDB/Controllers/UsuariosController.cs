@@ -20,8 +20,7 @@ namespace OPDB.Controllers
 
         public ActionResult Index()
         {
-            var users = from u in db.Users.Include(u => u.UserType).Include(u => u.UserDetails) where u.UserTypeID != 3 select u;
-            //var users = from u in db.Users.Include(u => u.UserType).Include(u => u.UserDetails) where u.UserTypeID != 3 && u.DeletionDate == null select u;
+            var users = from u in db.Users.Include(u => u.UserType).Include(u => u.UserDetails) where u.UserTypeID != 3 && u.DeletionDate == null select u;
             return View(users.ToList());
         }
 
@@ -313,8 +312,16 @@ namespace OPDB.Controllers
 
         public ActionResult Lista()
         {
-            var users = from u in db.Users.Include(u => u.UserType).Include(u => u.UserDetails) where u.UserTypeID != 3 select u;
+            var users = from u in db.Users.Include(u => u.UserType).Include(u => u.UserDetails) where (u.UserTypeID != 3) && u.DeletionDate == null select u;
             
+            return View(users.ToList());
+
+        }
+
+        public ActionResult Removidos()
+        {
+            var users = from u in db.Users.Include(u => u.UserType).Include(u => u.UserDetails) where (u.UserTypeID != 3) && u.DeletionDate != null select u;
+
             return View(users.ToList());
 
         }

@@ -1,64 +1,30 @@
-﻿@model OPDB.Models.Resource
+﻿@model OPDB.Models.ResourceViewModel
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Detalles";
 }
+<style>
+    span {
+        font-size: 0.875rem;
+        color: #4d4d4d;
+    }
+</style>
 
-<h2>Details</h2>
 
-<fieldset>
+<fieldset class="panel">
     <legend>Resource</legend>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Resource1)
+    <h2>@Html.DisplayFor(model => model.resource.Resource1)</h2>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.unit.UnitName)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Resource1)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Unit.UnitName)
+        <span>Oficina: </span> @Html.DisplayFor(model => model.unit.RoomNumber)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Unit.UnitName)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.User.UserPassword)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.User.UserPassword)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.CreateDate)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.CreateDate)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.User1.UserPassword)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.User1.UserPassword)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.UpdateDate)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.UpdateDate)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.DeletionDate)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.DeletionDate)
+        <span>Teléfono: </span> @Html.DisplayFor(model => model.unit.PhoneNumber)
     </div>
 </fieldset>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.ResourceID }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+@*<p>
+    <input type="button" value="Editar" onclick="location.href='@Url.Action("Editar", "Recursos", new { id = Model.resource.ResourceID })'"/>
+    <input type="button" value="Volver" onclick="location.href='@Url.Action("Index", "Recursos")'"/>
+</p>*@

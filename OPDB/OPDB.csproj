@@ -265,6 +265,7 @@
     <Compile Include="Models\Resource.cs">
       <DependentUpon>OPDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ResourceViewModel.cs" />
     <Compile Include="Models\School.cs">
       <DependentUpon>OPDBModel.tt</DependentUpon>
     </Compile>
@@ -515,7 +516,6 @@
     <Content Include="Views\Recursos\Detalles.cshtml" />
     <Content Include="Views\Recursos\Crear.cshtml" />
     <Content Include="Views\Recursos\Editar.cshtml" />
-    <Content Include="Views\Recursos\Remover.cshtml" />
     <Content Include="Views\Unidades\Index.cshtml" />
     <Content Include="Views\Unidades\Detalles.cshtml" />
     <Content Include="Views\Unidades\Crear.cshtml" />
@@ -546,6 +546,7 @@
     <Content Include="Views\Home\_Usuarios.cshtml" />
     <Content Include="Views\Escuelas\Lista.cshtml" />
     <Content Include="Views\Usuarios\Lista.cshtml" />
+    <Content Include="Views\Usuarios\Removidos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

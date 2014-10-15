@@ -12,10 +12,11 @@ function getValue() {
 }
 
 function removeRecord(e, table) {
-    debugger;
     var url = $(e).attr('data-url');
     if (confirm("Este record será removido del sistema. ¿Esta seguro(a) que desea proceder?")) {
         $.post(url);
+        sleep(1000);
+        window.location.reload();
     }
 
     $(table).dataTable().fnDraw();
@@ -23,7 +24,6 @@ function removeRecord(e, table) {
 }
 
 function getAdvancedSearchForm(e) {
-    debugger;
     var url = $(e).attr('data-url');
     var id = url.split("/Home/_PartialViewLoad?view=_")[1];
     
@@ -46,4 +46,22 @@ function getAdvancedSearchForm(e) {
 
     $('#searchForm').load(url);
 }
+
+
+function sleep(milliseconds) {
+    var start = new Date().getTime();
+    for (var i = 0; i < 1e7; i++) {
+        if ((new Date().getTime() - start) > milliseconds) {
+            break;
+        }
+    }
+}
+
+function loadResourceAction(e) {
+    var url = $(e).attr('data-url');
+    $('#resourceModal').load(url, function () {
+        $(this).dialog('open');
+    });
+}
+
 

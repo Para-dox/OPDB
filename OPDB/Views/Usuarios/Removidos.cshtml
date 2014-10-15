@@ -1,8 +1,9 @@
 ﻿@model IEnumerable<OPDB.Models.User>
 
 @{
-    ViewBag.Title = "Usuarios";
+    ViewBag.Title = "Removidos";
 }
+
 <style>
     select {
         width: 50px !important;
@@ -23,19 +24,19 @@
         text-align: center !important;
     }
 
-    i{
-        cursor: pointer !important;
+    .previous, .next{
+        display: none !important;
     }
 </style>
-<h2>Usuarios</h2>
+<h2>Usuarios Removidos</h2><br />
 
-<table id="users">
+<table id="removedUsers">
     <thead>
         <tr>
             <th style="width:20%;">Nombre</th>
             <th style="width:20%;">Tipo de Usuario</th>
             <th style="width:20%;">Correo Electrónico</th>
-            <th>Teléfono</th>
+            <th>Removido En</th>
             <th style="width:8%;"></th>
         </tr>
     </thead>
@@ -52,28 +53,23 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Email)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                <td>@Html.DisplayFor(modelItem => item.DeletionDate)</td>            
+                 <td>
+                    <i title="Restaurar" class="fa fa-plus"></i>                  
                 </td>
-                <td>
-                    <a href="@Url.Action("Editar", "Usuarios", new { id = item.UserID })"><i class="fa fa-pencil" title="Editar"></i></a>
-                   <i title="Remover" class="fa fa-remove" onclick="removeRecord(this, 'users')" data-url="@Url.Action("Remover", "Usuarios", new { id = item.UserID })"></i>
-               </td>
             </tr>
 
         }
     </tbody>
 </table>
 <br />
-<p>
-    <input type="button" value="Nuevo Usuario" onclick="location.href='@Url.Action("Crear", "Usuarios")'" /><input type="button" value="Usuarios Removidos" onclick="location.href='@Url.Action("Removidos", "Usuarios")'" />
-</p>
+
 
 <script src="~/Scripts/myScripts.js"></script>
 <script>
     $(document).ready(function () {
 
-        $('#users').DataTable({
+        $('#removedUsers').DataTable({
             "sDom": '<"top"lf>t<"bottom"ipr><"clear">',
             "sPaginationType": "full_numbers",
             "bProcessing": false,
@@ -82,10 +78,8 @@
             "columnDefs": [
                 {
                     "orderable": false,
-                    "targets": [3,4]
+                    "targets": 4
                 }
-
-
             ]
         });
     });

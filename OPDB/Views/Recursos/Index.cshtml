@@ -23,52 +23,60 @@
     th, td {
         text-align: center !important;
     }
+
+    .previous, .next{
+        display: none !important;
+    }
+
+    i{
+        cursor: pointer;
+    }
 </style>
 
 <h2>Recursos</h2>
 
-
-<table id="recursos">
-    <thead>
-        <tr>
-            <th>Recurso</th>
-            <th style="width:20%;">Unidad</th>
-            <th></th>
-        </tr>
-    </thead>
-
-    <tbody>
-        @foreach (var item in Model)
-        {
+<div>
+    <table id="resources">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Resource1)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Unit.UnitName)
-                </td>
-                <td>
-                    <a href="@Url.Action("Detalles", "Usuarios", new { id = item.ResourceID })"><i class="fa fa-info-circle" title="Ver Detalles"></i></a>
-                    <a href="@Url.Action("Editar", "Usuarios", new { id = item.ResourceID })"><i class="fa fa-pencil" title="Editar"></i></a>
-                    <i title="Remover" class="fa fa-remove" onclick="removeRecord(this)" data-url="@Url.Action("Remover", "Usuarios", new { id = item.ResourceID })"></i>
-
-                </td>
+                <th>Recurso</th>
+                <th style="width:50%;">Unidad</th>
+                <th style="width:10%"></th>
             </tr>
-        }
-    </tbody>
+        </thead>
 
-</table>
-<br />
-<p>
-    @Html.ActionLink("Nuevo Recurso", "Crear")
-</p>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <a title="Ver Detalles" onclick="loadResourceAction(this)" data-url="@Url.Action("Detalles", "Recursos", new { id = item.ResourceID })">@item.Resource1</a>
+                     </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Unit.UnitName)
+                    </td>
+                    <td>
+                        @*<a href="@Url.Action("Editar", "Recursos", new { id = item.ResourceID })"><i class="fa fa-pencil" title="Editar"></i></a>
+                        <i title="Remover" class="fa fa-remove" onclick="removeRecord(this, 'users')" data-url="@Url.Action("Remover", "Recursos", new { id = item.ResourceID })"></i>*@
+                        <i class="fa fa-pencil" onclick="loadResourceAction(this)" data-url="@Url.Action("Editar", "Recursos", new { id = item.ResourceID })" title="Editar"></i>
+                        <i title="Remover" class="fa fa-remove" onclick="removeRecord(this, 'resources')" data-url="@Url.Action("Remover", "Recursos", new { id = item.ResourceID })"></i>
+                        
+                    </td>
+                </tr>
+            }
+        </tbody>
 
-
+    </table>
+    <br />
+        <input type="button" value="Nuevo Recurso" onclick="location.href='@Url.Action("Crear", "Recursos")'" />
+   
+</div>
+<div id="resourceModal"></div>
 <script src="~/Scripts/myScripts.js"></script>
 <script>
     $(document).ready(function () {
 
-        $('#recursos').DataTable({
+        $('#resources').DataTable({
             "sDom": '<"top"lf>t<"bottom"ipr><"clear">',
             "sPaginationType": "full_numbers",
             "bProcessing": false,
@@ -85,5 +93,12 @@
         });
     });
 
+    $('#resourceModal').dialog({
+        autoOpen: false,
+        width: 400,
+        resizable: false,
+        modal: true,
+        draggable: false
+    });
 
 </script>
