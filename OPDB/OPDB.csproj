@@ -545,7 +545,7 @@
     <Content Include="Views\Escuelas\CrearNota.cshtml" />
     <Content Include="Views\Escuelas\EditarNota.cshtml" />
     <Content Include="Views\Actividades\CrearNota.cshtml" />
-    <Content Include="Views\Actividades\EditarNotas.cshtml" />
+    <Content Include="Views\Actividades\EditarNota.cshtml" />
     <Content Include="Views\Actividades\VerNota.cshtml" />
     <Content Include="Views\Unidades\Unidades.cshtml" />
     <Content Include="Views\Home\BusquedaAvanzada.cshtml" />

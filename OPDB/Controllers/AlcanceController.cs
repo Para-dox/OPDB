@@ -27,13 +27,17 @@ namespace OPDB.Controllers
 
         public ActionResult Detalles(int id = 0)
         {
-            OutreachEntityDetail outreachentitydetail = db.OutreachEntityDetails.Find(id);
-            
-            if (outreachentitydetail == null)
+            UserViewModel userViewModel = new UserViewModel
+            {
+                outreachEntity = db.OutreachEntityDetails.Find(id),
+                Notes = from note in db.UserNotes.Include(note => note.NoteType) where note.UserID == id && note.DeletionDate == null select note
+            };
+
+            if (userViewModel.outreachEntity == null)
             {
                 return HttpNotFound();
             }
-            return View(outreachentitydetail);
+            return View(userViewModel);
         }
 
         //

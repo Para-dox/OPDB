@@ -1,58 +1,140 @@
-﻿@model OPDB.Models.OutreachEntityDetail
+﻿@model OPDB.Models.UserViewModel
 
 @{
     ViewBag.Title = "Detalles";
 }
 
-<h2>Detalles</h2>
+<style>
+    select {
+        width: 50px !important;
+        padding: 0.2rem !important;
+        height: 1.5rem !important;
+        margin: 0 !important;
+    }
 
-<fieldset>
-    <legend>OutreachEntityDetail</legend>
+    label {
+        width: 100% !important;
+    }
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.OutreachEntityType.OutreachEntityType1)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.OutreachEntityType.OutreachEntityType1)
-    </div>
+    input[type="search"] {
+        padding: 0.2rem;
+    }
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.OutreachEntityName)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.OutreachEntityName)
-    </div>
+    th, td {
+        text-align: center !important;
+    }
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Mission)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Mission)
-    </div>
+    .last, .first, .previous, .next {
+        display: none !important;
+    }
+</style>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Vision)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Vision)
-    </div>
+<h2 style=" text-align:center;"> @Model.outreachEntity.OutreachEntityName</h2>
+<br />
+<div class="row">
+    <div class="large-5 columns">
+        <h3>Información</h3>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Objectives)
+            @Html.LabelFor(model => model.outreachEntity.OutreachEntityType.OureachEntityType, "Tipo de Organización")
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Objectives)
+            @Html.DisplayFor(model => model.outreachEntity.OutreachEntityType.OureachEntityType)
     </div>
+        <br />
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Location)
+            @Html.LabelFor(model => model.outreachEntity.OutreachEntityName, "Nombre de la Organización")
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Location)
+            @Html.DisplayFor(model => model.outreachEntity.OutreachEntityName)
+    </div>
+        <br />
+
+    <div class="display-label">
+            @Html.LabelFor(model => model.outreachEntity.Mission, "Misión")
+    </div>
+    <div class="display-field">
+            @Html.DisplayFor(model => model.outreachEntity.Mission)
+    </div>
+        <br />
+
+    <div class="display-label">
+            @Html.LabelFor(model => model.outreachEntity.Vision, "Visión")
+    </div>
+    <div class="display-field">
+            @Html.DisplayFor(model => model.outreachEntity.Vision)
+    </div>
+        <br />
+
+    <div class="display-label">
+            @Html.LabelFor(model => model.outreachEntity.Objectives, "Objetivos")
+    </div>
+    <div class="display-field">
+            @Html.DisplayFor(model => model.outreachEntity.Objectives)
+    </div>
+        <br />
+
+    <div class="display-label">
+            @Html.LabelFor(model => model.outreachEntity.Location, "Localización")
+    </div>
+    <div class="display-field">
+            @Html.DisplayFor(model => model.outreachEntity.Location)
     </div>
 
-</fieldset>
 <p>
-    @Html.ActionLink("Editar", "Editar", new { id=Model.OutreachEntityDetailID }) |
-    @Html.ActionLink("Devuelta", "Index")
+            <input type="button" value="Editar" onclick="location.href='@Url.Action("Editar", "Alcance", new { id = Model.outreachEntity.OutreachEntityDetailID })'" />
+            <input type="button" value="Añadir Nota" onclick="location.href='@Url.Action("CrearNota", "Alcance", new { id = Model.outreachEntity.OutreachEntityDetailID })'" />
+            <input type="button" value="Devuelta" onclick="location.href='@Url.Action("Index", "Alcance")'" />
 </p>
+    </div>
+
+    <div class="large-7 columns">
+        <h3>Notas</h3>
+        <table id="outreachNotes">
+            <thead>
+                <tr>
+                    <th>Tipo</th>
+                    <th style="width:70%;">Nota</th>
+                    <th style="width:10%;"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var note in Model.Notes)
+                {
+                    <tr>
+                        <td>@note.NoteType.NoteType1</td>
+                        <td>@note.Note</td>
+                        <td>
+                            <a href="@Url.Action("EditarNota", "Alcance", new { id = note.UserNoteID })"><i class="fa fa-pencil" title="Editar"></i></a>
+                            <i title="Remover" class="fa fa-remove" onclick="removeRecord(this, 'schoolNotes')" data-url="@Url.Action("RemoverNota", "Alcance", new { id = note.UserNoteID })"></i>
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    </div>
+</div>
+
+<script src="~/Scripts/myScripts.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $('#schoolNotes').DataTable({
+            "sDom": '<"top"lf>t<"bottom"pr><"clear">',
+            "sPaginationType": "full_numbers",
+            "bProcessing": false,
+            "iDisplayLength": 12,
+            "aaSorting": [[1, "asc"]],
+            "columnDefs": [
+                {
+                    "orderable": false,
+                    "targets": 2
+                }
+            ]
+        });
+    });
+
+</script>

@@ -10,7 +10,9 @@ namespace OPDB.Models
     public class ActivityViewModel
     {
         public Activity activity { get; set; }
+        public Feedback feedback { get; set; }
         public ActivityNote note { get; set; }
+        public IEnumerable<Feedback> Feedbacks { get; set; }
         public IEnumerable<ActivityNote> Notes { get; set; }
         public List<SelectListItem> NoteTypes { get; set; }
     }
