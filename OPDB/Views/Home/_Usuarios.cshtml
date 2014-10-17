@@ -14,8 +14,13 @@
 @using (Html.BeginForm("BuscarUsuarios", "Home", FormMethod.Post)) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
-    <fieldset>
-        <legend>User</legend>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.user.User.UserTypeID, "Tipo de Usuario")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.user.User.UserTypeID, Model.types)
+            @Html.ValidationMessageFor(model => model.user.User.UserTypeID)
+        </div>
        <div class="editor-label">
                 @Html.LabelFor(model => model.user.FirstName, "Nombre")
             </div>
@@ -48,6 +53,4 @@
         <p style="text-align:right;">
             <input type="submit" value="Buscar" />
         </p>
-
-    </fieldset>
 }

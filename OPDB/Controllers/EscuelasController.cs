@@ -177,7 +177,7 @@ namespace OPDB.Controllers
             schoolViewModel.note.UpdateUser = 2;
             schoolViewModel.note.UpdateDate = DateTime.Now;
 
-            if (schoolViewModel.note.SchoolNoteID == null){  
+            if (schoolViewModel.note.SchoolNoteID == 0){  
 
                 schoolViewModel.note.CreateDate = DateTime.Now;
                 schoolViewModel.note.SchoolID = schoolViewModel.school.SchoolID;

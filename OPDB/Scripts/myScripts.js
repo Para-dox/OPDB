@@ -64,4 +64,38 @@ function loadResourceAction(e) {
     });
 }
 
+function DisplayModal(e) {
+    debugger;
+    modalClose();
+    var instructions = $(e).attr('data-validation');
+    var url = $(e).attr('data-url');
+    var title = $(e).attr('data-title');
+    
+    if (instructions == "false")
+        $('#instructions').attr("hidden", true);
+    else 
+        $('#instructions').attr("hidden", false);
+    
 
+    $.ajax({
+        type: 'POST',
+        url: url,
+        dataType: "html",
+        contentType: "application/html; charset=utf-8",
+
+        success: function (data) {
+            $('#ajax-modal').find('.modal-header').find('h3').html(title);
+            $('#ajax-modal').find('.modal-body').html(data);
+            $('#ajax-modal').modal('show');
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            alert(xhr.status);
+            alert(thrownError);
+        }
+    });
+}
+
+function modalClose() {
+    $('#validation li').empty();
+    $('#ajax-modal').modal('hide');
+}

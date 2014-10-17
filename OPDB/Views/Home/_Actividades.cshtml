@@ -15,9 +15,6 @@
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
-    <fieldset>
-        <legend>Actividad</legend>
-
         @*<div class="editor-label">
             @Html.LabelFor(model => model.ActivityTypeID, "ActivityType")
         </div>
@@ -46,5 +43,4 @@
         <p style="float:right;">
             <input type="submit" value="Buscar" />
         </p>
-    </fieldset>
 }

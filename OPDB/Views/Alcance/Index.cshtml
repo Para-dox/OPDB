@@ -53,7 +53,7 @@
                     @Html.DisplayFor(modelItem => item.OutreachEntityType.OureachEntityType)
                 </td>
                 <td>
-                    @Html.ActionLink(item.OutreachEntityName + " ", "Detalles", "Alcance", new { id = item.UserID}, null)
+                    @Html.ActionLink(item.OutreachEntityName + " ", "Detalles", "Alcance", new { id = item.OutreachEntityDetailID}, null)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.User.Email)
