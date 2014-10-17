@@ -15,16 +15,13 @@
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
-    <fieldset>
-        <legend>OutreachEntityDetail</legend>
-
-        @*<div class="editor-label">
-            @Html.LabelFor(model => model.outreachEntity.OutreachEntityTypeID, "OutreachEntityType")
+        <div class="editor-label">
+            @Html.LabelFor(model => model.outreachEntity.OutreachEntityTypeID, "Tipo de Entidad")
         </div>
         <div class="editor-field">
-            @Html.DropDownList("OutreachEntityTypeID", String.Empty)
+            @Html.DropDownListFor(model => model.outreachEntity.OutreachEntityTypeID, Model.types)
             @Html.ValidationMessageFor(model => model.outreachEntity.OutreachEntityTypeID)
-        </div>*@
+        </div>
 
         <div class="editor-label">
             @Html.LabelFor(model => model.outreachEntity.OutreachEntityName, "Nombre")
@@ -60,5 +57,4 @@
         <p style="float:right;">
             <input type="submit" value="Buscar" />
         </p>
-    </fieldset>
 }

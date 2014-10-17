@@ -9,22 +9,18 @@
         color: #4d4d4d;
     }
 </style>
-
-
-<fieldset class="panel">
-    <legend>Resource</legend>
-    <h2>@Html.DisplayFor(model => model.resource.Resource1)</h2>
     <div class="display-field">
-        @Html.DisplayFor(model => model.unit.UnitName)
+        <span>Unidad: </span>@Html.DisplayFor(model => model.unit.UnitName)
     </div>
     <div class="display-field">
         <span>Oficina: </span> @Html.DisplayFor(model => model.unit.RoomNumber)
     </div>
     <div class="display-field">
         <span>Teléfono: </span> @Html.DisplayFor(model => model.unit.PhoneNumber)
-    </div>
-</fieldset>
+    </div><br />
+    <a href="#" title="Editar" class="modal_ajax_btn" data-title="Editar Recurso" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("PopUpEditar", "Recursos", new { id = Model.resource.ResourceID })"><input type="button" style="float:left !important; width:40% !important; margin-left: 30px !important;" value="Editar" /></a>
+    <input type="button" style="float:right !important; width:40% !important; margin-bottom: 20px !important; margin-right: 30px !important;" value="Volver" onclick="modalClose()" />
 @*<p>
-    <input type="button" value="Editar" onclick="location.href='@Url.Action("Editar", "Recursos", new { id = Model.resource.ResourceID })'"/>
+    <input type="button" style="float:left !important; width:40% !important; margin-left: 30px !important;" value="Editar" onclick="location.href='@Url.Action("Editar", "Recursos", new { id = Model.resource.ResourceID })'" />
     <input type="button" value="Volver" onclick="location.href='@Url.Action("Index", "Recursos")'"/>
 </p>*@

@@ -19,7 +19,7 @@
     }
 </style>
 
-<h3>Actividades Nuevas</h3><br />
+<h3>Nuevas Actividades</h3><br />
 
 @foreach (var activity in Model.activities)
 {
@@ -31,7 +31,7 @@
         @if (activity.Location != null)
         {<span>Lugar: </span><r>@activity.Location</r><br /> }
         @if (activity.ActivityDate != null)
-        { <span>Fecha: </span><r>@activity.ActivityDate</r><br />}
+        { <span>Fecha: </span><r>@activity.ActivityDate.Value.ToString("dd/MM/yyyy")</r><br />}
         @if (activity.ActivityTime != null)
         { <span>Hora: </span><r>@activity.ActivityTime</r><br />}
     </div>

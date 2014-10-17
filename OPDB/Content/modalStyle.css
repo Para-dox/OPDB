@@ -1,0 +1,90 @@
+.modalStyle{	
+	position: fixed;
+	top: 40% !important;
+	left: 31%;
+	width: 500px;
+	/*margin-left: -200px;*/
+	background-color: #eaeaea;
+	border: 1px solid #999;
+	border: 1px solid rgba(0,0,0,0.3);
+	outline: 0;
+	-webkit-box-shadow: 0 3px 7px rgba(0,0,0,0.3);
+	-moz-box-shadow: 0 3px 7px rgba(0,0,0,0.3);
+	box-shadow: 0 3px 7px rgba(0,0,0,0.3);
+	-webkit-background-clip: padding-box;
+	-moz-background-clip: padding-box;
+	background-clip: padding-box;
+	color: black !important;
+}
+
+.reminder {
+    position: fixed;
+	top: 40% !important;
+	left: 50%;
+	z-index: 1050;
+	margin-left: -150px;
+	background-color: #eaeaea;
+	border: 1px solid #999;
+	border: 1px solid rgba(0,0,0,0.3);
+	outline: 0;
+	-webkit-box-shadow: 0 3px 7px rgba(0,0,0,0.3);
+	-moz-box-shadow: 0 3px 7px rgba(0,0,0,0.3);
+	box-shadow: 0 3px 7px rgba(0,0,0,0.3);
+	-webkit-background-clip: padding-box;
+	-moz-background-clip: padding-box;
+	background-clip: padding-box;
+    width: 450px !important;
+}
+
+
+.modalStyle .modal-header{
+	border:none;
+	color:#666;
+}
+
+.modalStyle .close{
+	background-color:#999;
+	padding:15px;
+	text-align:center;
+	background-position:center;
+	
+}
+
+.modalStyle .modal-body{
+	padding:15px 15px 0 15px;
+	color: black !important;
+}
+
+.modalStyle .controls{
+	padding-bottom:10px;	
+	color: black !important;
+}
+
+.modalStyle label{
+	color:#999;
+	font-size:11px;
+	line-height:13px;
+}
+
+.modalStyle select, .modalStyle input{
+    width: 100% !important;
+	border-color:#ccc;
+	background-color:#f4f4f4;
+	
+	color: black !important;
+}
+
+.modalStyle textarea{
+	width:450px;
+	height:120px;
+	border-color:#ccc;
+	background-color:#f4f4f4;
+	
+	color: black !important;
+}
+
+.modalStyle .btn{
+	margin-top:20px;
+	padding-left:25px;
+	padding-right:25px;
+}

@@ -6,6 +6,10 @@
 //    Manual changes to this file will be overwritten if the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+using System;
+using System.Data;
+using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 
 namespace OPDB.Models
 {
@@ -66,7 +70,9 @@ namespace OPDB.Models
     
         public int UserID { get; set; }
         public int UserTypeID { get; set; }
+        [Required(ErrorMessageResourceName = "User_UserPassword_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string UserPassword { get; set; }
+        [Required(ErrorMessageResourceName = "User_UserEmail_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public bool UserStatus { get; set; }
