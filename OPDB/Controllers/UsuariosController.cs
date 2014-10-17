@@ -21,7 +21,7 @@ namespace OPDB.Controllers
         public ActionResult Index()
         {
             var users = from u in db.Users.Include(u => u.UserType).Include(u => u.UserDetails) where u.UserTypeID != 3 && u.DeletionDate == null select u;
-            return View(users.ToList());
+            return PartialView("Index", users.ToList());
         }
 
         //
@@ -237,7 +237,7 @@ namespace OPDB.Controllers
 
                 types.Add(new SelectListItem()
                     {
-                        Text = outreachType.OureachEntityType,
+                        Text = outreachType.OutreachEntityType1,
                         Value = outreachType.OutreachEntityTypeID + ""
 
                     });
@@ -248,6 +248,7 @@ namespace OPDB.Controllers
 
         }
 
+        [HttpPost]
         public ActionResult CrearNota(int id)
         {
             EscuelasController controller = new EscuelasController();
@@ -263,7 +264,7 @@ namespace OPDB.Controllers
                 }
             };
 
-            return View(userViewModel);
+            return PartialView("CrearNota", userViewModel);
         }
 
 
@@ -276,26 +277,34 @@ namespace OPDB.Controllers
 
             if (userViewModel.note.UserNoteID == 0)
             {
+                if (ModelState.IsValid) 
+                { 
+                    userViewModel.note.CreateDate = DateTime.Now;
 
-                userViewModel.note.CreateDate = DateTime.Now;
+                    userViewModel.note.UserID = 2;
+                    userViewModel.note.CreateUser = 2;
 
-                userViewModel.note.UserID = 2;
-                userViewModel.note.CreateUser = 2;
+                    db.UserNotes.Add(userViewModel.note);
+                    db.SaveChanges();
 
-                db.UserNotes.Add(userViewModel.note);
+                    return View("_Hack");
+                }
 
+                return Content(GetErrorsFromModelState(userViewModel));          
             }
-            else
+            else if(ModelState.IsValid)
             {
+
                 db.Entry(userViewModel.note).State = EntityState.Modified;
+                db.SaveChanges();
+                return View("_Hack");                
+                
             }
 
-            db.SaveChanges();
-
-            return RedirectToAction("Detalles", "Usuarios", new { id = userViewModel.note.SubjectID });
+            return Content(GetErrorsFromModelState(userViewModel));
         }
 
-
+        [HttpPost]
         public ActionResult EditarNota(int id)
         {
             EscuelasController controller = new EscuelasController();
@@ -307,7 +316,7 @@ namespace OPDB.Controllers
                 note = db.UserNotes.Find(id)
             };
 
-            return View(userViewModel);
+            return PartialView("EditarNota", userViewModel);
         }
 
         public ActionResult Lista()
@@ -322,11 +331,11 @@ namespace OPDB.Controllers
         {
             var users = from u in db.Users.Include(u => u.UserType).Include(u => u.UserDetails) where (u.UserTypeID != 3) && u.DeletionDate != null select u;
 
-            return View(users.ToList());
+            return PartialView("Removidos", users.ToList());
 
         }
 
-        public String GetErrorsFromModelState()
+        public String GetErrorsFromModelState(UserViewModel userViewModel)
         {
 
 

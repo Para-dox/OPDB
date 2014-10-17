@@ -93,7 +93,7 @@
                         <td>@note.NoteType.NoteType1</td>
                         <td>@note.Note</td>
                         <td>
-                            <a href="@Url.Action("EditarNota", "Usuarios", new { id = note.UserNoteID })"><i class="fa fa-pencil" title="Editar"></i></a>
+                            <a href="#" title="Editar" data-title="Editar Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarNota", "Usuarios", new { id = note.UserNoteID })" class="modal_ajax_btn"><i class="fa fa-pencil"></i></a> 
                             <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this, 'userNotes')" data-url="@Url.Action("RemoverNota", "Usuarios", new { id = note.UserNoteID })"></i>
 
                         </td>
@@ -108,7 +108,7 @@
     <p>
         
         <input type="button" value="Editar" onclick="location.href='@Url.Action("Editar", "Usuarios", new { id = Model.user.UserID })'"/>
-        <input type="button" value="Añadir Nota" onclick="location.href='@Url.Action("CrearNota", "Usuarios", new { id = Model.user.UserID })'"/>
+        <a href="#" title="Añadir Nota" class="modal_ajax_btn" data-title="Nueva Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Usuarios", new { id = Model.user.UserID })"><input type="button" value="Añadir Nota" /></a>
         <input type="button" value="Volver" onclick="location.href='@Url.Action("Index", "Usuarios")'">
         <input type="button" value="Volver a Lista" onclick="location.href='@Url.Action("Lista", "Usuarios")'">
     </p>

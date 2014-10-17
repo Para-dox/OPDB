@@ -99,3 +99,24 @@ function modalClose() {
     $('#validation li').empty();
     $('#ajax-modal').modal('hide');
 }
+
+function loadAdminView(e) {
+    debugger;
+    var url = $(e).attr('data-url');
+    var id = $(e).attr('id');
+    var urlIDs = ["outreachURL", "activitiesURL", "schoolsURL", "resourcesURL", "unitsURL", "usersURL", "removedOutreachURL", "removedSchoolsURL", "removedUnitsURL", "removedUsersURL"];
+    var liIDs = ["outreachAdmin", "activitiesAdmin", "schoolsAdmin", "resourcesAdmin", "unitsAdmin", "usersAdmin", "removed", "removed", "removed", "removed"];
+    
+    for (var i = 0; i < urlIDs.length; i++) {
+
+        if (id == urlIDs[i])
+        {
+            $('.active').removeClass("active");
+            $('#' + liIDs[i]).addClass("active");
+            break;
+        }
+
+    }
+
+    $('#managementTables').load(url);
+}

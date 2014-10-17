@@ -558,6 +558,9 @@
     <Content Include="Views\Usuarios\Lista.cshtml" />
     <Content Include="Views\Usuarios\Removidos.cshtml" />
     <Content Include="Views\Shared\_Hack.cshtml" />
+    <Content Include="Views\Usuarios\CrearNota.cshtml" />
+    <Content Include="Views\Usuarios\EditarNota.cshtml" />
+    <Content Include="Views\Home\Administracion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

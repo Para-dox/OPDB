@@ -22,12 +22,7 @@
     th, td {
         text-align: center !important;
     }
-
-    i{
-        cursor: pointer !important;
-    }
 </style>
-<h2>Usuarios</h2>
 
 <table id="users">
     <thead>
@@ -57,7 +52,7 @@
                 </td>
                 <td>
                     <a href="@Url.Action("Editar", "Usuarios", new { id = item.UserID })"><i class="fa fa-pencil" title="Editar"></i></a>
-                   <i title="Remover" class="fa fa-remove" onclick="removeRecord(this, 'users')" data-url="@Url.Action("Remover", "Usuarios", new { id = item.UserID })"></i>
+                   <i title="Remover" style="cursor: pointer !important;" class="fa fa-remove" onclick="removeRecord(this, 'users')" data-url="@Url.Action("Remover", "Usuarios", new { id = item.UserID })"></i>
                </td>
             </tr>
 

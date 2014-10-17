@@ -118,7 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Resource_ResourceName_Required" xml:space="preserve">
-    <value>No ha ingresado un nombre para este recurso.</value>
+    <value>No ha ingresado un nombre para este recurso</value>
+  </data>
+  <data name="UserNote_Note_Required" xml:space="preserve">
+    <value>No ha ingresado el contenido de la nota</value>
   </data>
   <data name="User_UserEmail_Required" xml:space="preserve">
     <value>No ha ingresado un correo electrónico</value>

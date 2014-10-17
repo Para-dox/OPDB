@@ -24,7 +24,7 @@ namespace OPDB.Controllers
         public ActionResult Index()
         {
             var resources = db.Resources.Include(r => r.Unit);
-            return View(resources.ToList());
+            return PartialView("Index", resources.ToList());
         }
 
         /// <summary>

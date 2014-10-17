@@ -26,7 +26,7 @@ namespace OPDB.Models
         public System.DateTime UpdateDate { get; set; }
         public Nullable<System.DateTime> DeletionDate { get; set; }
     
-        public virtual OutreachEntityType OutreachEntityType { get; set; }
         public virtual User User { get; set; }
+        public virtual OutreachEntityType OutreachEntityType { get; set; }
     }
 }

@@ -358,6 +358,10 @@ namespace OPDB.Controllers
             return View("Buscar", searchViewModel);
         }
 
+        public ActionResult Administracion()
+        {
+            return View();
+        }
 
         public List<SelectListItem> getUserTypes()
         {

@@ -20,7 +20,7 @@ namespace OPDB.Models
         }
     
         public int OutreachEntityTypeID { get; set; }
-        public string OureachEntityType { get; set; }
+        public string OutreachEntityType1 { get; set; }
         public int CreateUser { get; set; }
         public System.DateTime CreateDate { get; set; }
         public int UpdateUser { get; set; }

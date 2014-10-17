@@ -33,9 +33,6 @@
         cursor: pointer;
     }
 </style>
-
-<h2>Recursos</h2>
-
 <div>
     <table id="resources">
         <thead>
@@ -58,12 +55,8 @@
                         @Html.DisplayFor(modelItem => item.Unit.UnitName)
                     </td>
                     <td>
-                        @*<a href="@Url.Action("Editar", "Recursos", new { id = item.ResourceID })"><i class="fa fa-pencil" title="Editar"></i></a>
-                        <i title="Remover" class="fa fa-remove" onclick="removeRecord(this, 'users')" data-url="@Url.Action("Remover", "Recursos", new { id = item.ResourceID })"></i>*@
-                        @*<i class="fa fa-pencil" onclick="loadResourceAction(this)" data-url="@Url.Action("Editar", "Recursos", new { id = item.ResourceID })" title="Editar"></i>
-                        <i title="Remover" class="fa fa-remove" onclick="removeRecord(this, 'resources')" data-url="@Url.Action("Remover", "Recursos", new { id = item.ResourceID })"></i>*@
                         <a href="#" title="Editar" data-title="Editar Recurso" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("PopUpEditar", "Recursos", new { id = item.ResourceID })" class="modal_ajax_btn"><i class="fa fa-pencil"></i></a> 
-                        
+                        <i title="Remover" class="fa fa-remove" onclick="removeRecord(this, 'resources')" data-url="@Url.Action("Remover", "Recursos", new { id = item.ResourceID })"></i>
                     </td>
                 </tr>
             }

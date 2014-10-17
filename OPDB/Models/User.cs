@@ -52,8 +52,6 @@ namespace OPDB.Models
             this.NoteTypes = new HashSet<NoteType>();
             this.NoteTypes1 = new HashSet<NoteType>();
             this.OutreachEntityDetails = new HashSet<OutreachEntityDetail>();
-            this.OutreachEntityTypes = new HashSet<OutreachEntityType>();
-            this.OutreachEntityTypes1 = new HashSet<OutreachEntityType>();
             this.Resources = new HashSet<Resource>();
             this.Resources1 = new HashSet<Resource>();
             this.Schools = new HashSet<School>();
@@ -66,6 +64,8 @@ namespace OPDB.Models
             this.UserNotes1 = new HashSet<UserNote>();
             this.UserNotes2 = new HashSet<UserNote>();
             this.UserNotes3 = new HashSet<UserNote>();
+            this.OutreachEntityTypes = new HashSet<OutreachEntityType>();
+            this.OutreachEntityTypes1 = new HashSet<OutreachEntityType>();
         }
     
         public int UserID { get; set; }
@@ -112,8 +112,6 @@ namespace OPDB.Models
         public virtual ICollection<NoteType> NoteTypes { get; set; }
         public virtual ICollection<NoteType> NoteTypes1 { get; set; }
         public virtual ICollection<OutreachEntityDetail> OutreachEntityDetails { get; set; }
-        public virtual ICollection<OutreachEntityType> OutreachEntityTypes { get; set; }
-        public virtual ICollection<OutreachEntityType> OutreachEntityTypes1 { get; set; }
         public virtual ICollection<Resource> Resources { get; set; }
         public virtual ICollection<Resource> Resources1 { get; set; }
         public virtual ICollection<School> Schools { get; set; }
@@ -127,5 +125,7 @@ namespace OPDB.Models
         public virtual ICollection<UserNote> UserNotes1 { get; set; }
         public virtual ICollection<UserNote> UserNotes2 { get; set; }
         public virtual ICollection<UserNote> UserNotes3 { get; set; }
+        public virtual ICollection<OutreachEntityType> OutreachEntityTypes { get; set; }
+        public virtual ICollection<OutreachEntityType> OutreachEntityTypes1 { get; set; }
     }
 }

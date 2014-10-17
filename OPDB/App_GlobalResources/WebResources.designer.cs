@@ -61,11 +61,20 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No ha ingresado un nombre para este recurso..
+        ///   Looks up a localized string similar to No ha ingresado un nombre para este recurso.
         /// </summary>
         internal static string Resource_ResourceName_Required {
             get {
                 return ResourceManager.GetString("Resource_ResourceName_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No ha ingresado el contenido de la nota.
+        /// </summary>
+        internal static string UserNote_Note_Required {
+            get {
+                return ResourceManager.GetString("UserNote_Note_Required", resourceCulture);
             }
         }
         
