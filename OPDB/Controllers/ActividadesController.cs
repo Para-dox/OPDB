@@ -30,6 +30,7 @@ namespace OPDB.Controllers
             ActivityViewModel activityViewModel = new ActivityViewModel
             {
                 activity = db.Activities.Find(id),
+                Feedbacks = from feedback in db.Feedbacks where feedback.ActivityID == id && feedback.DeletionDate == null select feedback,
                 Notes = from note in db.ActivityNotes.Include(note => note.NoteType) where note.ActivityID == id && note.DeletionDate == null select note
             };
             

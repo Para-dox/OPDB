@@ -4,101 +4,162 @@
     ViewBag.Title = "Detalles";
 }
 
-<h2>Detalles</h2>
+<style>
+    select {
+        width: 50px !important;
+        padding: 0.2rem !important;
+        height: 1.5rem !important;
+        margin: 0 !important;
+    }
 
-<div class="large-5 columns">
+    label {
+        width: 100% !important;
+    }
+
+    input[type="search"] {
+        padding: 0.2rem;
+    }
+
+    th, td {
+        text-align: center !important;
+    }
+
+    .last, .first, .previous, .next {
+        display: none !important;
+    }
+</style>
+
+<h2 style="text-align:center;">@Model.activity.Title</h2>
+
+<div class="display-label">
+    @Html.LabelFor(model => model.activity.Purpose, "Propósito")
+</div>
+<div class="display-field">
+    @Html.DisplayFor(model => model.activity.Purpose)
+</div>
+<br />
+
+<div class="row">
+    <div class="large-5 columns">
+        <h3>Detalles de Actividad</h3>
         <div class="display-label">
-            @Html.DisplayNameFor(model => model.activity.Title)
+            @Html.LabelFor(model => model.activity.ActivityID, "Número de Identificación")
         </div>
         <div class="display-field">
-            @Html.DisplayFor(model => model.activity.Title)
+            @Html.DisplayFor(model => model.activity.ActivityID)
         </div>
-
+        <br />
         <div class="display-label">
-            @Html.DisplayNameFor(model => model.activity.Purpose)
-        </div>
-        <div class="display-field">
-            @Html.DisplayFor(model => model.activity.Purpose)
-        </div>
-
-        <div class="display-label">
-            @Html.DisplayNameFor(model => model.activity.Location)
+            @Html.LabelFor(model => model.activity.Location, "Localización")
         </div>
         <div class="display-field">
             @Html.DisplayFor(model => model.activity.Location)
         </div>
-
+        <br />
         <div class="display-label">
-            @Html.DisplayNameFor(model => model.activity.ActivityDate)
+            @Html.LabelFor(model => model.activity.ActivityDate, "Fecha")
         </div>
         <div class="display-field">
             @Html.DisplayFor(model => model.activity.ActivityDate)
         </div>
-
+        <br />
         <div class="display-label">
-            @Html.DisplayNameFor(model => model.activity.ActivityTime)
+            @Html.LabelFor(model => model.activity.ActivityTime, "Hora")
         </div>
         <div class="display-field">
             @Html.DisplayFor(model => model.activity.ActivityTime)
         </div>
-
+        <br />
         <div class="display-label">
-            @Html.DisplayNameFor(model => model.activity.School.SchoolName)
+            @Html.LabelFor(model => model.activity.CreateUser, "Creado por")
         </div>
         <div class="display-field">
-            @Html.DisplayFor(model => model.activity.School.SchoolName)
+            @Html.DisplayFor(model => model.activity.CreateUser)
         </div>
-</div>
+        <br />
+        <div class="display-label">
+            @Html.LabelFor(model => model.activity.CreateDate, "Creado en")
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.activity.CreateDate)
+        </div>
+        <br />
+        <div class="display-label">
+            @Html.LabelFor(model => model.activity.UpdateUser, "Modificado por")
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.activity.UpdateUser)
+        </div>
+        <br />
+        <div class="display-label">
+            @Html.LabelFor(model => model.activity.UpdateDate, "Modificado en")
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.activity.UpdateDate)
+        </div>
+        <br />
+    </div>
 
-<div class="large-7 columns">
-    <table id="activityNotes">
-        <thead>
-            <tr>
-                <th>
-                    Tipo de Nota
-                </th>
-                <th>
-                    Contenido
-                </th>
-                <th>
-
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var note in Model.Notes)
-            {
+    <div class="large-7 columns">
+        <h3>Notas</h3>
+        <table id="activityNotes">
+            <thead>
                 <tr>
-                    <td>@note.NoteType.NoteType1</td>
-                    <td>@note.Note</td>
-                    <td>
-                        <a href="@Url.Action("VerNota", "Actividades", new { id = note.ActivityNoteID })"><i class="fa fa-info-circle" title="Ver Detalles"></i></a>
-                        <a href="@Url.Action("EditarNota", "Actividades", new { id = note.ActivityNoteID })"><i class="fa fa-pencil" title="Editar"></i></a>
-
-                        <i title="Remover" class="fa fa-remove" onclick="removeRecord(this, 'activityNotes')" data-url="@Url.Action("RemoverNota", "Actividades", new { id = note.ActivityNoteID })"></i>
-
-                    </td>
+                    <th>Tipo</th>
+                    <th style="width:70%;">Nota</th>
+                    <th style="width:10%;"></th>
                 </tr>
-            }
-        </tbody>
+            </thead>
+            <tbody>
+                @foreach (var note in Model.Notes)
+                {
+                    <tr>
+                        <td>@note.NoteType.NoteType1</td>
+                        <td>@note.Note</td>
+                        <td>
+                            <a href="@Url.Action("EditarNota", "Actividades", new { id = note.ActivityNoteID })"><i class="fa fa-pencil" title="Editar"></i></a>
+                            <i title="Remover" class="fa fa-remove" onclick="removeRecord(this, 'schoolNotes')" data-url="@Url.Action("RemoverNota", "Actividades", new { id = note.ActivityNoteID })"></i>
 
-    </table>
-</div>
-<div class="large-12 columns">
-    <p>
-        @Html.ActionLink("Editar", "Editar", new { id = Model.activity.ActivityID }) |
-        @Html.ActionLink("Añadir Nota", "CrearNota", new { id = Model.activity.ActivityID }) |
-        @Html.ActionLink("Devuelta", "Index")
-    </p>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    </div>
 </div>
 
+<h4>Comentarios</h4>
+
+<table id="activityFeedback">
+    <thead>
+        <tr>
+            <th style="width:20%;">Nombre</th>
+            <th style="width:70%;">Comentario</th>
+            <th style="width:10%;"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var feedback in Model.Feedbacks)
+        {
+            <tr>
+                <td>@feedback.UserID</td>
+                <td>@feedback.Feedback1</td>
+                <td>
+                    <a href="@Url.Action("EditarComentario", "Actividades", new { id = feedback.FeedbackID })"><i class="fa fa-pencil" title="Editar"></i></a>
+                    <i title="Remover" class="fa fa-remove" onclick="removeRecord(this, 'activityFeedback')" data-url="@Url.Action("RemoverComentario", "Actividades", new { id = feedback.FeedbackID })"></i>
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
 
 <script src="~/Scripts/myScripts.js"></script>
 <script>
     $(document).ready(function () {
-
         $('#activityNotes').DataTable({
-            "sDom": '<"top"lf>t<"bottom"ipr><"clear">',
+            "sDom": '<"top"lf>t<"bottom"pr><"clear">',
             "sPaginationType": "full_numbers",
             "bProcessing": false,
             "iDisplayLength": 12,
@@ -111,5 +172,23 @@
             ]
         });
     });
+</script>
 
+<script src="~/Scripts/myScripts.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#activityFeedback').DataTable({
+            "sDom": '<"top"lf>t<"bottom"pr><"clear">',
+            "sPaginationType": "full_numbers",
+            "bProcessing": false,
+            "iDisplayLength": 10,
+            "aaSorting": [[1, "asc"]],
+            "columnDefs": [
+                {
+                    "orderable": false,
+                    "targets": 2
+                }
+            ]
+        });
+    });
 </script>
