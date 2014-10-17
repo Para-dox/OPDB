@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<OPDB.Models.Resource>
+@using Microsoft.Ajax.Utilities
 
 @{
     ViewBag.Title = "Recursos";
@@ -50,7 +51,8 @@
             {
                 <tr>
                     <td>
-                        <a title="Ver Detalles" onclick="loadResourceAction(this)" data-url="@Url.Action("Detalles", "Recursos", new { id = item.ResourceID })">@item.Resource1</a>
+                        <a href="#" title="Ver Detalles" class="modal_ajax_btn" data-validation="false" data-title="@item.Resource1" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("Detalles", "Recursos", new { id = item.ResourceID})">@item.Resource1</a>
+                        @*<a title="Ver Detalles" onclick="loadResourceAction(this)" data-url="@Url.Action("Detalles", "Recursos", new { id = item.ResourceID })">@item.Resource1</a>*@
                      </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Unit.UnitName)
@@ -58,8 +60,9 @@
                     <td>
                         @*<a href="@Url.Action("Editar", "Recursos", new { id = item.ResourceID })"><i class="fa fa-pencil" title="Editar"></i></a>
                         <i title="Remover" class="fa fa-remove" onclick="removeRecord(this, 'users')" data-url="@Url.Action("Remover", "Recursos", new { id = item.ResourceID })"></i>*@
-                        <i class="fa fa-pencil" onclick="loadResourceAction(this)" data-url="@Url.Action("Editar", "Recursos", new { id = item.ResourceID })" title="Editar"></i>
-                        <i title="Remover" class="fa fa-remove" onclick="removeRecord(this, 'resources')" data-url="@Url.Action("Remover", "Recursos", new { id = item.ResourceID })"></i>
+                        @*<i class="fa fa-pencil" onclick="loadResourceAction(this)" data-url="@Url.Action("Editar", "Recursos", new { id = item.ResourceID })" title="Editar"></i>
+                        <i title="Remover" class="fa fa-remove" onclick="removeRecord(this, 'resources')" data-url="@Url.Action("Remover", "Recursos", new { id = item.ResourceID })"></i>*@
+                        <a href="#" title="Editar" data-title="Editar Recurso" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("PopUpEditar", "Recursos", new { id = item.ResourceID })" class="modal_ajax_btn"><i class="fa fa-pencil"></i></a> 
                         
                     </td>
                 </tr>
@@ -68,11 +71,10 @@
 
     </table>
     <br />
-        <input type="button" value="Nuevo Recurso" onclick="location.href='@Url.Action("Crear", "Recursos")'" />
+    <a href="#" title="Crear Recurso" class="modal_ajax_btn" data-title="Nuevo Recurso" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("PopUpCrear", "Recursos", null)"><input type="button" value="Nuevo Recurso"/></a>
    
 </div>
 
-<div id="resourceModal"></div>
 <script src="~/Scripts/myScripts.js"></script>
 <script>
     $(document).ready(function () {
@@ -92,14 +94,6 @@
 
             ]
         });
-    });
-
-    $('#resourceModal').dialog({
-        autoOpen: false,
-        width: 400,
-        resizable: false,
-        modal: true,
-        draggable: false
     });
 
 </script>

@@ -208,7 +208,7 @@ namespace OPDB.Controllers
             base.Dispose(disposing);
         }
 
-        private List<SelectListItem> getUserTypes()
+        public List<SelectListItem> getUserTypes()
         {
             List<SelectListItem> types = new List<SelectListItem>();
             foreach (var userType in db.UserTypes)
@@ -229,7 +229,7 @@ namespace OPDB.Controllers
 
         }
 
-        private List<SelectListItem> getOutreachTypes()
+        public List<SelectListItem> getOutreachTypes()
         {
             List<SelectListItem> types = new List<SelectListItem>();
             foreach (var outreachType in db.OutreachEntityTypes)
@@ -324,6 +324,25 @@ namespace OPDB.Controllers
 
             return View(users.ToList());
 
+        }
+
+        public String GetErrorsFromModelState()
+        {
+
+
+            //retrieves the validation messages from the ModelState as strings    
+            var str = "";
+            var errorSates = from state in ModelState.Values
+                             from error in state.Errors
+                             select error.ErrorMessage;
+
+            var errorList = errorSates.ToList();
+            foreach (var m in errorList)
+            {
+                str = str + "<li>* " + m + "</li>";
+            }
+
+            return str;
         }
 
        

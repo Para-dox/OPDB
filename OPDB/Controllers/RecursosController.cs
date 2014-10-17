@@ -32,6 +32,7 @@ namespace OPDB.Controllers
         /// </summary>
         /// <param name="id">The id of the resource to retrieve from the database.</param>
         /// <returns>The specified resource's details page.</returns>
+        [HttpPost]
         public ActionResult Detalles(int id = 0)
         {
             Resource r = db.Resources.Find(id);
@@ -56,13 +57,14 @@ namespace OPDB.Controllers
         /// Create resource view.
         /// </summary>
         /// <returns>The create new resource view.</returns>
-        public ActionResult Crear()
+        [HttpPost]
+        public ActionResult PopUpCrear()
         {
             ResourceViewModel resourceViewModel = new ResourceViewModel
             {
                 units = getUnits()
             };
-            return View(resourceViewModel);
+            return PartialView("Crear", resourceViewModel);
         }
 
        
@@ -72,24 +74,33 @@ namespace OPDB.Controllers
         /// <param name="resourceViewModel">The ResourceViewModel containing the information of the resource to be created.</param>
         /// <returns>The resource admin view if successful, the create new resource view if an error occurs.</returns>
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult Crear(ResourceViewModel resourceViewModel)
         {
-            if (ModelState.IsValid)
+           
+
+        try { 
+                if (ModelState.IsValid)
+                {
+                    resourceViewModel.resource.CreateDate = DateTime.Now;
+                    resourceViewModel.resource.UpdateDate = DateTime.Now;
+
+                    // Change after login implementation.
+                    resourceViewModel.resource.CreateUser = 1;
+                    resourceViewModel.resource.UpdateUser = 1;
+
+                    db.Resources.Add(resourceViewModel.resource);
+                    db.SaveChanges();
+                    return View("_Hack");
+                }
+
+                return Content(GetErrorsFromModelState(resourceViewModel));               
+            }
+                        
+            catch(Exception)
             {
-                resourceViewModel.resource.CreateDate = DateTime.Now;
-                resourceViewModel.resource.UpdateDate = DateTime.Now;
-
-                // Change after login implementation.
-                resourceViewModel.resource.CreateUser = 1;
-                resourceViewModel.resource.UpdateUser = 1;
-
-                db.Resources.Add(resourceViewModel.resource);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                return Content(GetErrorsFromModelState(resourceViewModel));
             }
 
-            return View(resourceViewModel);
         }
 
       
@@ -98,7 +109,8 @@ namespace OPDB.Controllers
         /// </summary>
         /// <param name="id">The id of the resource to be edited.</param>
         /// <returns>The edit view with the specified resource.</returns>
-        public ActionResult Editar(int id = 0)
+        [HttpPost]
+        public ActionResult PopUpEditar(int id = 0)
         {
 
             ResourceViewModel resourceViewModel = new ResourceViewModel
@@ -124,18 +136,20 @@ namespace OPDB.Controllers
         /// <param name="resourceViewModel">The ResourceViewModel containing the edited resource parameters.</param>
         /// <returns>The admin resource page if successful, the edit resource view if an error occurs.</returns>
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult Editar(ResourceViewModel resourceViewModel)
         {
             if (ModelState.IsValid)
             {
-                resourceViewModel.resource.UpdateDate = DateTime.Now;
+                //To be changed with login.
+                resourceViewModel.resource.UpdateUser = 1;
+
+                resourceViewModel.resource.UpdateDate = DateTime.Now;                
                 db.Entry(resourceViewModel.resource).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return View("_Hack");
             }
 
-            return View(resourceViewModel);
+            return Content(GetErrorsFromModelState(resourceViewModel));   
         }
 
         /// <summary>
@@ -182,6 +196,24 @@ namespace OPDB.Controllers
             return types;
         }
 
+        public String GetErrorsFromModelState(ResourceViewModel resourceViewModel)
+        {
+            
+            //retrieves the validation messages from the ModelState as strings    
+            var str = "";
+            var errorSates = from state in ModelState.Values
+                             from error in state.Errors
+                             select error.ErrorMessage;
+
+            var errorList = errorSates.ToList();
+            foreach (var m in errorList)
+            {
+                str = str + "<li>* " + m + "</li>";
+            }
+
+            return str;
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -191,5 +223,10 @@ namespace OPDB.Controllers
             db.Dispose();
             base.Dispose(disposing);
         }
+
+
+        
+
+
     }
 }

@@ -2,49 +2,30 @@
 
 @{
     ViewBag.Title = "Create";
+    var formAttributes = new Dictionary<string, object>();
+    formAttributes.Add("novalidate", "novalidate");
 }
 
-<style>
-    .text-box {
-        width: 500px;
-    }
-
-    .editor-label {
-        text-align: left;
-    }
-</style>
-
-<h2>Nuevo Recurso</h2>
-
-@using (Html.BeginForm()) {
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
-
-    <center>
-        <fieldset style="width:500px">
-            <legend>Resource</legend>
-
+@using (Ajax.BeginForm("Crear", "Recursos", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "validation" }))
+{
+    @Html.ValidationSummary(false)
+    
             <div class="editor-label">
-                @Html.LabelFor(model => model.resource.Resource1, "Recurso")
+              @Html.LabelFor(model => model.resource.Resource1, "Recurso *")
             </div>
             <div class="editor-field">
                 @Html.EditorFor(model => model.resource.Resource1)
-                @Html.ValidationMessageFor(model => model.resource.Resource1)
             </div>
 
             <div class="editor-label">
                 @Html.LabelFor(model => model.resource.UnitID, "Unidad")
             </div>
-            <div class="editor-field" style="width:500px;">
-                @Html.DropDownListFor(model => model.resource.UnitID, Model.units)
-                @Html.ValidationMessageFor(model => model.resource.UnitID)
-            </div>
+            <div class="editor-field">
+                @Html.DropDownListFor(model => model.resource.UnitID, Model.units, new { @style = "margin: 0 0 1rem 0 !important; padding: 0.5rem !important; height: 2.3125rem !important; width: 100% !important;" })
+             </div>
 
-            <p style="text-align:left;">
-                <input type="submit" value="Crear" /> <input type="button" value="Cancelar" onclick="window.location = '@Url.Action("Index", "Recursos")';" />
-            </p>
-        </fieldset>
-    </center>
+            <input type="submit" style="float:left !important; width:40% !important; margin-left: 30px !important;" value="Crear" /> <input type="button" style="float:right !important; width:40% !important; margin-bottom: 20px !important; margin-right: 30px !important;" value="Cancelar" onclick="modalClose()" />
+           
 }
 
         @section Scripts {

@@ -185,6 +185,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_GlobalResources\WebResources.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WebResources.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_Start\AuthConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -306,6 +311,8 @@
     <Content Include="Content\foundation\normalize.css" />
     <Content Include="Content\fullcalendar\fullcalendar.css" />
     <Content Include="Content\fullcalendar\fullcalendar.min.css" />
+    <Content Include="Content\modalcss.css" />
+    <Content Include="Content\modalStyle.css" />
     <Content Include="Content\multi-select\multi-select.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -378,6 +385,8 @@
     <Content Include="Content\images\sort_both.png" />
     <Content Include="Content\images\sort_desc.png" />
     <Content Include="Content\images\sort_desc_disabled.png" />
+    <Content Include="Scripts\modal.js" />
+    <Content Include="Scripts\modalmanager.js" />
     <Content Include="Models\OPDBModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>OPDBModel.edmx</DependentUpon>
@@ -423,6 +432,7 @@
     <Content Include="Content\font-awesome\scss\_variables.scss" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Images\switch.png" />
+    <Content Include="Scripts\ajaxmodal.js" />
     <Content Include="Scripts\dataTables\jquery.dataTables.js" />
     <Content Include="Scripts\dataTables\jquery.dataTables.min.js" />
     <Content Include="Scripts\dataTables\jquery.js" />
@@ -547,6 +557,7 @@
     <Content Include="Views\Escuelas\Lista.cshtml" />
     <Content Include="Views\Usuarios\Lista.cshtml" />
     <Content Include="Views\Usuarios\Removidos.cshtml" />
+    <Content Include="Views\Shared\_Hack.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -556,6 +567,12 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\WebResources.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>WebResources.designer.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

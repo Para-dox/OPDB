@@ -107,8 +107,19 @@ namespace OPDB.Controllers
         /// <returns>The specified partial view.</returns>
         public ActionResult _PartialViewLoad(string view)
         {
-            
-            return PartialView(view);
+            SearchViewModel searchViewModel = new SearchViewModel();
+
+            if (view == "_Alcance")
+            {
+                UsuariosController controller = new UsuariosController();
+                searchViewModel.types = controller.getOutreachTypes();
+            }
+
+            if (view == "_Usuarios")
+            {
+               searchViewModel.types = getUserTypes();
+            }
+            return PartialView(view, searchViewModel);
 
         }
 
@@ -132,12 +143,54 @@ namespace OPDB.Controllers
         public ActionResult BuscarUsuarios(SearchViewModel searchViewModel)
         {
             searchViewModel.buscarUsuarios = true;
+            
+            
+            var result = from user in db.UserDetails
+                         where user.User.UserTypeID == searchViewModel.user.User.UserTypeID 
+                         && user.DeletionDate == null
+                         select user;
 
-            searchViewModel.users = from user in db.UserDetails
-                                    where (user.FirstName.Contains(searchViewModel.user.FirstName)
-                                        || user.LastName.Contains(searchViewModel.user.LastName) || user.Role.Contains(searchViewModel.user.Role)
-                                        || user.Major.Contains(searchViewModel.user.Major)) && user.DeletionDate == null
-                                    select user;
+            searchViewModel.users = result;
+
+            if (searchViewModel.user.FirstName != null)
+            {
+
+                result = from user in result
+                         where user.FirstName.Contains(searchViewModel.user.FirstName) && user.DeletionDate == null
+                         select user;
+
+                searchViewModel.users = result;
+
+
+            }
+
+            if (searchViewModel.user.LastName != null)
+            {
+                result = from user in result
+                         where user.LastName.Contains(searchViewModel.user.LastName) && user.DeletionDate == null
+                         select user;
+
+                searchViewModel.users = result;
+            }
+
+            if (searchViewModel.user.Role != null)
+            {
+                result = from user in result
+                         where user.Role.Contains(searchViewModel.user.Role) && user.DeletionDate == null
+                         select user;
+
+                searchViewModel.users = result;
+            }
+
+            if (searchViewModel.user.Major != null)
+            {
+                result = from user in result
+                         where user.Major.Contains(searchViewModel.user.Major) && user.DeletionDate == null
+                         select user;
+
+                searchViewModel.users = result;
+            }
+
 
             
             return View("Buscar", searchViewModel);
@@ -155,9 +208,31 @@ namespace OPDB.Controllers
         {
             searchViewModel.buscarActividades = true;
 
-            searchViewModel.activities = from activity in db.Activities
-                                         where (activity.Title.Contains(searchViewModel.activity.Title) || activity.Purpose.Contains(searchViewModel.activity.Purpose))
-                                         && activity.DeletionDate == null select activity;
+            var result = from activity in db.Activities
+                         where activity.DeletionDate == null 
+                         select activity;
+
+            searchViewModel.activities = result;
+
+            if (searchViewModel.activity.Title != null)
+            {
+                result = from activity in result
+                         where activity.Title.Contains(searchViewModel.activity.Title)
+                         && activity.DeletionDate == null
+                         select activity;
+
+                searchViewModel.activities = result;
+            }
+
+            if(searchViewModel.activity.Purpose != null){
+
+                result = from activity in result
+                         where activity.Purpose.Contains(searchViewModel.activity.Purpose)
+                         && activity.DeletionDate == null
+                         select activity;
+
+                searchViewModel.activities = result;
+            }
 
 
             return View("Buscar", searchViewModel);
@@ -173,11 +248,56 @@ namespace OPDB.Controllers
         {
             searchViewModel.buscarAlcance = true;
 
-            searchViewModel.outreachEntities = from outreachEntity in db.OutreachEntityDetails
-                                               where (outreachEntity.OutreachEntityName.Contains(searchViewModel.outreachEntity.OutreachEntityName)
-                                                   || outreachEntity.Mission.Contains(searchViewModel.outreachEntity.Mission) || outreachEntity.Vision.Contains(searchViewModel.outreachEntity.Vision)
-                                                   || outreachEntity.Objectives.Contains(searchViewModel.outreachEntity.Objectives)) && outreachEntity.DeletionDate == null
-                                               select outreachEntity;
+            var result = from outreachEntity in db.OutreachEntityDetails
+                         where outreachEntity.OutreachEntityTypeID == searchViewModel.outreachEntity.OutreachEntityTypeID
+                         && outreachEntity.DeletionDate == null
+                         select outreachEntity;
+
+            searchViewModel.outreachEntities = result;
+
+            if(searchViewModel.outreachEntity.OutreachEntityName != null){
+
+                result = from outreachEntity in result
+                         where outreachEntity.OutreachEntityName.Contains(searchViewModel.outreachEntity.OutreachEntityName)
+                         && outreachEntity.DeletionDate == null
+                         select outreachEntity;
+
+                searchViewModel.outreachEntities = result;
+            }
+
+            if(searchViewModel.outreachEntity.Mission != null){
+
+                result = from outreachEntity in result
+                         where outreachEntity.Mission.Contains(searchViewModel.outreachEntity.Mission)
+                         && outreachEntity.DeletionDate == null
+                         select outreachEntity;
+
+                searchViewModel.outreachEntities = result;
+
+            }
+
+            if (searchViewModel.outreachEntity.Vision != null)
+            {
+
+                result = from outreachEntity in result
+                         where outreachEntity.Vision.Contains(searchViewModel.outreachEntity.Vision)
+                         && outreachEntity.DeletionDate == null
+                         select outreachEntity;
+
+                searchViewModel.outreachEntities = result;
+            }
+
+            if (searchViewModel.outreachEntity.Objectives != null)
+            {
+
+                result = from outreachEntity in result
+                         where outreachEntity.Objectives.Contains(searchViewModel.outreachEntity.Objectives)
+                         && outreachEntity.DeletionDate == null
+                         select outreachEntity;
+
+                searchViewModel.outreachEntities = result;
+
+            }
 
 
             return View("Buscar", searchViewModel);
@@ -193,9 +313,31 @@ namespace OPDB.Controllers
         {
             searchViewModel.buscarEscuelas = true;
 
-            searchViewModel.schools = from school in db.Schools where (school.SchoolName.Contains(searchViewModel.school.SchoolName) 
-                                          || school.Town.Contains(searchViewModel.school.Town)) && school.DeletionDate == null
-                                      select school;
+            var result = from school in db.Schools
+                         where school.DeletionDate == null
+                         select school;
+
+            searchViewModel.schools = result;
+
+            if (searchViewModel.school.SchoolName != null)
+            {
+                result = from school in result
+                         where school.SchoolName.Contains(searchViewModel.school.SchoolName)
+                         && school.DeletionDate == null
+                         select school;
+
+                searchViewModel.schools = result;
+            }
+
+            if (searchViewModel.school.Town != null)
+            {
+                result = from school in result
+                         where school.Town.Contains(searchViewModel.school.Town) 
+                         && school.DeletionDate == null
+                         select school;
+
+                searchViewModel.schools = result;
+            }
 
 
             return View("Buscar", searchViewModel);
@@ -211,9 +353,30 @@ namespace OPDB.Controllers
         {
             searchViewModel.buscarUnidades = true;
 
-            searchViewModel.units = from unit in db.Units where unit.UnitName.Contains(searchViewModel.unit.UnitName) select unit;
+            searchViewModel.units = from unit in db.Units where unit.UnitName.Contains(searchViewModel.unit.UnitName ?? "") select unit;
             
             return View("Buscar", searchViewModel);
+        }
+
+
+        public List<SelectListItem> getUserTypes()
+        {
+            List<SelectListItem> types = new List<SelectListItem>();
+            foreach (var userType in db.UserTypes)
+            {
+
+                if (userType.UserTypeID != 3)
+                {
+                    types.Add(new SelectListItem()
+                    {
+                        Text = userType.UserType1,
+                        Value = userType.UserTypeID + ""
+
+                    });
+                }
+            }
+
+            return types;
         }
     }
 }
