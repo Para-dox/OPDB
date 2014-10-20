@@ -9,9 +9,11 @@
     
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @*@Scripts.Render("~/bundles/jquery")*@
 
     <link href="~/Content/modalcss.css" rel="stylesheet" />
     <link href="~/Content/modalStyle.css" rel="stylesheet" />
+    <link href="~/Content/timepicker/jquery.timepicker.css" rel="stylesheet" />
     <link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />
     <link href="~/Content/dataTables/jquery.dataTables.css" rel="stylesheet" />    
     <link href="~/Content/foundation/foundation.css" rel="stylesheet" />
@@ -24,7 +26,8 @@
     
     @*<link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />*@
 
-   
+
+    
     <script src="~/Scripts/jquery-1.8.2.min.js"></script>
     <script src="~/Scripts/jquery-ui-1.8.24.min.js"></script>
     <script src="~/Scripts/modal.js"></script>
@@ -38,6 +41,7 @@
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Scripts/timepicker/jquery.timepicker.js"></script>
     
     
 </head>
@@ -122,19 +126,7 @@
 
         $(document).ready(function () {
             $('.busqueda').load("@Url.Action("_Buscar", "Home")");
-	    });
-
-  
-
-    // Tooltip
-    //$(function () {
-    //    $(document).tooltip({
-    //        track: true
-    //    });
-    //});
-
-    //$(document).foundation();
-
+        });
 
     </script>
 </body>

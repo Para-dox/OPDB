@@ -1,4 +1,4 @@
-﻿@model OPDB.Models.Activity
+﻿@model OPDB.Models.ActivityViewModel
 
 @{
     ViewBag.Title = "Crear";
@@ -14,63 +14,63 @@
         <legend>Activity</legend>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.ActivityTypeID, "Tipo de Actividad")
+            @Html.LabelFor(model => model.activity.ActivityTypeID, "Tipo de Actividad")
         </div>
         <div class="editor-field">
-            @Html.DropDownList("ActivityTypeID", String.Empty)
-            @Html.ValidationMessageFor(model => model.ActivityTypeID)
+            @Html.DropDownListFor(model => model.activity.ActivityTypeID, Model.ActivityTypes)
+            @Html.ValidationMessageFor(model => model.activity.ActivityTypeID)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Title, "Título de Actividad")
+            @Html.LabelFor(model => model.activity.Title, "Título de Actividad")
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Title)
-            @Html.ValidationMessageFor(model => model.Title)
+            @Html.EditorFor(model => model.activity.Title)
+            @Html.ValidationMessageFor(model => model.activity.Title)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Purpose, "Propósito")
+            @Html.LabelFor(model => model.activity.Purpose, "Propósito")
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Purpose)
-            @Html.ValidationMessageFor(model => model.Purpose)
+            @Html.EditorFor(model => model.activity.Purpose)
+            @Html.ValidationMessageFor(model => model.activity.Purpose)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Location, "Localización")
+            @Html.LabelFor(model => model.activity.Location, "Localización")
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Location)
-            @Html.ValidationMessageFor(model => model.Location)
+            @Html.EditorFor(model => model.activity.Location)
+            @Html.ValidationMessageFor(model => model.activity.Location)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.ActivityDate, "Fecha de Actividad")
+            @Html.LabelFor(model => model.activity.ActivityDate, "Fecha de Actividad")
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.ActivityDate)
-            @Html.ValidationMessageFor(model => model.ActivityDate)
+            @Html.TextBoxFor(model => model.activity.ActivityDate, new { id = "datepicker" })
+            @Html.ValidationMessageFor(model => model.activity.ActivityDate)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.ActivityTime, "Hora de Actividad")
+            @Html.LabelFor(model => model.activity.ActivityTime, "Hora de Actividad")
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.ActivityTime)
-            @Html.ValidationMessageFor(model => model.ActivityTime)
+            @Html.TextBoxFor(model => model.activity.ActivityTime, new { id = "timepicker" })
+            @Html.ValidationMessageFor(model => model.activity.ActivityTime)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.SchoolID, "Escuela")
+            @Html.LabelFor(model => model.activity.SchoolID, "Escuela")
         </div>
         <div class="editor-field">
-            @Html.DropDownList("SchoolID", String.Empty)
-            @Html.ValidationMessageFor(model => model.SchoolID)
+            @Html.DropDownListFor(model => model.activity.SchoolID, Model.SchoolList)
+            @Html.ValidationMessageFor(model => model.activity.SchoolID)
         </div>
 
         <p>
-            <input type="submit" value="Create" />
+            <input type="submit" value="Crear" />
         </p>
     </fieldset>
 }
@@ -78,6 +78,16 @@
 <div>
     @Html.ActionLink("Regresar", "Index")
 </div>
+
+<script>
+    $(function () {
+        $("#datepicker").datepicker({ dateFormat: 'dd/mm/yy' }).val();
+    });
+
+    $(function () {
+        $("#timepicker").timepicker({ step: 15 }).val();
+    });
+</script>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

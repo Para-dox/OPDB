@@ -45,55 +45,55 @@ namespace OPDB.Controllers
 
         public ActionResult Crear()
         {
-            ViewBag.ActivityTypeID = new SelectList(db.ActivityTypes, "ActivityTypeID", "ActivityType1");
-            ViewBag.SchoolID = new SelectList(db.Schools, "SchoolID", "SchoolName");
-            ViewBag.CreateUser = new SelectList(db.Users, "UserID", "UserPassword");
-            ViewBag.UpdateUser = new SelectList(db.Users, "UserID", "UserPassword");
-            ViewBag.UserID = new SelectList(db.Users, "UserID", "UserPassword");
-            return View();
+            ActivityViewModel activityViewModel = new ActivityViewModel {
+                ActivityTypes = getActivityTypes(), SchoolList = getSchools()
+            };
+
+            return View(activityViewModel);
         }
 
         // POST
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Crear(Activity activity)
+        public ActionResult Crear(ActivityViewModel activityViewModel)
         {
             if (ModelState.IsValid)
             {
                 //TODO needs to acquire current user 
 
-                activity.UserID = 3;
+                activityViewModel.activity.UserID = 3;
 
-                activity.UpdateDate = DateTime.Now;
-                activity.CreateDate = DateTime.Now;
+                activityViewModel.activity.UpdateDate = DateTime.Now;
+                activityViewModel.activity.CreateDate = DateTime.Now;
 
-                activity.CreateUser = 3;
-                activity.UpdateUser = 3;
+                activityViewModel.activity.CreateUser = 3;
+                activityViewModel.activity.UpdateUser = 3;
 
-                db.Activities.Add(activity);
+                db.Activities.Add(activityViewModel.activity);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(activity);
+            return View(activityViewModel.activity);
         }
 
         // GET: /Actividades/Edit/5
 
         public ActionResult Editar(int id = 0)
         {
-            Activity activity = db.Activities.Find(id);
-            if (activity == null)
+            ActivityViewModel activityViewModel = new ActivityViewModel {
+                activity = db.Activities.Find(id)
+            };
+            if (activityViewModel.activity == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.ActivityTypeID = new SelectList(db.ActivityTypes, "ActivityTypeID", "ActivityType1", activity.ActivityTypeID);
-            ViewBag.SchoolID = new SelectList(db.Schools, "SchoolID", "SchoolName", activity.SchoolID);
-            //ViewBag.CreateUser = new SelectList(db.Users, "UserID", "UserPassword", activity.CreateUser);
-            //ViewBag.UpdateUser = new SelectList(db.Users, "UserID", "UserPassword", activity.UpdateUser);
-            //ViewBag.UserID = new SelectList(db.Users, "UserID", "UserPassword", activity.UserID);
-            return View(activity);
+            
+            activityViewModel.ActivityTypes = getActivityTypes();
+            activityViewModel.SchoolList = getSchools();
+
+            return View(activityViewModel);
         }
 
         //
@@ -101,25 +101,21 @@ namespace OPDB.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Editar(Activity activity)
+        public ActionResult Editar(ActivityViewModel activityViewModel)
         {
             if (ModelState.IsValid)
             {
                 //TODO acquire current user
-                activity.UpdateUser = 3;
-                activity.UpdateDate = DateTime.Now;
-                db.Entry(activity).State = EntityState.Modified;
+                activityViewModel.activity.UpdateUser = 3;
+                activityViewModel.activity.UpdateDate = DateTime.Now;
+                db.Entry(activityViewModel.activity).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            //TODO are these needed?
-            //ViewBag.ActivityTypeID = new SelectList(db.ActivityTypes, "ActivityTypeID", "ActivityType1", activity.ActivityTypeID);
-            //ViewBag.SchoolID = new SelectList(db.Schools, "SchoolID", "SchoolName", activity.SchoolID);
-            //ViewBag.CreateUser = new SelectList(db.Users, "UserID", "UserPassword", activity.CreateUser);
-            //ViewBag.UpdateUser = new SelectList(db.Users, "UserID", "UserPassword", activity.UpdateUser);
-            //ViewBag.UserID = new SelectList(db.Users, "UserID", "UserPassword", activity.UserID);
+            activityViewModel.ActivityTypes = getActivityTypes();
+            activityViewModel.SchoolList = getSchools();
 
-            return View(activity);
+            return View(activityViewModel.activity);
         }
 
         //
@@ -204,5 +200,44 @@ namespace OPDB.Controllers
             db.Dispose();
             base.Dispose(disposing);
         }
+
+       public List<SelectListItem> getActivityTypes()
+       {
+           List<SelectListItem> types = new List<SelectListItem>();
+           foreach (var activityType in db.ActivityTypes)
+           {
+               types.Add(new SelectListItem()
+                {
+                    Text = activityType.ActivityType1,
+                    Value = activityType.ActivityTypeID + ""
+
+                });
+
+           }
+
+           return types;
+       }
+
+       public List<SelectListItem> getSchools()
+       {
+           List<SelectListItem> schoolList = new List<SelectListItem>();
+
+           schoolList.Add(new SelectListItem()
+           {
+               Text = null,
+               Value = null
+           });
+
+           foreach (var school in db.Schools)
+           {
+               schoolList.Add(new SelectListItem()
+               {
+                   Text = school.SchoolName,
+                   Value = school.SchoolID + ""
+               });
+           }
+
+           return schoolList;
+       }
     }
 }

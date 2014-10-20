@@ -379,6 +379,7 @@
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.tooltip.min.css" />
+    <Content Include="Content\timepicker\jquery.timepicker.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <EntityDeploy Include="Models\OPDBModel.edmx">
@@ -488,6 +489,8 @@
     <Content Include="Scripts\moment\moment.js" />
     <Content Include="Scripts\multi-select\jquery.multi-select.js" />
     <Content Include="Scripts\myScripts.js" />
+    <Content Include="Scripts\timepicker\jquery.timepicker.js" />
+    <Content Include="Scripts\timepicker\jquery.timepicker.min.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

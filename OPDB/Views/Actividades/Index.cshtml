@@ -4,7 +4,7 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Tabla de Actividades</h2>
+<h2>Actividades de Alcanze</h2>
 
 <style>
     select {
@@ -48,7 +48,7 @@
                     @Html.DisplayFor(modelItem => item.Location)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ActivityDate)
+                    @item.ActivityDate.Value.ToString("dd/MM/yyyy")
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.ActivityTime)

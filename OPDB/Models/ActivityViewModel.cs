@@ -15,5 +15,7 @@ namespace OPDB.Models
         public IEnumerable<Feedback> Feedbacks { get; set; }
         public IEnumerable<ActivityNote> Notes { get; set; }
         public List<SelectListItem> NoteTypes { get; set; }
+        public List<SelectListItem> ActivityTypes { get; set; }
+        public List<SelectListItem> SchoolList { get; set; }
     }
 }
