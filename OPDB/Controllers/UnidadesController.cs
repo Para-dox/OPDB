@@ -18,7 +18,7 @@ namespace OPDB.Controllers
 
         public ActionResult Index()
         {
-            var units = db.Units.Include(u => u.User).Include(u => u.User1);
+            var units = from u in db.Units.Include(u => u.User).Include(u => u.User1) where u.DeletionDate == null select u;
             return View(units.ToList());
         }
 
@@ -97,6 +97,7 @@ namespace OPDB.Controllers
                 unit.UpdateUser = 1; // TODO get actual user
                 db.Entry(unit).State = EntityState.Modified;
                 db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
 

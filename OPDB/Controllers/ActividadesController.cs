@@ -18,7 +18,7 @@ namespace OPDB.Controllers
 
         public ActionResult Index()
         {
-            var activities = db.Activities.Include(a => a.ActivityType).Include(a => a.School).Include(a => a.User).Include(a => a.User1).Include(a => a.User2);
+            var activities = from a in db.Activities.Include(a => a.ActivityType).Include(a => a.School).Include(a => a.User).Include(a => a.User1).Include(a => a.User2) where a.DeletionDate == null select a;
             return View(activities.ToList());
         }
 
@@ -41,7 +41,6 @@ namespace OPDB.Controllers
             return View(activityViewModel);
         }
 
-        //
         // GET: /Actividades/Create
 
         public ActionResult Crear()
@@ -54,8 +53,7 @@ namespace OPDB.Controllers
             return View();
         }
 
-        //
-        // POST: /Escuelas/Create
+        // POST
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -63,11 +61,15 @@ namespace OPDB.Controllers
         {
             if (ModelState.IsValid)
             {
+                //TODO needs to acquire current user 
+
+                activity.UserID = 3;
+
                 activity.UpdateDate = DateTime.Now;
                 activity.CreateDate = DateTime.Now;
 
-                activity.CreateUser = 2;
-                activity.UpdateUser = 2;
+                activity.CreateUser = 3;
+                activity.UpdateUser = 3;
 
                 db.Activities.Add(activity);
                 db.SaveChanges();
@@ -88,9 +90,9 @@ namespace OPDB.Controllers
             }
             ViewBag.ActivityTypeID = new SelectList(db.ActivityTypes, "ActivityTypeID", "ActivityType1", activity.ActivityTypeID);
             ViewBag.SchoolID = new SelectList(db.Schools, "SchoolID", "SchoolName", activity.SchoolID);
-            ViewBag.CreateUser = new SelectList(db.Users, "UserID", "UserPassword", activity.CreateUser);
-            ViewBag.UpdateUser = new SelectList(db.Users, "UserID", "UserPassword", activity.UpdateUser);
-            ViewBag.UserID = new SelectList(db.Users, "UserID", "UserPassword", activity.UserID);
+            //ViewBag.CreateUser = new SelectList(db.Users, "UserID", "UserPassword", activity.CreateUser);
+            //ViewBag.UpdateUser = new SelectList(db.Users, "UserID", "UserPassword", activity.UpdateUser);
+            //ViewBag.UserID = new SelectList(db.Users, "UserID", "UserPassword", activity.UserID);
             return View(activity);
         }
 
@@ -103,15 +105,20 @@ namespace OPDB.Controllers
         {
             if (ModelState.IsValid)
             {
+                //TODO acquire current user
+                activity.UpdateUser = 3;
+                activity.UpdateDate = DateTime.Now;
                 db.Entry(activity).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.ActivityTypeID = new SelectList(db.ActivityTypes, "ActivityTypeID", "ActivityType1", activity.ActivityTypeID);
-            ViewBag.SchoolID = new SelectList(db.Schools, "SchoolID", "SchoolName", activity.SchoolID);
-            ViewBag.CreateUser = new SelectList(db.Users, "UserID", "UserPassword", activity.CreateUser);
-            ViewBag.UpdateUser = new SelectList(db.Users, "UserID", "UserPassword", activity.UpdateUser);
-            ViewBag.UserID = new SelectList(db.Users, "UserID", "UserPassword", activity.UserID);
+            //TODO are these needed?
+            //ViewBag.ActivityTypeID = new SelectList(db.ActivityTypes, "ActivityTypeID", "ActivityType1", activity.ActivityTypeID);
+            //ViewBag.SchoolID = new SelectList(db.Schools, "SchoolID", "SchoolName", activity.SchoolID);
+            //ViewBag.CreateUser = new SelectList(db.Users, "UserID", "UserPassword", activity.CreateUser);
+            //ViewBag.UpdateUser = new SelectList(db.Users, "UserID", "UserPassword", activity.UpdateUser);
+            //ViewBag.UserID = new SelectList(db.Users, "UserID", "UserPassword", activity.UserID);
+
             return View(activity);
         }
 
@@ -124,6 +131,12 @@ namespace OPDB.Controllers
             if (activity == null)
             {
                 return HttpNotFound();
+            }
+            else
+            {
+                activity.DeletionDate = DateTime.Now;
+                db.Entry(activity).State = EntityState.Modified;
+                db.SaveChanges();
             }
             return View(activity);
         }

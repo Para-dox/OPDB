@@ -4,7 +4,7 @@
     ViewBag.Title = "Crear";
 }
 
-<h2>Crear</h2>
+<h2>Crear Actividad</h2>
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
@@ -14,7 +14,7 @@
         <legend>Activity</legend>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.ActivityTypeID, "ActivityType")
+            @Html.LabelFor(model => model.ActivityTypeID, "Tipo de Actividad")
         </div>
         <div class="editor-field">
             @Html.DropDownList("ActivityTypeID", String.Empty)
@@ -22,7 +22,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Title)
+            @Html.LabelFor(model => model.Title, "Título de Actividad")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.Title)
@@ -30,7 +30,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Purpose)
+            @Html.LabelFor(model => model.Purpose, "Propósito")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.Purpose)
@@ -38,7 +38,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Location)
+            @Html.LabelFor(model => model.Location, "Localización")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.Location)
@@ -46,7 +46,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.ActivityDate)
+            @Html.LabelFor(model => model.ActivityDate, "Fecha de Actividad")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.ActivityDate)
@@ -54,7 +54,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.ActivityTime)
+            @Html.LabelFor(model => model.ActivityTime, "Hora de Actividad")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.ActivityTime)
@@ -62,7 +62,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.SchoolID, "School")
+            @Html.LabelFor(model => model.SchoolID, "Escuela")
         </div>
         <div class="editor-field">
             @Html.DropDownList("SchoolID", String.Empty)
@@ -76,7 +76,7 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Regresar", "Index")
 </div>
 
 @section Scripts {

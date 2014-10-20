@@ -4,7 +4,7 @@
     ViewBag.Title = "Editar";
 }
 
-<h2>Editar</h2>
+<h2>Editar Actividad</h2>
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
@@ -16,7 +16,7 @@
         @Html.HiddenFor(model => model.ActivityID)
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.ActivityTypeID, "ActivityType")
+            @Html.LabelFor(model => model.ActivityTypeID, "Tipo de Actividad")
         </div>
         <div class="editor-field">
             @Html.DropDownList("ActivityTypeID", String.Empty)
@@ -24,7 +24,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Title)
+            @Html.LabelFor(model => model.Title, "Título de Actividad")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.Title)
@@ -32,7 +32,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Purpose)
+            @Html.LabelFor(model => model.Purpose, "Propósito")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.Purpose)
@@ -40,7 +40,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Location)
+            @Html.LabelFor(model => model.Location, "Localización")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.Location)
@@ -48,7 +48,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.ActivityDate)
+            @Html.LabelFor(model => model.ActivityDate, "Fecha de Actividad")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.ActivityDate)
@@ -56,7 +56,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.ActivityTime)
+            @Html.LabelFor(model => model.ActivityTime, "Hora de Actividad")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.ActivityTime)
@@ -64,21 +64,28 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.SchoolID, "School")
+            @Html.LabelFor(model => model.SchoolID, "Escuela")
         </div>
         <div class="editor-field">
             @Html.DropDownList("SchoolID", String.Empty)
             @Html.ValidationMessageFor(model => model.SchoolID)
         </div>
 
+        @Html.HiddenFor(model => model.UserID)
+        @Html.HiddenFor(model => model.CreateUser)
+        @Html.HiddenFor(model => model.CreateDate)
+        @Html.HiddenFor(model => model.UpdateUser)
+        @Html.HiddenFor(model => model.UpdateDate)
+        @Html.HiddenFor(model => model.DeletionDate)
+
         <p>
-            <input type="submit" value="Guardar" />
+            <input type="submit" value="Save" />
         </p>
     </fieldset>
 }
 
 <div>
-    @Html.ActionLink("Devuelta", "Index")
+    @Html.ActionLink("Regresar", "Index")
 </div>
 
 @section Scripts {
