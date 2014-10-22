@@ -117,8 +117,38 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ActivityNote_Note_Required" xml:space="preserve">
+    <value>No ha ingresado el contenido de la nota</value>
+  </data>
+  <data name="Feedback_Feedback_Required" xml:space="preserve">
+    <value>No ha ingresado su comentario</value>
+  </data>
+  <data name="OutreachEntityDetail_Mission_Required" xml:space="preserve">
+    <value>No ha ingresado la misión de la organización</value>
+  </data>
+  <data name="OutreachEntityDetail_Objectives_Required" xml:space="preserve">
+    <value>No ha ingresado los objetivos de la organización</value>
+  </data>
+  <data name="OutreachEntityDetail_OutreachEntityName_Required" xml:space="preserve">
+    <value>No ha ingresado el nombre de la organización</value>
+  </data>
+  <data name="OutreachEntityDetail_Vision_Required" xml:space="preserve">
+    <value>No ha ingresado la visión de la organización</value>
+  </data>
   <data name="Resource_ResourceName_Required" xml:space="preserve">
     <value>No ha ingresado un nombre para este recurso</value>
+  </data>
+  <data name="SchoolNote_Note_Required" xml:space="preserve">
+    <value>No ha ingresado el contenido de la nota</value>
+  </data>
+  <data name="UserDetail_FirstName_Required" xml:space="preserve">
+    <value>No ha ingresado su nombre</value>
+  </data>
+  <data name="UserDetail_Gender_Required" xml:space="preserve">
+    <value>No ha ingresado su género</value>
+  </data>
+  <data name="UserDetail_LastName_Required" xml:space="preserve">
+    <value>No ha ingresado su apellido</value>
   </data>
   <data name="UserNote_Note_Required" xml:space="preserve">
     <value>No ha ingresado el contenido de la nota</value>

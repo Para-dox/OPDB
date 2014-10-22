@@ -4,75 +4,91 @@
     ViewBag.Title = "Crear";
 }
 
+<style>
+    .text-box {
+        width: 500px;
+    }
+
+    input[type="text"][readonly]{
+        background-color: white;
+    }
+
+    .editor-label {
+        text-align: left;
+    }
+
+    span{
+        font-size: 0.875rem;
+        color: #4d4d4d;
+    }
+
+</style>
+
 <h2>Crear Actividad</h2>
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
-    <fieldset>
-        <legend>Activity</legend>
+    <center>
+        <fieldset style="width:500px;">
+            <legend>Activity</legend>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.activity.ActivityTypeID, "Tipo de Actividad")
-        </div>
-        <div class="editor-field">
-            @Html.DropDownListFor(model => model.activity.ActivityTypeID, Model.ActivityTypes)
-            @Html.ValidationMessageFor(model => model.activity.ActivityTypeID)
-        </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Activity.ActivityTypeID, "Tipo de Actividad")
+            </div>
+            <div class="editor-field">
+                @Html.DropDownListFor(model => model.Activity.ActivityTypeID, Model.ActivityTypes, new { @style = "width: 500px !important;" })
+                @Html.ValidationMessageFor(model => model.Activity.ActivityTypeID)
+            </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.activity.Title, "Título de Actividad")
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.activity.Title)
-            @Html.ValidationMessageFor(model => model.activity.Title)
-        </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Activity.Title, "Título de Actividad")
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.Activity.Title)
+                @Html.ValidationMessageFor(model => model.Activity.Title)
+            </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.activity.Purpose, "Propósito")
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.activity.Purpose)
-            @Html.ValidationMessageFor(model => model.activity.Purpose)
-        </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Activity.Purpose, "Propósito")
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.Activity.Purpose)
+                @Html.ValidationMessageFor(model => model.Activity.Purpose)
+            </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.activity.Location, "Localización")
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.activity.Location)
-            @Html.ValidationMessageFor(model => model.activity.Location)
-        </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Activity.Location, "Localización")
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.Activity.Location)
+                @Html.ValidationMessageFor(model => model.Activity.Location)
+            </div>
+            <div class="editor-field">
+                <div class="large-6 columns" style="text-align:left;">
+                    <span>Fecha </span><br />
+                    @Html.TextBoxFor(model => model.Activity.ActivityDate, new { id = "datepicker", @readonly = true }) &nbsp;<i class="fa fa-calendar"></i> 
+                </div>
+                <div class="large-6 columns" style="text-align:left;">
+                    <span>Hora </span><br />
+                    @Html.TextBoxFor(model => model.Activity.ActivityTime, new { id = "timepicker" }) &nbsp;<i class="fa fa-clock-o"></i>
+                    @*@Html.ValidationMessageFor(model => model.activity.ActivityDate)*@
+                </div>
+            </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Activity.SchoolID, "Escuela")
+            </div>
+            <div class="editor-field">
+                @Html.DropDownListFor(model => model.Activity.SchoolID, Model.SchoolList, new { @style = "width: 500px !important;" })
+                @Html.ValidationMessageFor(model => model.Activity.SchoolID)
+            </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.activity.ActivityDate, "Fecha de Actividad")
-        </div>
-        <div class="editor-field">
-            @Html.TextBoxFor(model => model.activity.ActivityDate, new { id = "datepicker" })
-            @Html.ValidationMessageFor(model => model.activity.ActivityDate)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.activity.ActivityTime, "Hora de Actividad")
-        </div>
-        <div class="editor-field">
-            @Html.TextBoxFor(model => model.activity.ActivityTime, new { id = "timepicker" })
-            @Html.ValidationMessageFor(model => model.activity.ActivityTime)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.activity.SchoolID, "Escuela")
-        </div>
-        <div class="editor-field">
-            @Html.DropDownListFor(model => model.activity.SchoolID, Model.SchoolList)
-            @Html.ValidationMessageFor(model => model.activity.SchoolID)
-        </div>
-
-        <p>
-            <input type="submit" value="Crear" />
-        </p>
-    </fieldset>
+            <p style="text-align:left;">
+                <input type="submit" value="Crear" />
+            </p>
+        </fieldset>
+    </center>
 }
 
 <div>
@@ -80,13 +96,14 @@
 </div>
 
 <script>
-    $(function () {
-        $("#datepicker").datepicker({ dateFormat: 'dd/mm/yy' }).val();
-    });
 
-    $(function () {
-        $("#timepicker").timepicker({ step: 15 }).val();
-    });
+        $("#datepicker").datepicker({ dateFormat: 'dd/mm/yy' }).val();
+ 
+        $("#timepicker").timepicker({
+            'step': 15,
+            'timeFormat': 'h:iA'
+        }).val();
+
 </script>
 
 @section Scripts {

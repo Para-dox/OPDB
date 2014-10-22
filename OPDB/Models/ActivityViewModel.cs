@@ -9,13 +9,16 @@ namespace OPDB.Models
 {
     public class ActivityViewModel
     {
-        public Activity activity { get; set; }
-        public Feedback feedback { get; set; }
-        public ActivityNote note { get; set; }
-        public IEnumerable<Feedback> Feedbacks { get; set; }
+        public Activity Activity { get; set; }
+        public Feedback Feedback { get; set; }
+        public ActivityNote Note { get; set; }
+        public List<UserInfoViewModel> Feedbacks { get; set; }
         public IEnumerable<ActivityNote> Notes { get; set; }
         public List<SelectListItem> NoteTypes { get; set; }
         public List<SelectListItem> ActivityTypes { get; set; }
         public List<SelectListItem> SchoolList { get; set; }
+        public string ActivityDate { get; set; }
+
+        public List<UserInfoViewModel> Information { get; set; }
     }
 }

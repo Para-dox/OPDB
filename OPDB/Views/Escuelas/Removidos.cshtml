@@ -1,8 +1,9 @@
 ﻿@model OPDB.Models.SchoolViewModel
 
 @{
-    ViewBag.Title = "Escuelas";
+    ViewBag.Title = "Removidos";
 }
+
 <style>
     select {
         width: 50px !important;
@@ -23,14 +24,12 @@
         text-align: center !important;
     }
 
-    .previous, .next{
+    .previous, .next {
         display: none !important;
     }
-
-    
 </style>
-<br />
-<table id="schools">
+
+<table id="removedSchools">
     <thead>
         <tr>
             <th>Nombre</th>
@@ -39,7 +38,8 @@
             <th>En</th>
             <th>Modificado Por</th>
             <th>En</th>
-            <th style="width:6%;"></th>
+            <th>Removido En</th>
+            <th style="width:3%;"></th>
         </tr>
     </thead>
     <tbody>
@@ -65,25 +65,24 @@
                     @Html.DisplayFor(modelItem => item.School.UpdateDate)
                 </td>
                 <td>
-                    <a href="@Url.Action("Editar", "Escuelas", new { id = item.School.SchoolID })"><i class="fa fa-pencil" title="Editar"></i></a>
-                    <i title="Remover" class="fa fa-remove" onclick="removeRecord(this)" data-url="@Url.Action("Remover", "Escuelas", new { id = item.School.SchoolID })"></i>
-        
+                    @Html.DisplayFor(modelItem => item.School.DeletionDate)
+                </td>
+                <td>
+                    <i title="Restaurar" class="fa fa-plus"></i>
                 </td>
             </tr>
+
         }
     </tbody>
 </table>
 <br />
-<p>
-   
-        <input type="button" value="Nueva Escuela" onclick="location.href='@Url.Action("Crear", "Escuelas")'" /> 
-   
-</p>
+
+
 <script src="~/Scripts/myScripts.js"></script>
 <script>
     $(document).ready(function () {
 
-        $('#schools').DataTable({
+        $('#removedSchools').DataTable({
             "sDom": '<"top"lf>t<"bottom"ipr><"clear">',
             "sPaginationType": "full_numbers",
             "bProcessing": false,
@@ -92,14 +91,12 @@
             "columnDefs": [
                 {
                     "orderable": false,
-                    "targets": 6
+                    "targets": 4
                 }
-
-
             ],
-            "oLanguage": {"sEmptyTable": "No se ha añadido ninguna escuela",
-                "sZeroRecords": "No se ha encontrado ningún registro"}
+            "oLanguage": { "sEmptyTable": "No se ha removido ninguna escuela" }
         });
+
         document.getElementsByTagName("loading")[0].innerHTML = "";
     });
 

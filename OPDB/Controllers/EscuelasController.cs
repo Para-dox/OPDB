@@ -18,8 +18,25 @@ namespace OPDB.Controllers
 
         public ActionResult Index()
         {
-            var schools = db.Schools.Include(s => s.User).Include(s => s.User1);
-            return View(schools.ToList());
+            var schools = (from school in db.Schools where school.DeletionDate == null select school).ToList();
+
+            SchoolViewModel schoolViewModel = new SchoolViewModel
+            {
+                Information = new List<UserInfoViewModel>()
+            };
+
+            foreach (var school in schools)
+            {
+                schoolViewModel.Information.Add(new UserInfoViewModel
+                {
+                    School = school,
+                    CreateUser = db.UserDetails.First(sch => sch.UserID == school.CreateUser),
+                    UpdateUser = db.UserDetails.First(sch => sch.UserID == school.UpdateUser)
+
+                });
+            }
+
+            return PartialView("Index", schoolViewModel);
         }
 
         //
@@ -42,11 +59,11 @@ namespace OPDB.Controllers
         {
             SchoolViewModel schoolViewModel = new SchoolViewModel
             {
-                school = db.Schools.Find(id),
+                School = db.Schools.Find(id),
                 Notes = from note in db.SchoolNotes.Include(note => note.NoteType) where note.SchoolID == id && note.DeletionDate == null select note
             };
 
-            if (schoolViewModel.school == null)
+            if (schoolViewModel.School == null)
             {
                 return HttpNotFound();
             }
@@ -173,48 +190,77 @@ namespace OPDB.Controllers
         [HttpPost]
         public ActionResult GuardarNota(SchoolViewModel schoolViewModel)
         {
-            
-            schoolViewModel.note.UpdateUser = 2;
-            schoolViewModel.note.UpdateDate = DateTime.Now;
 
-            if (schoolViewModel.note.SchoolNoteID == 0){  
+            schoolViewModel.Note.UpdateUser = 2;
+            schoolViewModel.Note.UpdateDate = DateTime.Now;
 
-                schoolViewModel.note.CreateDate = DateTime.Now;
-                schoolViewModel.note.SchoolID = schoolViewModel.school.SchoolID;
-
-                schoolViewModel.note.UserID = 2;
-                schoolViewModel.note.CreateUser = 2;
-               
-                db.SchoolNotes.Add(schoolViewModel.note);
-
-            }
-            else
+            if (schoolViewModel.Note.SchoolNoteID == 0)
             {
-                db.Entry(schoolViewModel.note).State = EntityState.Modified;
+                if (ModelState.IsValid)
+                {
+                    schoolViewModel.Note.CreateDate = DateTime.Now;
+
+                    schoolViewModel.Note.UserID = 2;
+                    schoolViewModel.Note.CreateUser = 2;
+
+                    db.SchoolNotes.Add(schoolViewModel.Note);
+                    db.SaveChanges();
+
+                    return View("_Hack");
+                }
+
+                return Content(GetErrorsFromModelState(schoolViewModel));
+            }
+            else if (ModelState.IsValid)
+            {
+
+                db.Entry(schoolViewModel.Note).State = EntityState.Modified;
+                db.SaveChanges();
+                return View("_Hack");
+
             }
 
-            db.SaveChanges();
-
-            return RedirectToAction("Detalles", "Escuelas", new { id = schoolViewModel.school.SchoolID});
+            return Content(GetErrorsFromModelState(schoolViewModel));   
         }
 
-        
+        [HttpPost]
         public ActionResult CrearNota(int id)
         {
             SchoolViewModel schoolViewModel = new SchoolViewModel
             {
 
                 NoteTypes = getNoteTypes(),
-                school = new School
+                Note = new SchoolNote
                 {
 
                     SchoolID = id
                 }
             };
 
-            return View(schoolViewModel);
+            return PartialView(schoolViewModel);
         }
 
+        [HttpPost]
+        public ActionResult VerNota(int id = 0)
+        {
+            SchoolNote schoolNote = db.SchoolNotes.Find(id);
+            schoolNote.NoteType = db.NoteTypes.Find(schoolNote.NoteTypeID);
+            schoolNote.School = db.Schools.Find(schoolNote.SchoolID);
+
+            SchoolViewModel schoolViewModel = new SchoolViewModel
+            {
+                Note = schoolNote
+            };
+
+            if (schoolViewModel.Note == null)
+            {
+                return HttpNotFound();
+            }
+
+            return PartialView("VerNota", schoolViewModel);
+        }
+
+        [HttpPost]
         public ActionResult EditarNota(int id)
         {
 
@@ -222,10 +268,10 @@ namespace OPDB.Controllers
             {
 
                 NoteTypes = getNoteTypes(),
-                note = db.SchoolNotes.Find(id)
+                Note = db.SchoolNotes.Find(id)
             };
 
-            return View(schoolViewModel);
+            return PartialView(schoolViewModel);
         }
 
         public List<SelectListItem> getNoteTypes()
@@ -250,6 +296,48 @@ namespace OPDB.Controllers
         {
             var schools = db.Schools.Include(s => s.User).Include(s => s.User1);
             return View(schools.ToList());
+        }
+
+        public String GetErrorsFromModelState(SchoolViewModel schoolViewModel)
+        {
+
+
+            //retrieves the validation messages from the ModelState as strings    
+            var str = "";
+            var errorSates = from state in ModelState.Values
+                             from error in state.Errors
+                             select error.ErrorMessage;
+
+            var errorList = errorSates.ToList();
+            foreach (var m in errorList)
+            {
+                str = str + "<li>* " + m + "</li>";
+            }
+
+            return str;
+        }
+
+        public ActionResult Removidos()
+        {
+            var schools = (from school in db.Schools where school.DeletionDate != null select school).ToList();
+
+            SchoolViewModel schoolViewModel = new SchoolViewModel
+            {
+                Information = new List<UserInfoViewModel>()
+            };
+
+            foreach (var school in schools)
+            {
+                schoolViewModel.Information.Add(new UserInfoViewModel
+                {
+                    School = school,
+                    CreateUser = db.UserDetails.First(sch => sch.UserID == school.CreateUser),
+                    UpdateUser = db.UserDetails.First(sch => sch.UserID == school.UpdateUser)
+
+                });
+            }
+
+            return PartialView("Removidos", schoolViewModel);
         }
     }
 }

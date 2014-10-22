@@ -6,6 +6,10 @@
 //    Manual changes to this file will be overwritten if the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+using System;
+using System.Data;
+using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 
 namespace OPDB.Models
 {
@@ -16,9 +20,12 @@ namespace OPDB.Models
     {
         public int UserDetailID { get; set; }
         public int UserID { get; set; }
+        [Required(ErrorMessageResourceName = "UserDetail_FirstName_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string FirstName { get; set; }
+        [Required(ErrorMessageResourceName = "UserDetail_LastName_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string LastName { get; set; }
         public string MiddleInitial { get; set; }
+        [Required(ErrorMessageResourceName = "UserDetail_Gender_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Gender { get; set; }
         public Nullable<System.DateTime> DateOfBirth { get; set; }
         public string Role { get; set; }

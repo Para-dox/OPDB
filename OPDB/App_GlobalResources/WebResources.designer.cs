@@ -61,11 +61,101 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No ha ingresado el contenido de la nota.
+        /// </summary>
+        internal static string ActivityNote_Note_Required {
+            get {
+                return ResourceManager.GetString("ActivityNote_Note_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No ha ingresado su comentario.
+        /// </summary>
+        internal static string Feedback_Feedback_Required {
+            get {
+                return ResourceManager.GetString("Feedback_Feedback_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No ha ingresado la misión de la organización.
+        /// </summary>
+        internal static string OutreachEntityDetail_Mission_Required {
+            get {
+                return ResourceManager.GetString("OutreachEntityDetail_Mission_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No ha ingresado los objetivos de la organización.
+        /// </summary>
+        internal static string OutreachEntityDetail_Objectives_Required {
+            get {
+                return ResourceManager.GetString("OutreachEntityDetail_Objectives_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No ha ingresado el nombre de la organización.
+        /// </summary>
+        internal static string OutreachEntityDetail_OutreachEntityName_Required {
+            get {
+                return ResourceManager.GetString("OutreachEntityDetail_OutreachEntityName_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No ha ingresado la visión de la organización.
+        /// </summary>
+        internal static string OutreachEntityDetail_Vision_Required {
+            get {
+                return ResourceManager.GetString("OutreachEntityDetail_Vision_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No ha ingresado un nombre para este recurso.
         /// </summary>
         internal static string Resource_ResourceName_Required {
             get {
                 return ResourceManager.GetString("Resource_ResourceName_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No ha ingresado el contenido de la nota.
+        /// </summary>
+        internal static string SchoolNote_Note_Required {
+            get {
+                return ResourceManager.GetString("SchoolNote_Note_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No ha ingresado su nombre.
+        /// </summary>
+        internal static string UserDetail_FirstName_Required {
+            get {
+                return ResourceManager.GetString("UserDetail_FirstName_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No ha ingresado su género.
+        /// </summary>
+        internal static string UserDetail_Gender_Required {
+            get {
+                return ResourceManager.GetString("UserDetail_Gender_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No ha ingresado su apellido.
+        /// </summary>
+        internal static string UserDetail_LastName_Required {
+            get {
+                return ResourceManager.GetString("UserDetail_LastName_Required", resourceCulture);
             }
         }
         

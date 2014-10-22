@@ -4,22 +4,22 @@
 @using (Ajax.BeginForm("Editar", "Recursos", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "validation" }))
     {
         @Html.ValidationSummary(false)
-            @Html.HiddenFor(model => model.resource.ResourceID)
-            @Html.HiddenFor(model => model.resource.CreateUser)
-            @Html.HiddenFor(model => model.resource.CreateDate)
+            @Html.HiddenFor(model => model.Resource.ResourceID)
+            @Html.HiddenFor(model => model.Resource.CreateUser)
+            @Html.HiddenFor(model => model.Resource.CreateDate)
 
             <div class="editor-label">
-                @Html.LabelFor(model => model.resource.Resource1, "Recurso *")
+                @Html.LabelFor(model => model.Resource.Resource1, "Recurso *")
             </div>
             <div class="editor-field">
-                @Html.EditorFor(model => model.resource.Resource1)
+                @Html.EditorFor(model => model.Resource.Resource1)
             </div>
 
             <div class="editor-label">
-                @Html.LabelFor(model => model.resource.UnitID, "Unidad")
+                @Html.LabelFor(model => model.Resource.UnitID, "Unidad")
             </div>
             <div class="editor-field">
-                @Html.DropDownListFor(model => model.resource.UnitID, Model.units, new { @style = "margin: 0 0 1rem 0 !important; padding: 0.5rem !important; height: 2.3125rem !important; width: 100% !important;" })
+                @Html.DropDownListFor(model => model.Resource.UnitID, Model.Units, new { @style = "margin: 0 0 1rem 0 !important; padding: 0.5rem !important; height: 2.3125rem !important; width: 100% !important;" })
             </div>
             <br />
             <p>

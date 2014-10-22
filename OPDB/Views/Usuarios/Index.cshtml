@@ -27,11 +27,12 @@
 <table id="users">
     <thead>
         <tr>
-            <th style="width:20%;">Nombre</th>
-            <th style="width:20%;">Tipo de Usuario</th>
-            <th style="width:20%;">Correo Electrónico</th>
-            <th>Teléfono</th>
-            <th style="width:8%;"></th>
+            <th>Nombre</th>
+            <th>Tipo de Usuario</th>
+            <th>Correo Electrónico</th>
+            <th>Creado</th>
+            <th>Modificado</th>
+            <th style="width:6%;"></th>
         </tr>
     </thead>
     <tbody>
@@ -48,7 +49,10 @@
                     @Html.DisplayFor(modelItem => item.Email)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                    @Html.DisplayFor(modelItem => item.CreateDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UpdateDate)
                 </td>
                 <td>
                     <a href="@Url.Action("Editar", "Usuarios", new { id = item.UserID })"><i class="fa fa-pencil" title="Editar"></i></a>
@@ -77,12 +81,15 @@
             "columnDefs": [
                 {
                     "orderable": false,
-                    "targets": [3,4]
+                    "targets": [5]
                 }
 
 
-            ]
+            ],
+            "oLanguage": { "sEmptyTable": "No existe ningún usuario",
+                "sZeroRecords": "No se ha encontrado ningún registro" }
         });
+        document.getElementsByTagName("loading")[0].innerHTML = "";
     });
 
 

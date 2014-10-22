@@ -4,89 +4,105 @@
     ViewBag.Title = "Editar";
 }
 
+<style>
+    .text-box {
+        width: 500px;
+    }
+
+    input[type="text"][readonly]{
+        background-color: white;
+    }
+
+    .editor-label {
+        text-align: left;
+    }
+
+    span{
+        font-size: 0.875rem;
+        color: #4d4d4d;
+    }
+</style>
+
 <h2>Editar Actividad</h2>
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
-    <fieldset>
-        <legend>Activity</legend>
+    <center>
+        <fieldset style="width:500px;">
+            <legend>Activity</legend>
 
-        @Html.HiddenFor(model => model.ActivityID)
+            @Html.HiddenFor(model => model.Activity.ActivityID)
+            @Html.HiddenFor(model => model.Activity.UserID)
+            @Html.HiddenFor(model => model.Activity.CreateUser)
+            @Html.HiddenFor(model => model.Activity.CreateDate)
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.ActivityTypeID, "Tipo de Actividad")
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("ActivityTypeID", String.Empty)
-            @Html.ValidationMessageFor(model => model.ActivityTypeID)
-        </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Activity.ActivityTypeID, "Tipo de Actividad")
+            </div>
+            <div class="editor-field">
+                @Html.DropDownListFor(model => model.Activity.ActivityTypeID, Model.ActivityTypes, new { @style = "width: 500px !important;" })
+                @Html.ValidationMessageFor(model => model.Activity.ActivityTypeID)
+            </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Title, "Título de Actividad")
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Title)
-            @Html.ValidationMessageFor(model => model.Title)
-        </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Activity.Title, "Título de Actividad")
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.Activity.Title)
+                @Html.ValidationMessageFor(model => model.Activity.Title)
+            </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Purpose, "Propósito")
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Purpose)
-            @Html.ValidationMessageFor(model => model.Purpose)
-        </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Activity.Purpose, "Propósito")
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.Activity.Purpose)
+                @Html.ValidationMessageFor(model => model.Activity.Purpose)
+            </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Location, "Localización")
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Location)
-            @Html.ValidationMessageFor(model => model.Location)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.ActivityDate, "Fecha de Actividad")
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.ActivityDate)
-            @Html.ValidationMessageFor(model => model.ActivityDate)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.ActivityTime, "Hora de Actividad")
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.ActivityTime)
-            @Html.ValidationMessageFor(model => model.ActivityTime)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.SchoolID, "Escuela")
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("SchoolID", String.Empty)
-            @Html.ValidationMessageFor(model => model.SchoolID)
-        </div>
-
-        @Html.HiddenFor(model => model.UserID)
-        @Html.HiddenFor(model => model.CreateUser)
-        @Html.HiddenFor(model => model.CreateDate)
-        @Html.HiddenFor(model => model.UpdateUser)
-        @Html.HiddenFor(model => model.UpdateDate)
-        @Html.HiddenFor(model => model.DeletionDate)
-
-        <p>
-            <input type="submit" value="Save" />
-        </p>
-    </fieldset>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Activity.Location, "Localización")
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.Activity.Location)
+                @Html.ValidationMessageFor(model => model.Activity.Location)
+            </div>
+            <div class="editor-field">
+                <div class="large-6 columns" style="text-align:left;">
+                    <span>Fecha </span><br />
+                    @Html.TextBoxFor(model => model.ActivityDate, new { id = "datepicker", @readonly = true }) &nbsp;<i class="fa fa-calendar"></i>
+                </div>
+                <div class="large-6 columns" style="text-align:left;">
+                    <span>Hora </span><br />
+                    @Html.TextBoxFor(model => model.Activity.ActivityTime, new { id = "timepicker" }) &nbsp;<i class="fa fa-clock-o"></i>
+                    @*@Html.ValidationMessageFor(model => model.activity.ActivityDate)*@
+                </div>
+            </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Activity.SchoolID, "Escuela")
+            </div>
+            <div class="editor-field">
+                @Html.DropDownListFor(model => model.Activity.SchoolID, Model.SchoolList, new { @style = "width: 500px !important;" })
+                @Html.ValidationMessageFor(model => model.Activity.SchoolID)
+            </div>
+            <p>
+                <input type="submit" value="Guardar" /><input type="button" value="Regresar" onclick="location.href='@Url.Action("Index","Actividades", null)'"/>
+            </p>
+        </fieldset>
+    </center>
 }
+<script>
 
-<div>
-    @Html.ActionLink("Regresar", "Index")
-</div>
+        $("#datepicker").datepicker({ dateFormat: 'dd/mm/yy' }).val();
+
+        $("#timepicker").timepicker({
+            'step': 15,
+            'timeFormat': 'h:iA'
+        }).val();
+
+</script>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

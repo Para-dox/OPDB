@@ -21,10 +21,28 @@ namespace OPDB.Controllers
         /// The resource index, returns the system admin view.
         /// </summary>
         /// <returns>The system admin view for resources.</returns>
-        public ActionResult Index()
-        {
-            var resources = db.Resources.Include(r => r.Unit);
-            return PartialView("Index", resources.ToList());
+        public ActionResult Index(){
+
+            List<Resource> resources = (from resource in db.Resources where resource.DeletionDate == null select resource).ToList();
+            
+            ResourceViewModel resourceViewModel = new ResourceViewModel
+            {
+                Information = new List<UserInfoViewModel>()
+            };
+
+
+            foreach (var resource in resources)
+            {
+                resourceViewModel.Information.Add(new UserInfoViewModel
+                {
+                    Resource = resource,
+                    CreateUser = db.UserDetails.First(r => r.UserID == resource.CreateUser),
+                    UpdateUser = db.UserDetails.First(r => r.UserID == resource.UpdateUser)
+
+                });
+            }
+
+           return PartialView("Index", resourceViewModel);
         }
 
         /// <summary>
@@ -35,16 +53,16 @@ namespace OPDB.Controllers
         [HttpPost]
         public ActionResult Detalles(int id = 0)
         {
-            Resource r = db.Resources.Find(id);
+            Resource resource = db.Resources.Find(id);
 
             ResourceViewModel resourceViewModel = new ResourceViewModel
             {
-                resource = r,
-                unit = db.Units.Find(r.UnitID),
-                units = getUnits()
+                Resource = resource,
+                Unit = db.Units.Find(resource.UnitID),
+                Units = getUnits()
             };
 
-            if (resourceViewModel.resource == null)
+            if (resourceViewModel.Resource == null)
             {
                 return HttpNotFound();
             }
@@ -62,7 +80,7 @@ namespace OPDB.Controllers
         {
             ResourceViewModel resourceViewModel = new ResourceViewModel
             {
-                units = getUnits()
+                Units = getUnits()
             };
             return PartialView("Crear", resourceViewModel);
         }
@@ -81,14 +99,14 @@ namespace OPDB.Controllers
         try { 
                 if (ModelState.IsValid)
                 {
-                    resourceViewModel.resource.CreateDate = DateTime.Now;
-                    resourceViewModel.resource.UpdateDate = DateTime.Now;
+                    resourceViewModel.Resource.CreateDate = DateTime.Now;
+                    resourceViewModel.Resource.UpdateDate = DateTime.Now;
 
                     // Change after login implementation.
-                    resourceViewModel.resource.CreateUser = 1;
-                    resourceViewModel.resource.UpdateUser = 1;
+                    resourceViewModel.Resource.CreateUser = 1;
+                    resourceViewModel.Resource.UpdateUser = 1;
 
-                    db.Resources.Add(resourceViewModel.resource);
+                    db.Resources.Add(resourceViewModel.Resource);
                     db.SaveChanges();
                     return View("_Hack");
                 }
@@ -115,12 +133,12 @@ namespace OPDB.Controllers
 
             ResourceViewModel resourceViewModel = new ResourceViewModel
             {
-                resource = db.Resources.Find(id),
-                units = getUnits()
+                Resource = db.Resources.Find(id),
+                Units = getUnits()
 
             };
 
-            if (resourceViewModel.resource == null)
+            if (resourceViewModel.Resource == null)
             {
                 return HttpNotFound();
             }
@@ -141,10 +159,10 @@ namespace OPDB.Controllers
             if (ModelState.IsValid)
             {
                 //To be changed with login.
-                resourceViewModel.resource.UpdateUser = 1;
+                resourceViewModel.Resource.UpdateUser = 1;
 
-                resourceViewModel.resource.UpdateDate = DateTime.Now;                
-                db.Entry(resourceViewModel.resource).State = EntityState.Modified;
+                resourceViewModel.Resource.UpdateDate = DateTime.Now;                
+                db.Entry(resourceViewModel.Resource).State = EntityState.Modified;
                 db.SaveChanges();
                 return View("_Hack");
             }

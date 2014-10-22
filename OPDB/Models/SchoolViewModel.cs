@@ -9,10 +9,12 @@ namespace OPDB.Models
     public class SchoolViewModel
     {
 
-        public School school { get; set; }
-        public SchoolNote note { get; set; }
+        public School School { get; set; }
+        public SchoolNote Note { get; set; }
         public IEnumerable<SchoolNote> Notes { get; set; }
         public List<SelectListItem> NoteTypes { get; set; }
+
+        public List<UserInfoViewModel> Information { get; set; }
         
     }
 }

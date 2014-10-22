@@ -1,4 +1,4 @@
-﻿@model IEnumerable<OPDB.Models.Resource>
+﻿@model OPDB.Models.ResourceViewModel
 @using Microsoft.Ajax.Utilities
 
 @{
@@ -38,25 +38,35 @@
         <thead>
             <tr>
                 <th>Recurso</th>
-                <th style="width:50%;">Unidad</th>
+                <th>Creado Por</th>
+                <th>En</th>
+                <th>Modificado Por</th>
+                <th>En</th>
                 <th style="width:10%"></th>
             </tr>
         </thead>
 
         <tbody>
-            @foreach (var item in Model)
+            @foreach (var item in Model.Information)
             {
                 <tr>
                     <td>
-                        <a href="#" title="Ver Detalles" class="modal_ajax_btn" data-validation="false" data-title="@item.Resource1" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("Detalles", "Recursos", new { id = item.ResourceID})">@item.Resource1</a>
-                        @*<a title="Ver Detalles" onclick="loadResourceAction(this)" data-url="@Url.Action("Detalles", "Recursos", new { id = item.ResourceID })">@item.Resource1</a>*@
+                        <a href="#" title="Ver Detalles" class="modal_ajax_btn" data-validation="false" data-title="@item.Resource.Resource1" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("Detalles", "Recursos", new { id = item.Resource.ResourceID })">@item.Resource.Resource1</a>
                      </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Unit.UnitName)
+                        @Html.ActionLink(item.CreateUser.FirstName + " " + item.CreateUser.MiddleInitial + " " + item.CreateUser.LastName, "Detalles", "Usuarios", new { id = item.Resource.CreateUser }, null)
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Resource.CreateDate)
                     </td>
                     <td>
-                        <a href="#" title="Editar" data-title="Editar Recurso" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("PopUpEditar", "Recursos", new { id = item.ResourceID })" class="modal_ajax_btn"><i class="fa fa-pencil"></i></a> 
-                        <i title="Remover" class="fa fa-remove" onclick="removeRecord(this, 'resources')" data-url="@Url.Action("Remover", "Recursos", new { id = item.ResourceID })"></i>
+                       @Html.ActionLink(item.UpdateUser.FirstName + " " + item.UpdateUser.MiddleInitial + " " + item.UpdateUser.LastName, "Detalles", "Usuarios", new { id = item.Resource.UpdateUser }, null)
+                     </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Resource.UpdateDate)
+                    </td>
+                    <td>
+                        <a href="#" title="Editar" data-title="Editar Recurso" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("PopUpEditar", "Recursos", new { id = item.Resource.ResourceID })" class="modal_ajax_btn"><i class="fa fa-pencil"></i></a> 
+                        <i title="Remover" class="fa fa-remove" onclick="removeRecord(this, 'resources')" data-url="@Url.Action("Remover", "Recursos", new { id = item.Resource.ResourceID })"></i>
                     </td>
                 </tr>
             }
@@ -85,8 +95,14 @@
                 }
 
 
-            ]
+            ],
+            "oLanguage": {
+                "sEmptyTable": "No se ha añadido ningún recurso",
+                "sZeroRecords": "No se ha encontrado ningún registro"
+            }
         });
+
+        document.getElementsByTagName("loading")[0].innerHTML = "";
     });
 
 </script>
