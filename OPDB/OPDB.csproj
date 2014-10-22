@@ -555,12 +555,16 @@
     <Content Include="Views\Home\_Unidades.cshtml" />
     <Content Include="Views\Home\_Usuarios.cshtml" />
     <Content Include="Views\Escuelas\Lista.cshtml" />
-    <Content Include="Views\Usuarios\Lista.cshtml" />
+    <Content Include="Views\Alcance\Lista.cshtml" />
     <Content Include="Views\Usuarios\Removidos.cshtml" />
     <Content Include="Views\Shared\_Hack.cshtml" />
     <Content Include="Views\Usuarios\CrearNota.cshtml" />
     <Content Include="Views\Usuarios\EditarNota.cshtml" />
     <Content Include="Views\Home\Administracion.cshtml" />
+    <Content Include="Views\Alcance\CrearNota.cshtml" />
+    <Content Include="Views\Alcance\EditarNota.cshtml" />
+    <Content Include="Views\Alcance\Remover.cshtml" />
+    <Content Include="Views\Usuarios\Lista.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
