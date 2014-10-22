@@ -29,105 +29,103 @@
     }
 </style>
 
-<h2 style=" text-align:center;"> @Model.outreachEntity.OutreachEntityName</h2>
-<br />
-<div class="row">
+<h2> @Html.DisplayFor(model => model.outreachEntity.OutreachEntityName)</h2>
+<div class="panel large-12 columns" >
     <div class="large-5 columns">
-        <h3>Información</h3>
-
-    <div class="display-label">
-            @Html.LabelFor(model => model.outreachEntity.OutreachEntityType.OureachEntityType, "Tipo de Organización")
-    </div>
-    <div class="display-field">
-            @Html.DisplayFor(model => model.outreachEntity.OutreachEntityType.OureachEntityType)
-    </div>
+        <div class="display-label">
+            @Html.LabelFor(model => model.outreachEntity.OutreachEntityType.OutreachEntityType1, "Tipo de Organización")
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.outreachEntity.OutreachEntityType.OutreachEntityType1)
+        </div>
         <br />
 
-    <div class="display-label">
+        <div class="display-label">
             @Html.LabelFor(model => model.outreachEntity.OutreachEntityName, "Nombre de la Organización")
-    </div>
-    <div class="display-field">
+        </div>
+        <div class="display-field">
             @Html.DisplayFor(model => model.outreachEntity.OutreachEntityName)
-    </div>
+        </div>
         <br />
 
-    <div class="display-label">
+        <div class="display-label">
             @Html.LabelFor(model => model.outreachEntity.Mission, "Misión")
-    </div>
-    <div class="display-field">
+        </div>
+        <div class="display-field">
             @Html.DisplayFor(model => model.outreachEntity.Mission)
-    </div>
+        </div>
         <br />
 
-    <div class="display-label">
+        <div class="display-label">
             @Html.LabelFor(model => model.outreachEntity.Vision, "Visión")
-    </div>
-    <div class="display-field">
+        </div>
+        <div class="display-field">
             @Html.DisplayFor(model => model.outreachEntity.Vision)
-    </div>
+        </div>
         <br />
 
-    <div class="display-label">
+        <div class="display-label">
             @Html.LabelFor(model => model.outreachEntity.Objectives, "Objetivos")
-    </div>
-    <div class="display-field">
+        </div>
+        <div class="display-field">
             @Html.DisplayFor(model => model.outreachEntity.Objectives)
-    </div>
+        </div>
         <br />
 
-    <div class="display-label">
+        <div class="display-label">
             @Html.LabelFor(model => model.outreachEntity.Location, "Localización")
-    </div>
-    <div class="display-field">
+        </div>
+        <div class="display-field">
             @Html.DisplayFor(model => model.outreachEntity.Location)
+        </div>
     </div>
-
-<p>
-            <input type="button" value="Editar" onclick="location.href='@Url.Action("Editar", "Alcance", new { id = Model.outreachEntity.OutreachEntityDetailID })'" />
-            <input type="button" value="Añadir Nota" onclick="location.href='@Url.Action("CrearNota", "Alcance", new { id = Model.outreachEntity.OutreachEntityDetailID })'" />
-            <input type="button" value="Devuelta" onclick="location.href='@Url.Action("Index", "Alcance")'" />
-</p>
-    </div>
-
-    <div class="large-7 columns">
-        <h3>Notas</h3>
-        <table id="outreachNotes">
-            <thead>
-                <tr>
-                    <th>Tipo</th>
-                    <th style="width:70%;">Nota</th>
-                    <th style="width:10%;"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var note in Model.Notes)
-                {
+        <div class="large-7 columns">
+            <h3>Notas</h3>
+            <table id="outreachNotes">
+                <thead>
                     <tr>
-                        <td>@note.NoteType.NoteType1</td>
-                        <td>@note.Note</td>
-                        <td>
-                            <a href="@Url.Action("EditarNota", "Alcance", new { id = note.UserNoteID })"><i class="fa fa-pencil" title="Editar"></i></a>
-                            <i title="Remover" class="fa fa-remove" onclick="removeRecord(this, 'schoolNotes')" data-url="@Url.Action("RemoverNota", "Alcance", new { id = note.UserNoteID })"></i>
-
-                        </td>
+                        <th>Tipo</th>
+                        <th style="width:70%;">Nota</th>
+                        <th style="width:10%;"></th>
                     </tr>
-                }
-            </tbody>
+                </thead>
+                <tbody>
+                    @foreach (var note in Model.Notes)
+                    {
+                        <tr>
+                            <td>@note.NoteType.NoteType1</td>
+                            <td>@note.Note</td>
+                            <td>
+                                <a href="#" title="Editar" data-title="Editar Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarNota", "Alcance", new { id = note.UserNoteID })" class="modal_ajax_btn"><i class="fa fa-pencil"></i></a>
+                                <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this, 'userNotes')" data-url="@Url.Action("RemoverNota", "Alcance", new { id = note.UserNoteID })"></i>                               
 
-        </table>
-    </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+</div>
+
+<div class="large-12 columns">
+    <p>
+        <input type="button" value="Editar" onclick="location.href='@Url.Action("Editar", "Alcance", new { id = Model.outreachEntity.OutreachEntityDetailID })'" />
+        <a href="#" title="Añadir Nota" class="modal_ajax_btn" data-title="Nueva Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Alcance", new { id = Model.outreachEntity.UserID })"><input type="button" value="Añadir Nota" /></a>
+        <input type="button" value="Volver" onclick="location.href='@Url.Action("Index", "Alcance")'" />
+        <input type="button" value="Volver a Lista" onclick="location.href='@Url.Action("Lista", "Alcance")'">
+    </p>
 </div>
 
 <script src="~/Scripts/myScripts.js"></script>
 <script>
     $(document).ready(function () {
 
-        $('#schoolNotes').DataTable({
+        $('#outreachNotes').DataTable({
             "sDom": '<"top"lf>t<"bottom"pr><"clear">',
             "sPaginationType": "full_numbers",
             "bProcessing": false,
             "iDisplayLength": 12,
-            "aaSorting": [[1, "asc"]],
             "columnDefs": [
                 {
                     "orderable": false,

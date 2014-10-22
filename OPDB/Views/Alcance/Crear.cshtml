@@ -1,75 +1,81 @@
-﻿@model OPDB.Models.OutreachEntityDetail
+﻿@model OPDB.Models.UserViewModel
 
 @{
     ViewBag.Title = "Crear";
 }
 
-<h2>Crear</h2>
+<style>
+    .text-box {
+        width: 500px;
+    }
+
+    .editor-label {
+        text-align: left;
+    }
+</style>
+
+<h2>Registro</h2>
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
-    <fieldset>
+    <fieldset style="width: 500px;">
         <legend>OutreachEntityDetail</legend>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.OutreachEntityTypeID, "Tipo de Organización")
+            @Html.LabelFor(model => model.outreachEntity.OutreachEntityTypeID, "Tipo de Organización")
         </div>
+
         <div class="editor-field">
-            @Html.DropDownList("OutreachEntityTypeID", String.Empty)
-            @Html.ValidationMessageFor(model => model.OutreachEntityTypeID)
+            @Html.ValidationMessageFor(model => model.outreachEntity.OutreachEntityTypeID)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.OutreachEntityName, "Nombre de Organización")
+            @Html.LabelFor(model => model.outreachEntity.OutreachEntityName, "Nombre de Organización")
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.OutreachEntityName)
-            @Html.ValidationMessageFor(model => model.OutreachEntityName)
+            @Html.EditorFor(model => model.outreachEntity.OutreachEntityName)
+            @Html.ValidationMessageFor(model => model.outreachEntity.OutreachEntityName)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Mission, "Misión")
+            @Html.LabelFor(model => model.outreachEntity.Mission, "Misión")
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Mission)
-            @Html.ValidationMessageFor(model => model.Mission)
+            @Html.EditorFor(model => model.outreachEntity.Mission)
+            @Html.ValidationMessageFor(model => model.outreachEntity.Mission)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Vision, "Visión")
+            @Html.LabelFor(model => model.outreachEntity.Vision, "Visión")
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Vision)
-            @Html.ValidationMessageFor(model => model.Vision)
+            @Html.EditorFor(model => model.outreachEntity.Vision)
+            @Html.ValidationMessageFor(model => model.outreachEntity.Vision)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Objectives, "Objetivos")
+            @Html.LabelFor(model => model.outreachEntity.Objectives, "Objetivos")
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Objectives)
-            @Html.ValidationMessageFor(model => model.Objectives)
+            @Html.EditorFor(model => model.outreachEntity.Objectives)
+            @Html.ValidationMessageFor(model => model.outreachEntity.Objectives)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Location, "Localización")
+            @Html.LabelFor(model => model.outreachEntity.Location, "Localización")
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Location)
-            @Html.ValidationMessageFor(model => model.Location)
+            @Html.EditorFor(model => model.outreachEntity.Location)
+            @Html.ValidationMessageFor(model => model.outreachEntity.Location)
         </div>
 
         <p>
-            <input type="submit" value="Crear" />
+            <input type="submit" value="Crear" /> <input type="button" value="Cancelar" onclick="window.location='@Url.Action("Index", "Alcance")'" />
         </p>
     </fieldset>
 }
-
-<div>
-    @Html.ActionLink("Devuelta", "Index")
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

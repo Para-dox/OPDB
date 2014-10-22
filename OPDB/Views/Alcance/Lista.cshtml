@@ -1,0 +1,78 @@
+﻿@model IEnumerable<OPDB.Models.OutreachEntityDetail>
+
+@{
+    ViewBag.Title = "Lista";
+}
+
+<style>
+    select {
+        width: 50px !important;
+        padding: 0.2rem !important;
+        height: 1.5rem !important;
+        margin: 0 !important;
+    }
+
+    input[type="search"] {
+        padding: 0.2rem;
+    }
+
+    label {
+        width: 100%;
+    }
+
+    tr, td {
+        background-color: #ecfaff !important;
+    }
+
+    table {
+        border: none !important;
+    }
+
+    .last, .first, .previous, .next {
+        display: none !important;
+    }
+
+    span {
+        font-size: 0.875rem;
+        color: #4d4d4d;
+    }
+
+    r {
+        font-size: 0.875rem;
+    }
+</style>
+
+<h2>Organizaciones</h2><br />
+
+<div class="large-7 columns panel callout">
+    <table id="outreachList">
+        <thead hidden>
+            <tr><th></th></tr>
+        </thead>
+        <tbody>
+            @foreach (var outreach in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.ActionLink(outreach.OutreachEntityName, "Detalles", "Alcance", new { id = outreach.OutreachEntityDetailID }, null)<br />
+                        <span>Tipo de Organización: </span><r>@outreach.OutreachEntityType.OutreachEntityType1</r><br />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table><br />
+</div>
+
+<script src="~/Scripts/myScripts.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $('#outreachList').DataTable({
+            "sDom": '<"top"lf>t<"bottom"ipr><"clear">',
+            "sPaginationType": "full_numbers",
+            "bProcessing": false,
+            "oLanguage": { "sSearch": "Filter:" }
+        });
+    });
+
+</script>

@@ -1,0 +1,37 @@
+﻿@model OPDB.Models.UserViewModel
+
+@{
+    ViewBag.Title = "Editar";
+}
+
+
+@using (Ajax.BeginForm("GuardarNota", "Alcance", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "validation" }))
+{
+    @Html.ValidationSummary(false)
+
+    @Html.HiddenFor(model => model.note.UserNoteID)
+    @Html.HiddenFor(model => model.note.UserID)
+    @Html.HiddenFor(model => model.note.CreateDate)
+    @Html.HiddenFor(model => model.note.CreateUser)
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.note.NoteTypeID, "Tipo de Nota")
+    </div>
+    <div class="editor-field">
+        @Html.DropDownListFor(model => model.note.NoteTypeID, Model.NoteTypes, new { @style = "margin: 0 0 1rem 0 !important; padding: 0.5rem !important; height: 2.3125rem !important; width: 100% !important;" })
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.note.Note, "Nota *")
+    </div>
+    <div class="editor-field">
+        @Html.TextAreaFor(model => model.note.Note, new { @style = "resize:none; height:100px; width: 100% !important;" })
+    </div>
+
+    <p>
+        <input type="submit" style="float:left !important; width:40% !important; margin-left: 30px !important;" value="Guardar" /><input type="button" value="Cancelar" style="float:right !important; width:40% !important; margin-bottom: 20px !important; margin-right: 30px !important;" onclick="modalClose()" />
+    </p>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

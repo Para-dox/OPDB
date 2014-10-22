@@ -50,7 +50,7 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.OutreachEntityType.OureachEntityType)
+                    @Html.DisplayFor(modelItem => item.OutreachEntityType.OutreachEntityType1)
                 </td>
                 <td>
                     @Html.ActionLink(item.OutreachEntityName + " ", "Detalles", "Alcance", new { id = item.OutreachEntityDetailID}, null)
@@ -62,7 +62,7 @@
                     @Html.DisplayFor(modelItem => item.User.PhoneNumber)
                 </td>
                 <td>
-                    <a href="@Url.Action("Editar", "Alcance", new { id = item.UserID })"><i class="fa fa-pencil" title="Editar"></i></a>
+                    <a href="@Url.Action("Editar", "Alcance", new { id = item.OutreachEntityDetailID })"><i class="fa fa-pencil" title="Editar"></i></a>
                     <i title="Remover" class="fa fa-remove" onclick="removeRecord(this)" data-url="@Url.Action("Remover", "Alcance", new { id = item.UserID })"></i>
                 </td>
             </tr>
