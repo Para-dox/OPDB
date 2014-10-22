@@ -6,10 +6,6 @@
 //    Manual changes to this file will be overwritten if the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
-using System;
-using System.Data;
-using System.ComponentModel.DataAnnotations;
-using System.Runtime.Serialization;
 
 namespace OPDB.Models
 {
@@ -21,13 +17,9 @@ namespace OPDB.Models
         public int OutreachEntityDetailID { get; set; }
         public int UserID { get; set; }
         public int OutreachEntityTypeID { get; set; }
-        [Required(ErrorMessageResourceName = "OutreachEntityDetail_OutreachEntityName_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string OutreachEntityName { get; set; }
-        [Required(ErrorMessageResourceName = "OutreachEntityDetail_Mission_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Mission { get; set; }
-        [Required(ErrorMessageResourceName = "OutreachEntityDetail_Vision_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Vision { get; set; }
-        [Required(ErrorMessageResourceName = "OutreachEntityDetail_Objectives_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Objectives { get; set; }
         public string Location { get; set; }
         public System.DateTime CreateDate { get; set; }

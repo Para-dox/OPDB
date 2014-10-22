@@ -6,10 +6,6 @@
 //    Manual changes to this file will be overwritten if the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
-using System;
-using System.Data;
-using System.ComponentModel.DataAnnotations;
-using System.Runtime.Serialization;
 
 namespace OPDB.Models
 {
@@ -21,7 +17,6 @@ namespace OPDB.Models
         public int FeedbackID { get; set; }
         public int ActivityID { get; set; }
         public int UserID { get; set; }
-        [Required(ErrorMessageResourceName = "Feedback_Feedback_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Feedback1 { get; set; }
         public int CreateUser { get; set; }
         public System.DateTime CreateDate { get; set; }

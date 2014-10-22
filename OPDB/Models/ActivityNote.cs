@@ -6,10 +6,6 @@
 //    Manual changes to this file will be overwritten if the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
-using System;
-using System.Data;
-using System.ComponentModel.DataAnnotations;
-using System.Runtime.Serialization;
 
 namespace OPDB.Models
 {
@@ -22,7 +18,6 @@ namespace OPDB.Models
         public int NoteTypeID { get; set; }
         public int ActivityID { get; set; }
         public int UserID { get; set; }
-        [Required(ErrorMessageResourceName = "ActivityNote_Note_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Note { get; set; }
         public int CreateUser { get; set; }
         public System.DateTime CreateDate { get; set; }

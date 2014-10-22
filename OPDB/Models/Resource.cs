@@ -6,10 +6,6 @@
 //    Manual changes to this file will be overwritten if the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
-using System;
-using System.Data;
-using System.ComponentModel.DataAnnotations;
-using System.Runtime.Serialization;
 
 namespace OPDB.Models
 {
@@ -24,7 +20,6 @@ namespace OPDB.Models
         }
     
         public int ResourceID { get; set; }
-        [Required(ErrorMessageResourceName = "Resource_ResourceName_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Resource1 { get; set; }
         public int UnitID { get; set; }
         public int CreateUser { get; set; }

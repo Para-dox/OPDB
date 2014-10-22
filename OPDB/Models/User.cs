@@ -6,10 +6,6 @@
 //    Manual changes to this file will be overwritten if the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
-using System;
-using System.Data;
-using System.ComponentModel.DataAnnotations;
-using System.Runtime.Serialization;
 
 namespace OPDB.Models
 {
@@ -54,8 +50,6 @@ namespace OPDB.Models
             this.OutreachEntityDetails = new HashSet<OutreachEntityDetail>();
             this.Resources = new HashSet<Resource>();
             this.Resources1 = new HashSet<Resource>();
-            this.Schools = new HashSet<School>();
-            this.Schools1 = new HashSet<School>();
             this.SchoolNotes = new HashSet<SchoolNote>();
             this.Units = new HashSet<Unit>();
             this.Units1 = new HashSet<Unit>();
@@ -66,13 +60,13 @@ namespace OPDB.Models
             this.UserNotes3 = new HashSet<UserNote>();
             this.OutreachEntityTypes = new HashSet<OutreachEntityType>();
             this.OutreachEntityTypes1 = new HashSet<OutreachEntityType>();
+            this.Schools = new HashSet<School>();
+            this.Schools1 = new HashSet<School>();
         }
     
         public int UserID { get; set; }
         public int UserTypeID { get; set; }
-        [Required(ErrorMessageResourceName = "User_UserPassword_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string UserPassword { get; set; }
-        [Required(ErrorMessageResourceName = "User_UserEmail_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public bool UserStatus { get; set; }
@@ -114,8 +108,6 @@ namespace OPDB.Models
         public virtual ICollection<OutreachEntityDetail> OutreachEntityDetails { get; set; }
         public virtual ICollection<Resource> Resources { get; set; }
         public virtual ICollection<Resource> Resources1 { get; set; }
-        public virtual ICollection<School> Schools { get; set; }
-        public virtual ICollection<School> Schools1 { get; set; }
         public virtual ICollection<SchoolNote> SchoolNotes { get; set; }
         public virtual ICollection<Unit> Units { get; set; }
         public virtual ICollection<Unit> Units1 { get; set; }
@@ -127,5 +119,7 @@ namespace OPDB.Models
         public virtual ICollection<UserNote> UserNotes3 { get; set; }
         public virtual ICollection<OutreachEntityType> OutreachEntityTypes { get; set; }
         public virtual ICollection<OutreachEntityType> OutreachEntityTypes1 { get; set; }
+        public virtual ICollection<School> Schools { get; set; }
+        public virtual ICollection<School> Schools1 { get; set; }
     }
 }

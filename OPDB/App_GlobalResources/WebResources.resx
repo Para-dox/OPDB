@@ -141,6 +141,9 @@
   <data name="SchoolNote_Note_Required" xml:space="preserve">
     <value>No ha ingresado el contenido de la nota</value>
   </data>
+  <data name="School_SchoolSequenceNumber_Unique" xml:space="preserve">
+    <value>Ya existe una escuela con ese numéro de identificación</value>
+  </data>
   <data name="UserDetail_FirstName_Required" xml:space="preserve">
     <value>No ha ingresado su nombre</value>
   </data>

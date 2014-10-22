@@ -133,6 +133,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ya existe una escuela con ese numéro de identificación.
+        /// </summary>
+        internal static string School_SchoolSequenceNumber_Unique {
+            get {
+                return ResourceManager.GetString("School_SchoolSequenceNumber_Unique", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No ha ingresado su nombre.
         /// </summary>
         internal static string UserDetail_FirstName_Required {

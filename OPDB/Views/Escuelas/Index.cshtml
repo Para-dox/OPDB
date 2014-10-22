@@ -50,7 +50,7 @@
                     @Html.ActionLink(item.School.SchoolName + " ", "Detalles", "Escuelas", new { id = item.School.SchoolID }, null)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.School.SchoolID)
+                    @Html.DisplayFor(modelItem => item.School.SchoolSequenceNumber)
                 </td>
                 <td>
                     @Html.ActionLink(item.CreateUser.FirstName + " " + item.CreateUser.MiddleInitial + " " + item.CreateUser.LastName, "Detalles", "Usuarios", new { id = item.School.CreateUser }, null)
@@ -65,20 +65,19 @@
                     @Html.DisplayFor(modelItem => item.School.UpdateDate)
                 </td>
                 <td>
-                    <a href="@Url.Action("Editar", "Escuelas", new { id = item.School.SchoolID })"><i class="fa fa-pencil" title="Editar"></i></a>
-                    <i title="Remover" class="fa fa-remove" onclick="removeRecord(this)" data-url="@Url.Action("Remover", "Escuelas", new { id = item.School.SchoolID })"></i>
-        
+                    <a href="#" title="Editar" data-title="Editar Escuela" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("PopUpEditar", "Escuelas", new { id = item.School.SchoolID })" class="modal_ajax_btn"><i class="fa fa-pencil"></i></a> 
+                    <i title="Remover" class="fa fa-remove" onclick="removeRecord(this)" data-url="@Url.Action("Remover", "Escuelas", new { id = item.School.SchoolID })"></i>        
                 </td>
             </tr>
         }
     </tbody>
 </table>
 <br />
+
 <p>
-   
-        <input type="button" value="Nueva Escuela" onclick="location.href='@Url.Action("Crear", "Escuelas")'" /> 
-   
+   <a href="#" title="Añadir Escuela" class="modal_ajax_btn" data-title="Nueva Escuela" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("PopUpCrear", "Escuelas", null)"><input type="button" value="Nueva Escuela" /></a>   
 </p>
+
 <script src="~/Scripts/myScripts.js"></script>
 <script>
     $(document).ready(function () {

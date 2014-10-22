@@ -35,10 +35,10 @@
     <div class="large-5 columns">
         <h3>Información</h3>
         <div class="display-label">
-            @Html.LabelFor(model => model.School.SchoolID, "Número de Identificación")
+            @Html.LabelFor(model => model.School.SchoolSequenceNumber, "Número de Identificación")
         </div>
         <div class="display-field">
-            @Html.DisplayFor(model => model.School.SchoolID)
+            @Html.DisplayFor(model => model.School.SchoolSequenceNumber)
         </div>
         <br />
         <div class="display-label">
@@ -63,7 +63,7 @@
         </div>
         <br />
         <p>
-            <input type="button" value="Editar" onclick="location.href='@Url.Action("Editar", "Escuelas", new { id = Model.School.SchoolID })'" />
+            <a href="#" title="Editar" data-title="Editar Escuela" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("PopUpEditar", "Escuelas", new { id = Model.School.SchoolID })" class="modal_ajax_btn"><i class="fa fa-pencil"></i></a> 
             <a href="#" title="Añadir Nota" class="modal_ajax_btn" data-title="Nueva Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Escuelas", new { id = Model.School.SchoolID })"><input type="button" value="Añadir Nota" /></a>
             <input type="button" value="Devuelta" onclick="location.href='@Url.Action("Index", "Escuelas")'" />
         </p>

@@ -41,7 +41,6 @@ namespace OPDB.Models
         public Nullable<System.DateTime> DeletionDate { get; set; }
     
         public virtual ActivityType ActivityType { get; set; }
-        public virtual School School { get; set; }
         public virtual ICollection<ActivityNote> ActivityNotes { get; set; }
         public virtual ICollection<ActivityResource> ActivityResources { get; set; }
         public virtual ICollection<Contact> Contacts { get; set; }
@@ -52,5 +51,6 @@ namespace OPDB.Models
         public virtual User User { get; set; }
         public virtual User User1 { get; set; }
         public virtual User User2 { get; set; }
+        public virtual School School { get; set; }
     }
 }

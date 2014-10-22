@@ -81,69 +81,107 @@ namespace OPDB.Controllers
         /// 
         /// </returns>
 
-        public ActionResult Crear()
+        [HttpPost]
+        public ActionResult PopUpCrear()
         {
-            ViewBag.CreateUser = new SelectList(db.Users, "UserID", "UserPassword");
-            ViewBag.UpdateUser = new SelectList(db.Users, "UserID", "UserPassword");
-            return View();
+            SchoolViewModel schoolViewModel = new SchoolViewModel
+            {
+                Towns = getTowns()
+            };
+
+            return PartialView("Crear", schoolViewModel);
         }
 
         //
         // POST: /Escuelas/Create
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Crear(School school)
+        public ActionResult Crear(SchoolViewModel schoolViewModel)
         {
-            if (ModelState.IsValid)
+            try {
+
+                var existingSchool = from school in db.Schools where school.SchoolSequenceNumber == schoolViewModel.School.SchoolSequenceNumber select school;
+                    
+                if (existingSchool.Count() != 0)
+                    ModelState.AddModelError("", Resources.WebResources.School_SchoolSequenceNumber_Unique);
+
+                if (ModelState.IsValid)
+                {
+                   
+                    schoolViewModel.School.UpdateDate = DateTime.Now;
+                    schoolViewModel.School.CreateDate = DateTime.Now;
+
+                    //Change after login implementation.
+                    schoolViewModel.School.CreateUser = 2;
+                    schoolViewModel.School.UpdateUser = 2;
+
+                    db.Schools.Add(schoolViewModel.School);
+                    db.SaveChanges();
+
+                    return View("_Hack");
+                }
+
+                return Content(GetErrorsFromModelState(schoolViewModel));
+            }
+            catch(Exception e)
             {
-                school.UpdateDate = DateTime.Now;
-                school.CreateDate = DateTime.Now;
-
-                school.CreateUser = 2;
-                school.UpdateUser = 2;
-
-                db.Schools.Add(school);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                return Content(e.ToString());
             }
 
-            ViewBag.CreateUser = new SelectList(db.Users, "UserID", "UserPassword", school.CreateUser);
-            ViewBag.UpdateUser = new SelectList(db.Users, "UserID", "UserPassword", school.UpdateUser);
-            return View(school);
         }
 
-        //
-        // GET: /Escuelas/Edit/5
-
-        public ActionResult Editar(int id = 0)
+       
+        [HttpPost]
+        public ActionResult PopUpEditar(int id = 0)
         {
-            School school = db.Schools.Find(id);
-            if (school == null)
+            SchoolViewModel schoolViewModel = new SchoolViewModel
+            {
+                School = db.Schools.Find(id),
+                Towns = getTowns()
+            };
+
+            if (schoolViewModel.School == null)
             {
                 return HttpNotFound();
             }
-            
-            return View(school);
+
+            return PartialView("Editar", schoolViewModel);
         }
 
-        //
-        // POST: /Escuelas/Edit/5
+       
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Editar(School school)
+        public ActionResult Editar(SchoolViewModel schoolViewModel)
         {
-            if (ModelState.IsValid)
+            try 
             {
-                school.UpdateUser = 2;
-                school.UpdateDate = DateTime.Now;
-                db.Entry(school).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                List<School> schools = (from school in db.Schools where school.SchoolSequenceNumber == schoolViewModel.School.SchoolSequenceNumber && school.DeletionDate == null select school).ToList();
+
+                School currentSchool = db.Schools.Find(schoolViewModel.School.SchoolID);
+
+                if (schools.Count == 1 && schools.First().SchoolID != currentSchool.SchoolID)
+                    ModelState.AddModelError("", Resources.WebResources.School_SchoolSequenceNumber_Unique);
+
+                if (ModelState.IsValid)
+                {
+                    schoolViewModel.School.UpdateUser = 2;
+                    schoolViewModel.School.UpdateDate = DateTime.Now;                                         
+
+                    db.Entry(currentSchool).CurrentValues.SetValues(schoolViewModel.School);
+                    db.SaveChanges();
+
+                    return View("_Hack");
+                }
+                
+                return Content(GetErrorsFromModelState(schoolViewModel));
+
+
             }
-           
-            return View(school);
+            catch(Exception e)
+            {
+                return Content(e + "");
+            }
+
         }
 
         //
@@ -152,6 +190,7 @@ namespace OPDB.Controllers
         public ActionResult Remover(int id = 0)
         {
             School school = db.Schools.Find(id);
+
             if (school == null)
             {
                 return HttpNotFound();
@@ -338,6 +377,34 @@ namespace OPDB.Controllers
             }
 
             return PartialView("Removidos", schoolViewModel);
+        }
+
+
+        public List<SelectListItem> getTowns()
+        {
+            List<SelectListItem> towns = new List<SelectListItem>();
+
+            String[] town = new String[] { "Adjuntas", "Aguada", "Aguadilla", "Aguas Buenas", "Aibonito", "Añasco",
+            "Arecibo", "Arroyo", "Barceloneta", "Barranquitas", "Bayamón", "Cabo Rojo", "Caguas", "Camuy", "Canóvanas",
+            "Carolina", "Cataño", "Cayey", "Ceiba", "Ciales", "Cidra", "Coamo", "Comerío", "Corozal", "Culebra", "Dorado",
+            "Fajardo", "Florida", "Guánica", "Guayama", "Guayanilla", "Guaynabo", "Gurabo", "Hatillo", "Hormigueros", "Humacao",
+            "Isabela", "Jayuya", "Juana Díaz", "Juncos", "Lajas", "Lares", "Las Marías", "Las Piedras", "Loíza", "Luquillo", "Manatí",
+            "Maricao", "Maunabo", "Mayagüez", "Moca", "Morovis", "Naguabo", "Naranjito", "Orocovis", "Patillas", "Peñuelas", "Ponce",
+            "Quebradillas", "Rincón", "Río Grande", "Sabana Grande", "Salinas", "San Germán", "San Juan", "San Lorenzo", "San Sebastián",
+            "Santa Isabel", "Toa Alta", "Toa Baja", "Trujillo Alto", "Utuado", "Vega Alta", "Vega Baja", "Vieques", "Villalba", "Yabucoa",
+            "Yauco"};
+
+            for (int i = 0; i < town.Length; i++)
+            {
+                towns.Add(new SelectListItem()
+                {
+                    Text = town[i],
+                    Value = town[i]
+                });
+            }
+        
+            return towns;
+
         }
     }
 }

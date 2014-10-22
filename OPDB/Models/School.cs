@@ -21,6 +21,7 @@ namespace OPDB.Models
         }
     
         public int SchoolID { get; set; }
+        public string SchoolSequenceNumber { get; set; }
         public string SchoolName { get; set; }
         public string Address { get; set; }
         public string Town { get; set; }
@@ -32,8 +33,8 @@ namespace OPDB.Models
         public Nullable<System.DateTime> DeletionDate { get; set; }
     
         public virtual ICollection<Activity> Activities { get; set; }
-        public virtual ICollection<SchoolNote> SchoolNotes { get; set; }
         public virtual User User { get; set; }
         public virtual User User1 { get; set; }
+        public virtual ICollection<SchoolNote> SchoolNotes { get; set; }
     }
 }

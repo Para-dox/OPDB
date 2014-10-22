@@ -1,69 +1,58 @@
-﻿@model OPDB.Models.School
+﻿@model OPDB.Models.SchoolViewModel
 
 @{
     ViewBag.Title = "Editar";
 }
 
-<style>
-    .text-box {
-        width: 500px;
-    }
 
-    .editor-label {
-        text-align: left;
-    }
-</style>
+@using (Ajax.BeginForm("Editar", "Escuelas", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "validation" }))
+{
 
-<h2>Editar</h2>
+    @Html.ValidationSummary(false)
 
-@using (Html.BeginForm()) {
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.School.SchoolID)
+    @Html.HiddenFor(model => model.School.CreateUser)
+    @Html.HiddenFor(model => model.School.CreateDate)
+    
 
-    <fieldset>
-        <legend>School</legend>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.School.SchoolName, "Escuela")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.School.SchoolName)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.School.SchoolSequenceNumber, "ID de la Escuela")
+    </div>
+    <div class="editor-field">
+        @Html.TextBoxFor(model => model.School.SchoolSequenceNumber)
+    </div>
 
-        @Html.HiddenFor(model => model.SchoolID)
-        @Html.HiddenFor(model => model.CreateUser)
-        @Html.HiddenFor(model => model.CreateDate)
-        
-        <div class="editor-label">
-            @Html.LabelFor(model => model.SchoolName, "Escuela")
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.SchoolName)
-            @Html.ValidationMessageFor(model => model.SchoolName)
-        </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.School.Address, "Dirección Física")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.School.Address)
+    </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Address, "Dirección")
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Address)
-            @Html.ValidationMessageFor(model => model.Address)
-        </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.School.Town, "Pueblo")
+    </div>
+    <div class="editor-field">
+        @Html.DropDownListFor(model => model.School.Town, Model.Towns, new { @style = "margin: 0 0 1rem 0 !important; padding: 0.5rem !important; height: 2.3125rem !important; width: 100% !important;" })
+    </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Town, "Pueblo")
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Town)
-            @Html.ValidationMessageFor(model => model.Town)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.PhoneNumber, "Número Telefónico")
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.PhoneNumber)
-            @Html.ValidationMessageFor(model => model.PhoneNumber)
-        </div>
-        <br />
-        <p>
-            <input type="submit" value="Guardar" /><input type="button" value="Cancelar" onclick="location.href='@Url.Action("Index", "Escuelas")'"/>
-        </p>
-    </fieldset>
-}   
+    <div class="editor-label">
+        @Html.LabelFor(model => model.School.PhoneNumber, "Número Telefónico")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.School.PhoneNumber)
+    </div>
+    <br />
+    <p>
+        <input type="submit" style="float:left !important; width:40% !important; margin-left: 30px !important;" value="Guardar" /> <input type="button" value="Cancelar" style="float:right !important; width:40% !important; margin-bottom: 20px !important; margin-right: 30px !important;" onclick="modalClose()" />
+    </p>
+}
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
