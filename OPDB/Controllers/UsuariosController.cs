@@ -65,13 +65,10 @@ namespace OPDB.Controllers
         // POST: /Usuarios/Create
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult Crear(UserViewModel userViewModel)
         {
             if (ModelState.IsValid)
             {
-                try
-                {
                     userViewModel.user.CreateDate = DateTime.Now;
                     userViewModel.user.UpdateDate = DateTime.Now;
                     userViewModel.user.UserStatus = false;
@@ -97,19 +94,9 @@ namespace OPDB.Controllers
                     }
 
                     db.SaveChanges();
-                    return RedirectToAction("Index");
 
-                }
-                catch (DbEntityValidationException dbEx)
-                {
-                    foreach (var validationErrors in dbEx.EntityValidationErrors)
-                    {
-                        foreach (var validationError in validationErrors.ValidationErrors)
-                        {
-                            Trace.TraceInformation("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage);
-                        }
-                    }
-                }
+                    return RedirectToAction("Index");
+                    
             }
 
             userViewModel.userTypes = getUserTypes();

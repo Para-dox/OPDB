@@ -1,0 +1,31 @@
+﻿@model OPDB.Models.ActivityViewModel
+
+@{
+    ViewBag.Title = "Editar Comentario";
+}
+
+@using (Ajax.BeginForm("GuardarComentario", "Actividades", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "validation" }))
+{
+    @Html.ValidationSummary(false)
+
+
+    @Html.HiddenFor(model => model.Feedback.FeedbackID)
+    @Html.HiddenFor(model => model.Feedback.UserID)
+    @Html.HiddenFor(model => model.Feedback.CreateDate)
+    @Html.HiddenFor(model => model.Feedback.CreateUser)
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Feedback.Feedback1, "Comentario *")
+    </div>
+    <div class="editor-field">
+        @Html.TextAreaFor(model => model.Feedback.Feedback1, new { @style = "resize:none; height:100px; width: 100% !important;" })
+    </div>
+
+    <p>
+        <input type="submit" style="float:left !important; width:40% !important; margin-left: 30px !important;" value="Guardar" /><input type="button" value="Cancelar" style="float:right !important; width:40% !important; margin-bottom: 20px !important; margin-right: 30px !important;" onclick="modalClose()" />
+    </p>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

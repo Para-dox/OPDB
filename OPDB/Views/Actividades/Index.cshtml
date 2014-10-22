@@ -1,10 +1,8 @@
-﻿@model IEnumerable<OPDB.Models.Activity>
+﻿@model OPDB.Models.ActivityViewModel
 
 @{
     ViewBag.Title = "Index";
 }
-
-<h2>Tabla de Actividades</h2>
 
 <style>
     select {
@@ -25,45 +23,58 @@
     th, td {
         text-align: center !important;
     }
+
+    .previous, .next{
+        display: none !important;
+    }
 </style>
 
-<table id="units">
+<table id="activities">
     <thead>
         <tr>
-            <th style="width:40%;">Título</th>
-            <th style="width:25%;">Localización</th>
-            <th style="width:17%;">Fecha</th>
-            <th style="width:10%;">Hora</th>
-            <th style="width:8%;"></th>
+            <th>Título</th>
+            <th>Creado Por</th>
+            <th>En</th>
+            <th>Modificado Por</th>
+            <th>En</th>
+            <th style="width:6%"></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.Information)
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Title)
+                    @Html.ActionLink(item.Activity.Title, "Detalles", "Actividades", new { id = item.Activity.ActivityID }, new { title = "Ver Detalles" })
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Location)
+                @if (item.CreateUser.FirstName != "") { 
+                   @Html.ActionLink(item.CreateUser.FirstName + " " + item.CreateUser.MiddleInitial + " " + item.CreateUser.LastName, "Detalles", "Usuarios", new { id = item.Activity.CreateUser }, null)
+                }
+                else
+                {
+                    @Html.ActionLink(item.CreateEntity.OutreachEntityName, "Detalles", "Alcance", new { id = item.Activity.CreateUser }, null)
+                }
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ActivityDate)
+                   @Html.DisplayFor(modelItem => item.Activity.CreateDate)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ActivityTime)
+                @if (item.UpdateUser.FirstName != "") { 
+                    @Html.ActionLink(item.UpdateUser.FirstName + " " + item.UpdateUser.MiddleInitial + " " + item.UpdateUser.LastName, "Detalles", "Usuarios", new { id = item.Activity.UpdateUser }, null)
+                }
+                else
+                {
+                    @Html.ActionLink(item.UpdateEntity.OutreachEntityName, "Detalles", "Alcance", new { id = item.Activity.UpdateUser }, null)
+                }
                 </td>
                 <td>
-                    <a href="@Url.Action("Detalles", "Actividades", new { id = item.ActivityID})"><i class="fa fa-info-circle" title="Ver Detalles"></i></a>
-                    <a href="@Url.Action("Editar", "Actividades", new { id = item.ActivityID })"><i class="fa fa-pencil" title="Editar"></i></a>
-                    @if (item.DeletionDate == null)
-                    {
-                        <i title="Remover" class="fa fa-remove" onclick="removeRecord(this)" data-url="@Url.Action("Remover", "Actividades", new { id = item.ActivityID })"></i>
-                    }
-                    else
-                    {
-                        <i title="Restaurar" class="fa fa-plus"></i>
-                    }
+                    @Html.DisplayFor(modelItem => item.Activity.UpdateDate)
+                </td>
+                <td>
+                    <a href="@Url.Action("Editar", "Actividades", new { id = item.Activity.ActivityID })"><i class="fa fa-pencil" title="Editar"></i></a>
+                    <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this)" data-url="@Url.Action("Remover", "Actividades", new { id = item.Activity.ActivityID })"></i>
+                    
                 </td>
             </tr>
         }
@@ -71,30 +82,32 @@
 </table>
 <br />
 
-<p>
-    @Html.ActionLink("Añadir nueva actividad...", "Crear")
-</p>
-
 <script src="~/Scripts/myScripts.js"></script>
 <script>
     $(document).ready(function () {
 
-        $('#units').DataTable({
-            "sDom": '<"top"lf>t<"bottom"ipr><"clear">',
+        $('#activities').DataTable({
+            "sDom": '<"top"lf>t<"bottom"pr><"clear">',
             "sPaginationType": "full_numbers",
             "bProcessing": false,
             "iDisplayLength": 12,
             "columnDefs": [
                 {
                     "orderable": false,
-                    "targets": [0, 1, 4]
+                    "targets": [5]
                 },
                  {
                      "searchable": false,
-                     "targets": [2, 3, 4]
+                     "targets": [5]
                  }
-            ]
+            ],
+            "oLanguage": {
+                "sEmptyTable": "No se ha creado ninguna actividad",
+                "sZeroRecords": "No se ha encontrado ningún registro"
+            }
         });
+
+        document.getElementsByTagName("loading")[0].innerHTML = "";
     });
 
 </script>

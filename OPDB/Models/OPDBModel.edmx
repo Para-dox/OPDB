@@ -216,7 +216,8 @@
           <Key>
             <PropertyRef Name="SchoolID" />
           </Key>
-          <Property Name="SchoolID" Type="int" Nullable="false" />
+          <Property Name="SchoolID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SchoolSequenceNumber" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="SchoolName" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Address" Type="text" Nullable="false" />
           <Property Name="Town" Type="varchar" MaxLength="50" Nullable="false" />
@@ -2168,7 +2169,6 @@
           <Property Name="UpdateDate" Type="DateTime" Nullable="false" />
           <Property Name="DeletionDate" Type="DateTime" />
           <NavigationProperty Name="ActivityType" Relationship="Self.Activity_ibfk_2" FromRole="Activity" ToRole="ActivityType" />
-          <NavigationProperty Name="School" Relationship="Self.Activity_ibfk_3" FromRole="Activity" ToRole="School" />
           <NavigationProperty Name="ActivityNotes" Relationship="Self.ActivityNote_ibfk_4" FromRole="Activity" ToRole="ActivityNote" />
           <NavigationProperty Name="ActivityResources" Relationship="Self.ActivityResource_ibfk_1" FromRole="Activity" ToRole="ActivityResource" />
           <NavigationProperty Name="Contacts" Relationship="Self.Contact_ibfk_1" FromRole="Activity" ToRole="Contact" />
@@ -2179,6 +2179,7 @@
           <NavigationProperty Name="User" Relationship="OPDBModel.Activity_ibfk_21" FromRole="Activity" ToRole="User" />
           <NavigationProperty Name="User1" Relationship="OPDBModel.Activity_ibfk_4" FromRole="Activity" ToRole="User" />
           <NavigationProperty Name="User2" Relationship="OPDBModel.Activity_ibfk_5" FromRole="Activity" ToRole="User" />
+          <NavigationProperty Name="School" Relationship="OPDBModel.Activity_ibfk_3" FromRole="Activity" ToRole="School" />
         </EntityType>
         <EntityType Name="ActivityNote">
           <Key>
@@ -2404,25 +2405,6 @@
           <NavigationProperty Name="User" Relationship="OPDBModel.Resource_ibfk_2" FromRole="Resource" ToRole="User" />
           <NavigationProperty Name="User1" Relationship="OPDBModel.Resource_ibfk_3" FromRole="Resource" ToRole="User" />
         </EntityType>
-        <EntityType Name="School">
-          <Key>
-            <PropertyRef Name="SchoolID" />
-          </Key>
-          <Property Name="SchoolID" Type="Int32" Nullable="false" />
-          <Property Name="SchoolName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Address" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Town" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="PhoneNumber" Type="String" MaxLength="12" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="CreateUser" Type="Int32" Nullable="false" />
-          <Property Name="CreateDate" Type="DateTime" Nullable="false" />
-          <Property Name="UpdateUser" Type="Int32" Nullable="false" />
-          <Property Name="UpdateDate" Type="DateTime" Nullable="false" />
-          <Property Name="DeletionDate" Type="DateTime" />
-          <NavigationProperty Name="Activities" Relationship="Self.Activity_ibfk_3" FromRole="School" ToRole="Activity" />
-          <NavigationProperty Name="SchoolNotes" Relationship="Self.SchoolNote_ibfk_2" FromRole="School" ToRole="SchoolNote" />
-          <NavigationProperty Name="User" Relationship="OPDBModel.School_ibfk_1" FromRole="School" ToRole="User" />
-          <NavigationProperty Name="User1" Relationship="OPDBModel.School_ibfk_2" FromRole="School" ToRole="User" />
-        </EntityType>
         <EntityType Name="SchoolNote">
           <Key>
             <PropertyRef Name="SchoolNoteID" />
@@ -2438,8 +2420,8 @@
           <Property Name="UpdateDate" Type="DateTime" Nullable="false" />
           <Property Name="DeletionDate" Type="DateTime" />
           <NavigationProperty Name="NoteType" Relationship="Self.SchoolNote_ibfk_1" FromRole="SchoolNote" ToRole="NoteType" />
-          <NavigationProperty Name="School" Relationship="Self.SchoolNote_ibfk_2" FromRole="SchoolNote" ToRole="School" />
           <NavigationProperty Name="User" Relationship="OPDBModel.SchoolNote_ibfk_3" FromRole="SchoolNote" ToRole="User" />
+          <NavigationProperty Name="School" Relationship="OPDBModel.SchoolNote_ibfk_2" FromRole="SchoolNote" ToRole="School" />
         </EntityType>
         <EntityType Name="Unit">
           <Key>
@@ -2522,18 +2504,6 @@
             </Principal>
             <Dependent Role="Activity">
               <PropertyRef Name="ActivityTypeID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Activity_ibfk_3">
-          <End Role="School" Type="Self.School" Multiplicity="0..1" />
-          <End Role="Activity" Type="Self.Activity" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="School">
-              <PropertyRef Name="SchoolID" />
-            </Principal>
-            <Dependent Role="Activity">
-              <PropertyRef Name="SchoolID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2681,18 +2651,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="SchoolNote_ibfk_2">
-          <End Role="School" Type="Self.School" Multiplicity="1" />
-          <End Role="SchoolNote" Type="Self.SchoolNote" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="School">
-              <PropertyRef Name="SchoolID" />
-            </Principal>
-            <Dependent Role="SchoolNote">
-              <PropertyRef Name="SchoolID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="OPDBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Activities" EntityType="Self.Activity" />
           <EntitySet Name="ActivityNotes" EntityType="Self.ActivityNote" />
@@ -2708,7 +2666,6 @@
           <EntitySet Name="NoteTypes" EntityType="Self.NoteType" />
           <EntitySet Name="OutreachEntityDetails" EntityType="Self.OutreachEntityDetail" />
           <EntitySet Name="Resources" EntityType="Self.Resource" />
-          <EntitySet Name="Schools" EntityType="Self.School" />
           <EntitySet Name="SchoolNotes" EntityType="Self.SchoolNote" />
           <EntitySet Name="Units" EntityType="Self.Unit" />
           <EntitySet Name="UserDetails" EntityType="Self.UserDetail" />
@@ -2716,10 +2673,6 @@
           <EntitySet Name="UserTypes" EntityType="Self.UserType" />
           <AssociationSet Name="Activity_ibfk_2" Association="Self.Activity_ibfk_2">
             <End Role="ActivityType" EntitySet="ActivityTypes" />
-            <End Role="Activity" EntitySet="Activities" />
-          </AssociationSet>
-          <AssociationSet Name="Activity_ibfk_3" Association="Self.Activity_ibfk_3">
-            <End Role="School" EntitySet="Schools" />
             <End Role="Activity" EntitySet="Activities" />
           </AssociationSet>
           <AssociationSet Name="ActivityNote_ibfk_4" Association="Self.ActivityNote_ibfk_4">
@@ -2769,10 +2722,6 @@
           <AssociationSet Name="Resource_ibfk_1" Association="Self.Resource_ibfk_1">
             <End Role="Unit" EntitySet="Units" />
             <End Role="Resource" EntitySet="Resources" />
-          </AssociationSet>
-          <AssociationSet Name="SchoolNote_ibfk_2" Association="Self.SchoolNote_ibfk_2">
-            <End Role="School" EntitySet="Schools" />
-            <End Role="SchoolNote" EntitySet="SchoolNotes" />
           </AssociationSet>
           <EntitySet Name="Users" EntityType="OPDBModel.User" />
           <AssociationSet Name="Activity_ibfk_21" Association="OPDBModel.Activity_ibfk_21">
@@ -2911,14 +2860,6 @@
             <End Role="User" EntitySet="Users" />
             <End Role="Resource" EntitySet="Resources" />
           </AssociationSet>
-          <AssociationSet Name="School_ibfk_1" Association="OPDBModel.School_ibfk_1">
-            <End Role="User" EntitySet="Users" />
-            <End Role="School" EntitySet="Schools" />
-          </AssociationSet>
-          <AssociationSet Name="School_ibfk_2" Association="OPDBModel.School_ibfk_2">
-            <End Role="User" EntitySet="Users" />
-            <End Role="School" EntitySet="Schools" />
-          </AssociationSet>
           <AssociationSet Name="SchoolNote_ibfk_3" Association="OPDBModel.SchoolNote_ibfk_3">
             <End Role="User" EntitySet="Users" />
             <End Role="SchoolNote" EntitySet="SchoolNotes" />
@@ -2972,6 +2913,23 @@
             <End Role="User" EntitySet="Users" />
             <End Role="OutreachEntityType" EntitySet="OutreachEntityTypes" />
           </AssociationSet>
+          <EntitySet Name="Schools" EntityType="OPDBModel.School" />
+          <AssociationSet Name="Activity_ibfk_3" Association="OPDBModel.Activity_ibfk_3">
+            <End Role="School" EntitySet="Schools" />
+            <End Role="Activity" EntitySet="Activities" />
+          </AssociationSet>
+          <AssociationSet Name="School_ibfk_1" Association="OPDBModel.School_ibfk_1">
+            <End Role="User" EntitySet="Users" />
+            <End Role="School" EntitySet="Schools" />
+          </AssociationSet>
+          <AssociationSet Name="School_ibfk_2" Association="OPDBModel.School_ibfk_2">
+            <End Role="User" EntitySet="Users" />
+            <End Role="School" EntitySet="Schools" />
+          </AssociationSet>
+          <AssociationSet Name="SchoolNote_ibfk_2" Association="OPDBModel.SchoolNote_ibfk_2">
+            <End Role="School" EntitySet="Schools" />
+            <End Role="SchoolNote" EntitySet="SchoolNotes" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="User">
           <Key>
@@ -3020,8 +2978,6 @@
           <NavigationProperty Name="OutreachEntityDetails" Relationship="OPDBModel.OutreachEntityDetail_ibfk_2" FromRole="User" ToRole="OutreachEntityDetail" />
           <NavigationProperty Name="Resources" Relationship="OPDBModel.Resource_ibfk_2" FromRole="User" ToRole="Resource" />
           <NavigationProperty Name="Resources1" Relationship="OPDBModel.Resource_ibfk_3" FromRole="User" ToRole="Resource" />
-          <NavigationProperty Name="Schools" Relationship="OPDBModel.School_ibfk_1" FromRole="User" ToRole="School" />
-          <NavigationProperty Name="Schools1" Relationship="OPDBModel.School_ibfk_2" FromRole="User" ToRole="School" />
           <NavigationProperty Name="SchoolNotes" Relationship="OPDBModel.SchoolNote_ibfk_3" FromRole="User" ToRole="SchoolNote" />
           <NavigationProperty Name="Units" Relationship="OPDBModel.Unit_ibfk_1" FromRole="User" ToRole="Unit" />
           <NavigationProperty Name="Units1" Relationship="OPDBModel.Unit_ibfk_2" FromRole="User" ToRole="Unit" />
@@ -3033,7 +2989,9 @@
           <NavigationProperty Name="UserNotes3" Relationship="OPDBModel.UserNote_ibfk_4" FromRole="User" ToRole="UserNote" />
           <NavigationProperty Name="OutreachEntityTypes" Relationship="OPDBModel.OutreachEntityType_ibfk_1" FromRole="User" ToRole="OutreachEntityType" />
           <NavigationProperty Name="OutreachEntityTypes1" Relationship="OPDBModel.OutreachEntityType_ibfk_2" FromRole="User" ToRole="OutreachEntityType" />
-        </EntityType>
+          <NavigationProperty Name="Schools" Relationship="OPDBModel.School_ibfk_1" FromRole="User" ToRole="School" />
+          <NavigationProperty Name="Schools1" Relationship="OPDBModel.School_ibfk_2" FromRole="User" ToRole="School" />
+          </EntityType>
         <Association Name="Activity_ibfk_21">
           <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
           <End Type="OPDBModel.Activity" Role="Activity" Multiplicity="*" />
@@ -3442,30 +3400,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="School_ibfk_1">
-          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
-          <End Type="OPDBModel.School" Role="School" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="School">
-              <PropertyRef Name="CreateUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="School_ibfk_2">
-          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
-          <End Type="OPDBModel.School" Role="School" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="School">
-              <PropertyRef Name="UpdateUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="SchoolNote_ibfk_3">
           <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
           <End Type="OPDBModel.SchoolNote" Role="SchoolNote" Multiplicity="*" />
@@ -3637,7 +3571,75 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        <EntityType Name="School">
+          <Key>
+            <PropertyRef Name="SchoolID" />
+          </Key>
+          <Property Name="SchoolID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SchoolSequenceNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SchoolName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" Nullable="false" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Town" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+          <Property Name="CreateUser" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" />
+          <Property Name="UpdateUser" Type="Int32" Nullable="false" />
+          <Property Name="UpdateDate" Type="DateTime" Nullable="false" />
+          <Property Name="DeletionDate" Type="DateTime" />
+          <NavigationProperty Name="Activities" Relationship="OPDBModel.Activity_ibfk_3" FromRole="School" ToRole="Activity" />
+          <NavigationProperty Name="User" Relationship="OPDBModel.School_ibfk_1" FromRole="School" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="OPDBModel.School_ibfk_2" FromRole="School" ToRole="User" />
+          <NavigationProperty Name="SchoolNotes" Relationship="OPDBModel.SchoolNote_ibfk_2" FromRole="School" ToRole="SchoolNote" />
+        </EntityType>
+        <Association Name="Activity_ibfk_3">
+          <End Type="OPDBModel.School" Role="School" Multiplicity="0..1" />
+          <End Type="OPDBModel.Activity" Role="Activity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="School">
+              <PropertyRef Name="SchoolID" />
+            </Principal>
+            <Dependent Role="Activity">
+              <PropertyRef Name="SchoolID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="School_ibfk_1">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.School" Role="School" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="School">
+              <PropertyRef Name="CreateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="School_ibfk_2">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.School" Role="School" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="School">
+              <PropertyRef Name="UpdateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SchoolNote_ibfk_2">
+          <End Type="OPDBModel.School" Role="School" Multiplicity="1" />
+          <End Type="OPDBModel.SchoolNote" Role="SchoolNote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="School">
+              <PropertyRef Name="SchoolID" />
+            </Principal>
+            <Dependent Role="SchoolNote">
+              <PropertyRef Name="SchoolID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -3852,22 +3854,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Schools">
-            <EntityTypeMapping TypeName="OPDBModel.School">
-              <MappingFragment StoreEntitySet="School">
-                <ScalarProperty Name="SchoolID" ColumnName="SchoolID" />
-                <ScalarProperty Name="SchoolName" ColumnName="SchoolName" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="Town" ColumnName="Town" />
-                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
-                <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="UpdateUser" ColumnName="UpdateUser" />
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-                <ScalarProperty Name="DeletionDate" ColumnName="DeletionDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="SchoolNotes">
             <EntityTypeMapping TypeName="OPDBModel.SchoolNote">
               <MappingFragment StoreEntitySet="SchoolNote">
@@ -3974,6 +3960,23 @@
                 <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
                 <ScalarProperty Name="OutreachEntityType1" ColumnName="OutreachEntityType" />
                 <ScalarProperty Name="OutreachEntityTypeID" ColumnName="OutreachEntityTypeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Schools">
+            <EntityTypeMapping TypeName="OPDBModel.School">
+              <MappingFragment StoreEntitySet="School">
+                <ScalarProperty Name="DeletionDate" ColumnName="DeletionDate" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="UpdateUser" ColumnName="UpdateUser" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="Town" ColumnName="Town" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="SchoolName" ColumnName="SchoolName" />
+                <ScalarProperty Name="SchoolSequenceNumber" ColumnName="SchoolSequenceNumber" />
+                <ScalarProperty Name="SchoolID" ColumnName="SchoolID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

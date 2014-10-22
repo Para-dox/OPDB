@@ -29,42 +29,42 @@
 
 </style>
 
-<h2 style="text-align:center;">@Model.school.SchoolName</h2>
+<h2 style="text-align:center;">@Model.School.SchoolName</h2>
 <br />
 <div class="row">
     <div class="large-5 columns">
         <h3>Información</h3>
         <div class="display-label">
-            @Html.LabelFor(model => model.school.SchoolID, "Número de Identificación")
+            @Html.LabelFor(model => model.School.SchoolSequenceNumber, "Número de Identificación")
         </div>
         <div class="display-field">
-            @Html.DisplayFor(model => model.school.SchoolID)
+            @Html.DisplayFor(model => model.School.SchoolSequenceNumber)
         </div>
         <br />
         <div class="display-label">
-            @Html.LabelFor(model => model.school.Address, "Dirección")
+            @Html.LabelFor(model => model.School.Address, "Dirección")
         </div>
         <div class="display-field">
-            @Html.DisplayFor(model => model.school.Address)
+            @Html.DisplayFor(model => model.School.Address)
         </div>
         <br />
         <div class="display-label">
-            @Html.LabelFor(model => model.school.Town, "Pueblo")
+            @Html.LabelFor(model => model.School.Town, "Pueblo")
         </div>
         <div class="display-field">
-            @Html.DisplayFor(model => model.school.Town)
+            @Html.DisplayFor(model => model.School.Town)
         </div>
         <br />
         <div class="display-label">
-            @Html.LabelFor(model => model.school.PhoneNumber, "Número Telefónico")
+            @Html.LabelFor(model => model.School.PhoneNumber, "Número Telefónico")
         </div>
         <div class="display-field">
-            @Html.DisplayFor(model => model.school.PhoneNumber)
+            @Html.DisplayFor(model => model.School.PhoneNumber)
         </div>
         <br />
         <p>
-            <input type="button" value="Editar" onclick="location.href='@Url.Action("Editar", "Escuelas", new { id = Model.school.SchoolID })'" />
-            <input type="button" value="Añadir Nota" onclick="location.href='@Url.Action("CrearNota", "Escuelas", new { id = Model.school.SchoolID })'" />
+            <a href="#" title="Editar" data-title="Editar Escuela" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("PopUpEditar", "Escuelas", new { id = Model.School.SchoolID })" class="modal_ajax_btn"><i class="fa fa-pencil"></i></a> 
+            <a href="#" title="Añadir Nota" class="modal_ajax_btn" data-title="Nueva Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Escuelas", new { id = Model.School.SchoolID })"><input type="button" value="Añadir Nota" /></a>
             <input type="button" value="Devuelta" onclick="location.href='@Url.Action("Index", "Escuelas")'" />
         </p>
     </div>
@@ -84,9 +84,9 @@
                 {
                     <tr>
                         <td>@note.NoteType.NoteType1</td>
-                        <td>@note.Note</td>
+                        <td><a href="#" title="Ver Nota" data-validation="false" data-title="Detalles" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("VerNota", "Escuelas", new { id = note.SchoolNoteID })" class="modal_ajax_btn">@String.Concat(note.Note, "...")</a></td>
                         <td>
-                            <a href="@Url.Action("EditarNota", "Escuelas", new { id = note.SchoolNoteID })"><i class="fa fa-pencil" title="Editar"></i></a>                            
+                            <a href="#" title="Editar" data-title="Editar Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarNota", "Escuelas", new { id = note.SchoolNoteID })" class="modal_ajax_btn"><i class="fa fa-pencil"></i></a> 
                             <i title="Remover" class="fa fa-remove" onclick="removeRecord(this, 'schoolNotes')" data-url="@Url.Action("RemoverNota", "Escuelas", new { id = note.SchoolNoteID })"></i>
   
                         </td>
@@ -115,7 +115,9 @@
                     "orderable": false,
                     "targets": 2
                 }
-            ]
+            ],
+            "oLanguage": { "sEmptyTable": "No se ha dejado ninguna nota",
+                "sZeroRecords": "No se ha encontrado ningún registro" }
         });
     });
 

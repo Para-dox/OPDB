@@ -21,10 +21,12 @@ namespace OPDB.Controllers
         /// <returns>The Home Index, also known as the web portal home page.</returns>
         public ActionResult Index()
         {
+            DateTime date = DateTime.Now.AddDays(7);
+
             HomeViewModel homeViewModel = new HomeViewModel
             {
 
-                activities = (from activity in db.Activities.Include(a => a.ActivityType) orderby activity.UpdateDate descending select activity).Take(6).ToList()
+                activities = (from activity in db.Activities.Include(a => a.ActivityType) where activity.ActivityDate > date && activity.DeletionDate == null orderby activity.UpdateDate descending select activity).Take(6).ToList()
 
             };
 

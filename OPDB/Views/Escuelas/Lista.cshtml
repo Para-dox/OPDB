@@ -20,7 +20,7 @@
         width:100%;
     }
 
-    tr, td{
+    tr{
         background-color: #e2e2e2 !important;
     }
 
@@ -42,7 +42,7 @@
         @foreach (var school in Model)
         {
             <tr>
-                <td>
+                <td class="panel callout large-12 columns">
                     @Html.ActionLink(school.SchoolName, "Detalles", "Escuelas", new { id = school.SchoolID }, null)<br />
                     <span>Dirección: </span> @school.Address<br />
                     <span>Pueblo: </span> @school.Town<br />
@@ -62,10 +62,14 @@
     $(document).ready(function () {
 
         $('#schoolList').DataTable({
-            "sDom": '<"top"lf>t<"bottom"ipr><"clear">',
+            "sDom": '<"top">t<"bottom"pr><"clear">',
             "sPaginationType": "full_numbers",
             "bProcessing": false,
-            "oLanguage": { "sSearch": "Filter:" }
+            "oLanguage": { "sSearch": "Filter:" },
+            "oLanguage": {
+                "sEmptyTable": "No se ha añadido ninguna escuela",
+                "sZeroRecords": "No se ha encontrado ningún registro"
+            }
         });
     });
 

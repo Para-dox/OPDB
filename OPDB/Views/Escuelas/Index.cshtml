@@ -1,4 +1,4 @@
-﻿@model IEnumerable<OPDB.Models.School>
+﻿@model OPDB.Models.SchoolViewModel
 
 @{
     ViewBag.Title = "Escuelas";
@@ -29,53 +29,55 @@
 
     
 </style>
-<h2>Escuelas</h2>
 <br />
 <table id="schools">
     <thead>
         <tr>
             <th>Nombre</th>
             <th>Identificación</th>
-            <th>Dirección</th>
-            <th>Pueblo</th>
-            <th>Número Telefonico</th>
-            <th style="width:10%;"></th>
+            <th>Creado Por</th>
+            <th>En</th>
+            <th>Modificado Por</th>
+            <th>En</th>
+            <th style="width:6%;"></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.Information)
         {
             <tr>
                 <td>
-                    @Html.ActionLink(item.SchoolName + " ", "Detalles", "Escuelas", new { id = item.SchoolID }, null)
+                    @Html.ActionLink(item.School.SchoolName + " ", "Detalles", "Escuelas", new { id = item.School.SchoolID }, null)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.SchoolID)
+                    @Html.DisplayFor(modelItem => item.School.SchoolSequenceNumber)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Address)
+                    @Html.ActionLink(item.CreateUser.FirstName + " " + item.CreateUser.MiddleInitial + " " + item.CreateUser.LastName, "Detalles", "Usuarios", new { id = item.School.CreateUser }, null)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Town)
+                    @Html.DisplayFor(modelItem => item.School.CreateDate)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                    @Html.ActionLink(item.UpdateUser.FirstName + " " + item.UpdateUser.MiddleInitial + " " + item.UpdateUser.LastName, "Detalles", "Usuarios", new { id = item.School.UpdateUser }, null)
                 </td>
                 <td>
-                    <a href="@Url.Action("Editar", "Escuelas", new { id = item.SchoolID })"><i class="fa fa-pencil" title="Editar"></i></a>
-                    <i title="Remover" class="fa fa-remove" onclick="removeRecord(this)" data-url="@Url.Action("Remover", "Escuelas", new { id = item.SchoolID })"></i>
-        
+                    @Html.DisplayFor(modelItem => item.School.UpdateDate)
+                </td>
+                <td>
+                    <a href="#" title="Editar" data-title="Editar Escuela" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("PopUpEditar", "Escuelas", new { id = item.School.SchoolID })" class="modal_ajax_btn"><i class="fa fa-pencil"></i></a> 
+                    <i title="Remover" class="fa fa-remove" onclick="removeRecord(this)" data-url="@Url.Action("Remover", "Escuelas", new { id = item.School.SchoolID })"></i>        
                 </td>
             </tr>
         }
     </tbody>
 </table>
 <br />
+
 <p>
-   
-        <input type="button" value="Nueva Escuela" onclick="location.href='@Url.Action("Crear", "Escuelas")'" /> 
-   
+   <a href="#" title="Añadir Escuela" class="modal_ajax_btn" data-title="Nueva Escuela" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("PopUpCrear", "Escuelas", null)"><input type="button" value="Nueva Escuela" /></a>   
 </p>
+
 <script src="~/Scripts/myScripts.js"></script>
 <script>
     $(document).ready(function () {
@@ -89,12 +91,15 @@
             "columnDefs": [
                 {
                     "orderable": false,
-                    "targets": 5
+                    "targets": 6
                 }
 
 
-            ]
+            ],
+            "oLanguage": {"sEmptyTable": "No se ha añadido ninguna escuela",
+                "sZeroRecords": "No se ha encontrado ningún registro"}
         });
+        document.getElementsByTagName("loading")[0].innerHTML = "";
     });
 
 

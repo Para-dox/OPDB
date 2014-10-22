@@ -8,9 +8,12 @@ namespace OPDB.Models
 {
     public class ResourceViewModel
     {
-        public Resource resource { get; set; }
-        public Unit unit { get; set; }
+        public Resource Resource { get; set; }
 
-        public List<SelectListItem> units { get; set; }
+        public Unit Unit { get; set; }
+
+        public List<UserInfoViewModel> Information { get; set; }
+
+        public List<SelectListItem> Units { get; set; }
     }
 }

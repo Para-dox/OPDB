@@ -15,114 +15,100 @@
 </style>
 <h2>Registro</h2>
 
-@using (Html.BeginForm()) {
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
-
+@using (Html.BeginForm())
+{
     <center>
         <fieldset style="width:500px;">
-            <legend>User</legend>
+            <label>Todos los campos con (*) son requeridos</label><br />
             <div class="editor-label">
-                @Html.LabelFor(model => model.user.UserTypeID, "Tipo de Usuario")
+                @Html.LabelFor(model => model.user.UserTypeID, "Tipo de Usuario *")
             </div>
             <div class="editor-field">
                 @Html.DropDownListFor(model => model.user.UserTypeID, Model.userTypes, new { @style = "width: 500px !important;", @id = "userType", @onchange = "getValue()" })
-                @Html.ValidationMessageFor(model => model.user.UserTypeID)
             </div>
             <div class="editor-label">
-               @Html.LabelFor(model => model.user.Email, "Correo Electrónico")
+               @Html.LabelFor(model => model.user.Email, "Correo Electrónico *")
             </div>
-            <div class="editor-field">
-                <div class="row">
-                    <div class="large-6 columns">
-                        <div class="row collapse prefix-radius">
-                            @*<div class="small-3 columns">
-                                <span class="prefix" style="height:34px;"><i class="fa fa-envelope"></i></span>
-                            </div>*@
-                            <div class="small-9 columns">
-                                @Html.EditorFor(model => model.user.Email, new { @style = "width: 500px !important;" })
-                            </div>
-                        </div>
-                    </div>
-                    
-                    @Html.ValidationMessageFor(model => model.user.Email)
-                </div>
+            <div>
+                @Html.ValidationMessageFor(model => model.user.Email, null, new { @style = "float:left !important;" })
+                @Html.EditorFor(model => model.user.Email, new { @style = "width: 500px !important;" })
+            </div>
+
+               
             <div class="editor-label">
-                @Html.LabelFor(model => model.user.UserPassword, "Contraseña")
+                @Html.LabelFor(model => model.user.UserPassword, "Contraseña *")
             </div>
             <div class="editor-field">
+                @Html.ValidationMessageFor(model => model.user.UserPassword, null, new { @style = "float:left !important;" })
                 @Html.EditorFor(model => model.user.UserPassword, new { @style = "width: 500px !important;" })
-                @Html.ValidationMessageFor(model => model.user.UserPassword)
             </div>
 
             <div id="user">
                 <div class="editor-label">
-                    @Html.LabelFor(model => model.userDetail.FirstName, "Nombre")
+                    @Html.LabelFor(model => model.userDetail.FirstName, "Nombre *")
                 </div>
                 <div class="editor-field">
+                    @Html.ValidationMessageFor(model => model.userDetail.FirstName, null, new { @style = "float:left !important;" })
                     @Html.EditorFor(model => model.userDetail.FirstName, new { @style = "width: 500px !important;" })
-                    @Html.ValidationMessageFor(model => model.userDetail.FirstName)
                 </div>
                 <div class="editor-label">
-                    @Html.LabelFor(model => model.userDetail.LastName, "Apellido")
+                    @Html.LabelFor(model => model.userDetail.LastName, "Apellido *")
                 </div>
                 <div class="editor-field">
+                    @Html.ValidationMessageFor(model => model.userDetail.LastName, null, new { @style = "float:left !important;" })
                     @Html.EditorFor(model => model.userDetail.LastName, new { @style = "width: 500px !important;" })
-                    @Html.ValidationMessageFor(model => model.userDetail.LastName)
                 </div>
                 <div class="editor-label">
                     @Html.LabelFor(model => model.userDetail.MiddleInitial, "Inicial")
                 </div>
                 <div class="editor-field">
                     @Html.EditorFor(model => model.userDetail.MiddleInitial, new { @style = "width: 500px !important;" })
-                    @Html.ValidationMessageFor(model => model.userDetail.MiddleInitial)
                 </div>
 
                 <div class="editor-label">
-                    @Html.LabelFor(model => model.userDetail.Gender, "Género")
+                    @Html.LabelFor(model => model.userDetail.Gender, "Género *")
                 </div>
                 <div class="editor-field" style="text-align:left !important;">
+                    @Html.ValidationMessageFor(model => model.userDetail.Gender, null, new { @style = "float:left !important;" })<br />
                     @Html.RadioButtonFor(model => model.userDetail.Gender, "M")<label>Masculino</label>&nbsp;&nbsp;@Html.RadioButtonFor(model => model.userDetail.Gender, "F")<label>Femenino</label>
-                    @Html.ValidationMessageFor(model => model.userDetail.Gender)
                 </div>
             </div>
 
             <div id="outreachEntity">
                 <div class="editor-label">
-                    @Html.LabelFor(model => model.outreachEntity.OutreachEntityTypeID, "Tipo de Entidad")
+                    @Html.LabelFor(model => model.outreachEntity.OutreachEntityTypeID, "Tipo de Entidad *")
                 </div>
                 <div class="editor-field">
                     @Html.DropDownListFor(model => model.outreachEntity.OutreachEntityTypeID, Model.outreachTypes, new { @style = "width: 500px !important;" })
-                    @Html.ValidationMessageFor(model => model.outreachEntity.OutreachEntityTypeID)
                 </div>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.outreachEntity.OutreachEntityName, "Nombre")
+                <div class="editor-label">                    
+                    @Html.LabelFor(model => model.outreachEntity.OutreachEntityName, "Nombre *")
                 </div>
                 <div class="editor-field">
+                    @Html.ValidationMessageFor(model => model.outreachEntity.OutreachEntityName, null, new { @style = "float:left !important;" })
                     @Html.EditorFor(model => model.outreachEntity.OutreachEntityName, new { @style = "width: 500px !important;" })
-                    @Html.ValidationMessageFor(model => model.outreachEntity.OutreachEntityName)
                 </div>
                 <div class="editor-label">
-                    @Html.LabelFor(model => model.outreachEntity.Mission, "Misión")
+                    @Html.LabelFor(model => model.outreachEntity.Mission, "Misión *")
                 </div>
                 <div class="editor-field">
+                    @Html.ValidationMessageFor(model => model.outreachEntity.Mission, null, new { @style = "float:left !important;" })
                     @Html.TextAreaFor(model => model.outreachEntity.Mission, new { @style = "resize:none; width: 500px !important; height: 100px !important;" })
-                    @Html.ValidationMessageFor(model => model.outreachEntity.Mission)
                 </div>
                 <div class="editor-label">
-                    @Html.LabelFor(model => model.outreachEntity.Vision, "Visión")
+                    @Html.LabelFor(model => model.outreachEntity.Vision, "Visión *")
                 </div>
                 <div class="editor-field">
+                    @Html.ValidationMessageFor(model => model.outreachEntity.Vision, null, new { @style = "float:left !important;" })
                     @Html.TextAreaFor(model => model.outreachEntity.Vision, new { @style = "resize:none; width: 500px !important; height: 100px !important;" })
-                    @Html.ValidationMessageFor(model => model.outreachEntity.Vision)
                 </div>
 
                 <div class="editor-label">
-                    @Html.LabelFor(model => model.outreachEntity.Objectives, "Objetivos")
+                    @Html.LabelFor(model => model.outreachEntity.Objectives, "Objetivos *")
                 </div>
                 <div class="editor-field">
+                    @Html.ValidationMessageFor(model => model.outreachEntity.Objectives, null, new { @style = "float:left !important;" })
                     @Html.TextAreaFor(model => model.outreachEntity.Objectives, new { @style = "resize:none; width: 500px !important; height: 100px !important;" })
-                    @Html.ValidationMessageFor(model => model.outreachEntity.Objectives)
                 </div>
 
 

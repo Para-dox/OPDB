@@ -1,0 +1,104 @@
+﻿@model OPDB.Models.SchoolViewModel
+
+@{
+    ViewBag.Title = "Removidos";
+}
+
+<style>
+    select {
+        width: 50px !important;
+        padding: 0.2rem !important;
+        height: 1.5rem !important;
+        margin: 0 !important;
+    }
+
+    label {
+        width: 100% !important;
+    }
+
+    input[type="search"] {
+        padding: 0.2rem;
+    }
+
+    th, td {
+        text-align: center !important;
+    }
+
+    .previous, .next {
+        display: none !important;
+    }
+</style>
+
+<table id="removedSchools">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Identificación</th>
+            <th>Creado Por</th>
+            <th>En</th>
+            <th>Modificado Por</th>
+            <th>En</th>
+            <th>Removido En</th>
+            <th style="width:3%;"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Information)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(item.School.SchoolName + " ", "Detalles", "Escuelas", new { id = item.School.SchoolID }, null)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.School.SchoolID)
+                </td>
+                <td>
+                    @Html.ActionLink(item.CreateUser.FirstName + " " + item.CreateUser.MiddleInitial + " " + item.CreateUser.LastName, "Detalles", "Usuarios", new { id = item.School.CreateUser }, null)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.School.CreateDate)
+                </td>
+                <td>
+                    @Html.ActionLink(item.UpdateUser.FirstName + " " + item.UpdateUser.MiddleInitial + " " + item.UpdateUser.LastName, "Detalles", "Usuarios", new { id = item.School.UpdateUser }, null)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.School.UpdateDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.School.DeletionDate)
+                </td>
+                <td>
+                    <i title="Restaurar" class="fa fa-plus"></i>
+                </td>
+            </tr>
+
+        }
+    </tbody>
+</table>
+<br />
+
+
+<script src="~/Scripts/myScripts.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $('#removedSchools').DataTable({
+            "sDom": '<"top"lf>t<"bottom"ipr><"clear">',
+            "sPaginationType": "full_numbers",
+            "bProcessing": false,
+            "iDisplayLength": 12,
+            "aaSorting": [[1, "asc"]],
+            "columnDefs": [
+                {
+                    "orderable": false,
+                    "targets": 4
+                }
+            ],
+            "oLanguage": { "sEmptyTable": "No se ha removido ninguna escuela" }
+        });
+
+        document.getElementsByTagName("loading")[0].innerHTML = "";
+    });
+
+
+</script>

@@ -1,45 +1,36 @@
-﻿@model OPDB.Models.ActivityNote
+﻿@model OPDB.Models.ActivityViewModel
 
 @{
-    ViewBag.Title = "Editar Notas";
+    ViewBag.Title = "Editar Nota";
 }
 
-<h2>Editar Notas</h2>
-
-@using (Html.BeginForm()) {
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
+@using (Ajax.BeginForm("GuardarNota", "Actividades", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "validation"}))
+{
+    @Html.ValidationSummary(false)
     
-    <fieldset>
-        <legend>Activity Note</legend>
-
-        @Html.HiddenFor(model => model.ActivityNoteID)
+ 
+        @Html.HiddenFor(model => model.Note.ActivityNoteID)
+        @Html.HiddenFor(model => model.Note.UserID)
+        @Html.HiddenFor(model => model.Note.CreateDate)
+        @Html.HiddenFor(model => model.Note.CreateUser)
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.NoteTypeID, "NoteType")
+            @Html.LabelFor(model => model.Note.NoteTypeID, "Tipo de Nota")
         </div>
         <div class="editor-field">
-            @Html.DropDownList("NoteTypeID", String.Empty)
-            @Html.ValidationMessageFor(model => model.NoteTypeID)
+            @Html.DropDownListFor(model => model.Note.NoteTypeID, Model.NoteTypes, new { @style = "margin: 0 0 1rem 0 !important; padding: 0.5rem !important; height: 2.3125rem !important; width: 100% !important;" })
         </div>
         <div class="editor-label">
-            @Html.LabelFor(model => model.Note)
+            @Html.LabelFor(model => model.Note.Note, "Nota *")
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Note)
-            @Html.ValidationMessageFor(model => model.Note)
+            @Html.TextAreaFor(model => model.Note.Note, new { @style = "resize:none; height:100px; width: 100% !important;" })
         </div>
 
         <p>
-            <input type="submit" value="Guardar" />
+            <input type="submit" style="float:left !important; width:40% !important; margin-left: 30px !important;" value="Guardar" /><input type="button" value="Cancelar" style="float:right !important; width:40% !important; margin-bottom: 20px !important; margin-right: 30px !important;" onclick="modalClose()" />
         </p>
-
-    </fieldset>
 }
-
-    <div>
-        @Html.ActionLink("Devuelta", "Index")
-    </div>
 
     @section Scripts {
         @Scripts.Render("~/bundles/jqueryval")

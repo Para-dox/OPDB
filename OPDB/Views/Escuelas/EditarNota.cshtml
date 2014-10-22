@@ -1,56 +1,36 @@
 ﻿@model OPDB.Models.SchoolViewModel
 
 @{
-    ViewBag.Title = "Editar";
+    ViewBag.Title = "Editar Nota";
 }
 
-<style>
-     .text-box, .editor-field {
-        width: 500px;
-    }
-
-    .editor-label {
-        text-align: left;
-    }
-</style>
-
-<h2>Editar Nota</h2>
-
-@using (Html.BeginForm("GuardarNota", "Escuelas", FormMethod.Post)) {
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
-
-    <fieldset>
-        @Html.HiddenFor(model => model.note.SchoolNoteID)
-        @Html.HiddenFor(model => model.school.SchoolID)
-        @Html.HiddenFor(model => model.note.CreateDate)
-        @Html.HiddenFor(model => model.note.CreateUser)
-        @Html.HiddenFor(model => model.note.UserID)
+@using (Ajax.BeginForm("GuardarNota", "Escuelas", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "validation"}))
+{
+    @Html.ValidationSummary(false)
+    
+        @Html.HiddenFor(model => model.Note.SchoolNoteID)
+        @Html.HiddenFor(model => model.Note.SchoolID)
+        @Html.HiddenFor(model => model.Note.CreateDate)
+        @Html.HiddenFor(model => model.Note.CreateUser)
+        @Html.HiddenFor(model => model.Note.UserID)
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.note.NoteTypeID, "Tipo de Nota")
+            @Html.LabelFor(model => model.Note.NoteTypeID, "Tipo de Nota")
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.note.NoteTypeID, Model.NoteTypes)
-            @Html.ValidationMessageFor(model => model.note.NoteTypeID)
+            @Html.DropDownListFor(model => model.Note.NoteTypeID, Model.NoteTypes, new { @style = "margin: 0 0 1rem 0 !important; padding: 0.5rem !important; height: 2.3125rem !important; width: 100% !important;" })
         </div>
         <div class="editor-label">
-            @Html.LabelFor(model => model.note.Note, "Nota")
+            @Html.LabelFor(model => model.Note.Note, "Nota *")
         </div>
         <div class="editor-field">
-            @Html.TextAreaFor(model => model.note.Note, new { @style="resize:none; height:100px;" })
-            @Html.ValidationMessageFor(model => model.note.Note)
+            @Html.TextAreaFor(model => model.Note.Note, new { @style = "resize:none; height:100px; width: 100% !important;" })
         </div>
 
         <p>
-            <input type="submit" value="Guardar" />
+            <input type="submit" style="float:left !important; width:40% !important; margin-left: 30px !important;" value="Guardar" /><input type="button" value="Cancelar" style="float:right !important; width:40% !important; margin-bottom: 20px !important; margin-right: 30px !important;" onclick="modalClose()" />
         </p>
-    </fieldset>
 }
-
-<div>
-    @Html.ActionLink("Devuelta", "Index")
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

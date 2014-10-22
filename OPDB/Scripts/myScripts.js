@@ -102,6 +102,7 @@ function modalClose() {
 
 function loadAdminView(e) {
     debugger;
+    document.getElementsByTagName("loading")[0].innerHTML = "<div style='text-align: center; width: 100%; height: 100%; position: fixed; top: 45px; left: 0; background-color: #efeeef;'><i class='fa fa-spinner fa-spin' style='font-size: 10em; color: gray; margin-top: 20%;'></i></div>";
     var url = $(e).attr('data-url');
     var id = $(e).attr('id');
     var urlIDs = ["outreachURL", "activitiesURL", "schoolsURL", "resourcesURL", "unitsURL", "usersURL", "removedOutreachURL", "removedSchoolsURL", "removedUnitsURL", "removedUsersURL"];

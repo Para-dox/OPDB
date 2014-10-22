@@ -43,6 +43,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="JQueryUIHelpers">
+      <HintPath>..\packages\jQueryUIHelpers.Mvc4.2.2.0\lib\net40\JQueryUIHelpers.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="MySql.Web, Version=6.9.4.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
     <Reference Include="MySql.Web.v20, Version=6.9.4.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
@@ -288,6 +291,7 @@
     <Compile Include="Models\UserDetail.cs">
       <DependentUpon>OPDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\UserInfoViewModel.cs" />
     <Compile Include="Models\UserNote.cs">
       <DependentUpon>OPDBModel.tt</DependentUpon>
     </Compile>
@@ -314,6 +318,7 @@
     <Content Include="Content\modalcss.css" />
     <Content Include="Content\modalStyle.css" />
     <Content Include="Content\multi-select\multi-select.css" />
+    <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -336,12 +341,16 @@
     <Content Include="Content\themes\base\jquery.ui.core.css" />
     <Content Include="Content\themes\base\jquery.ui.datepicker.css" />
     <Content Include="Content\themes\base\jquery.ui.dialog.css" />
+    <Content Include="Content\themes\base\jquery.ui.menu.css" />
     <Content Include="Content\themes\base\jquery.ui.progressbar.css" />
     <Content Include="Content\themes\base\jquery.ui.resizable.css" />
     <Content Include="Content\themes\base\jquery.ui.selectable.css" />
     <Content Include="Content\themes\base\jquery.ui.slider.css" />
+    <Content Include="Content\themes\base\jquery.ui.spinner.css" />
     <Content Include="Content\themes\base\jquery.ui.tabs.css" />
     <Content Include="Content\themes\base\jquery.ui.theme.css" />
+    <Content Include="Content\themes\base\jquery.ui.tooltip.css" />
+    <Content Include="Content\themes\base\minified\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\minified\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\minified\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\minified\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -362,12 +371,16 @@
     <Content Include="Content\themes\base\minified\jquery.ui.core.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.datepicker.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.dialog.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.menu.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.progressbar.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.resizable.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.selectable.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.slider.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.spinner.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.tooltip.min.css" />
+    <Content Include="Content\timepicker\jquery.timepicker.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <EntityDeploy Include="Models\OPDBModel.edmx">
@@ -385,6 +398,10 @@
     <Content Include="Content\images\sort_both.png" />
     <Content Include="Content\images\sort_desc.png" />
     <Content Include="Content\images\sort_desc_disabled.png" />
+    <Content Include="Scripts\jquery-ui-1.10.4.js" />
+    <Content Include="Scripts\jquery-ui-1.10.4.min.js" />
+    <Content Include="Scripts\jquery-ui.unobtrusive-2.2.0.js" />
+    <Content Include="Scripts\jquery-ui.unobtrusive-2.2.0.min.js" />
     <Content Include="Scripts\modal.js" />
     <Content Include="Scripts\modalmanager.js" />
     <Content Include="Models\OPDBModel.Context.tt">
@@ -473,6 +490,8 @@
     <Content Include="Scripts\moment\moment.js" />
     <Content Include="Scripts\multi-select\jquery.multi-select.js" />
     <Content Include="Scripts\myScripts.js" />
+    <Content Include="Scripts\timepicker\jquery.timepicker.js" />
+    <Content Include="Scripts\timepicker\jquery.timepicker.min.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -516,12 +535,10 @@
     <Content Include="Views\Actividades\Detalles.cshtml" />
     <Content Include="Views\Actividades\Crear.cshtml" />
     <Content Include="Views\Actividades\Editar.cshtml" />
-    <Content Include="Views\Actividades\Remover.cshtml" />
     <Content Include="Views\Usuarios\Index.cshtml" />
     <Content Include="Views\Usuarios\Detalles.cshtml" />
     <Content Include="Views\Usuarios\Crear.cshtml" />
     <Content Include="Views\Usuarios\Editar.cshtml" />
-    <Content Include="Views\Usuarios\Remover.cshtml" />
     <Content Include="Views\Recursos\Index.cshtml" />
     <Content Include="Views\Recursos\Detalles.cshtml" />
     <Content Include="Views\Recursos\Crear.cshtml" />
@@ -535,7 +552,6 @@
     <Content Include="Views\Escuelas\Detalles.cshtml" />
     <Content Include="Views\Escuelas\Crear.cshtml" />
     <Content Include="Views\Escuelas\Editar.cshtml" />
-    <Content Include="Views\Escuelas\Remover.cshtml" />
     <Content Include="Views\Alcance\Index.cshtml" />
     <Content Include="Views\Alcance\Detalles.cshtml" />
     <Content Include="Views\Alcance\Crear.cshtml" />
@@ -561,6 +577,11 @@
     <Content Include="Views\Usuarios\CrearNota.cshtml" />
     <Content Include="Views\Usuarios\EditarNota.cshtml" />
     <Content Include="Views\Home\Administracion.cshtml" />
+    <Content Include="Views\Actividades\NuevoComentario.cshtml" />
+    <Content Include="Views\Actividades\EditarComentario.cshtml" />
+    <Content Include="Views\Actividades\Lista.cshtml" />
+    <Content Include="Views\Escuelas\VerNota.cshtml" />
+    <Content Include="Views\Escuelas\Removidos.cshtml" />
     <Content Include="Views\Alcance\CrearNota.cshtml" />
     <Content Include="Views\Alcance\EditarNota.cshtml" />
     <Content Include="Views\Alcance\Remover.cshtml" />
