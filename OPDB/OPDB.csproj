@@ -304,6 +304,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\buttonStyle.css" />
     <Content Include="Content\dataTables\jquery.dataTables.css" />
     <Content Include="Content\dataTables\jquery.dataTables.min.css" />
     <Content Include="Content\dataTables\jquery.dataTables_themeroller.css" />

@@ -27,6 +27,8 @@
     .last, .first, .previous, .next {
         display: none !important;
     }
+     .panel.callout a:not(.button) {
+      color: #222222; }
 </style>
 
     <h2 style="text-align:center;">@Model.Activity.Title</h2>
@@ -81,10 +83,10 @@
                 {
                     <tr>
                         <td>@note.NoteType.NoteType1</td>
-                        <td><a href="#" title="Ver Nota" data-validation="false" data-title="Detalles" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("VerNota", "Actividades", new { id = note.ActivityNoteID })" class="modal_ajax_btn">@String.Concat(note.Note.Substring(0, 10), "...")</a></td>
+                        <td><a href="#" title="Ver Nota" data-validation="false" data-title="Detalles" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("VerNota", "Actividades", new { id = note.ActivityNoteID })" class="modal_ajax_btn">@String.Concat(note.Note.Substring(0, note.Note.Length > 100 ? 100 : note.Note.Length), "...")</a></td>
                         <td>
                             <a href="#" title="Editar" data-title="Editar Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarNota", "Actividades", new { id = note.ActivityNoteID })" class="modal_ajax_btn"><i class="fa fa-pencil"></i></a> 
-                            <i title="Remover" class="fa fa-remove" onclick="removeRecord(this, 'schoolNotes')" data-url="@Url.Action("RemoverNota", "Actividades", new { id = note.ActivityNoteID })"></i>
+                            <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this, 'schoolNotes')" data-url="@Url.Action("RemoverNota", "Actividades", new { id = note.ActivityNoteID })"></i>
 
                         </td>
                     </tr>
@@ -92,7 +94,7 @@
             </tbody>
 
         </table><br />
-        <a href="#" title="Añadir Nota" class="modal_ajax_btn" data-title="Nueva Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Actividades", new { id = Model.Activity.ActivityID })"><input type="button" value="Añadir Nota" /></a>
+        <center> <a href="#" title="Añadir Nota" class="modal_ajax_btn" data-title="Nueva Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Actividades", new { id = Model.Activity.ActivityID })"><input type="button" class="btn" value="Añadir Nota" /></a></center>
     </div>
 
 </div>
@@ -121,7 +123,7 @@
 
 </table><br />
 
-<a href="#" title="Comentar" class="modal_ajax_btn" data-title="Nuevo Comentario" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("NuevoComentario", "Actividades", new { id = Model.Activity.ActivityID })"><input type="button" value="Comentar" /></a>
+<center><a href="#" title="Comentar" class="modal_ajax_btn" data-title="Nuevo Comentario" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("NuevoComentario", "Actividades", new { id = Model.Activity.ActivityID })"><input type="button" class="btn" value="Comentar" /></a></center>
 
 <script src="~/Scripts/myScripts.js"></script>
 <script>
