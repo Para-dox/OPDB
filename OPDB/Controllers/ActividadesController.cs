@@ -180,7 +180,10 @@ namespace OPDB.Controllers
         {
             ActivityViewModel activityViewModel = new ActivityViewModel {
                 ActivityTypes = getActivityTypes(), 
-                SchoolList = getSchools()
+                SchoolList = getSchools(),
+                Activity = new Activity {
+                    UserID = 9
+                }
             };
 
             return View(activityViewModel);
@@ -206,10 +209,11 @@ namespace OPDB.Controllers
 
                 db.Activities.Add(activityViewModel.Activity);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+
+                return RedirectToAction("Detalles", "Alcance", new { id = activityViewModel.Activity.UserID });
             }
 
-            return View(activityViewModel.Activity);
+            return View(activityViewModel);
         }
 
         // GET: /Actividades/Edit/5
@@ -255,7 +259,7 @@ namespace OPDB.Controllers
             activityViewModel.ActivityTypes = getActivityTypes();
             activityViewModel.SchoolList = getSchools();
 
-            return View(activityViewModel.Activity);
+            return View(activityViewModel);
         }
 
         [HttpPost]
@@ -431,6 +435,25 @@ namespace OPDB.Controllers
            return schoolList;
        }
 
+       public List<SelectListItem> getOutreachEntities()
+       {
+           var outreachEntities = from outreach in db.OutreachEntityDetails where outreach.DeletionDate == null select outreach;
+           List<SelectListItem> types = new List<SelectListItem>();
+
+           foreach (var outreachEntity in outreachEntities)
+           {
+               types.Add(new SelectListItem()
+               {
+                   Text = outreachEntity.OutreachEntityName,
+                   Value = outreachEntity.UserID + ""
+
+               });
+
+           }
+
+           return types;
+       }
+
        public String GetErrorsFromModelState(ActivityViewModel activityViewModel)
        {
 
@@ -531,5 +554,92 @@ namespace OPDB.Controllers
 
            return Content(GetErrorsFromModelState(activityViewModel));  
        }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// Admin activity creation methods.
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+       public ActionResult CrearActividad()
+       {
+           ActivityViewModel activityViewModel = new ActivityViewModel
+           {
+               ActivityTypes = getActivityTypes(),
+               SchoolList = getSchools(),
+               OutreachEntities = getOutreachEntities()
+           };
+
+           return View(activityViewModel);
+       }
+
+       [HttpPost]
+       [ValidateAntiForgeryToken]
+       public ActionResult CrearActividad(ActivityViewModel activityViewModel)
+       {
+           if (ModelState.IsValid)
+           {
+               //TODO needs to acquire current user 
+               activityViewModel.Activity.UpdateDate = DateTime.Now;
+               activityViewModel.Activity.CreateDate = DateTime.Now;
+
+               activityViewModel.Activity.CreateUser = 3;
+               activityViewModel.Activity.UpdateUser = 3;
+
+               db.Activities.Add(activityViewModel.Activity);
+               db.SaveChanges();
+               return RedirectToAction("Index");
+           }
+
+           activityViewModel.ActivityTypes = getActivityTypes();
+           activityViewModel.SchoolList = getSchools();
+           activityViewModel.OutreachEntities = getOutreachEntities();
+
+           return View(activityViewModel);
+       }
+
+       public ActionResult EditarActividad(int id = 0)
+       {
+           ActivityViewModel activityViewModel = new ActivityViewModel
+           {
+               Activity = db.Activities.Find(id)
+           };
+
+           if (activityViewModel.Activity == null)
+           {
+               return HttpNotFound();
+           }
+
+           activityViewModel.ActivityDate = activityViewModel.Activity.ActivityDate.Value.ToString("dd/MM/yyyy");
+           activityViewModel.ActivityTypes = getActivityTypes();
+           activityViewModel.SchoolList = getSchools();
+           activityViewModel.OutreachEntities = getOutreachEntities();
+
+           return View(activityViewModel);
+       }
+
+       [HttpPost]
+       [ValidateAntiForgeryToken]
+       public ActionResult EditarActividad(ActivityViewModel activityViewModel)
+       {
+           if (ModelState.IsValid)
+           {
+               //TODO acquire current user
+               activityViewModel.Activity.ActivityDate = DateTime.ParseExact(activityViewModel.ActivityDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+               activityViewModel.Activity.ActivityTime = activityViewModel.Activity.ActivityTime.Replace(" ", "");
+               activityViewModel.Activity.UpdateUser = 3;
+               activityViewModel.Activity.UpdateDate = DateTime.Now;
+               db.Entry(activityViewModel.Activity).State = EntityState.Modified;
+               db.SaveChanges();
+               return RedirectToAction("Index");
+
+           }
+
+           activityViewModel.ActivityTypes = getActivityTypes();
+           activityViewModel.SchoolList = getSchools();
+           activityViewModel.OutreachEntities = getOutreachEntities();
+
+           return View(activityViewModel);
+       }
+
+       
     }
 }

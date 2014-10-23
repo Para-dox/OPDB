@@ -29,17 +29,17 @@
     }
 </style>
 
-<h2 style="text-align:center;">@Model.Activity.Title</h2>
-
-<div class="display-label">
-    @Html.LabelFor(model => model.Activity.Purpose, "Propósito")
+    <h2 style="text-align:center;">@Model.Activity.Title</h2>
+<div class="panel">
+    <div class="display-label">
+        @Html.LabelFor(model => model.Activity.Purpose, "Propósito")
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Activity.Purpose)
+    </div>
 </div>
-<div class="display-field">
-    @Html.DisplayFor(model => model.Activity.Purpose)
-</div>
-<br />
 
-<div class="row">
+<div class="columns panel callout">
     <div class="large-5 columns">
         <h3>Detalles de Actividad</h3>
         <div class="display-label">
@@ -63,7 +63,7 @@
             @Html.DisplayFor(model => model.Activity.ActivityTime)
         </div>
         <br />
-        <a href="#" title="Añadir Nota" class="modal_ajax_btn" data-title="Nueva Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Actividades", new { id = Model.Activity.ActivityID })"><input type="button" value="Añadir Nota" /></a>
+        
     </div>
 
     <div class="large-7 columns">
@@ -91,7 +91,8 @@
                 }
             </tbody>
 
-        </table>
+        </table><br />
+        <a href="#" title="Añadir Nota" class="modal_ajax_btn" data-title="Nueva Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Actividades", new { id = Model.Activity.ActivityID })"><input type="button" value="Añadir Nota" /></a>
     </div>
 
 </div>
@@ -101,17 +102,17 @@
 <table id="activityFeedback" style=" border: none !important;">
     <thead hidden>
         <tr>
-            <th style="width:90%;"></th>
-            <th style="width:10%;"></th>
+            <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var feedback in Model.Feedbacks)
         {
             <tr>
-                <td>@feedback.Feedback.Feedback1 - @feedback.User.FirstName @if (feedback.User.MiddleInitial != null) { @feedback.User.MiddleInitial } @feedback.User.LastName</td>
-                <td>
-                    <a href="#" title="Editar" data-title="Editar Comentario" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarComentario", "Actividades", new { id = feedback.Feedback.FeedbackID })" class="modal_ajax_btn"><i class="fa fa-pencil"></i></a> 
+                <td style="float:left;">@feedback.Feedback.Feedback1 - @feedback.User.FirstName @if (feedback.User.MiddleInitial != null) { @feedback.User.MiddleInitial } @feedback.User.LastName</td>
+                <td style="width:6%;">
+                    <a href="#" title="Editar" data-title="Editar Comentario" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarComentario", "Actividades", new { id = feedback.Feedback.FeedbackID })" class="modal_ajax_btn"><i class="fa fa-pencil"></i></a>
                     <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this, 'activityFeedback')" data-url="@Url.Action("RemoverComentario", "Actividades", new { id = feedback.Feedback.FeedbackID })"></i>
                 </td>
             </tr>
