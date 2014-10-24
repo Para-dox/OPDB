@@ -589,6 +589,7 @@
     <Content Include="Views\Usuarios\Lista.cshtml" />
     <Content Include="Views\Actividades\CrearActividad.cshtml" />
     <Content Include="Views\Actividades\EditarActividad.cshtml" />
+    <Content Include="Views\Usuarios\VerNota.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

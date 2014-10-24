@@ -19,8 +19,11 @@
     @Html.DisplayFor(model => model.Note.School.SchoolName)
 </div>
 <br />
+<div class="display-label">
+    @Html.LabelFor(model => model.Note.NoteType.NoteType1, "Tipo de Nota")
+</div>
 <div class="display-field">
-    <span>Tipo de Nota: </span>@Html.DisplayFor(model => model.Note.NoteType.NoteType1)
+    @Html.DisplayFor(model => model.Note.NoteType.NoteType1)
 </div>
 <br />
 <div class="display-label">
@@ -30,6 +33,6 @@
     @Html.DisplayFor(model => model.Note.Note)
 </div>
 <br />
-<a href="#" title="Editar" class="modal_ajax_btn" data-title="Editar Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarNota", "Escuelas", new { id = Model.Note.SchoolNoteID })"><input type="button" style="float:left !important; width:40% !important; margin-left: 30px !important;" value="Editar" /></a>
-<input type="button" style="float:right !important; width:40% !important; margin-bottom: 20px !important; margin-right: 30px !important;" value="Volver" onclick="modalClose()" />
+<a href="#" title="Editar" class="modal_ajax_btn" data-title="Editar Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarNota", "Escuelas", new { id = Model.Note.SchoolNoteID })"><input type="button" class="btn" style="float:left !important; width:40% !important; margin-left: 30px !important;" value="Editar" /></a>
+<input type="button" class="btn" style="float:right !important; width:40% !important; margin-bottom: 20px !important; margin-right: 30px !important;" value="Volver" onclick="modalClose()" />
 

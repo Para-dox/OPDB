@@ -27,6 +27,8 @@
         display: none !important;
     }
 
+     a:not(.button) {
+      color: #222222; }
     
 </style>
 <br />
@@ -66,7 +68,7 @@
                 </td>
                 <td>
                     <a href="#" title="Editar" data-title="Editar Escuela" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("PopUpEditar", "Escuelas", new { id = item.School.SchoolID })" class="modal_ajax_btn"><i class="fa fa-pencil"></i></a> 
-                    <i title="Remover" class="fa fa-remove" onclick="removeRecord(this)" data-url="@Url.Action("Remover", "Escuelas", new { id = item.School.SchoolID })"></i>        
+                    <i title="Remover" class="fa fa-remove" style="cursor:pointer;" onclick="removeRecord(this)" data-url="@Url.Action("Remover", "Escuelas", new { id = item.School.SchoolID })"></i>        
                 </td>
             </tr>
         }
@@ -74,9 +76,9 @@
 </table>
 <br />
 
-<p>
-   <a href="#" title="Añadir Escuela" class="modal_ajax_btn" data-title="Nueva Escuela" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("PopUpCrear", "Escuelas", null)"><input type="button" value="Nueva Escuela" /></a>   
-</p>
+
+   <a href="#" title="Añadir Escuela" class="modal_ajax_btn" data-title="Nueva Escuela" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("PopUpCrear", "Escuelas", null)"><input type="button" class="btn" value="Nueva Escuela" /></a><br />   
+
 
 <script src="~/Scripts/myScripts.js"></script>
 <script>

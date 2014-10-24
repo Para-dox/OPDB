@@ -100,7 +100,7 @@ namespace OPDB.Controllers
         {
             try {
 
-                var existingSchool = from school in db.Schools where school.SchoolSequenceNumber == schoolViewModel.School.SchoolSequenceNumber select school;
+                var existingSchool = from school in db.Schools where school.SchoolSequenceNumber == schoolViewModel.School.SchoolSequenceNumber && school.DeletionDate == null select school;
                     
                 if (existingSchool.Count() != 0)
                     ModelState.AddModelError("", Resources.WebResources.School_SchoolSequenceNumber_Unique);
@@ -195,7 +195,14 @@ namespace OPDB.Controllers
             {
                 return HttpNotFound();
             }
-            return View(school);
+
+            else
+            {
+                school.DeletionDate = DateTime.Now;
+                db.Entry(school).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            return RedirectToAction("Administracion", "Home", null);
         }
 
         public ActionResult RemoverNota(int id)
@@ -206,20 +213,7 @@ namespace OPDB.Controllers
             db.SaveChanges();
             return RedirectToAction("Detalles", "Escuelas", new { id = note.SchoolID });
         }
-
-        //
-        // POST: /Escuelas/Delete/5
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            School school = db.Schools.Find(id);
-            db.Schools.Remove(school);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
+        
         protected override void Dispose(bool disposing)
         {
             db.Dispose();

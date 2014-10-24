@@ -22,6 +22,9 @@
     th, td {
         text-align: center !important;
     }
+
+    a:not(.button) {
+      color: #222222; }
 </style>
 
 <table id="users">
@@ -64,9 +67,9 @@
     </tbody>
 </table>
 <br />
-<p>
-    <input type="button" value="Nuevo Usuario" onclick="location.href='@Url.Action("Crear", "Usuarios")'" /><input type="button" value="Usuarios Removidos" onclick="location.href='@Url.Action("Removidos", "Usuarios")'" />
-</p>
+
+    <input type="button" class="btn" value="Nuevo Usuario" onclick="location.href='@Url.Action("Crear", "Usuarios")'" /><input type="button" value="Usuarios Removidos" class="btn" onclick="location.href='@Url.Action("Removidos", "Usuarios")'" /><br />
+
 
 <script src="~/Scripts/myScripts.js"></script>
 <script>

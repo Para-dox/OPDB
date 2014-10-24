@@ -27,6 +27,8 @@
     .previous, .next{
         display: none !important;
     }
+     a:not(.button) {
+      color: #222222; }
 </style>
 
 <table id="activities">
@@ -81,7 +83,7 @@
     </tbody>
 </table>
 
-<input type="button" value="Nueva Actividad" onclick="location.href='@Url.Action("CrearActividad", "Actividades", null)'"/>
+<input type="button" value="Nueva Actividad" class="btn" onclick="location.href='@Url.Action("CrearActividad", "Actividades", null)'" />
 
 <br />
 

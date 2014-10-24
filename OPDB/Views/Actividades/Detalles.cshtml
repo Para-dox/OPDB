@@ -29,6 +29,29 @@
     }
      .panel.callout a:not(.button) {
       color: #222222; }
+
+    /*playlist css*/
+
+    #playlist {
+        display: table;
+    }
+
+        #playlist li {
+            cursor: pointer;
+            padding: 8px;
+        }
+
+            #playlist li:hover {
+                color: blue;
+            }
+
+    #videoarea {
+        float: left;
+        width: 640px;
+        height: 480px;
+        margin: 10px;
+        border: 1px solid silver;
+    }
 </style>
 
     <h2 style="text-align:center;">@Model.Activity.Title</h2>
@@ -64,8 +87,7 @@
         <div class="display-field">
             @Html.DisplayFor(model => model.Activity.ActivityTime)
         </div>
-        <br />
-        
+        <br />        
     </div>
 
     <div class="large-7 columns">
@@ -94,10 +116,12 @@
             </tbody>
 
         </table><br />
-        <center> <a href="#" title="Añadir Nota" class="modal_ajax_btn" data-title="Nueva Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Actividades", new { id = Model.Activity.ActivityID })"><input type="button" class="btn" value="Añadir Nota" /></a></center>
+        
     </div>
 
 </div>
+<div><input type="button" class="btn" value="Editar" /><input type="button" class="btn" value="Regresar" /><a href="#" title="Añadir Nota" class="modal_ajax_btn" data-title="Nueva Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Actividades", new { id = Model.Activity.ActivityID })"><input type="button" class="btn" value="Añadir Nota" /></a>
+    </div>
 <br />
 <h4>Comentarios</h4>
 
@@ -122,17 +146,30 @@
     </tbody>
 
 </table><br />
+<a href="#" title="Comentar" class="modal_ajax_btn" data-title="Nuevo Comentario" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("NuevoComentario", "Actividades", new { id = Model.Activity.ActivityID })"><input type="button" class="btn" value="Comentar" /></a><br /><br />
 
-<center><a href="#" title="Comentar" class="modal_ajax_btn" data-title="Nuevo Comentario" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("NuevoComentario", "Actividades", new { id = Model.Activity.ActivityID })"><input type="button" class="btn" value="Comentar" /></a></center>
+<div class="large-12 columns callout panel">
+    <h4>Media</h4>
 
+    <div class="large-9 columns">
+        <iframe width="560" id="videoarea" height="315" src="//www.youtube.com/embed/2vjPBrBU-TM" frameborder="0" allowfullscreen></iframe>
+    </div>
+    <div class="large-3 columns">
+        <h5>Lista de Reproducción</h5>
+        <ul id="playlist">
+            <li data-url="https://www.youtube.com/watch?v=2vjPBrBU-TM">Sia</li>
+            <li data-url="https://www.youtube.com/watch?v=u3u22OYqFGo">Black Widow</li>
+        </ul>
+    </div>
+</div>
 <script src="~/Scripts/myScripts.js"></script>
 <script>
     $(document).ready(function () {
         $('#activityNotes').DataTable({
-            "sDom": '<"top"lf>t<"bottom"pr><"clear">',
+            "sDom": '<"top"f>t<"bottom"pr><"clear">',
             "sPaginationType": "full_numbers",
             "bProcessing": false,
-            "iDisplayLength": 12,
+            "iDisplayLength": 5,
             "aaSorting": [[1, "asc"]],
             "columnDefs": [
                 {
@@ -145,12 +182,7 @@
                 "sZeroRecords": "No se ha encontrado ningún registro"
             }
         });
-    });
-</script>
 
-<script src="~/Scripts/myScripts.js"></script>
-<script>
-    $(document).ready(function () {
         $('#activityFeedback').DataTable({
             "sDom": '<"top">t<"bottom"pr><"clear">',
             "sPaginationType": "full_numbers",
@@ -161,5 +193,20 @@
                 "sZeroRecords": "No se ha encontrado ningún registro"
             }
         });
+
+        $(function () {
+            $("#playlist li").on("click", function () {
+                debugger;
+                var currentUrl = $("#videoarea").attr("src");
+                var index = $(this).attr("data-url").lastIndexOf("watch?v=");
+                var length = "watch?v=".length;
+                var lastIndex = $(this).attr("data-url").length-1;
+                var newUrl = $(this).attr("data-url").substr(index+length, lastIndex);
+                currentUrl = currentUrl.substr(0, 24);
+                $("#videoarea").attr({
+                    "src": currentUrl + newUrl
+                })
+            })
+        })
     });
 </script>

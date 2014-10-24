@@ -86,47 +86,9 @@
                 </div>
             </div>
 
-            @*<div id="outreachEntity">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.outreachEntity.OutreachEntityTypeID, "Tipo de Entidad")
-                    </div>
-                    <div class="editor-field">
-                        @Html.DropDownListFor(model => model.outreachEntity.OutreachEntityTypeID, Model.outreachTypes)
-                        @Html.ValidationMessageFor(model => model.outreachEntity.OutreachEntityTypeID)
-                    </div>
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.outreachEntity.OutreachEntityName, "Nombre")
-                    </div>
-                    <div class="editor-field">
-                        @Html.EditorFor(model => model.outreachEntity.OutreachEntityName)
-                        @Html.ValidationMessageFor(model => model.outreachEntity.OutreachEntityName)
-                    </div>
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.outreachEntity.Mission, "Misión")
-                    </div>
-                    <div class="editor-field">
-                        @Html.TextAreaFor(model => model.outreachEntity.Mission, new { @style = "resize:none;" })
-                        @Html.ValidationMessageFor(model => model.outreachEntity.Mission)
-                    </div>
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.outreachEntity.Vision, "Visión")
-                    </div>
-                    <div class="editor-field">
-                        @Html.TextAreaFor(model => model.outreachEntity.Vision, new { @style = "resize:none;" })
-                        @Html.ValidationMessageFor(model => model.outreachEntity.Vision)
-                    </div>
-
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.outreachEntity.Objectives, "Objetivos")
-                    </div>
-                    <div class="editor-field">
-                        @Html.TextAreaFor(model => model.outreachEntity.Objectives, new { @style = "resize:none;" })
-                        @Html.ValidationMessageFor(model => model.outreachEntity.Objectives)
-                    </div>
-                </div>*@
-
+            
             <p style="text-align:left;">
-                <input type="submit" value="Guardar" /> <input type="button" value="Cancelar" onclick="window.location = '@Url.Action("Index", "Usuarios")';" />
+                <input type="submit" class="btn" value="Guardar" /> <input type="button" class="btn" value="Cancelar" onclick="window.location = '@Url.Action("Index", "Usuarios")';" />
             </p>
         </fieldset>
     </center>

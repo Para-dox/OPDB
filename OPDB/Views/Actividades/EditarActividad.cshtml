@@ -91,7 +91,7 @@
                 @Html.DropDownListFor(model => model.Activity.SchoolID, Model.SchoolList, new { @style = "width: 500px !important;" })
             </div>
             <p>
-                <input type="submit" value="Guardar" /><input type="button" value="Regresar" onclick="location.href='@Url.Action("Index","Actividades", null)'" />
+                <input type="submit" class="btn" value="Guardar" /><input type="button" class="btn" value="Regresar" onclick="location.href='@Url.Action("Index","Actividades", null)'" />
             </p>
         </fieldset>
     </center>

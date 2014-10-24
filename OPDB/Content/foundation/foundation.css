@@ -1544,7 +1544,7 @@ meta.foundation-mq-topbar {
     .top-bar input,
     .top-bar .button,
     .top-bar button {
-      font-size: 0.875rem;
+      /*font-size: 0.875rem;*/
       position: relative;
       top: 7px; }
     .top-bar.expanded {
