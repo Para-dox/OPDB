@@ -9,15 +9,24 @@
         color: #4d4d4d;
     }
 </style>
-    <div class="display-field">
-        <span>Unidad: </span>@Html.DisplayFor(model => model.Unit.UnitName)
+    <div>
+        @Html.LabelFor(model => model.Unit.UnitName, "Unidad")
     </div>
     <div class="display-field">
-        <span>Oficina: </span> @Html.DisplayFor(model => model.Unit.RoomNumber)
+        @Html.DisplayFor(model => model.Unit.UnitName)
+    </div>
+    <div>
+        @Html.LabelFor(model => model.Unit.RoomNumber, "Oficina o Salón")
     </div>
     <div class="display-field">
-        <span>Teléfono: </span> @Html.DisplayFor(model => model.Unit.PhoneNumber)
+        @Html.DisplayFor(model => model.Unit.RoomNumber)
+    </div>
+    <div>
+        @Html.LabelFor(model => model.Unit.PhoneNumber, "Teléfono")
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Unit.PhoneNumber)
     </div><br />
-    <a href="#" title="Editar" class="modal_ajax_btn" data-title="Editar Recurso" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("PopUpEditar", "Recursos", new { id = Model.Resource.ResourceID })"><input type="button" class="btn" style="float:left !important; width:40% !important; margin-left: 30px !important;" value="Editar" /></a>
-    <input type="button" class="btn" style="float:right !important; width:40% !important; margin-bottom: 20px !important; margin-right: 30px !important;" value="Volver" onclick="modalClose()" />
+<a href="#" title="Editar" class="modal_ajax_btn" data-title="Editar Recurso" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("PopUpEditar", "Recursos", new { id = Model.Resource.ResourceID })"><input type="button" class="btn" style="float:left !important; width:40% !important; margin-left: 30px !important;" value="Editar" /></a>
+<input type="button" class="btn" style="float:right !important; width:40% !important; margin-bottom: 20px !important; margin-right: 30px !important;" value="Volver" onclick="modalClose()" />
 

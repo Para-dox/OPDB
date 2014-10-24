@@ -285,6 +285,7 @@
     <Compile Include="Models\Unit.cs">
       <DependentUpon>OPDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\UnitViewModel.cs" />
     <Compile Include="Models\User.cs">
       <DependentUpon>OPDBModel.tt</DependentUpon>
     </Compile>
@@ -548,7 +549,6 @@
     <Content Include="Views\Unidades\Detalles.cshtml" />
     <Content Include="Views\Unidades\Crear.cshtml" />
     <Content Include="Views\Unidades\Editar.cshtml" />
-    <Content Include="Views\Unidades\Remover.cshtml" />
     <Content Include="Views\Escuelas\Index.cshtml" />
     <Content Include="Views\Escuelas\Detalles.cshtml" />
     <Content Include="Views\Escuelas\Crear.cshtml" />
@@ -564,7 +564,7 @@
     <Content Include="Views\Actividades\CrearNota.cshtml" />
     <Content Include="Views\Actividades\EditarNota.cshtml" />
     <Content Include="Views\Actividades\VerNota.cshtml" />
-    <Content Include="Views\Unidades\Unidades.cshtml" />
+    <Content Include="Views\Unidades\Lista.cshtml" />
     <Content Include="Views\Home\BusquedaAvanzada.cshtml" />
     <Content Include="Views\Home\_Alcance.cshtml" />
     <Content Include="Views\Home\_Actividades.cshtml" />

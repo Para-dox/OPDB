@@ -11,6 +11,7 @@ namespace OPDB.Models
         public Feedback Feedback { get; set; }
         public Activity Activity { get; set; }
         public School School { get; set; }
+        public Unit Unit { get; set; }
 
         public UserDetail User { get; set; }
         public UserDetail CreateUser { get; set; }

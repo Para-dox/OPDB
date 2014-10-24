@@ -123,6 +123,20 @@
 <div><input type="button" class="btn" value="Editar" /><input type="button" class="btn" value="Regresar" /><a href="#" title="Añadir Nota" class="modal_ajax_btn" data-title="Nueva Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Actividades", new { id = Model.Activity.ActivityID })"><input type="button" class="btn" value="Añadir Nota" /></a>
     </div>
 <br />
+<div class="large-12 columns callout panel">
+    <h4>Media</h4>
+
+    <div class="large-9 columns">
+        <iframe width="560" id="videoarea" height="315" src="//www.youtube.com/embed/2vjPBrBU-TM" frameborder="0" allowfullscreen></iframe>
+    </div>
+    <div class="large-3 columns">
+        <h5>Lista de Reproducción</h5>
+        <ul id="playlist">
+            <li data-url="https://www.youtube.com/watch?v=2vjPBrBU-TM">Sia</li>
+            <li data-url="https://www.youtube.com/watch?v=u3u22OYqFGo">Black Widow</li>
+        </ul>
+    </div>
+</div>
 <h4>Comentarios</h4>
 
 <table id="activityFeedback" style=" border: none !important;">
@@ -148,20 +162,7 @@
 </table><br />
 <a href="#" title="Comentar" class="modal_ajax_btn" data-title="Nuevo Comentario" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("NuevoComentario", "Actividades", new { id = Model.Activity.ActivityID })"><input type="button" class="btn" value="Comentar" /></a><br /><br />
 
-<div class="large-12 columns callout panel">
-    <h4>Media</h4>
 
-    <div class="large-9 columns">
-        <iframe width="560" id="videoarea" height="315" src="//www.youtube.com/embed/2vjPBrBU-TM" frameborder="0" allowfullscreen></iframe>
-    </div>
-    <div class="large-3 columns">
-        <h5>Lista de Reproducción</h5>
-        <ul id="playlist">
-            <li data-url="https://www.youtube.com/watch?v=2vjPBrBU-TM">Sia</li>
-            <li data-url="https://www.youtube.com/watch?v=u3u22OYqFGo">Black Widow</li>
-        </ul>
-    </div>
-</div>
 <script src="~/Scripts/myScripts.js"></script>
 <script>
     $(document).ready(function () {
@@ -179,7 +180,8 @@
             ],
             "oLanguage": {
                 "sEmptyTable": "No se ha dejado ninguna nota",
-                "sZeroRecords": "No se ha encontrado ningún registro"
+                "sZeroRecords": "No se ha encontrado ningún registro",
+                "sSearch": "Buscar:"
             }
         });
 

@@ -18,90 +18,119 @@ namespace OPDB.Controllers
 
         public ActionResult Index()
         {
-            var units = from u in db.Units.Include(u => u.User).Include(u => u.User1) where u.DeletionDate == null select u;
-            return View(units.ToList());
+            List<Unit> units = (from unit in db.Units where unit.DeletionDate == null select unit).ToList();
+
+            UnitViewModel unitViewModel = new UnitViewModel
+            {
+                Information = new List<UserInfoViewModel>()
+            };
+
+
+            foreach (var unit in units)
+            {
+                unitViewModel.Information.Add(new UserInfoViewModel
+                {
+                    Unit = unit,
+                    CreateUser = db.UserDetails.First(u => u.UserID == unit.CreateUser),
+                    UpdateUser = db.UserDetails.First(u => u.UserID == unit.UpdateUser)
+
+                });
+            }
+
+            return PartialView("Index", unitViewModel);
         }
 
-        //
-        // GET: /Unidades/Details/5
-
+        [HttpPost]
         public ActionResult Detalles(int id = 0)
         {
-            Unit unit = db.Units.Find(id);
-            if (unit == null)
+            UnitViewModel unitViewModel = new UnitViewModel
+            {
+                Unit = db.Units.Find(id)
+            };
+
+            if (unitViewModel.Unit == null)
             {
                 return HttpNotFound();
             }
-            return View(unit);
+
+            return PartialView("Detalles", unitViewModel);
         }
 
         //
         // GET: /Unidades/Create
 
-        public ActionResult Crear()
+        [HttpPost]
+        public ActionResult PopUpCrear()
         {
-            Unit unit = new Unit { };
-
-            return View(unit);
+            return PartialView("Crear");
         }
 
         //
         // POST: /Unidades/Create
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Crear(Unit unitModel)
+        public ActionResult Crear(UnitViewModel unitViewModel)
         {
-            if (ModelState.IsValid)
+            try
             {
-                // TODO create logic that extracts user ID
-                unitModel.CreateDate = DateTime.Now;
-                unitModel.CreateUser = 1;
-                unitModel.UpdateDate = DateTime.Now;
-                unitModel.UpdateUser = 1;
+                if (ModelState.IsValid)
+                {
+                    unitViewModel.Unit.CreateDate = DateTime.Now;
+                    unitViewModel.Unit.UpdateDate = DateTime.Now;
 
-                db.Units.Add(unitModel);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                    // Change after login implementation.
+                    unitViewModel.Unit.CreateUser = 1;
+                    unitViewModel.Unit.UpdateUser = 1;
+
+                    db.Units.Add(unitViewModel.Unit);
+                    db.SaveChanges();
+
+                    return View("_Hack");
+                }
+
+                return Content(GetErrorsFromModelState(unitViewModel));
             }
 
-            return View(unitModel);
+            catch (Exception)
+            {
+                return Content(GetErrorsFromModelState(unitViewModel));
+            }
         }
 
-        //
-        // GET: /Unidades/Edit/5
-
-        public ActionResult Editar(int id = 0)
+        [HttpPost]
+        public ActionResult PopUpEditar(int id = 0)
         {
-            Unit unit = db.Units.Find(id);
-            if (unit == null)
+            UnitViewModel unitViewModel = new UnitViewModel
+            {
+                Unit = db.Units.Find(id)
+            };
+
+            if (unitViewModel.Unit == null)
             {
                 return HttpNotFound();
             }
-            //these are not needed?
-            //ViewBag.CreateUser = new SelectList(db.Users, "UserID", "UserPassword", unit.CreateUser);
-            //ViewBag.UpdateUser = new SelectList(db.Users, "UserID", "UserPassword", unit.UpdateUser);
-            return View(unit);
+
+            return PartialView("Editar", unitViewModel);
         }
 
         //
         // POST: /Unidades/Edit/5
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Editar(Unit unit)
+        public ActionResult Editar(UnitViewModel unitViewModel)
         {
             if (ModelState.IsValid)
             {
-                unit.UpdateDate = DateTime.Now;
-                unit.UpdateUser = 1; // TODO get actual user
-                db.Entry(unit).State = EntityState.Modified;
-                db.SaveChanges();
+                //To be changed with login.
+                unitViewModel.Unit.UpdateUser = 1;
 
-                return RedirectToAction("Index");
+                unitViewModel.Unit.UpdateDate = DateTime.Now;
+                db.Entry(unitViewModel.Unit).State = EntityState.Modified;
+                db.SaveChanges();
+                return View("_Hack");
             }
 
-            return View(unit);
+            return Content(GetErrorsFromModelState(unitViewModel));   
         }
 
         //
@@ -125,23 +154,36 @@ namespace OPDB.Controllers
             return RedirectToAction("Index");
         }
 
-        //
-        // POST: /Unidades/Delete/5
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Unit unit = db.Units.Find(id);
-            db.Units.Remove(unit);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
         protected override void Dispose(bool disposing)
         {
             db.Dispose();
             base.Dispose(disposing);
+        }
+
+
+        public String GetErrorsFromModelState(UnitViewModel unitViewModel)
+        {
+
+            //retrieves the validation messages from the ModelState as strings    
+            var str = "";
+            var errorSates = from state in ModelState.Values
+                             from error in state.Errors
+                             select error.ErrorMessage;
+
+            var errorList = errorSates.ToList();
+            foreach (var m in errorList)
+            {
+                str = str + "<li>* " + m + "</li>";
+            }
+
+            return str;
+        }
+
+        public ActionResult Lista()
+        {
+            var units = from unit in db.Units where unit.DeletionDate == null select unit;
+
+            return View(units.ToList());
         }
     }
 }
