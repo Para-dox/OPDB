@@ -28,6 +28,7 @@
         </div>
 
         <div class="editor-field">
+            @Html.DropDownListFor(model => model.outreachEntity.OutreachEntityTypeID, Model.outreachTypes, new { @style = "margin: 0 0 1rem 0 !important; padding: 0.5rem !important; height: 2.3125rem !important; width: 100% !important;" })
             @Html.ValidationMessageFor(model => model.outreachEntity.OutreachEntityTypeID)
         </div>
 

@@ -13,6 +13,7 @@
     @Html.HiddenFor(model => model.note.UserID)
     @Html.HiddenFor(model => model.note.CreateDate)
     @Html.HiddenFor(model => model.note.CreateUser)
+    @Html.HiddenFor(model => model.note.SubjectID)
 
     <div class="editor-label">
         @Html.LabelFor(model => model.note.NoteTypeID, "Tipo de Nota")
