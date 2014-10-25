@@ -47,28 +47,12 @@ namespace OPDB.Controllers
 
         public ActionResult Crear()
         {
-            ViewBag.OutreachEntityTypeID = new SelectList(db.OutreachEntityTypes, "OutreachEntityTypeID", "OureachEntityType");
-            ViewBag.UserID = new SelectList(db.Users, "UserID", "UserPassword");
-            return View();
-        }
-
-        //
-        // POST: /Alcance/Create
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Crear(OutreachEntityDetail outreachentitydetail)
-        {
-            if (ModelState.IsValid)
+            UserViewModel userViewModel = new UserViewModel
             {
-                db.OutreachEntityDetails.Add(outreachentitydetail);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+                outreachTypes = getOutreachTypes()
+            };
 
-            ViewBag.OutreachEntityTypeID = new SelectList(db.OutreachEntityTypes, "OutreachEntityTypeID", "OureachEntityType", outreachentitydetail.OutreachEntityTypeID);
-            ViewBag.UserID = new SelectList(db.Users, "UserID", "UserPassword", outreachentitydetail.UserID);
-            return View(outreachentitydetail);
+            return View(userViewModel);
         }
 
         //
@@ -76,16 +60,20 @@ namespace OPDB.Controllers
 
         public ActionResult Editar(int id = 0)
         {
+            var outreach = db.OutreachEntityDetails.Find(id);
 
             UserViewModel outreachViewModel = new UserViewModel
             {
-                outreachEntity = db.OutreachEntityDetails.Find(id)
+                user = db.Users.Find(outreach.UserID),
+                outreachEntity = outreach,
+                outreachTypes = getOutreachTypes()
             };
 
             if (outreachViewModel.outreachEntity == null)
             {
                 return HttpNotFound();
             }
+
             return View(outreachViewModel);
         }
 
@@ -94,20 +82,20 @@ namespace OPDB.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Editar(UserViewModel outreachentitydetail)
+        public ActionResult Editar(UserViewModel userViewModel)
         {
             if (ModelState.IsValid)
             {
-                outreachentitydetail.user.UpdateDate = DateTime.Now;
-                outreachentitydetail.outreachEntity.UpdateDate = DateTime.Now;
-                db.Entry(outreachentitydetail.user).State = EntityState.Modified;
-                db.Entry(outreachentitydetail.outreachEntity).State = EntityState.Modified;
+                userViewModel.user.UpdateDate = DateTime.Now;
+                userViewModel.outreachEntity.UpdateDate = DateTime.Now;
+                db.Entry(userViewModel.user).State = EntityState.Modified;
+                db.Entry(userViewModel.outreachEntity).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            
-            outreachentitydetail.userTypes = getUserTypes();
-            return View(outreachentitydetail);
+
+            userViewModel.outreachTypes = getOutreachTypes();
+            return View(userViewModel);
         }
 
         //
@@ -161,39 +149,41 @@ namespace OPDB.Controllers
         }
 
         [HttpPost]
-        public ActionResult GuardarNota(UserViewModel outreachViewModel)
+        public ActionResult GuardarNota(UserViewModel userViewModel)
         {
-
-            outreachViewModel.note.UpdateUser = 2;
-            outreachViewModel.note.UpdateDate = DateTime.Now;
-
-            if (outreachViewModel.note.UserNoteID == 0)
+            try
             {
-                if (ModelState.IsValid)
+                userViewModel.note.UpdateUser = 2;
+                userViewModel.note.UpdateDate = DateTime.Now;
+
+                if (userViewModel.note.UserNoteID == 0)
                 {
-                    outreachViewModel.note.CreateDate = DateTime.Now;
+                    if (ModelState.IsValid)
+                    {
+                        userViewModel.note.CreateDate = DateTime.Now;
 
-                    outreachViewModel.note.UserID = 2;
-                    outreachViewModel.note.CreateUser = 2;
+                        userViewModel.note.UserID = 2;
+                        userViewModel.note.CreateUser = 2;
 
-                    db.UserNotes.Add(outreachViewModel.note);
-                    db.SaveChanges();
+                        db.UserNotes.Add(userViewModel.note);
+                        db.SaveChanges();
 
-                    return View("_Hack");
+                        return View("_Hack");
+                    }
+
+                    return Content(GetErrorsFromModelState(userViewModel));
                 }
+                else if (ModelState.IsValid)
+                {
 
-                return Content(GetErrorsFromModelState(outreachViewModel));
+                    db.Entry(userViewModel.note).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return View("_Hack");
+
+                }
             }
-            else if (ModelState.IsValid)
-            {
-
-                db.Entry(outreachViewModel.note).State = EntityState.Modified;
-                db.SaveChanges();
-                return View("_Hack");
-
-            }
-
-            return Content(GetErrorsFromModelState(outreachViewModel));
+            catch(Exception e) { return Content(e.ToString()); }
+            return Content(GetErrorsFromModelState(userViewModel));
         }
 
         public ActionResult EditarNota(int id)
@@ -226,7 +216,7 @@ namespace OPDB.Controllers
 
         }
 
-        public String GetErrorsFromModelState(UserViewModel outreachViewModel)
+        public String GetErrorsFromModelState(UserViewModel userViewModel)
         {
 
 
