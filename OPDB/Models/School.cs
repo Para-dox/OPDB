@@ -34,6 +34,8 @@ namespace OPDB.Models
         [Required(ErrorMessageResourceName = "School_Address_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Address { get; set; }
 
+        public string Town { get; set; }
+
         [Required(ErrorMessageResourceName = "School_PhoneNumber_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string PhoneNumber { get; set; }
 
