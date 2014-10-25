@@ -1,0 +1,23 @@
+﻿@model OPDB.Models.ActivityViewModel
+
+@using (Ajax.BeginForm("Upload", "Actividades", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "validation" }))
+{
+    @Html.ValidationSummary(false)
+    @Html.HiddenFor(model => model.Media.ActivityID)
+    
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Media.MediaType, "Tipo de Medio")
+    </div>
+    <div class="editor-field">
+        @Html.DropDownListFor(model => model.Media.MediaType, Model.MediaTypes)
+    </div><br />
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Media.MediaPath, "URL del Medio")
+    </div>
+    <div class="editor-field">
+        @Html.TextBoxFor(model => model.Media.MediaPath)
+    </div>
+    
+    <input type="submit" class="btn" style="float:left !important; width:40% !important; margin-left: 30px !important;" value="Crear" />    <input type="button" class="btn" style="float:right !important; width:40% !important; margin-bottom: 20px !important; margin-right: 30px !important;" value="Cancelar" onclick="modalClose()" />
+
+}

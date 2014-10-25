@@ -11,16 +11,28 @@ namespace OPDB.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.Data;
+    using System.ComponentModel.DataAnnotations;
+    using System.Runtime.Serialization;
     
     public partial class OutreachEntityDetail
     {
         public int OutreachEntityDetailID { get; set; }
         public int UserID { get; set; }
         public int OutreachEntityTypeID { get; set; }
+
+        [Required(ErrorMessageResourceName = "OutreachEntityDetail_OutreachEntityName_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string OutreachEntityName { get; set; }
+
+        [Required(ErrorMessageResourceName = "OutreachEntityDetail_Mission_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Mission { get; set; }
+
+        [Required(ErrorMessageResourceName = "OutreachEntityDetail_Vision_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Vision { get; set; }
+
+        [Required(ErrorMessageResourceName = "OutreachEntityDetail_Objectives_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Objectives { get; set; }
+
         public string Location { get; set; }
         public System.DateTime CreateDate { get; set; }
         public System.DateTime UpdateDate { get; set; }

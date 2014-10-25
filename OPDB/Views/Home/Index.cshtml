@@ -25,14 +25,14 @@
 {
 
     <div class="large-6 columns panel">
-        <h4>@activity.Title</h4>
+        <h4>@Html.ActionLink(activity.Title, "Detalles", "Actividades", new { id = activity.ActivityID }, null)</h4>
         <span>Propósito: </span><r>@activity.Purpose</r><br />
         <span>Tipo: </span><r>@activity.ActivityType.ActivityType1</r><br />
-        @if (activity.Location != null)
+        @if (activity.Location != null && activity.Location != "")
         {<span>Lugar: </span><r>@activity.Location</r><br /> }
-        @if (activity.ActivityDate != null)
+        @if (activity.ActivityDate != null && activity.ActivityDate != new DateTime())
         { <span>Fecha: </span><r>@activity.ActivityDate.Value.ToString("dd/MM/yyyy")</r><br />}
-        @if (activity.ActivityTime != null)
+        @if (activity.ActivityTime != null && activity.ActivityTime != "")
         { <span>Hora: </span><r>@activity.ActivityTime</r><br />}
     </div>
 

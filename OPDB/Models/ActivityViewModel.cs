@@ -12,6 +12,8 @@ namespace OPDB.Models
         public Activity Activity { get; set; }
         public Feedback Feedback { get; set; }
         public ActivityNote Note { get; set; }
+        public Medium Media { get; set; }
+
         public List<UserInfoViewModel> Feedbacks { get; set; }
         public IEnumerable<ActivityNote> Notes { get; set; }
         
@@ -23,5 +25,7 @@ namespace OPDB.Models
         public string ActivityDate { get; set; }
 
         public List<UserInfoViewModel> Information { get; set; }
+
+        public List<SelectListItem> MediaTypes { get; set; }
     }
 }

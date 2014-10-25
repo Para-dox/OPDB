@@ -11,15 +11,26 @@ namespace OPDB.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.Data;
+    using System.ComponentModel.DataAnnotations;
+    using System.Runtime.Serialization;
     
     public partial class UserDetail
     {
         public int UserDetailID { get; set; }
         public int UserID { get; set; }
+
+        [Required(ErrorMessageResourceName = "UserDetail_FirstName_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string FirstName { get; set; }
+
+        [Required(ErrorMessageResourceName = "UserDetail_LastName_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string LastName { get; set; }
+
         public string MiddleInitial { get; set; }
+
+        [Required(ErrorMessageResourceName = "UserDetail_Gender_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Gender { get; set; }
+
         public Nullable<System.DateTime> DateOfBirth { get; set; }
         public string Role { get; set; }
         public string Major { get; set; }

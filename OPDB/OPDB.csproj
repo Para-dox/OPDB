@@ -590,6 +590,7 @@
     <Content Include="Views\Actividades\CrearActividad.cshtml" />
     <Content Include="Views\Actividades\EditarActividad.cshtml" />
     <Content Include="Views\Usuarios\VerNota.cshtml" />
+    <Content Include="Views\Actividades\Upload.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -120,7 +120,7 @@
     </div>
 
 </div>
-<div><input type="button" class="btn" value="Editar" /><input type="button" class="btn" value="Regresar" /><a href="#" title="Añadir Nota" class="modal_ajax_btn" data-title="Nueva Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Actividades", new { id = Model.Activity.ActivityID })"><input type="button" class="btn" value="Añadir Nota" /></a>
+<div><input type="button" class="btn" value="Editar" /><input type="button" class="btn" value="Regresar" onclick="window.history.back()" /><a href="#" title="Añadir Nota" class="modal_ajax_btn" data-title="Nueva Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Actividades", new { id = Model.Activity.ActivityID })"><input type="button" class="btn" value="Añadir Nota" /></a>
     </div>
 <br />
 <div class="large-12 columns callout panel">
@@ -134,6 +134,8 @@
         <ul id="playlist">
             <li data-url="https://www.youtube.com/watch?v=2vjPBrBU-TM">Sia</li>
             <li data-url="https://www.youtube.com/watch?v=u3u22OYqFGo">Black Widow</li>
+            <li data-url="https://www.youtube.com/watch?v=u0fk6syQ7iY">Earthquake</li>
+            
         </ul>
     </div>
 </div>
@@ -150,7 +152,8 @@
         @foreach (var feedback in Model.Feedbacks)
         {
             <tr>
-                <td style="float:left;">@feedback.Feedback.Feedback1 - @feedback.User.FirstName @if (feedback.User.MiddleInitial != null) { @feedback.User.MiddleInitial } @feedback.User.LastName</td>
+                <td style="float:left;">@feedback.Feedback.Feedback1 - @feedback.UserDetail.FirstName @if (feedback.UserDetail.MiddleInitial != null)
+                                                                                                { @feedback.UserDetail.MiddleInitial } @feedback.UserDetail.LastName</td>
                 <td style="width:6%;">
                     <a href="#" title="Editar" data-title="Editar Comentario" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarComentario", "Actividades", new { id = feedback.Feedback.FeedbackID })" class="modal_ajax_btn"><i class="fa fa-pencil"></i></a>
                     <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this, 'activityFeedback')" data-url="@Url.Action("RemoverComentario", "Actividades", new { id = feedback.Feedback.FeedbackID })"></i>

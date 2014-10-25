@@ -120,8 +120,17 @@
   <data name="ActivityNote_Note_Required" xml:space="preserve">
     <value>No ha ingresado el contenido de la nota</value>
   </data>
+  <data name="Activity_Purpose_Required" xml:space="preserve">
+    <value>No ha ingresado el propósito de esta actividad</value>
+  </data>
+  <data name="Activity_Title_Required" xml:space="preserve">
+    <value>No ha ingresado el título de esta actividad</value>
+  </data>
   <data name="Feedback_Feedback_Required" xml:space="preserve">
     <value>No ha ingresado su comentario</value>
+  </data>
+  <data name="Media_MediaPath_Required" xml:space="preserve">
+    <value>No ha ingresado el enlace de este medio</value>
   </data>
   <data name="OutreachEntityDetail_Mission_Required" xml:space="preserve">
     <value>No ha ingresado la misión de la organización</value>
@@ -140,6 +149,15 @@
   </data>
   <data name="SchoolNote_Note_Required" xml:space="preserve">
     <value>No ha ingresado el contenido de la nota</value>
+  </data>
+  <data name="School_Address_Required" xml:space="preserve">
+    <value>No ha ingresado una dirección para esta escuela</value>
+  </data>
+  <data name="School_PhoneNumber_Required" xml:space="preserve">
+    <value>No ha ingresado un número telefónico para esta escuela</value>
+  </data>
+  <data name="School_SchoolSequenceNumber_Required" xml:space="preserve">
+    <value>No ha ingresado el numero de identificación para esta escuela</value>
   </data>
   <data name="School_SchoolSequenceNumber_Unique" xml:space="preserve">
     <value>Ya existe una escuela con ese numéro de identificación</value>

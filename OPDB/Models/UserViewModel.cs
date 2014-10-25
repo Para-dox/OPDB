@@ -18,6 +18,8 @@ namespace OPDB.Models
         public UserNote note { get; set; }
         public List<SelectListItem> NoteTypes { get; set; }
         public IEnumerable<UserNote> Notes { get; set; }
+
+        public List<UserInfoViewModel> Information { get; set; }
         
     }
 }
