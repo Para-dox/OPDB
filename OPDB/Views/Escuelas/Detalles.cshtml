@@ -99,7 +99,7 @@
 
     <a href="#" title="Editar" data-title="Editar Escuela" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("PopUpEditar", "Escuelas", new { id = Model.School.SchoolID })" class="modal_ajax_btn"><input type="button" value="Editar" class="btn"></a>
     <a href="#" title="Añadir Nota" class="modal_ajax_btn" data-title="Nueva Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Escuelas", new { id = Model.School.SchoolID })"><input type="button" class="btn" value="Añadir Nota" /></a>
-    <input type="button" class="btn" value="Devuelta" onclick="location.href='@Url.Action("Index", "Escuelas")'" />
+    <input type="button" class="btn" value="Devuelta" onclick="window.history.back()" />
                     
 <script src="~/Scripts/myScripts.js"></script>
 <script>

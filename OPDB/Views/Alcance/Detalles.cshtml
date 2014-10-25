@@ -27,10 +27,16 @@
     .last, .first, .previous, .next {
         display: none !important;
     }
+
+     .panel.callout a:not(.button) {
+      color: #222222; 
+
+    }
+
 </style>
 
 <h2> @Html.DisplayFor(model => model.outreachEntity.OutreachEntityName)</h2>
-<div class="panel large-12 columns" >
+<div class="panel callout columns" >
     <div class="large-5 columns">
     <div class="display-label">
             @Html.LabelFor(model => model.outreachEntity.OutreachEntityType.OutreachEntityType1, "Tipo de Organización")
@@ -46,6 +52,16 @@
     <div class="display-field">
             @Html.DisplayFor(model => model.outreachEntity.OutreachEntityName)
     </div>
+        <br />
+
+    <div class="display-label">
+            @Html.LabelFor(model => model.user.PhoneNumber, "Número de Telefono")
+    </div>
+        <br />
+
+    <div class="display-field">
+            @Html.DisplayFor(model => model.user.PhoneNumber)
+    </div>  
         <br />
 
     <div class="display-label">
@@ -110,11 +126,11 @@
 
 <div class="large-12 columns">
     <p>
-        <input type="button" value="Editar" onclick="location.href='@Url.Action("Editar", "Alcance", new { id = Model.outreachEntity.OutreachEntityDetailID })'" />
-        <a href="#" title="Añadir Nota" class="modal_ajax_btn" data-title="Nueva Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Alcance", new { id = Model.outreachEntity.UserID })"><input type="button" value="Añadir Nota" /></a>
-        <input type="button" value="Volver" onclick="location.href='@Url.Action("Index", "Alcance")'" />
-        <input type="button" value="Volver a Lista" onclick="location.href='@Url.Action("Lista", "Alcance")'">
-    </p>
+        <a href="#" title="Editar" data-title="Editar Alcance" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("PopUpEditar", "Alcance", new { id = Model.outreachEntity.UserID })" class="modal_ajax_btn"><input type="button" value="Editar" class="btn"></a>
+        <a href="#" title="Añadir Nota" class="modal_ajax_btn" data-title="Nueva Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Alcance", new { id = Model.outreachEntity.UserID })"><input type="button" value="Añadir Nota" class="btn"/></a>
+        <input type="button" class="btn" value="Volver" onclick="window.history.back()" />
+        @*<input type="button" class="btn" value="Volver a Lista" onclick="location.href='@Url.Action("Lista", "Alcance")'">*@
+</p>
 </div>
 
 <script src="~/Scripts/myScripts.js"></script>
@@ -131,7 +147,12 @@
                     "orderable": false,
                     "targets": 2
                 }
-            ]
+            ],
+            "oLanguage": {
+                "sEmptyTable": "No se ha dejado ninguna nota",
+                "sZeroRecords": "No se ha encontrado ningún registro",
+                "sSearch": "Buscar:"
+            }
         });
     });
 

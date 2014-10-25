@@ -4,12 +4,10 @@
     ViewBag.Title = "Editar";
 }
 
-
 @using (Ajax.BeginForm("Editar", "Escuelas", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "validation" }))
 {
 
     @Html.ValidationSummary(false)
-
     @Html.HiddenFor(model => model.School.SchoolID)
     @Html.HiddenFor(model => model.School.CreateUser)
     @Html.HiddenFor(model => model.School.CreateDate)
@@ -49,6 +47,7 @@
         @Html.EditorFor(model => model.School.PhoneNumber)
     </div>
     <br />
+    
     <p>
         <input type="submit" class="btn" style="float:left !important; width:40% !important; margin-left: 30px !important;" value="Guardar" /> <input type="button" value="Cancelar" class="btn" style="float:right !important; width:40% !important; margin-bottom: 20px !important; margin-right: 30px !important;" onclick="modalClose()" />
     </p>

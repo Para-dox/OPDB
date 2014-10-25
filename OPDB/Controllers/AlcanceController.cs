@@ -200,6 +200,23 @@ namespace OPDB.Controllers
             return PartialView("EditarNota", outreachViewModel);
         }
 
+        [HttpPost]
+        public ActionResult VerNota(int id)
+        {
+            UserNote userNote = db.UserNotes.Find(id);
+            userNote.NoteType = db.NoteTypes.Find(userNote.NoteTypeID);
+
+
+            UserViewModel userViewModel = new UserViewModel
+            {
+                note = userNote,
+                outreachEntity = db.OutreachEntityDetails.First(user => user.UserID == userNote.SubjectID)
+            };
+
+
+            return PartialView("VerNota", userViewModel);
+        }
+
         public ActionResult Lista()
         {
             var users = from o in db.OutreachEntityDetails.Include(o => o.OutreachEntityType) where o.DeletionDate == null select o;

@@ -4,114 +4,88 @@
     ViewBag.Title = "Editar";
 }
 
-<style>
-    .text-box {
-        width: 500px;
-    }
-
-    .editor-label {
-        text-align: left;
-    }
-</style>
-
-<h2>Editar</h2>
-
-@using (Html.BeginForm()) {
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
-
-    <center>
-        <fieldset style="width:500px;">
-            <legend>OutreachEntityDetail</legend>
-
-            @Html.HiddenFor(model => model.user.UserID)
-            @Html.HiddenFor(model => model.user.CreateDate)
-            @Html.HiddenFor(model => model.user.UserStatus)
-            @Html.HiddenFor(model => model.user.UserPassword)
-            @Html.HiddenFor(model => model.user.Email)
-            @Html.HiddenFor(model => model.outreachEntity.OutreachEntityDetailID)
-            @Html.HiddenFor(model => model.outreachEntity.CreateDate)
-            @Html.HiddenFor(model => model.outreachEntity.UserID)
-            @Html.HiddenFor(model => model.user.UserTypeID)
+@using (Ajax.BeginForm("Editar", "Alcance", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "validation" }))
+{
+   
+    @Html.ValidationSummary(false)
+    @Html.HiddenFor(model => model.user.UserID)
+    @Html.HiddenFor(model => model.user.CreateDate)
+    @Html.HiddenFor(model => model.user.UserStatus)
+    @Html.HiddenFor(model => model.user.UserPassword)
+    @Html.HiddenFor(model => model.user.Email)
+    @Html.HiddenFor(model => model.outreachEntity.OutreachEntityDetailID)
+    @Html.HiddenFor(model => model.outreachEntity.CreateDate)
+    @Html.HiddenFor(model => model.outreachEntity.UserID)
+    @Html.HiddenFor(model => model.user.UserTypeID)
             
+    <div class="editor-label">
+        @Html.LabelFor(model => model.outreachEntity.OutreachEntityTypeID, "Tipo de Organización")
+    </div>
+    
+    <div class="editor-field">
+        @Html.DropDownListFor(model => model.outreachEntity.OutreachEntityTypeID, Model.outreachTypes, new { @style = "margin: 0 0 1rem 0 !important; padding: 0.5rem !important; height: 2.3125rem !important; width: 100% !important;" })
+        @Html.ValidationMessageFor(model => model.outreachEntity.OutreachEntityTypeID)
+    </div>
 
-            <div class="editor-label">
-                @Html.LabelFor(model => model.outreachEntity.OutreachEntityTypeID, "Tipo de Organización")
-            </div>
-            <div class="editor-field">
-                @Html.DropDownListFor(model => model.outreachEntity.OutreachEntityTypeID, Model.outreachTypes, new { @style = "margin: 0 0 1rem 0 !important; padding: 0.5rem !important; height: 2.3125rem !important; width: 100% !important;" })
-                @Html.ValidationMessageFor(model => model.outreachEntity.OutreachEntityTypeID)
-            </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.outreachEntity.OutreachEntityName, "Nombre de Organización")
+    </div>
 
-            <div class="editor-label">
-                @Html.LabelFor(model => model.outreachEntity.OutreachEntityName, "Nombre de Organización")
-            </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.outreachEntity.OutreachEntityName)
+    </div>
 
-            <div class="editor-field">
-                @Html.EditorFor(model => model.outreachEntity.OutreachEntityName)
-            </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.user.Email, "Email")
+    </div>
 
-            <div class="editor-label">
-                @Html.LabelFor(model => model.user.Email, "Email")
-            </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.user.Email)
+    </div>
 
-            <div class="editor-field">
-                @Html.EditorFor(model => model.user.Email)
-            </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.user.PhoneNumber, "Número de Teléfono")
+    </div>
 
-            <div class="editor-label">
-                @Html.LabelFor(model => model.user.PhoneNumber, "Número de Teléfono")
-            </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.user.PhoneNumber)
+    </div>
 
-            <div class="editor-field">
-                @Html.EditorFor(model => model.user.PhoneNumber)
-            </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.outreachEntity.Mission, "Misión")
+    </div>
 
-            <div class="editor-label">
-                @Html.LabelFor(model => model.outreachEntity.Mission, "Misión")
-            </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.outreachEntity.Mission)
+    </div>
 
-            <div class="editor-field">
-                @Html.EditorFor(model => model.outreachEntity.Mission)
-            </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.outreachEntity.Vision, "Visión")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.outreachEntity.Vision)
+        @Html.ValidationMessageFor(model => model.outreachEntity.Vision)
+    </div>
 
-            <div class="editor-label">
-                @Html.LabelFor(model => model.outreachEntity.Vision, "Visión")
-            </div>
-            <div class="editor-field">
-                @Html.EditorFor(model => model.outreachEntity.Vision)
-                @Html.ValidationMessageFor(model => model.outreachEntity.Vision)
-            </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.outreachEntity.Objectives, "Objetivos")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.outreachEntity.Objectives)
+    </div>
 
-            <div class="editor-label">
-                @Html.LabelFor(model => model.outreachEntity.Objectives, "Objetivos")
-            </div>
-            <div class="editor-field">
-                @Html.EditorFor(model => model.outreachEntity.Objectives)
-            </div>
-
-            <div class="editor-label">
-                @Html.LabelFor(model => model.outreachEntity.Location, "Localización")
-            </div>
-            <div class="editor-field">
-                @Html.EditorFor(model => model.outreachEntity.Location)
-            </div>
-
-            <p style="text-align:left;">
-                <input type="submit" value="Guardar" /> <input type="button" value="Cancelar" onclick="window.location = '@Url.Action("Index", "Alcance", new { id = Model.outreachEntity.OutreachEntityDetailID })';" />
-            </p>
-        </fieldset>
-    </center>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.outreachEntity.Location, "Localización")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.outreachEntity.Location)
+    </div>
+    <br/>
+    
+    <p style="text-align:left;">
+        <input type="submit" class="btn" style="float:left !important; width:40% !important; margin-left: 30px !important;" value="Guardar" /> <input type="button" value="Cancelar" class="btn" style="float:right !important; width:40% !important; margin-bottom: 20px !important; margin-right: 30px !important;" onclick="modalClose()" />
+    </p>
 }
-
-<script src="~/Scripts/myScripts.js"></script>
-<script type="text/javascript">
-
-    $(document).ready(function () {
-        getValue();
-    })
-
-</script>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
