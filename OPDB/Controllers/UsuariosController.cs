@@ -326,24 +326,9 @@ namespace OPDB.Controllers
 
         public ActionResult Lista()
         {
-            var users = (from userDetail in db.UserDetails join user in db.Users on userDetail.UserID equals user.UserID where (user.UserTypeID != 3) && userDetail.DeletionDate == null orderby userDetail.FirstName ascending select userDetail).ToList();
-
-            UserViewModel userViewModel = new UserViewModel
-            {
-               Information = new List<UserInfoViewModel>()
-            };
-
-            foreach (var user in users)
-            {
-                userViewModel.Information.Add(new UserInfoViewModel
-                {
-                    User = db.Users.Find(user.UserID),
-                    UserDetail = user
-                });
-            }
-
+            var users = from u in db.Users.Include(u => u.UserType).Include(u => u.UserDetails) where (u.UserTypeID != 3) && u.DeletionDate == null select u;
             
-            return View(userViewModel);
+            return View(users.ToList());
 
         }
 
