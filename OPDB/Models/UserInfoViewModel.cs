@@ -12,8 +12,9 @@ namespace OPDB.Models
         public Activity Activity { get; set; }
         public School School { get; set; }
         public Unit Unit { get; set; }
+        public User User { get; set; }
 
-        public UserDetail User { get; set; }
+        public UserDetail UserDetail { get; set; }
         public UserDetail CreateUser { get; set; }
         public UserDetail UpdateUser { get; set; }
 

@@ -19,11 +19,7 @@
     input[type="search"] {
         padding: 0.2rem;
     }
-
-    th, td {
-        text-align: center !important;
-    }
-
+    
     tr{
         background-color: #e2e2e2 !important;
     }
@@ -47,7 +43,7 @@
         {
             <tr>
                 <td class="panel callout large-12 columns">
-                    @unit.UnitName<br />
+                    <span style="color:#008cba;">@unit.UnitName</span><br />
                     <span>Edificio: </span> @unit.Building<br />
                     <span>Oficina o Salón: </span> @unit.RoomNumber<br />
                     <span>Teléfono: </span> @unit.PhoneNumber<br />

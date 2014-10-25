@@ -11,6 +11,9 @@ namespace OPDB.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.Data;
+    using System.ComponentModel.DataAnnotations;
+    using System.Runtime.Serialization;
     
     public partial class User
     {
@@ -66,8 +69,13 @@ namespace OPDB.Models
     
         public int UserID { get; set; }
         public int UserTypeID { get; set; }
+
+        [Required(ErrorMessageResourceName = "User_UserPassword_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string UserPassword { get; set; }
+
+        [Required(ErrorMessageResourceName = "User_UserEmail_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Email { get; set; }
+
         public string PhoneNumber { get; set; }
         public bool UserStatus { get; set; }
         public System.DateTime CreateDate { get; set; }

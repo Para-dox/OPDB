@@ -154,7 +154,7 @@ namespace OPDB.Controllers
             foreach(var feedback in result){
                 list.Add(new UserInfoViewModel{
                     Feedback = feedback,
-                    User = db.UserDetails.Find(feedback.UserID)
+                    UserDetail = db.UserDetails.Find(feedback.UserID)
                 });
             }
             
@@ -554,6 +554,85 @@ namespace OPDB.Controllers
 
            return Content(GetErrorsFromModelState(activityViewModel));  
        }
+
+       [HttpPost]
+       public ActionResult MediaUpload(int id = 0)
+       {
+           ActivityViewModel activityViewModel = new ActivityViewModel
+           {
+               MediaTypes = getMediaTypes(),
+               Media = new Medium
+               {
+                   ActivityID = id
+               }
+           };
+
+           return PartialView("Upload", activityViewModel);
+
+       }
+
+       public List<SelectListItem> getMediaTypes()
+       {
+           String[] mediaTypes = new String[] { "Video", "Foto"};
+
+           List<SelectListItem> types = new List<SelectListItem>();
+
+           for(int i = 0; i < mediaTypes.Length; i ++)
+           {
+               types.Add(new SelectListItem()
+               {
+                   Text = mediaTypes[i],
+                   Value = mediaTypes[i]
+               });
+           }
+
+           return types;
+
+
+       }
+
+       [HttpPost]
+       public ActionResult Upload(ActivityViewModel activityViewModel)
+       {
+
+           activityViewModel.Media.UpdateDate = DateTime.Now;
+
+           //To be changed with login implementation.
+           activityViewModel.Media.UpdateUser = 1;
+
+           if (activityViewModel.Media.MediaID == 0)
+           {
+               if (ModelState.IsValid) 
+               { 
+                   //To be changed with login implementation.
+                   activityViewModel.Media.CreateUser = 1;
+                                             
+                   activityViewModel.Media.CreateDate = DateTime.Now;
+
+                   db.Media.Add(activityViewModel.Media);
+                   db.SaveChanges();
+
+                   return View("_Hack");
+               }
+               else
+               {
+                   return Content(GetErrorsFromModelState(activityViewModel));
+               }
+           }
+           else
+           {
+                if (ModelState.IsValid) 
+                   { 
+                       db.Entry(activityViewModel.Media).State = EntityState.Modified;
+                       db.SaveChanges();
+                       return View("_Hack");
+                   }
+                   else
+                   {
+                       return Content(GetErrorsFromModelState(activityViewModel));
+                   }
+               }
+           }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// Admin activity creation methods.

@@ -181,7 +181,7 @@ namespace OPDB.Controllers
 
         public ActionResult Lista()
         {
-            var units = from unit in db.Units where unit.DeletionDate == null select unit;
+            var units = from unit in db.Units where unit.DeletionDate == null orderby unit.UnitName ascending select unit;
 
             return View(units.ToList());
         }

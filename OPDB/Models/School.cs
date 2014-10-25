@@ -11,6 +11,9 @@ namespace OPDB.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.Data;
+    using System.ComponentModel.DataAnnotations;
+    using System.Runtime.Serialization;
     
     public partial class School
     {
@@ -21,11 +24,19 @@ namespace OPDB.Models
         }
     
         public int SchoolID { get; set; }
+
+        [Required(ErrorMessageResourceName = "School_SchoolSequenceNumber_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string SchoolSequenceNumber { get; set; }
+
+        [Required(ErrorMessageResourceName = "School_SchoolName_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string SchoolName { get; set; }
+
+        [Required(ErrorMessageResourceName = "School_Address_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Address { get; set; }
-        public string Town { get; set; }
+
+        [Required(ErrorMessageResourceName = "School_PhoneNumber_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string PhoneNumber { get; set; }
+
         public int CreateUser { get; set; }
         public System.DateTime CreateDate { get; set; }
         public int UpdateUser { get; set; }

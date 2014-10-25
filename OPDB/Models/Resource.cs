@@ -11,6 +11,9 @@ namespace OPDB.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.Data;
+    using System.ComponentModel.DataAnnotations;
+    using System.Runtime.Serialization;
     
     public partial class Resource
     {
@@ -20,7 +23,10 @@ namespace OPDB.Models
         }
     
         public int ResourceID { get; set; }
+
+        [Required(ErrorMessageResourceName = "Resource_ResourceName_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Resource1 { get; set; }
+
         public int UnitID { get; set; }
         public int CreateUser { get; set; }
         public System.DateTime CreateDate { get; set; }

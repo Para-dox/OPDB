@@ -112,8 +112,7 @@
         
         <input type="button" class="btn" value="Editar" onclick="location.href='@Url.Action("Editar", "Usuarios", new { id = Model.user.UserID })'" />
         <a href="#" title="Añadir Nota" class="modal_ajax_btn" data-title="Nueva Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Usuarios", new { id = Model.user.UserID })"><input type="button" class="btn" value="Añadir Nota" /></a>
-        <input type="button" class="btn" value="Volver" onclick="location.href='@Url.Action("Index", "Usuarios")'">
-        <input type="button" class="btn" value="Volver a Lista" onclick="location.href='@Url.Action("Lista", "Usuarios")'">
+        <input type="button" class="btn" value="Volver" onclick="window.history.back()">
     </p>
 </div>
 

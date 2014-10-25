@@ -70,11 +70,38 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No ha ingresado el propósito de esta actividad.
+        /// </summary>
+        internal static string Activity_Purpose_Required {
+            get {
+                return ResourceManager.GetString("Activity_Purpose_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No ha ingresado el título de esta actividad.
+        /// </summary>
+        internal static string Activity_Title_Required {
+            get {
+                return ResourceManager.GetString("Activity_Title_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No ha ingresado su comentario.
         /// </summary>
         internal static string Feedback_Feedback_Required {
             get {
                 return ResourceManager.GetString("Feedback_Feedback_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No ha ingresado el enlace de este medio.
+        /// </summary>
+        internal static string Media_MediaPath_Required {
+            get {
+                return ResourceManager.GetString("Media_MediaPath_Required", resourceCulture);
             }
         }
         
@@ -129,6 +156,33 @@ namespace Resources {
         internal static string SchoolNote_Note_Required {
             get {
                 return ResourceManager.GetString("SchoolNote_Note_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No ha ingresado una dirección para esta escuela.
+        /// </summary>
+        internal static string School_Address_Required {
+            get {
+                return ResourceManager.GetString("School_Address_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No ha ingresado un número telefónico para esta escuela.
+        /// </summary>
+        internal static string School_PhoneNumber_Required {
+            get {
+                return ResourceManager.GetString("School_PhoneNumber_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No ha ingresado el numero de identificación para esta escuela.
+        /// </summary>
+        internal static string School_SchoolSequenceNumber_Required {
+            get {
+                return ResourceManager.GetString("School_SchoolSequenceNumber_Required", resourceCulture);
             }
         }
         

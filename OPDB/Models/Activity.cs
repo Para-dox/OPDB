@@ -11,6 +11,9 @@ namespace OPDB.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.Data;
+    using System.ComponentModel.DataAnnotations;
+    using System.Runtime.Serialization;
     
     public partial class Activity
     {
@@ -28,8 +31,13 @@ namespace OPDB.Models
         public int ActivityID { get; set; }
         public int ActivityTypeID { get; set; }
         public int UserID { get; set; }
+
+        [Required(ErrorMessageResourceName = "Activity_Title_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Title { get; set; }
+
+        [Required(ErrorMessageResourceName = "Activity_Purpose_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Purpose { get; set; }
+
         public string Location { get; set; }
         public Nullable<System.DateTime> ActivityDate { get; set; }
         public string ActivityTime { get; set; }
