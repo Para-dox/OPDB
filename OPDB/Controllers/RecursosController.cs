@@ -66,7 +66,7 @@ namespace OPDB.Controllers
             {
                 return HttpNotFound();
             }
-            //return View(resourceViewModel);
+
             return PartialView("Detalles", resourceViewModel);
         }
 
@@ -95,7 +95,6 @@ namespace OPDB.Controllers
         public ActionResult Crear(ResourceViewModel resourceViewModel)
         {
            
-
         try { 
                 if (ModelState.IsValid)
                 {

@@ -1,85 +1,36 @@
-﻿@model OPDB.Models.Unit
+﻿@model OPDB.Models.UnitViewModel
 
 @{
     ViewBag.Title = "Detalles"; @*this is the text that shows up in the browser tab*@
 }
-
-<h2>Detalles</h2>
-
-<fieldset>
-    <legend>Unit</legend>
-
+<br />
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.UnitName)
+         @Html.LabelFor(model => model.Unit.Building, "Edificio")
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.UnitName)
-    </div>
+        @Html.DisplayFor(model => model.Unit.Building)
+    </div><br />
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Building)
+         @Html.LabelFor(model => model.Unit.RoomNumber, "Oficina o Salón")
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Building)
-    </div>
+        @Html.DisplayFor(model => model.Unit.RoomNumber)
+    </div><br />
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.RoomNumber)
+         @Html.LabelFor(model => model.Unit.PhoneNumber, "Teléfono")
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.RoomNumber)
-    </div>
+        @Html.DisplayFor(model => model.Unit.PhoneNumber)
+    </div><br />
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.PhoneNumber)
+         @Html.LabelFor(model => model.Unit.Extension, "Extensión")
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.PhoneNumber)
+        @Html.DisplayFor(model => model.Unit.Extension)
     </div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Extension)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Extension)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.User.UserPassword)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.User.UserPassword)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.CreateDate)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.CreateDate)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.User1.UserPassword)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.User1.UserPassword)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.UpdateDate)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.UpdateDate)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.DeletionDate)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.DeletionDate)
-    </div>
-</fieldset>
-<p>
-    @Html.ActionLink("Editar", "Editar", new { id=Model.UnitID }) |
-    @Html.ActionLink("Regresar", "Index")
-</p>
+<a href="#" title="Editar" class="modal_ajax_btn" data-title="Editar Unidad" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("PopUpEditar", "Unidades", new { id = Model.Unit.UnitID })"><input type="button" class="btn" style="float:left !important; width:40% !important; margin-left: 30px !important;" value="Editar" /></a>
+<input type="button" class="btn" style="float:right !important; width:40% !important; margin-bottom: 20px !important; margin-right: 30px !important;" value="Volver" onclick="modalClose()" />

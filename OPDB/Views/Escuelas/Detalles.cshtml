@@ -27,11 +27,14 @@
         display: none !important;
     }
 
+      .panel.callout a:not(.button) {
+      color: #222222; }
+
 </style>
 
 <h2 style="text-align:center;">@Model.School.SchoolName</h2>
 <br />
-<div class="row">
+<div class="panel callout columns">
     <div class="large-5 columns">
         <h3>Información</h3>
         <div class="display-label">
@@ -62,11 +65,7 @@
             @Html.DisplayFor(model => model.School.PhoneNumber)
         </div>
         <br />
-        <p>
-            <a href="#" title="Editar" data-title="Editar Escuela" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("PopUpEditar", "Escuelas", new { id = Model.School.SchoolID })" class="modal_ajax_btn"><i class="fa fa-pencil"></i></a> 
-            <a href="#" title="Añadir Nota" class="modal_ajax_btn" data-title="Nueva Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Escuelas", new { id = Model.School.SchoolID })"><input type="button" value="Añadir Nota" /></a>
-            <input type="button" value="Devuelta" onclick="location.href='@Url.Action("Index", "Escuelas")'" />
-        </p>
+        
     </div>
 
     <div class="large-7 columns">
@@ -84,10 +83,10 @@
                 {
                     <tr>
                         <td>@note.NoteType.NoteType1</td>
-                        <td><a href="#" title="Ver Nota" data-validation="false" data-title="Detalles" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("VerNota", "Escuelas", new { id = note.SchoolNoteID })" class="modal_ajax_btn">@String.Concat(note.Note, "...")</a></td>
+                        <td><a href="#" title="Ver Nota" data-validation="false" data-title="Detalles" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("VerNota", "Escuelas", new { id = note.SchoolNoteID })" class="modal_ajax_btn">@String.Concat(note.Note.Substring(0, note.Note.Length > 100 ? 100 : note.Note.Length), "...")</a></td>
                         <td>
                             <a href="#" title="Editar" data-title="Editar Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarNota", "Escuelas", new { id = note.SchoolNoteID })" class="modal_ajax_btn"><i class="fa fa-pencil"></i></a> 
-                            <i title="Remover" class="fa fa-remove" onclick="removeRecord(this, 'schoolNotes')" data-url="@Url.Action("RemoverNota", "Escuelas", new { id = note.SchoolNoteID })"></i>
+                            <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this, 'schoolNotes')" data-url="@Url.Action("RemoverNota", "Escuelas", new { id = note.SchoolNoteID })"></i>
   
                         </td>
                     </tr>
@@ -98,17 +97,19 @@
 </div>
 </div>
 
-
+    <a href="#" title="Editar" data-title="Editar Escuela" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("PopUpEditar", "Escuelas", new { id = Model.School.SchoolID })" class="modal_ajax_btn"><input type="button" value="Editar" class="btn"></a>
+    <a href="#" title="Añadir Nota" class="modal_ajax_btn" data-title="Nueva Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Escuelas", new { id = Model.School.SchoolID })"><input type="button" class="btn" value="Añadir Nota" /></a>
+    <input type="button" class="btn" value="Devuelta" onclick="location.href='@Url.Action("Index", "Escuelas")'" />
                     
 <script src="~/Scripts/myScripts.js"></script>
 <script>
     $(document).ready(function () {
 
         $('#schoolNotes').DataTable({
-            "sDom": '<"top"lf>t<"bottom"pr><"clear">',
+            "sDom": '<"top"f>t<"bottom"pr><"clear">',
             "sPaginationType": "full_numbers",
             "bProcessing": false,
-            "iDisplayLength": 12,
+            "iDisplayLength": 5,
             "aaSorting":[[1, "asc"]],
             "columnDefs": [
                 {
@@ -117,7 +118,8 @@
                 }
             ],
             "oLanguage": { "sEmptyTable": "No se ha dejado ninguna nota",
-                "sZeroRecords": "No se ha encontrado ningún registro" }
+                "sZeroRecords": "No se ha encontrado ningún registro",
+                "sSearch": "Buscar:"}
         });
     });
 

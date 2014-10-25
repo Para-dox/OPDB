@@ -27,6 +27,8 @@
     .previous, .next{
         display: none !important;
     }
+     a:not(.button) {
+      color: #222222; }
 </style>
 
 <table id="activities">
@@ -72,7 +74,7 @@
                     @Html.DisplayFor(modelItem => item.Activity.UpdateDate)
                 </td>
                 <td>
-                    <a href="@Url.Action("Editar", "Actividades", new { id = item.Activity.ActivityID })"><i class="fa fa-pencil" title="Editar"></i></a>
+                    <a href="@Url.Action("EditarActividad", "Actividades", new { id = item.Activity.ActivityID })"><i class="fa fa-pencil" title="Editar"></i></a>
                     <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this)" data-url="@Url.Action("Remover", "Actividades", new { id = item.Activity.ActivityID })"></i>
                     
                 </td>
@@ -80,6 +82,9 @@
         }
     </tbody>
 </table>
+
+<input type="button" value="Nueva Actividad" class="btn" onclick="location.href='@Url.Action("CrearActividad", "Actividades", null)'" />
+
 <br />
 
 <script src="~/Scripts/myScripts.js"></script>

@@ -1,0 +1,79 @@
+﻿@model IEnumerable<OPDB.Models.Unit>
+
+@{
+    ViewBag.Title = "Unidades";
+}
+
+<style>
+    select {
+        width: 50px !important;
+        padding: 0.2rem !important;
+        height: 1.5rem !important;
+        margin: 0 !important;
+    }
+
+    label {
+        width: 100% !important;
+    }
+
+    input[type="search"] {
+        padding: 0.2rem;
+    }
+
+    th, td {
+        text-align: center !important;
+    }
+
+    tr{
+        background-color: #e2e2e2 !important;
+    }
+
+    table{
+        border: none !important;
+    }
+
+      .last, .first, .previous, .next{
+        display: none !important;
+    }
+</style>
+
+<h2>Unidades</h2><br />
+<table id="unitList">
+    <thead hidden>
+        <tr><th></th></tr>
+    </thead>
+    <tbody>
+        @foreach (var unit in Model)
+        {
+            <tr>
+                <td class="panel callout large-12 columns">
+                    @unit.UnitName<br />
+                    <span>Edificio: </span> @unit.Building<br />
+                    <span>Oficina o Salón: </span> @unit.RoomNumber<br />
+                    <span>Teléfono: </span> @unit.PhoneNumber<br />
+                    <span>Extensión: </span> @unit.Extension<br />
+                    
+                </td>
+            </tr>
+
+        }
+    </tbody>
+</table>
+
+<script src="~/Scripts/myScripts.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $('#unitList').DataTable({
+            "sDom": '<"top">t<"bottom"pr><"clear">',
+            "sPaginationType": "full_numbers",
+            "bProcessing": false,
+            "oLanguage": {
+                "sEmptyTable": "No se ha añadido ninguna unidad",
+                "sZeroRecords": "No se ha encontrado ningún registro"
+            }
+        });
+    });
+
+
+</script>

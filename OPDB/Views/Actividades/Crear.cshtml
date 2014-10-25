@@ -1,7 +1,7 @@
 ﻿@model OPDB.Models.ActivityViewModel
 
 @{
-    ViewBag.Title = "Crear";
+    ViewBag.Title = "Nueva Actividad";
 }
 
 <style>
@@ -24,7 +24,7 @@
 
 </style>
 
-<h2>Crear Actividad</h2>
+<h2>Nueva Actividad</h2>
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
@@ -33,13 +33,13 @@
     <center>
         <fieldset style="width:500px;">
             <legend>Activity</legend>
+            @Html.HiddenFor(model => model.Activity.UserID)
 
             <div class="editor-label">
                 @Html.LabelFor(model => model.Activity.ActivityTypeID, "Tipo de Actividad")
             </div>
             <div class="editor-field">
                 @Html.DropDownListFor(model => model.Activity.ActivityTypeID, Model.ActivityTypes, new { @style = "width: 500px !important;" })
-                @Html.ValidationMessageFor(model => model.Activity.ActivityTypeID)
             </div>
 
             <div class="editor-label">
@@ -69,11 +69,12 @@
                 <div class="large-6 columns" style="text-align:left;">
                     <span>Fecha </span><br />
                     @Html.TextBoxFor(model => model.Activity.ActivityDate, new { id = "datepicker", @readonly = true }) &nbsp;<i class="fa fa-calendar"></i> 
+                    @Html.ValidationMessageFor(model => model.Activity.ActivityDate)
                 </div>
                 <div class="large-6 columns" style="text-align:left;">
                     <span>Hora </span><br />
                     @Html.TextBoxFor(model => model.Activity.ActivityTime, new { id = "timepicker" }) &nbsp;<i class="fa fa-clock-o"></i>
-                    @*@Html.ValidationMessageFor(model => model.activity.ActivityDate)*@
+                    @Html.ValidationMessageFor(model => model.Activity.ActivityTime)
                 </div>
             </div>
             <div class="editor-label">
@@ -81,19 +82,14 @@
             </div>
             <div class="editor-field">
                 @Html.DropDownListFor(model => model.Activity.SchoolID, Model.SchoolList, new { @style = "width: 500px !important;" })
-                @Html.ValidationMessageFor(model => model.Activity.SchoolID)
             </div>
 
             <p style="text-align:left;">
-                <input type="submit" value="Crear" />
+                <input type="submit" class="btn" value="Crear" /><input type="button" value="Regresar" class="btn" onclick="location.href='@Url.Action("Detalles", "Alcance", new { id =  Model.Activity.UserID })'" />
             </p>
         </fieldset>
     </center>
 }
-
-<div>
-    @Html.ActionLink("Regresar", "Index")
-</div>
 
 <script>
 

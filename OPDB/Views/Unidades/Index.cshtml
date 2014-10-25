@@ -1,11 +1,8 @@
-﻿@model IEnumerable<OPDB.Models.Unit>
+﻿@model OPDB.Models.UnitViewModel
 
 @{
     ViewBag.Title = "Index";
 }
-
-<h2>Unidades</h2>
-
 <style>
     select {
         width: 50px !important;
@@ -30,44 +27,37 @@
 <table id="units">
     <thead>
         <tr>
-            <th style="width:50%;">Unidad</th>
-            <th style="width:10%;">Edificio</th>
-            <th style="width:10%;">Oficina</th>
-            <th style="width:12%;">Teléfono</th>
-            <th style="width:10%;">Extensión</th>
-            <th style="width:8%;"></th>
+            <th>Unidad</th>
+            <th>Creado Por</th>
+            <th>En</th>
+            <th>Modificado Por</th>
+            <th>En</th>
+            <th style="width:6%;"></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.Information)
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.UnitName)
+                    <a href="#" title="Ver Detalles" class="modal_ajax_btn" data-validation="false" data-title="@item.Unit.UnitName" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("Detalles", "Unidades", new { id = item.Unit.UnitID })">@item.Unit.UnitName</a>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Building)
+                   @Html.ActionLink(item.CreateUser.FirstName + " " + item.CreateUser.MiddleInitial + " " + item.CreateUser.LastName, "Detalles", "Usuarios", new { id = item.Unit.CreateUser }, null)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.RoomNumber)
+                    @Html.DisplayFor(modelItem => item.Unit.CreateDate)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                    @Html.ActionLink(item.UpdateUser.FirstName + " " + item.UpdateUser.MiddleInitial + " " + item.UpdateUser.LastName, "Detalles", "Usuarios", new { id = item.Unit.UpdateUser }, null)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Extension)
+                    @Html.DisplayFor(modelItem => item.Unit.UpdateDate)
                 </td>
                 <td>
-                    <a href="@Url.Action("Detalles", "Unidades", new { id = item.UnitID})"><i class="fa fa-info-circle" title="Ver Detalles"></i></a>
-                    <a href="@Url.Action("Editar", "Unidades", new { id = item.UnitID })"><i class="fa fa-pencil" title="Editar"></i></a>
-                    @if (item.DeletionDate == null)
-                    {
-                        <i title="Remover" class="fa fa-remove" onclick="removeRecord(this)" data-url="@Url.Action("Remover", "Unidades", new { id = item.UnitID })"></i>
-                    }
-                    else
-                    {
-                        <i title="Restaurar" class="fa fa-plus"></i>
-                    }
+                    <a href="#" title="Editar" data-title="Editar Unidad" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("PopUpEditar", "Unidades", new { id = item.Unit.UnitID })" class="modal_ajax_btn"><i class="fa fa-pencil"></i></a> 
+                    <i title="Remover" class="fa fa-remove" onclick="removeRecord(this, 'units')" data-url="@Url.Action("Remover", "Unidades", new { id = item.Unit.UnitID })"></i>
+                   
                 </td>
             </tr>
         }
@@ -75,9 +65,7 @@
 </table>
 <br />
 
-<p>
-    @Html.ActionLink("Añadir nueva unidad...", "Crear")
-</p>
+<a href="#" title="Crear Unidad" class="modal_ajax_btn" data-title="Nueva Unidad" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("PopUpCrear", "Unidades", null)"><input type="button" class="btn" value="Nueva Unidad" /></a>
 
 <script src="~/Scripts/myScripts.js"></script>
 <script>
@@ -99,5 +87,7 @@
                  }
             ]
         });
+
+        document.getElementsByTagName("loading")[0].innerHTML = "";
     });
 </script>

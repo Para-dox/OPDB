@@ -32,6 +32,9 @@
     i{
         cursor: pointer;
     }
+
+     a:not(.button) {
+      color: #222222; }
 </style>
 <div>
     <table id="resources">
@@ -42,7 +45,7 @@
                 <th>En</th>
                 <th>Modificado Por</th>
                 <th>En</th>
-                <th style="width:10%"></th>
+                <th style="width:6%"></th>
             </tr>
         </thead>
 
@@ -66,7 +69,7 @@
                     </td>
                     <td>
                         <a href="#" title="Editar" data-title="Editar Recurso" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("PopUpEditar", "Recursos", new { id = item.Resource.ResourceID })" class="modal_ajax_btn"><i class="fa fa-pencil"></i></a> 
-                        <i title="Remover" class="fa fa-remove" onclick="removeRecord(this, 'resources')" data-url="@Url.Action("Remover", "Recursos", new { id = item.Resource.ResourceID })"></i>
+                        <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this, 'resources')" data-url="@Url.Action("Remover", "Recursos", new { id = item.Resource.ResourceID })"></i>
                     </td>
                 </tr>
             }
@@ -74,9 +77,9 @@
 
     </table>
     <br />
-    <a href="#" title="Crear Recurso" class="modal_ajax_btn" data-title="Nuevo Recurso" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("PopUpCrear", "Recursos", null)"><input type="button" value="Nuevo Recurso"/></a>
+    <a href="#" title="Crear Recurso" class="modal_ajax_btn" data-title="Nuevo Recurso" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("PopUpCrear", "Recursos", null)"><input type="button" class="btn" value="Nuevo Recurso"/></a>
    
-</div>
+</div><br />
 
 <script src="~/Scripts/myScripts.js"></script>
 <script>
@@ -98,7 +101,8 @@
             ],
             "oLanguage": {
                 "sEmptyTable": "No se ha añadido ningún recurso",
-                "sZeroRecords": "No se ha encontrado ningún registro"
+                "sZeroRecords": "No se ha encontrado ningún registro",
+                "sSearch": "Buscar:"
             }
         });
 

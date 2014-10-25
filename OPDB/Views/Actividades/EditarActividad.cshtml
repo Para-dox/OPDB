@@ -1,7 +1,7 @@
 ﻿@model OPDB.Models.ActivityViewModel
 
 @{
-    ViewBag.Title = "Editar";
+    ViewBag.Title = "Editar Actividad";
 }
 
 <style>
@@ -9,7 +9,7 @@
         width: 500px;
     }
 
-    input[type="text"][readonly]{
+    input[type="text"][readonly] {
         background-color: white;
     }
 
@@ -17,7 +17,7 @@
         text-align: left;
     }
 
-    span{
+    span {
         font-size: 0.875rem;
         color: #4d4d4d;
     }
@@ -25,7 +25,8 @@
 
 <h2>Editar Actividad</h2>
 
-@using (Html.BeginForm()) {
+@using (Html.BeginForm())
+{
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
@@ -34,17 +35,21 @@
             <legend>Activity</legend>
 
             @Html.HiddenFor(model => model.Activity.ActivityID)
-            @Html.HiddenFor(model => model.Activity.UserID)
             @Html.HiddenFor(model => model.Activity.CreateUser)
             @Html.HiddenFor(model => model.Activity.CreateDate)
 
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Activity.UserID, "Entidad de Alcance")
+            </div>
+            <div class="editor-field">
+                @Html.DropDownListFor(model => model.Activity.UserID, Model.OutreachEntities, new { @style = "width: 500px !important;" })
+            </div>
             <div class="editor-label">
                 @Html.LabelFor(model => model.Activity.ActivityTypeID, "Tipo de Actividad")
             </div>
             <div class="editor-field">
                 @Html.DropDownListFor(model => model.Activity.ActivityTypeID, Model.ActivityTypes, new { @style = "width: 500px !important;" })
             </div>
-
             <div class="editor-label">
                 @Html.LabelFor(model => model.Activity.Title, "Título de Actividad")
             </div>
@@ -72,12 +77,11 @@
                 <div class="large-6 columns" style="text-align:left;">
                     <span>Fecha </span><br />
                     @Html.TextBoxFor(model => model.ActivityDate, new { id = "datepicker", @readonly = true }) &nbsp;<i class="fa fa-calendar"></i>
-                    @Html.ValidationMessageFor(model => model.Activity.ActivityDate)
                 </div>
                 <div class="large-6 columns" style="text-align:left;">
                     <span>Hora </span><br />
                     @Html.TextBoxFor(model => model.Activity.ActivityTime, new { id = "timepicker" }) &nbsp;<i class="fa fa-clock-o"></i>
-                    @Html.ValidationMessageFor(model => model.Activity.ActivityTime)
+                    @Html.ValidationMessageFor(model => model.Activity.ActivityDate)
                 </div>
             </div>
             <div class="editor-label">
@@ -87,11 +91,12 @@
                 @Html.DropDownListFor(model => model.Activity.SchoolID, Model.SchoolList, new { @style = "width: 500px !important;" })
             </div>
             <p>
-                <input type="submit" class="btn" value="Guardar" /><input type="button" class="btn" value="Regresar" onclick="location.href='@Url.Action("Detalles", "Alcance", new { id = Model.Activity.UserID })'" />
+                <input type="submit" class="btn" value="Guardar" /><input type="button" class="btn" value="Regresar" onclick="location.href='@Url.Action("Index","Actividades", null)'" />
             </p>
         </fieldset>
     </center>
 }
+
 <script>
 
         $("#datepicker").datepicker({ dateFormat: 'dd/mm/yy' }).val();

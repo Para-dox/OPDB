@@ -95,7 +95,7 @@ namespace OPDB.Controllers
 
                     db.SaveChanges();
 
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Administracion", "Home", null);
                     
             }
 
@@ -176,7 +176,7 @@ namespace OPDB.Controllers
                 db.Entry(userDetail).State = EntityState.Modified;
                 db.SaveChanges();
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Administracion", "Home", null);
         }
 
         public ActionResult RemoverNota(int id)
@@ -304,6 +304,24 @@ namespace OPDB.Controllers
             };
 
             return PartialView("EditarNota", userViewModel);
+        }
+
+
+        [HttpPost]
+        public ActionResult VerNota(int id)
+        {
+            UserNote userNote = db.UserNotes.Find(id);
+            userNote.NoteType = db.NoteTypes.Find(userNote.NoteTypeID);
+            
+
+            UserViewModel userViewModel = new UserViewModel
+            {
+                note = userNote,
+                userDetail = db.UserDetails.First(user => user.UserID == userNote.SubjectID)
+            };
+
+            
+            return PartialView("VerNota", userViewModel);
         }
 
         public ActionResult Lista()

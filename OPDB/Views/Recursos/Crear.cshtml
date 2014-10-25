@@ -18,14 +18,14 @@
             </div>
 
             <div class="editor-label">
-                @Html.LabelFor(model => model.Resource.UnitID, "Unidad")
+                @Html.LabelFor(model => model.Resource.UnitID, "Unidad *")
             </div>
             <div class="editor-field">
                 @Html.DropDownListFor(model => model.Resource.UnitID, Model.Units, new { @style = "margin: 0 0 1rem 0 !important; padding: 0.5rem !important; height: 2.3125rem !important; width: 100% !important;" })
              </div>
 
-            <input type="submit" style="float:left !important; width:40% !important; margin-left: 30px !important;" value="Crear" /> <input type="button" style="float:right !important; width:40% !important; margin-bottom: 20px !important; margin-right: 30px !important;" value="Cancelar" onclick="modalClose()" />
-           
+            <input type="submit" class="btn" style="float:left !important; width:40% !important; margin-left: 30px !important;" value="Crear" />    <input type="button" class="btn" style="float:right !important; width:40% !important; margin-bottom: 20px !important; margin-right: 30px !important;" value="Cancelar" onclick="modalClose()" />
+
 }
 
         @section Scripts {

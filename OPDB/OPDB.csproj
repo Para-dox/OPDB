@@ -285,6 +285,7 @@
     <Compile Include="Models\Unit.cs">
       <DependentUpon>OPDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\UnitViewModel.cs" />
     <Compile Include="Models\User.cs">
       <DependentUpon>OPDBModel.tt</DependentUpon>
     </Compile>
@@ -304,6 +305,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\buttonStyle.css" />
     <Content Include="Content\dataTables\jquery.dataTables.css" />
     <Content Include="Content\dataTables\jquery.dataTables.min.css" />
     <Content Include="Content\dataTables\jquery.dataTables_themeroller.css" />
@@ -547,7 +549,6 @@
     <Content Include="Views\Unidades\Detalles.cshtml" />
     <Content Include="Views\Unidades\Crear.cshtml" />
     <Content Include="Views\Unidades\Editar.cshtml" />
-    <Content Include="Views\Unidades\Remover.cshtml" />
     <Content Include="Views\Escuelas\Index.cshtml" />
     <Content Include="Views\Escuelas\Detalles.cshtml" />
     <Content Include="Views\Escuelas\Crear.cshtml" />
@@ -563,7 +564,7 @@
     <Content Include="Views\Actividades\CrearNota.cshtml" />
     <Content Include="Views\Actividades\EditarNota.cshtml" />
     <Content Include="Views\Actividades\VerNota.cshtml" />
-    <Content Include="Views\Unidades\Unidades.cshtml" />
+    <Content Include="Views\Unidades\Lista.cshtml" />
     <Content Include="Views\Home\BusquedaAvanzada.cshtml" />
     <Content Include="Views\Home\_Alcance.cshtml" />
     <Content Include="Views\Home\_Actividades.cshtml" />
@@ -586,6 +587,9 @@
     <Content Include="Views\Alcance\EditarNota.cshtml" />
     <Content Include="Views\Alcance\Remover.cshtml" />
     <Content Include="Views\Usuarios\Lista.cshtml" />
+    <Content Include="Views\Actividades\CrearActividad.cshtml" />
+    <Content Include="Views\Actividades\EditarActividad.cshtml" />
+    <Content Include="Views\Usuarios\VerNota.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

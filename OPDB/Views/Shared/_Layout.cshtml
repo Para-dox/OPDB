@@ -6,13 +6,16 @@
     <title>Alcance RUM - @ViewBag.Title</title>
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <meta name="viewport" content="width=device-width" />
-    
+
+   
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @*@Scripts.Render("~/bundles/jquery")*@
 
+   
     <link href="~/Content/modalcss.css" rel="stylesheet" />
     <link href="~/Content/modalStyle.css" rel="stylesheet" />
+    <link href="~/Content/buttonStyle.css" rel="stylesheet" />
     <link href="~/Content/timepicker/jquery.timepicker.css" rel="stylesheet" />
     <link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />
     <link href="~/Content/dataTables/jquery.dataTables.css" rel="stylesheet" />    
@@ -65,7 +68,7 @@
                                 <li>@Html.ActionLink("Alcance", "Index", "Alcance")</li>
                                 <li>@Html.ActionLink("Actividades", "Lista", "Actividades")</li>
                                 <li>@Html.ActionLink("Escuelas", "Lista", "Escuelas")</li>
-                                <li>@Html.ActionLink("Unidades", "Index", "Unidades")</li>
+                                <li>@Html.ActionLink("Unidades", "Lista", "Unidades")</li>
                                 <li>@Html.ActionLink("Usuarios", "Lista", "Usuarios")</li>
                                 <li>@Html.ActionLink("Admin", "Administracion", "Home")</li>
                             </ul>
@@ -101,7 +104,7 @@
         </section>
     </div>
     <footer id="foot">
-        <div class="content-wrapper">
+        <div class="content-wrapper" style="padding-top:10px;">
             <div>
                 <p style="font-size:0.6em">&copy; @DateTime.Now.Year - Paradox Solutions</p>
             </div>
