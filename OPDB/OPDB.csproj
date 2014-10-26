@@ -227,6 +227,7 @@
     <Compile Include="Models\AffiliateType.cs">
       <DependentUpon>OPDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CalendarActivity.cs" />
     <Compile Include="Models\Contact.cs">
       <DependentUpon>OPDBModel.tt</DependentUpon>
     </Compile>
