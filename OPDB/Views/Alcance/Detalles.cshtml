@@ -49,18 +49,18 @@
     <div class="display-label">
             @Html.LabelFor(model => model.outreachEntity.OutreachEntityName, "Nombre de la Organización")
     </div>
+
     <div class="display-field">
             @Html.DisplayFor(model => model.outreachEntity.OutreachEntityName)
     </div>
         <br />
 
     <div class="display-label">
-            @Html.LabelFor(model => model.user.PhoneNumber, "Número de Telefono")
+            @Html.LabelFor(model => model.outreachEntity.User.PhoneNumber, "Número de Telefono")
     </div>
-        <br />
 
     <div class="display-field">
-            @Html.DisplayFor(model => model.user.PhoneNumber)
+            @Html.DisplayFor(model => model.outreachEntity.User.PhoneNumber)
     </div>  
         <br />
 
@@ -110,10 +110,10 @@
                 {
                     <tr>
                         <td>@note.NoteType.NoteType1</td>
-                        <td>@note.Note</td>
+                        <td><a href="#" title="Ver Nota" data-validation="false" data-title="Detalles" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("VerNota", "Alcance", new { id = note.UserNoteID })" class="modal_ajax_btn">@String.Concat(note.Note.Substring(0, note.Note.Length > 100 ? 100 : note.Note.Length), "...")</a></td>
                         <td>
                                 <a href="#" title="Editar" data-title="Editar Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarNota", "Alcance", new { id = note.UserNoteID })" class="modal_ajax_btn"><i class="fa fa-pencil"></i></a>
-                                <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this, 'userNotes')" data-url="@Url.Action("RemoverNota", "Alcance", new { id = note.UserNoteID })"></i>                               
+                                <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this, 'outreachNotes')" data-url="@Url.Action("RemoverNota", "Alcance", new { id = note.UserNoteID })"></i>                               
 
                         </td>
                     </tr>
@@ -126,11 +126,11 @@
 
 <div class="large-12 columns">
     <p>
-        <a href="#" title="Editar" data-title="Editar Alcance" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("PopUpEditar", "Alcance", new { id = Model.outreachEntity.UserID })" class="modal_ajax_btn"><input type="button" value="Editar" class="btn"></a>
+        <input type="button" class="btn" value="Editar" onclick="location.href='@Url.Action("Editar", "Alcance", new { id = Model.outreachEntity.OutreachEntityDetailID })'" />
         <a href="#" title="Añadir Nota" class="modal_ajax_btn" data-title="Nueva Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Alcance", new { id = Model.outreachEntity.UserID })"><input type="button" value="Añadir Nota" class="btn"/></a>
         <input type="button" class="btn" value="Volver" onclick="window.history.back()" />
         @*<input type="button" class="btn" value="Volver a Lista" onclick="location.href='@Url.Action("Lista", "Alcance")'">*@
-</p>
+    </p>
 </div>
 
 <script src="~/Scripts/myScripts.js"></script>
