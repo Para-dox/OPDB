@@ -8,6 +8,7 @@
   background: #3498db !important; /*00A00F*/
   padding: 5px 10px 5px 10px !important;
   text-decoration: none !important;
+  font-weight: normal !important;
 }
 
 .btn:hover {
@@ -18,4 +19,10 @@
   background-image: -o-linear-gradient(top, #3cb0fd, #3498db) !important;
   background-image: linear-gradient(to bottom, #3cb0fd, #3498db) !important;
   text-decoration: none !important;
+}
+
+.btn-sm{
+    padding: 5px 10px !important;
+    font-size: 12px !important;
+    line-height: 1.5 !important;
 }

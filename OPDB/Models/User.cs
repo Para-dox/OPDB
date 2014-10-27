@@ -40,9 +40,6 @@ namespace OPDB.Models
             this.Feedbacks = new HashSet<Feedback>();
             this.Feedbacks1 = new HashSet<Feedback>();
             this.Feedbacks2 = new HashSet<Feedback>();
-            this.Goals = new HashSet<Goal>();
-            this.Goals1 = new HashSet<Goal>();
-            this.Goals2 = new HashSet<Goal>();
             this.Interests = new HashSet<Interest>();
             this.Interests1 = new HashSet<Interest>();
             this.Interests2 = new HashSet<Interest>();
@@ -103,9 +100,6 @@ namespace OPDB.Models
         public virtual ICollection<Feedback> Feedbacks { get; set; }
         public virtual ICollection<Feedback> Feedbacks1 { get; set; }
         public virtual ICollection<Feedback> Feedbacks2 { get; set; }
-        public virtual ICollection<Goal> Goals { get; set; }
-        public virtual ICollection<Goal> Goals1 { get; set; }
-        public virtual ICollection<Goal> Goals2 { get; set; }
         public virtual ICollection<Interest> Interests { get; set; }
         public virtual ICollection<Interest> Interests1 { get; set; }
         public virtual ICollection<Interest> Interests2 { get; set; }

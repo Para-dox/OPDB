@@ -13,6 +13,9 @@ namespace OPDB.Models
         public School School { get; set; }
         public Unit Unit { get; set; }
         public User User { get; set; }
+        public Contact Contact { get; set; }
+
+        public bool Interested { get; set; }
 
         public UserDetail UserDetail { get; set; }
         public UserDetail CreateUser { get; set; }

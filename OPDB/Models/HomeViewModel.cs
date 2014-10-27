@@ -7,6 +7,8 @@ namespace OPDB.Models
 {
     public class HomeViewModel
     {
-       public List<Activity> activities { get; set; }
+       public List<UserInfoViewModel> Information { get; set; }
+
+
     }
 }

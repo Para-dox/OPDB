@@ -15,6 +15,9 @@ namespace OPDB.Models
         public Medium Media { get; set; }
 
         public List<UserInfoViewModel> Feedbacks { get; set; }
+
+        public List<UserInfoViewModel> ActivityContacts { get; set; }
+
         public IEnumerable<ActivityNote> Notes { get; set; }
         
         public List<SelectListItem> NoteTypes { get; set; }
@@ -27,5 +30,19 @@ namespace OPDB.Models
         public List<UserInfoViewModel> Information { get; set; }
 
         public List<SelectListItem> MediaTypes { get; set; }
+
+        public bool Interested { get; set; }
+
+        public List<Medium> Videos { get; set; }
+
+        public List<Medium> Photos { get; set; }
+
+        public List<SelectListItem> Contacts { get; set; }
+
+        public List<int> ContactIDs { get; set; }
+
+        public List<SelectListItem> Resources { get; set; }
+
+        public List<int> ResourceIDs { get; set; }
     }
 }

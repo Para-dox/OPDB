@@ -13,9 +13,7 @@
         <EntityTypeShape EntityType="OPDBModel.Contact" Width="1.5" PointX="12.75" PointY="39.125" IsExpanded="true" />
         <EntityTypeShape EntityType="OPDBModel.Document" Width="1.5" PointX="15.75" PointY="40" IsExpanded="true" />
         <EntityTypeShape EntityType="OPDBModel.Feedback" Width="1.5" PointX="12.75" PointY="34.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="OPDBModel.Goal" Width="1.5" PointX="5.25" PointY="38.375" IsExpanded="true" />
         <EntityTypeShape EntityType="OPDBModel.Interest" Width="1.5" PointX="15.75" PointY="45.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="OPDBModel.Medium" Width="1.5" PointX="15.75" PointY="35.125" IsExpanded="true" />
         <EntityTypeShape EntityType="OPDBModel.NoteType" Width="1.5" PointX="5.25" PointY="42.25" IsExpanded="true" />
         <EntityTypeShape EntityType="OPDBModel.OutreachEntityDetail" Width="1.5" PointX="10.5" PointY="42" IsExpanded="true" />
         <EntityTypeShape EntityType="OPDBModel.Resource" Width="1.5" PointX="7.5" PointY="50.625" IsExpanded="true" />
@@ -31,7 +29,6 @@
         <AssociationConnector Association="OPDBModel.Document_ibfk_2" ManuallyRouted="false" />
         <AssociationConnector Association="OPDBModel.Feedback_ibfk_1" ManuallyRouted="false" />
         <AssociationConnector Association="OPDBModel.Interest_ibfk_1" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.Media_ibfk_1" ManuallyRouted="false" />
         <AssociationConnector Association="OPDBModel.ActivityNote_ibfk_3" ManuallyRouted="false" />
         <AssociationConnector Association="OPDBModel.ActivityResource_ibfk_2" ManuallyRouted="false" />
         <AssociationConnector Association="OPDBModel.UserDetail_ibfk_4" ManuallyRouted="false" />
@@ -59,14 +56,9 @@
         <AssociationConnector Association="OPDBModel.Feedback_ibfk_2" />
         <AssociationConnector Association="OPDBModel.Feedback_ibfk_3" />
         <AssociationConnector Association="OPDBModel.Feedback_ibfk_4" />
-        <AssociationConnector Association="OPDBModel.Goal_ibfk_1" />
-        <AssociationConnector Association="OPDBModel.Goal_ibfk_2" />
-        <AssociationConnector Association="OPDBModel.Goal_ibfk_3" />
         <AssociationConnector Association="OPDBModel.Interest_ibfk_2" />
         <AssociationConnector Association="OPDBModel.Interest_ibfk_3" />
         <AssociationConnector Association="OPDBModel.Interest_ibfk_4" />
-        <AssociationConnector Association="OPDBModel.Media_ibfk_2" />
-        <AssociationConnector Association="OPDBModel.Media_ibfk_3" />
         <AssociationConnector Association="OPDBModel.NoteType_ibfk_1" />
         <AssociationConnector Association="OPDBModel.NoteType_ibfk_2" />
         <AssociationConnector Association="OPDBModel.OutreachEntityDetail_ibfk_2" />
@@ -91,6 +83,10 @@
         <AssociationConnector Association="OPDBModel.School_ibfk_1" />
         <AssociationConnector Association="OPDBModel.School_ibfk_2" />
         <AssociationConnector Association="OPDBModel.SchoolNote_ibfk_2" />
+        <EntityTypeShape EntityType="OPDBModel.Medium" Width="1.5" PointX="15.75" PointY="35" />
+        <AssociationConnector Association="OPDBModel.Media_ibfk_1" />
+        <AssociationConnector Association="OPDBModel.Media_ibfk_2" />
+        <AssociationConnector Association="OPDBModel.Media_ibfk_3" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -24,6 +24,10 @@
         text-align: center !important;
     }
 
+    /*#activityContacts tr {
+        background-color: none !important;
+    }*/
+
     .last, .first, .previous, .next {
         display: none !important;
     }
@@ -52,6 +56,18 @@
         margin: 10px;
         border: 1px solid silver;
     }
+
+    .thumb {
+        width: 200px;
+        height: 150px;
+        overflow: hidden;
+    }
+
+        .thumb img {
+            min-width: 200px;
+            min-height: 150px;
+            width: 200px;
+        }
 </style>
 
     <h2 style="text-align:center;">@Model.Activity.Title</h2>
@@ -66,7 +82,9 @@
 
 <div class="columns panel callout">
     <div class="large-5 columns">
-        <h3>Detalles de Actividad</h3>
+        <h3>Detalles de Actividad</h3><br />
+
+        @if (Model.Activity.Location != "" && Model.Activity.Location != null) { 
         <div class="display-label">
             @Html.LabelFor(model => model.Activity.Location, "Localización")
         </div>
@@ -74,23 +92,93 @@
             @Html.DisplayFor(model => model.Activity.Location)
         </div>
         <br />
-        <div class="display-label">
-            @Html.LabelFor(model => model.Activity.ActivityDate, "Fecha")
-        </div>
-        <div class="display-field">
-            @Html.DisplayFor(model => model.ActivityDate)
-        </div>
-        <br />
-        <div class="display-label">
-            @Html.LabelFor(model => model.Activity.ActivityTime, "Hora")
-        </div>
-        <div class="display-field">
-            @Html.DisplayFor(model => model.Activity.ActivityTime)
-        </div>
-        <br />        
+        }
+        @if (Model.ActivityDate != "" )
+        {
+            <div class="display-label">
+                @Html.LabelFor(model => model.Activity.ActivityDate, "Fecha")
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.ActivityDate)
+            </div>
+            <br />}
+        @if (Model.Activity.ActivityTime != "" && Model.Activity.ActivityTime != null)
+        {
+            <div class="display-label">
+                @Html.LabelFor(model => model.Activity.ActivityTime, "Hora")
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.Activity.ActivityTime)
+            </div>
+            <br />
+        }
+        @if (Model.Interested != true) { 
+        <a onclick="showInterest(this)" data-url="@Url.Action("Interes", "Actividades", new { id = Model.Activity.ActivityID })" title="Mostrar Interes" class="btn"><i class="fa fa-thumbs-up"></i> Me Interesa</a>   
+        }
     </div>
 
     <div class="large-7 columns">
+        <div>
+            <h3>Contactos</h3>
+            <table id="activityContacts">
+                <thead hidden>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var contact in Model.ActivityContacts)
+                    {
+                        <tr>
+                            <td>@contact.UserDetail.FirstName @contact.UserDetail.MiddleInitial @contact.UserDetail.LastName</td>
+                            <td>@contact.User.Email</td>
+                            <td>@contact.User.PhoneNumber</td>
+                            <td style="width:6% !important;">
+
+                                <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this, 'schoolNotes')" data-url="@Url.Action("RemoverContacto", "Actividades", new { id = contact.Contact.UserID })"></i>
+
+                            </td>
+                    </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div><br />
+        @*<div>
+            <h3>Recursos</h3>
+            <table id="activityResources">
+                <thead hidden>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var contact in Model)
+                    {
+                        <tr>
+                            <td>@contact.UserDetail.FirstName @contact.UserDetail.MiddleInitial @contact.UserDetail.LastName</td>
+                            <td>@contact.User.Email</td>
+                            <td>@contact.User.PhoneNumber</td>
+                            <td>
+                                <a href="#" title="Editar" data-title="Editar Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarNota", "Actividades", new { id = note.ActivityNoteID })" class="modal_ajax_btn"><i class="fa fa-pencil"></i></a>
+                                <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this, 'schoolNotes')" data-url="@Url.Action("RemoverNota", "Actividades", new { id = note.ActivityNoteID })"></i>
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>*@
+    </div>
+
+    @*<div class="large-7 columns">
         <h3>Notas</h3>
         <table id="activityNotes">
             <thead>
@@ -117,28 +205,46 @@
 
         </table><br />
         
-    </div>
+    </div>*@
 
 </div>
-<div><input type="button" class="btn" value="Editar" /><input type="button" class="btn" value="Regresar" onclick="window.history.back()" /><a href="#" title="Añadir Nota" class="modal_ajax_btn" data-title="Nueva Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Actividades", new { id = Model.Activity.ActivityID })"><input type="button" class="btn" value="Añadir Nota" /></a>
+<div><input type="button" class="btn" value="Editar" onclick="location.href='@Url.Action("Editar", "Actividades", new { id = Model.Activity.ActivityID })'"/><input type="button" class="btn" value="Regresar" onclick="window.history.back()" /><a href="#" title="Añadir Nota" class="modal_ajax_btn" data-title="Nueva Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Actividades", new { id = Model.Activity.ActivityID })"><input type="button" class="btn" value="Añadir Nota" /></a><a href="#" title="Añadir Multimedia" class="modal_ajax_btn" data-title="Añadir Multimedia" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("MediaUpload", "Actividades", new { id = Model.Activity.ActivityID })"><input type="button" class="btn" value="Añadir Multimedia" /></a>
+    
     </div>
 <br />
-<div class="large-12 columns callout panel">
-    <h4>Media</h4>
 
-    <div class="large-9 columns">
-        <iframe width="560" id="videoarea" height="315" src="//www.youtube.com/embed/2vjPBrBU-TM" frameborder="0" allowfullscreen></iframe>
+@if (Model.Videos.Count != 0 || Model.Photos.Count != 0)
+{
+    <div class="large-12 columns callout panel">
+        <h4>Multimedia</h4>
+
+        @if (Model.Videos.Count != 0)
+        {
+            <div class="large-9 columns">
+                <iframe width="560" id="videoarea" height="315" src="//www.youtube.com/embed/" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div class="large-3 columns">
+                <h5>Lista de Reproducción</h5>
+                <ul id="playlist">
+                    @foreach (var video in Model.Videos)
+                    {
+                        <li data-url="@video.MediaPath">@video.MediaTitle</li>
+                    }
+                </ul>
+            </div>
+        }
+        @if (Model.Photos.Count != 0)
+        {
+                <ul class="clearing-thumbs" data-clearing>
+                    @foreach (var photo in Model.Photos)
+                    {
+                        <li><a class="th thumb" href="@photo.MediaPath"><img data-caption="@photo.MediaTitle" src="@photo.MediaPath"></a></li>
+                    }
+                </ul>
+        }
+
     </div>
-    <div class="large-3 columns">
-        <h5>Lista de Reproducción</h5>
-        <ul id="playlist">
-            <li data-url="https://www.youtube.com/watch?v=2vjPBrBU-TM">Sia</li>
-            <li data-url="https://www.youtube.com/watch?v=u3u22OYqFGo">Black Widow</li>
-            <li data-url="https://www.youtube.com/watch?v=u0fk6syQ7iY">Earthquake</li>
-            
-        </ul>
-    </div>
-</div>
+}
 <h4>Comentarios</h4>
 
 <table id="activityFeedback" style=" border: none !important;">
@@ -163,7 +269,7 @@
     </tbody>
 
 </table><br />
-<a href="#" title="Comentar" class="modal_ajax_btn" data-title="Nuevo Comentario" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("NuevoComentario", "Actividades", new { id = Model.Activity.ActivityID })"><input type="button" class="btn" value="Comentar" /></a><br /><br />
+<a href="#" title="Comentar" class="btn modal_ajax_btn" data-title="Nuevo Comentario" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("NuevoComentario", "Actividades", new { id = Model.Activity.ActivityID })"> Comentar</a><br /><br />
 
 
 <script src="~/Scripts/myScripts.js"></script>
@@ -203,8 +309,21 @@
             $("#playlist li").on("click", function () {
                 debugger;
                 var currentUrl = $("#videoarea").attr("src");
-                var index = $(this).attr("data-url").lastIndexOf("watch?v=");
-                var length = "watch?v=".length;
+                var dataUrl = $(this).attr("data-url");
+                var index = 0;
+                var length = 0;
+
+                if (dataUrl.indexOf("watch?v=") != -1)
+                {
+                    index = dataUrl.lastIndexOf("watch?v=");
+                    length = "watch?v=".length;
+                }
+                else if (dataUrl.search("youtu.be/") != -1)
+                {
+                    index = dataUrl.lastIndexOf("youtu.be/");
+                    length = "youtu.be/".length;
+                }                    
+                 
                 var lastIndex = $(this).attr("data-url").length-1;
                 var newUrl = $(this).attr("data-url").substr(index+length, lastIndex);
                 currentUrl = currentUrl.substr(0, 24);
@@ -213,5 +332,8 @@
                 })
             })
         })
+
+        $(document).foundation('clearing', 'reflow');
+
     });
 </script>

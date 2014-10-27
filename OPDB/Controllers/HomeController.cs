@@ -26,9 +26,32 @@ namespace OPDB.Controllers
             HomeViewModel homeViewModel = new HomeViewModel
             {
 
-                activities = (from activity in db.Activities.Include(a => a.ActivityType) where activity.ActivityDate > date && activity.DeletionDate == null orderby activity.UpdateDate descending select activity).Take(6).ToList()
+                Information = new List<UserInfoViewModel>()
 
             };
+
+            var activities = (from activity in db.Activities.Include(a => a.ActivityType) where activity.ActivityDate > date && activity.DeletionDate == null orderby activity.UpdateDate descending select activity).Take(6).ToList();
+
+            foreach (var activity in activities)
+            {
+                if (activity.ActivityDate == null)
+                    activity.ActivityDate = new DateTime();
+
+                if (activity.ActivityTime == null)
+                    activity.ActivityTime = "";
+
+                var interest = (from i in db.Interests where i.UserID == 1 && i.ActivityID == activity.ActivityID select i).ToList();
+                bool interested = false;
+
+                if (interest.Count == 1)
+                    interested = true;
+
+                homeViewModel.Information.Add(new UserInfoViewModel
+                {
+                    Activity = activity,
+                    Interested = interested
+                });
+            }
 
             return View(homeViewModel);
         }
@@ -383,6 +406,59 @@ namespace OPDB.Controllers
             }
 
             return types;
+        }
+
+        public JsonResult CalendarData()
+        {
+            List<CalendarActivity> events = new List<CalendarActivity>();
+            List<Activity> activities = (from activity in db.Activities.Include(a => a.ActivityType) where activity.DeletionDate == null select activity).ToList();
+
+            foreach (Activity a in activities)
+            {
+                string startDate = "";
+                string startTime = "";
+                string startDateTime = "";
+
+                if (a.ActivityDate != null)
+                {
+                    startDate = Convert.ToDateTime(a.ActivityDate.Value.ToString()).ToString("yyyy-MM-ddTHH:mm:ss");
+                }
+                else
+                {
+                    startDate = null;
+                }
+
+                if (a.ActivityTime != null)
+                {
+                    startTime = DateTime.Parse(a.ActivityTime.ToString()).ToString("HH:mm:ss");
+                }
+                else
+                {
+                    startTime = null;
+                }
+
+                if (startDate != null)
+                {
+                    startDateTime = startDate.Substring(0, 11) + startTime;
+                }
+                else
+                {
+                    startDateTime = null;
+                }
+
+                CalendarActivity newEvent = new CalendarActivity
+                {
+                    id = a.ActivityID + "",
+                    title = a.Title.ToString(),
+                    start = startDateTime,
+                    url = Url.Action("Detalles", "Actividades", new { id = a.ActivityID }),
+                    allDay = false,
+                };
+
+                events.Add(newEvent);
+            }
+
+            return Json(events, JsonRequestBehavior.AllowGet);
         }
     }
 }

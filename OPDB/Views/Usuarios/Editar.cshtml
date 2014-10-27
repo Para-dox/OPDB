@@ -30,8 +30,13 @@
             @Html.HiddenFor(model => model.userDetail.UserDetailID)
             @Html.HiddenFor(model => model.userDetail.UserID)
             @Html.HiddenFor(model => model.userDetail.CreateDate)
-            @Html.HiddenFor(model => model.user.UserTypeID, new { @id = "userType" })
 
+            <div class="editor-label">
+                @Html.LabelFor(model => model.user.UserTypeID, "Tipo de Usuario")
+            </div>
+            <div class="editor-field">
+                @Html.DropDownListFor(model => model.user.UserTypeID, Model.userTypes, new { @style = "width: 500px;" })
+            </div>
             <div class="editor-label">
                 @Html.LabelFor(model => model.user.Email, "Correo Electrónico")
             </div>
@@ -95,13 +100,6 @@
 }
 
 <script src="~/Scripts/myScripts.js"></script>
-<script type="text/javascript">
-
-    $(document).ready(function () {
-        getValue();
-    })
-
-</script>
 
 
 @section Scripts {

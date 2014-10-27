@@ -33,7 +33,7 @@
     }
 </style>
 
-<h2>Actividades</h2><br />
+<div><h2 style="float:left;">Actividades</h2> <a class="btn btn-sm" style="float:right; margin-top:2%;" href="@Url.Action("DeInteres", "Actividades", null)">Actividades de Interes</a></div><br /> 
 <table id="activityList">
     <thead hidden>
         <tr><th></th></tr>
@@ -43,10 +43,15 @@
         {
             <tr>
                 <td class="panel callout large-12 columns">
-                    @Html.ActionLink(item.Activity.Title, "Detalles", "Actividades", new { id = item.Activity.ActivityID }, null)<br />
-                    <span>Propósito: </span> @item.Activity.Purpose<br />
-                    <div><span>Fecha: </span> @item.Activity.ActivityDate.Value.ToString("dd/MM/yyyy")  <span>Hora: </span> @item.Activity.ActivityTime</div>
-                    <span>Organizada Por: </span>@item.OutreachEntity.OutreachEntityName
+                    <div class="large-10 columns">
+                        @Html.ActionLink(item.Activity.Title, "Detalles", "Actividades", new { id = item.Activity.ActivityID }, null)<br />
+                        <span>Propósito: </span> @item.Activity.Purpose<br />
+                        <div>@if (item.Activity.ActivityDate != new DateTime()){ <span>Fecha: </span> @item.Activity.ActivityDate.Value.ToString("dd/MM/yyyy") } @if(item.Activity.ActivityTime != ""){<span>Hora: </span> @item.Activity.ActivityTime}</div>
+                        <span>Organizada Por: </span>@item.OutreachEntity.OutreachEntityName
+                    </div>
+                @if (item.Interested != true) { 
+                    <div class="large-2 columns"><a class="btn btn-sm" onclick="showInterest(this)" data-url="@Url.Action("Interes", "Actividades", new { id = item.Activity.ActivityID })" title="Mostrar Interes"><i class="fa fa-thumbs-up"></i> Me Interesa</a></div>
+                }
                 </td>
             </tr>
 
