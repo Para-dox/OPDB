@@ -52,8 +52,8 @@ namespace OPDB.Controllers
         {
            
             UserViewModel user = new UserViewModel{
-                
-                userTypes = getUserTypes(),
+
+                userTypes = getTypes(),
                 outreachTypes = getOutreachTypes()
                         
             };            
@@ -99,7 +99,7 @@ namespace OPDB.Controllers
                     
             }
 
-            userViewModel.userTypes = getUserTypes();
+            userViewModel.userTypes = getTypes();
             userViewModel.outreachTypes = getOutreachTypes();
             return View(userViewModel);
         }
@@ -110,30 +110,20 @@ namespace OPDB.Controllers
         public ActionResult Editar(int id = 0)
         {
             //User ;
-            UserViewModel user = new UserViewModel
+            UserViewModel userViewModel = new UserViewModel
             {
                 user = db.Users.Find(id),
+                userDetail = db.UserDetails.FirstOrDefault(i => i.UserID == id),
+                userTypes = getUserTypes()
             };
 
-            if (user == null)
+            if (userViewModel.user == null)
             {
                 return HttpNotFound();
             }
 
-            else if (user.user.UserTypeID == 3)
-            {
-                user.outreachEntity = db.OutreachEntityDetails.FirstOrDefault(i => i.UserID == id);
-                user.outreachTypes = getOutreachTypes();
 
-            }
-
-            else {
-
-                user.userDetail = db.UserDetails.FirstOrDefault(i => i.UserID == id);
-            }
-
-            //ViewBag.UserTypeID = new SelectList(db.UserTypes, "UserTypeID", "UserType1", user.UserTypeID);
-            return View(user);
+            return View(userViewModel);
         }
 
         //
@@ -152,7 +142,7 @@ namespace OPDB.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            userViewModel.userTypes = getUserTypes();
+            userViewModel.userTypes = getTypes();
             return View(userViewModel);
         }
 
@@ -195,13 +185,34 @@ namespace OPDB.Controllers
             base.Dispose(disposing);
         }
 
-        public List<SelectListItem> getUserTypes()
+        public List<SelectListItem> getTypes()
         {
             List<SelectListItem> types = new List<SelectListItem>();
             foreach (var userType in db.UserTypes)
             {
 
                 if (userType.UserTypeID > 2)
+                {
+                    types.Add(new SelectListItem()
+                    {
+                        Text = userType.UserType1,
+                        Value = userType.UserTypeID + ""
+
+                    });
+                }
+            }
+
+            return types;
+
+        }
+
+        public List<SelectListItem> getUserTypes()
+        {
+            List<SelectListItem> types = new List<SelectListItem>();
+            foreach (var userType in db.UserTypes)
+            {
+
+                if (userType.UserTypeID > 3)
                 {
                     types.Add(new SelectListItem()
                     {

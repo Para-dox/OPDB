@@ -1,0 +1,79 @@
+﻿@model OPDB.Models.ActivityViewModel
+
+    @{
+        ViewBag.Title = "Actividades de Interes";
+    }
+
+    <style>
+        select {
+            width: 50px !important;
+            padding: 0.2rem !important;
+            height: 1.5rem !important;
+            margin: 0 !important;
+        }
+
+        input[type="search"] {
+            padding: 0.2rem;
+        }
+
+        label {
+            width: 100%;
+        }
+
+        tr {
+            background-color: #e2e2e2 !important;
+        }
+
+        table {
+            border: none !important;
+        }
+
+        .last, .first, .previous, .next {
+            display: none !important;
+        }
+    </style>
+
+    <div><h2 style="float:left;">Actividades De Interes</h2> <a class="btn btn-sm" style="float:right; margin-top:2%;" href="@Url.Action("Lista", "Actividades", null)">Ver Lista Completa</a></div><br />
+    <table id="activityList">
+        <thead hidden>
+            <tr><th></th></tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Information)
+            {
+                <tr>
+                    <td class="panel callout large-12 columns">
+                        <div class="large-10 columns">
+                            @Html.ActionLink(item.Activity.Title, "Detalles", "Actividades", new { id = item.Activity.ActivityID }, null)<br />
+                            <span>Propósito: </span> @item.Activity.Purpose<br />
+                            <div><span>Fecha: </span> @item.Activity.ActivityDate.Value.ToString("dd/MM/yyyy")  <span>Hora: </span> @item.Activity.ActivityTime</div>
+                            <span>Organizada Por: </span>@item.OutreachEntity.OutreachEntityName
+                        </div>
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+    </table><br />
+    
+    <script src="~/Scripts/myScripts.js"></script>
+    <script>
+    $(document).ready(function () {
+
+        $('#activityList').DataTable({
+            "sDom": '<"top">t<"bottom"pr><"clear">',
+            "sPaginationType": "full_numbers",
+            "bProcessing": false,
+            "oLanguage": { "sSearch": "Filter:" },
+            "oLanguage": {
+                "sEmptyTable": "No se ha añadido ninguna actividad",
+                "sZeroRecords": "No se ha encontrado ningún registro"
+            }
+        });
+    });
+
+
+    </script>
+
+
+

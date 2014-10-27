@@ -1,5 +1,12 @@
 ﻿@model OPDB.Models.ActivityViewModel
 
+<style>
+    span{
+        font-size: 0.875rem;
+        color: #4d4d4d;
+    }
+</style>
+
 @using (Ajax.BeginForm("Upload", "Actividades", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "validation" }))
 {
     @Html.ValidationSummary(false)
@@ -9,15 +16,38 @@
         @Html.LabelFor(model => model.Media.MediaType, "Tipo de Medio")
     </div>
     <div class="editor-field">
-        @Html.DropDownListFor(model => model.Media.MediaType, Model.MediaTypes)
+        @Html.DropDownListFor(model => model.Media.MediaType, Model.MediaTypes, new { @id="mediaType", @style = "margin: 0 0 1rem 0 !important; padding: 0.5rem !important; height: 2.3125rem !important; width: 100% !important;", @onchange = "changePlaceholder()"})
     </div><br />
     <div class="editor-label">
-        @Html.LabelFor(model => model.Media.MediaPath, "URL del Medio")
+        @Html.LabelFor(model => model.Media.MediaTitle, "Título")
     </div>
     <div class="editor-field">
-        @Html.TextBoxFor(model => model.Media.MediaPath)
+        @Html.EditorFor(model => model.Media.MediaTitle)
+    </div><br />
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Media.MediaPath, "Enlace del Medio *")
+        <span id="mediaInstructions"><b>Nota:</b> El enlace del video debe ser uno de la página web YouTube, por lo que deberá subir su video allí primero. Provea aquí el enlace directo a su video siguiendo el formato establecido en el marcador.</span>
+    </div>
+    <div class="editor-field">
+        @Html.TextBoxFor(model => model.Media.MediaPath, new { @id="mediaPath", @placeholder = "https://www.youtube.com/watch?v=" })
     </div>
     
     <input type="submit" class="btn" style="float:left !important; width:40% !important; margin-left: 30px !important;" value="Crear" />    <input type="button" class="btn" style="float:right !important; width:40% !important; margin-bottom: 20px !important; margin-right: 30px !important;" value="Cancelar" onclick="modalClose()" />
 
 }
+
+<script type="text/javascript">
+    function changePlaceholder() {
+        if (document.getElementById('mediaType').value == "Video")
+        {
+            document.getElementById('mediaPath').setAttribute("placeholder", "http://www.youtube.com/watch?v=");
+            $('#mediaInstructions').html("<b>Nota:</b> El enlace del video debe ser uno de la página web YouTube, por lo que deberá subir su video allí primero. Provea aquí el enlace directo a su video siguiendo el formato establecido en el marcador.");
+        }
+        else
+        {
+            document.getElementById('mediaPath').setAttribute("placeholder", "http://urldesuimagen.com");
+            $('#mediaInstructions').html("<b>Nota:</b> Su imagen debe ser cargada a alguna página de alojamiento de las proveídas en la web. Provea aquí el enlace directo a esta imagen.");
+        }
+       
+    }
+</script>

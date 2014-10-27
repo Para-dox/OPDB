@@ -319,6 +319,9 @@
     <Content Include="Content\fullcalendar\fullcalendar.min.css" />
     <Content Include="Content\modalcss.css" />
     <Content Include="Content\modalStyle.css" />
+    <Content Include="Content\multi-select\chosen-sprite%402x.png" />
+    <Content Include="Content\multi-select\chosen-sprite.png" />
+    <Content Include="Content\multi-select\chosen.css" />
     <Content Include="Content\multi-select\multi-select.css" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -490,6 +493,7 @@
     <Content Include="Scripts\knockout-2.2.0.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\moment\moment.js" />
+    <Content Include="Scripts\multi-select\chosen.jquery.js" />
     <Content Include="Scripts\multi-select\jquery.multi-select.js" />
     <Content Include="Scripts\myScripts.js" />
     <Content Include="Scripts\timepicker\jquery.timepicker.js" />
@@ -592,6 +596,7 @@
     <Content Include="Views\Usuarios\VerNota.cshtml" />
     <Content Include="Views\Alcance\VerNota.cshtml" />
     <Content Include="Views\Actividades\Upload.cshtml" />
+    <Content Include="Views\Actividades\Interes.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

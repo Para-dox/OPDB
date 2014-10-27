@@ -26,9 +26,32 @@ namespace OPDB.Controllers
             HomeViewModel homeViewModel = new HomeViewModel
             {
 
-                activities = (from activity in db.Activities.Include(a => a.ActivityType) where activity.ActivityDate > date && activity.DeletionDate == null orderby activity.UpdateDate descending select activity).Take(6).ToList()
+                Information = new List<UserInfoViewModel>()
 
             };
+
+            var activities = (from activity in db.Activities.Include(a => a.ActivityType) where activity.ActivityDate > date && activity.DeletionDate == null orderby activity.UpdateDate descending select activity).Take(6).ToList();
+
+            foreach (var activity in activities)
+            {
+                if (activity.ActivityDate == null)
+                    activity.ActivityDate = new DateTime();
+
+                if (activity.ActivityTime == null)
+                    activity.ActivityTime = "";
+
+                var interest = (from i in db.Interests where i.UserID == 1 && i.ActivityID == activity.ActivityID select i).ToList();
+                bool interested = false;
+
+                if (interest.Count == 1)
+                    interested = true;
+
+                homeViewModel.Information.Add(new UserInfoViewModel
+                {
+                    Activity = activity,
+                    Interested = interested
+                });
+            }
 
             return View(homeViewModel);
         }

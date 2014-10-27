@@ -124,6 +124,7 @@ namespace OPDB.Controllers
         public ActionResult Lista()
         {
             var activities = (from activity in db.Activities where activity.DeletionDate == null orderby activity.UpdateDate descending select activity).ToList();
+            
 
             ActivityViewModel activityViewModel = new ActivityViewModel
             {
@@ -132,6 +133,43 @@ namespace OPDB.Controllers
 
             foreach (var activity in activities)
             {
+                if (activity.ActivityDate == null)
+                    activity.ActivityDate = new DateTime();
+
+                if (activity.ActivityTime == null)
+                    activity.ActivityTime = "";
+
+                var interest = (from i in db.Interests where i.UserID == 1 && i.ActivityID == activity.ActivityID select i).ToList();
+                bool interested = false;
+
+                if (interest.Count == 1)
+                    interested = true;
+
+                activityViewModel.Information.Add(new UserInfoViewModel
+                {
+                    Activity = activity,
+                    OutreachEntity = db.OutreachEntityDetails.First(outreach => outreach.UserID == activity.UserID),
+                    Interested = interested
+                });
+            }
+
+            return View(activityViewModel);
+        }
+
+        public ActionResult DeInteres()
+        {
+            var interested = (from interest in db.Interests join activity in db.Activities on interest.ActivityID equals activity.ActivityID where interest.DeletionDate == null orderby activity.UpdateDate descending select interest).ToList();
+
+
+            ActivityViewModel activityViewModel = new ActivityViewModel
+            {
+                Information = new List<UserInfoViewModel>()
+            };
+
+            foreach (var interest in interested)
+            {
+                var activity = db.Activities.Find(interest.ActivityID);
+
                 activityViewModel.Information.Add(new UserInfoViewModel
                 {
                     Activity = activity,
@@ -139,7 +177,7 @@ namespace OPDB.Controllers
                 });
             }
 
-            return View(activityViewModel);
+            return View("Interes", activityViewModel);
         }
 
         //
@@ -148,23 +186,52 @@ namespace OPDB.Controllers
         public ActionResult Detalles(int id = 0)
         {
             Activity foundActivity = db.Activities.Find(id);
-            var result = (from feedback in db.Feedbacks join details in db.UserDetails on feedback.UserID equals details.UserID where feedback.ActivityID == id && feedback.DeletionDate == null select feedback).ToList();
-            var list = new List<UserInfoViewModel>();
 
-            foreach(var feedback in result){
-                list.Add(new UserInfoViewModel{
+            string date = "";
+
+            if (foundActivity.ActivityDate != null) 
+               date = foundActivity.ActivityDate.Value.ToString("dd/MM/yyyy");
+
+            var allFeedback = (from feedback in db.Feedbacks where feedback.ActivityID == id && feedback.DeletionDate == null select feedback).ToList();
+            var feedbackList = new List<UserInfoViewModel>();
+            var allContacts = (from contact in db.Contacts where contact.ActivityID == id && contact.DeletionDate == null select contact).ToList();
+            var contactList = new List<UserInfoViewModel>();
+            var interest = (from i in db.Interests where i.UserID == 1 && i.ActivityID == id select i).ToList();
+            bool interested = false;
+
+            if (interest.Count == 1)
+                interested = true;
+
+
+            foreach (var feedback in allFeedback)
+            {
+                feedbackList.Add(new UserInfoViewModel
+                {
                     Feedback = feedback,
-                    UserDetail = db.UserDetails.Find(feedback.UserID)
+                    UserDetail = db.UserDetails.First(user => user.UserID == feedback.UserID)
+                });
+            }
+
+            foreach (var contact in allContacts)
+            {
+                contactList.Add(new UserInfoViewModel
+                {
+                    Contact = contact,
+                    User = db.Users.Find(contact.UserID),
+                    UserDetail = db.UserDetails.First(user => user.UserID == contact.UserID)
                 });
             }
             
-
             ActivityViewModel activityViewModel = new ActivityViewModel
             {
                 Activity = foundActivity,
-                ActivityDate = foundActivity.ActivityDate.Value.ToString("dd/MM/yyyy"),
-                Feedbacks = list,
-                Notes = from note in db.ActivityNotes.Include(note => note.NoteType) where note.ActivityID == id && note.DeletionDate == null select note
+                ActivityDate = date,
+                Feedbacks = feedbackList,
+                ActivityContacts = contactList,
+                Notes = from note in db.ActivityNotes.Include(note => note.NoteType) where note.ActivityID == id && note.DeletionDate == null select note,
+                Interested = interested,
+                Videos = (from video in db.Media where video.ActivityID == id && video.MediaType == "Video" && video.DeletionDate == null select video).ToList(),
+                Photos = (from photo in db.Media where photo.ActivityID == id && photo.MediaType == "Foto" && photo.DeletionDate == null select photo).ToList()
             };
             
             if (activityViewModel.Activity == null)
@@ -183,7 +250,11 @@ namespace OPDB.Controllers
                 SchoolList = getSchools(),
                 Activity = new Activity {
                     UserID = 9
-                }
+                },
+                ContactIDs = new List<int>(),
+                Contacts = getContacts(),
+                Resources = getResources(),
+                ResourceIDs = new List<int>()
             };
 
             return View(activityViewModel);
@@ -204,13 +275,56 @@ namespace OPDB.Controllers
                 activityViewModel.Activity.UpdateDate = DateTime.Now;
                 activityViewModel.Activity.CreateDate = DateTime.Now;
 
+                if (activityViewModel.ContactIDs.Count > 0)
+                {
+                    activityViewModel.Activity.Contacts = new List<Contact>();
+
+                    foreach (var contact in activityViewModel.ContactIDs)
+                    {
+                        Contact ActivityContact = new Contact
+                        {
+                            UserID = contact,
+                            CreateUser = 9,
+                            CreateDate = DateTime.Now,
+                            UpdateUser = 9,
+                            UpdateDate = DateTime.Now
+                        };
+
+                        activityViewModel.Activity.Contacts.Add(ActivityContact);
+                    }
+
+                }
+
+                if (activityViewModel.ResourceIDs.Count > 0)
+                {
+                    activityViewModel.Activity.ActivityResources = new List<ActivityResource>();
+
+                    foreach (var resource in activityViewModel.ResourceIDs)
+                    {
+                        ActivityResource Resource = new ActivityResource
+                        {
+                            ResourceID = resource,
+                            ResourceStatus = false,
+                            CreateUser = 9,
+                            CreateDate = DateTime.Now,
+                            UpdateUser = 9,
+                            UpdateDate = DateTime.Now
+                        };
+
+                        activityViewModel.Activity.ActivityResources.Add(Resource);
+                    }
+
+                }
+
                 activityViewModel.Activity.CreateUser = 3;
                 activityViewModel.Activity.UpdateUser = 3;
 
                 db.Activities.Add(activityViewModel.Activity);
                 db.SaveChanges();
 
-                return RedirectToAction("Detalles", "Alcance", new { id = activityViewModel.Activity.UserID });
+                var outreachEntity = db.OutreachEntityDetails.First(u => u.UserID == activityViewModel.Activity.UserID);
+
+                return RedirectToAction("Detalles", "Alcance", new { id = outreachEntity.OutreachEntityDetailID });
             }
 
             return View(activityViewModel);
@@ -229,9 +343,20 @@ namespace OPDB.Controllers
                 return HttpNotFound();
             }
 
-            activityViewModel.ActivityDate = activityViewModel.Activity.ActivityDate.Value.ToString("dd/MM/yyyy");
+            string date = "";
+
+            if(activityViewModel.Activity.ActivityDate != null)
+               activityViewModel.Activity.ActivityDate.Value.ToString("dd/MM/yyyy");
+
+            activityViewModel.ActivityDate = date;
             activityViewModel.ActivityTypes = getActivityTypes();
             activityViewModel.SchoolList = getSchools();
+            
+            activityViewModel.ContactIDs = (from contact in db.Contacts where contact.ActivityID == id && contact.DeletionDate == null select contact.UserID).ToList();
+            activityViewModel.Contacts = getContacts();
+
+            activityViewModel.ResourceIDs = (from resource in db.ActivityResources where resource.ActivityID == id && resource.DeletionDate == null select resource.ResourceID).ToList();
+            activityViewModel.Resources = getResources();
 
             return View(activityViewModel);
         }
@@ -246,10 +371,82 @@ namespace OPDB.Controllers
             if (ModelState.IsValid)
             {
                 //TODO acquire current user
-                activityViewModel.Activity.ActivityDate = DateTime.ParseExact(activityViewModel.ActivityDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                activityViewModel.Activity.ActivityTime = activityViewModel.Activity.ActivityTime.Replace(" ", "");
-                activityViewModel.Activity.UpdateUser = 3;
+                if (activityViewModel.ActivityDate != "" && activityViewModel.ActivityDate != null)
+                    activityViewModel.Activity.ActivityDate = DateTime.ParseExact(activityViewModel.ActivityDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                
+                if(activityViewModel.Activity.ActivityTime != "" && activityViewModel.Activity.ActivityTime != null)
+                    activityViewModel.Activity.ActivityTime = activityViewModel.Activity.ActivityTime.Replace(" ", "");
+                
+                activityViewModel.Activity.UpdateUser = 9;
                 activityViewModel.Activity.UpdateDate = DateTime.Now;
+
+                if (activityViewModel.ContactIDs != null) 
+                { 
+                    if (activityViewModel.ContactIDs.Count > 0)
+                    {
+                        var contacts = (from contact in db.Contacts where contact.ActivityID == activityViewModel.Activity.ActivityID && contact.DeletionDate == null select contact).ToList();
+
+                        if (contacts.Count > 0) 
+                        { 
+                            foreach (var contact in contacts)
+                            {
+                                if (!activityViewModel.ContactIDs.Contains(contact.UserID)) 
+                                { 
+                                    contact.DeletionDate = DateTime.Now;
+                                    db.Entry(contact).State = EntityState.Modified;
+                                }
+                            }
+                        }
+
+                        var removedContacts = (from contact in db.Contacts where contact.ActivityID == activityViewModel.Activity.ActivityID && contact.DeletionDate != null select contact).ToList();
+
+                        if (removedContacts.Count > 0)
+                        {
+                            foreach (var contact in removedContacts)
+                            {
+                                if (activityViewModel.ContactIDs.Contains(contact.UserID))
+                                {
+                                    contact.DeletionDate = null;
+                                    db.Entry(contact).State = EntityState.Modified;
+                                }
+                            }
+                        }
+
+                        foreach (var id in activityViewModel.ContactIDs)
+                        {
+                            var contact = db.Contacts.First(user => user.UserID == id);
+
+                            if (contact == null)
+                            {
+                                Contact ActivityContact = new Contact
+                                {
+                                    UserID = id,
+                                    CreateUser = 9,
+                                    CreateDate = DateTime.Now,
+                                    UpdateUser = 9,
+                                    UpdateDate = DateTime.Now
+                                };
+
+                                activityViewModel.Activity.Contacts.Add(ActivityContact);
+                            }                    
+                        }
+                    }
+                }
+                else
+                {
+                    var contacts = (from contact in db.Contacts where contact.ActivityID == activityViewModel.Activity.ActivityID && contact.DeletionDate == null select contact).ToList();
+
+                    if (contacts.Count > 0)
+                    {
+                        foreach (var contact in contacts)
+                        {                            
+                            contact.DeletionDate = DateTime.Now;
+                            db.Entry(contact).State = EntityState.Modified;
+                        }
+                    }
+                }
+
+
                 db.Entry(activityViewModel.Activity).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");               
@@ -320,19 +517,6 @@ namespace OPDB.Controllers
                 db.SaveChanges();
             }
             return RedirectToAction("Detalles", "Actividades", new { id = feedback.ActivityID });
-        }
-
-        //
-        // POST: /Actividades/Delete/5
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Activity activity = db.Activities.Find(id);
-            db.Activities.Remove(activity);
-            db.SaveChanges();
-            return RedirectToAction("Index");
         }
 
         [HttpPost]
@@ -634,6 +818,73 @@ namespace OPDB.Controllers
                }
            }
 
+           [HttpPost]
+           public ActionResult Interes(int id)
+           {
+               Interest Interest = new Interest
+               {
+                   ActivityID = id,
+                   UserID = 1,
+                   CreateUser = 1,
+                   CreateDate = DateTime.Now,
+                   UpdateUser = 1,
+                   UpdateDate = DateTime.Now
+                   
+               };
+
+               db.Interests.Add(Interest);
+               db.SaveChanges();
+
+               return Content("");               
+           }
+
+           public List<SelectListItem> getContacts()
+           {
+               var users = (from user in db.Users where (user.UserTypeID == 4 || user.UserTypeID == 5) && user.DeletionDate == null select user).ToList();
+
+               List<SelectListItem> types = new List<SelectListItem>();
+
+               if (users.Count > 0) { 
+                   foreach (var user in users)
+                   {
+                       var userDetail = db.UserDetails.FirstOrDefault(u => u.UserID == user.UserID);
+
+                       types.Add(new SelectListItem()
+                       {
+                           Text = userDetail.FirstName + " " + userDetail.MiddleInitial + " " + userDetail.LastName,
+                           Value = user.UserID + "",
+                       });
+                   }
+               }
+
+               return types;
+
+
+           }
+
+           public List<SelectListItem> getResources()
+           {
+               var resources = (from resource in db.Resources where resource.DeletionDate == null select resource).ToList();
+
+               List<SelectListItem> types = new List<SelectListItem>();
+
+               if (resources.Count > 0)
+               {
+                   foreach (var resource in resources)
+                   {
+                      types.Add(new SelectListItem()
+                       {
+                           Text = resource.Resource1,
+                           Value = resource.ResourceID + "",
+                       });
+                   }
+               }
+
+               return types;
+
+
+           }
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// Admin activity creation methods.
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -644,14 +895,18 @@ namespace OPDB.Controllers
            {
                ActivityTypes = getActivityTypes(),
                SchoolList = getSchools(),
-               OutreachEntities = getOutreachEntities()
+               OutreachEntities = getOutreachEntities(),
+               Contacts = getContacts(),
+               ContactIDs = new List<int>()
            };
+
+         
+           
 
            return View(activityViewModel);
        }
 
        [HttpPost]
-       [ValidateAntiForgeryToken]
        public ActionResult CrearActividad(ActivityViewModel activityViewModel)
        {
            if (ModelState.IsValid)
@@ -659,6 +914,47 @@ namespace OPDB.Controllers
                //TODO needs to acquire current user 
                activityViewModel.Activity.UpdateDate = DateTime.Now;
                activityViewModel.Activity.CreateDate = DateTime.Now;
+
+               if (activityViewModel.ContactIDs.Count > 0)
+               {
+                   activityViewModel.Activity.Contacts = new List<Contact>();
+
+                   foreach (var contact in activityViewModel.ContactIDs)
+                   {
+                       Contact ActivityContact = new Contact
+                       {
+                           UserID = contact,
+                           CreateUser = 9,
+                           CreateDate = DateTime.Now,
+                           UpdateUser = 9,
+                           UpdateDate = DateTime.Now
+                       };
+
+                       activityViewModel.Activity.Contacts.Add(ActivityContact);
+                   }
+
+               }
+
+               if (activityViewModel.ResourceIDs.Count > 0)
+               {
+                   activityViewModel.Activity.ActivityResources = new List<ActivityResource>();
+
+                   foreach (var resource in activityViewModel.ResourceIDs)
+                   {
+                       ActivityResource Resource = new ActivityResource
+                       {
+                           ResourceID = resource,
+                           ResourceStatus = false,
+                           CreateUser = 9,
+                           CreateDate = DateTime.Now,
+                           UpdateUser = 9,
+                           UpdateDate = DateTime.Now
+                       };
+
+                       activityViewModel.Activity.ActivityResources.Add(Resource);
+                   }
+
+               }
 
                activityViewModel.Activity.CreateUser = 3;
                activityViewModel.Activity.UpdateUser = 3;

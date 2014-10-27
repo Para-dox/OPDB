@@ -65,7 +65,6 @@ function loadResourceAction(e) {
 }
 
 function DisplayModal(e) {
-    debugger;
     modalClose();
     var instructions = $(e).attr('data-validation');
     var url = $(e).attr('data-url');
@@ -120,4 +119,12 @@ function loadAdminView(e) {
     }
 
     $('#managementTables').load(url);
+}
+
+function showInterest(e) {
+    var url = $(e).attr('data-url');
+    $.post(url);
+    sleep(1000);
+    window.location.reload();
+
 }

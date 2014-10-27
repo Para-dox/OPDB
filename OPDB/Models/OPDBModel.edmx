@@ -152,6 +152,7 @@
           <Property Name="MediaID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ActivityID" Type="int" Nullable="false" />
           <Property Name="MediaType" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="MediaTitle" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="MediaPath" Type="text" Nullable="false" />
           <Property Name="CreateUser" Type="int" Nullable="false" />
           <Property Name="CreateDate" Type="datetime" Precision="0" Nullable="false" />
@@ -2175,11 +2176,11 @@
           <NavigationProperty Name="Documents" Relationship="Self.Document_ibfk_2" FromRole="Activity" ToRole="Document" />
           <NavigationProperty Name="Feedbacks" Relationship="Self.Feedback_ibfk_1" FromRole="Activity" ToRole="Feedback" />
           <NavigationProperty Name="Interests" Relationship="Self.Interest_ibfk_1" FromRole="Activity" ToRole="Interest" />
-          <NavigationProperty Name="Media" Relationship="Self.Media_ibfk_1" FromRole="Activity" ToRole="Media" />
           <NavigationProperty Name="User" Relationship="OPDBModel.Activity_ibfk_21" FromRole="Activity" ToRole="User" />
           <NavigationProperty Name="User1" Relationship="OPDBModel.Activity_ibfk_4" FromRole="Activity" ToRole="User" />
           <NavigationProperty Name="User2" Relationship="OPDBModel.Activity_ibfk_5" FromRole="Activity" ToRole="User" />
           <NavigationProperty Name="School" Relationship="OPDBModel.Activity_ibfk_3" FromRole="Activity" ToRole="School" />
+          <NavigationProperty Name="Media" Relationship="OPDBModel.Media_ibfk_1" FromRole="Activity" ToRole="Medium" />
         </EntityType>
         <EntityType Name="ActivityNote">
           <Key>
@@ -2336,23 +2337,6 @@
           <NavigationProperty Name="User1" Relationship="OPDBModel.Interest_ibfk_3" FromRole="Interest" ToRole="User" />
           <NavigationProperty Name="User2" Relationship="OPDBModel.Interest_ibfk_4" FromRole="Interest" ToRole="User" />
           </EntityType>
-        <EntityType Name="Medium">
-          <Key>
-            <PropertyRef Name="MediaID" />
-          </Key>
-          <Property Name="MediaID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ActivityID" Type="Int32" Nullable="false" />
-          <Property Name="MediaType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="MediaPath" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="CreateUser" Type="Int32" Nullable="false" />
-          <Property Name="CreateDate" Type="DateTime" Nullable="false" />
-          <Property Name="UpdateUser" Type="Int32" Nullable="false" />
-          <Property Name="UpdateDate" Type="DateTime" Nullable="false" />
-          <Property Name="DeletionDate" Type="DateTime" />
-          <NavigationProperty Name="Activity" Relationship="Self.Media_ibfk_1" FromRole="Media" ToRole="Activity" />
-          <NavigationProperty Name="User" Relationship="OPDBModel.Media_ibfk_2" FromRole="Medium" ToRole="User" />
-          <NavigationProperty Name="User1" Relationship="OPDBModel.Media_ibfk_3" FromRole="Medium" ToRole="User" />
-        </EntityType>
         <EntityType Name="NoteType">
           <Key>
             <PropertyRef Name="NoteTypeID" />
@@ -2579,18 +2563,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="Media_ibfk_1">
-          <End Role="Activity" Type="Self.Activity" Multiplicity="1" />
-          <End Role="Media" Type="Self.Medium" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Activity">
-              <PropertyRef Name="ActivityID" />
-            </Principal>
-            <Dependent Role="Media">
-              <PropertyRef Name="ActivityID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="ActivityNote_ibfk_3">
           <End Role="NoteType" Type="Self.NoteType" Multiplicity="1" />
           <End Role="ActivityNote" Type="Self.ActivityNote" Multiplicity="*" />
@@ -2662,7 +2634,6 @@
           <EntitySet Name="Feedbacks" EntityType="Self.Feedback" />
           <EntitySet Name="Goals" EntityType="Self.Goal" />
           <EntitySet Name="Interests" EntityType="Self.Interest" />
-          <EntitySet Name="Media" EntityType="Self.Medium" />
           <EntitySet Name="NoteTypes" EntityType="Self.NoteType" />
           <EntitySet Name="OutreachEntityDetails" EntityType="Self.OutreachEntityDetail" />
           <EntitySet Name="Resources" EntityType="Self.Resource" />
@@ -2698,10 +2669,6 @@
           <AssociationSet Name="Interest_ibfk_1" Association="Self.Interest_ibfk_1">
             <End Role="Activity" EntitySet="Activities" />
             <End Role="Interest" EntitySet="Interests" />
-          </AssociationSet>
-          <AssociationSet Name="Media_ibfk_1" Association="Self.Media_ibfk_1">
-            <End Role="Activity" EntitySet="Activities" />
-            <End Role="Media" EntitySet="Media" />
           </AssociationSet>
           <AssociationSet Name="ActivityNote_ibfk_3" Association="Self.ActivityNote_ibfk_3">
             <End Role="NoteType" EntitySet="NoteTypes" />
@@ -2832,14 +2799,6 @@
             <End Role="User" EntitySet="Users" />
             <End Role="Interest" EntitySet="Interests" />
           </AssociationSet>
-          <AssociationSet Name="Media_ibfk_2" Association="OPDBModel.Media_ibfk_2">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Medium" EntitySet="Media" />
-          </AssociationSet>
-          <AssociationSet Name="Media_ibfk_3" Association="OPDBModel.Media_ibfk_3">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Medium" EntitySet="Media" />
-          </AssociationSet>
           <AssociationSet Name="NoteType_ibfk_1" Association="OPDBModel.NoteType_ibfk_1">
             <End Role="User" EntitySet="Users" />
             <End Role="NoteType" EntitySet="NoteTypes" />
@@ -2930,6 +2889,19 @@
             <End Role="School" EntitySet="Schools" />
             <End Role="SchoolNote" EntitySet="SchoolNotes" />
           </AssociationSet>
+          <EntitySet Name="Media" EntityType="OPDBModel.Medium" />
+          <AssociationSet Name="Media_ibfk_1" Association="OPDBModel.Media_ibfk_1">
+            <End Role="Activity" EntitySet="Activities" />
+            <End Role="Medium" EntitySet="Media" />
+          </AssociationSet>
+          <AssociationSet Name="Media_ibfk_2" Association="OPDBModel.Media_ibfk_2">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Medium" EntitySet="Media" />
+          </AssociationSet>
+          <AssociationSet Name="Media_ibfk_3" Association="OPDBModel.Media_ibfk_3">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Medium" EntitySet="Media" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="User">
           <Key>
@@ -2971,8 +2943,6 @@
           <NavigationProperty Name="Interests" Relationship="OPDBModel.Interest_ibfk_2" FromRole="User" ToRole="Interest" />
           <NavigationProperty Name="Interests1" Relationship="OPDBModel.Interest_ibfk_3" FromRole="User" ToRole="Interest" />
           <NavigationProperty Name="Interests2" Relationship="OPDBModel.Interest_ibfk_4" FromRole="User" ToRole="Interest" />
-          <NavigationProperty Name="Media" Relationship="OPDBModel.Media_ibfk_2" FromRole="User" ToRole="Medium" />
-          <NavigationProperty Name="Media1" Relationship="OPDBModel.Media_ibfk_3" FromRole="User" ToRole="Medium" />
           <NavigationProperty Name="NoteTypes" Relationship="OPDBModel.NoteType_ibfk_1" FromRole="User" ToRole="NoteType" />
           <NavigationProperty Name="NoteTypes1" Relationship="OPDBModel.NoteType_ibfk_2" FromRole="User" ToRole="NoteType" />
           <NavigationProperty Name="OutreachEntityDetails" Relationship="OPDBModel.OutreachEntityDetail_ibfk_2" FromRole="User" ToRole="OutreachEntityDetail" />
@@ -2991,6 +2961,8 @@
           <NavigationProperty Name="OutreachEntityTypes1" Relationship="OPDBModel.OutreachEntityType_ibfk_2" FromRole="User" ToRole="OutreachEntityType" />
           <NavigationProperty Name="Schools" Relationship="OPDBModel.School_ibfk_1" FromRole="User" ToRole="School" />
           <NavigationProperty Name="Schools1" Relationship="OPDBModel.School_ibfk_2" FromRole="User" ToRole="School" />
+          <NavigationProperty Name="Media" Relationship="OPDBModel.Media_ibfk_2" FromRole="User" ToRole="Medium" />
+          <NavigationProperty Name="Media1" Relationship="OPDBModel.Media_ibfk_3" FromRole="User" ToRole="Medium" />
           </EntityType>
         <Association Name="Activity_ibfk_21">
           <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
@@ -3316,30 +3288,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="Media_ibfk_2">
-          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
-          <End Type="OPDBModel.Medium" Role="Medium" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Medium">
-              <PropertyRef Name="CreateUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Media_ibfk_3">
-          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
-          <End Type="OPDBModel.Medium" Role="Medium" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Medium">
-              <PropertyRef Name="UpdateUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="NoteType_ibfk_1">
           <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
           <End Type="OPDBModel.NoteType" Role="NoteType" Multiplicity="*" />
@@ -3639,6 +3587,60 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Medium">
+          <Key>
+            <PropertyRef Name="MediaID" />
+          </Key>
+          <Property Name="MediaID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ActivityID" Type="Int32" Nullable="false" />
+          <Property Name="MediaType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MediaTitle" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="MediaPath" Type="String" Nullable="false" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="CreateUser" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" />
+          <Property Name="UpdateUser" Type="Int32" Nullable="false" />
+          <Property Name="UpdateDate" Type="DateTime" Nullable="false" />
+          <Property Name="DeletionDate" Type="DateTime" />
+          <NavigationProperty Name="Activity" Relationship="OPDBModel.Media_ibfk_1" FromRole="Medium" ToRole="Activity" />
+          <NavigationProperty Name="User" Relationship="OPDBModel.Media_ibfk_2" FromRole="Medium" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="OPDBModel.Media_ibfk_3" FromRole="Medium" ToRole="User" />
+        </EntityType>
+        <Association Name="Media_ibfk_1">
+          <End Type="OPDBModel.Activity" Role="Activity" Multiplicity="1" />
+          <End Type="OPDBModel.Medium" Role="Medium" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Activity">
+              <PropertyRef Name="ActivityID" />
+            </Principal>
+            <Dependent Role="Medium">
+              <PropertyRef Name="ActivityID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Media_ibfk_2">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.Medium" Role="Medium" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Medium">
+              <PropertyRef Name="CreateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Media_ibfk_3">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.Medium" Role="Medium" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Medium">
+              <PropertyRef Name="UpdateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3787,21 +3789,6 @@
                 <ScalarProperty Name="InterestID" ColumnName="InterestID" />
                 <ScalarProperty Name="ActivityID" ColumnName="ActivityID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="UpdateUser" ColumnName="UpdateUser" />
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-                <ScalarProperty Name="DeletionDate" ColumnName="DeletionDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Media">
-            <EntityTypeMapping TypeName="OPDBModel.Medium">
-              <MappingFragment StoreEntitySet="Media">
-                <ScalarProperty Name="MediaID" ColumnName="MediaID" />
-                <ScalarProperty Name="ActivityID" ColumnName="ActivityID" />
-                <ScalarProperty Name="MediaType" ColumnName="MediaType" />
-                <ScalarProperty Name="MediaPath" ColumnName="MediaPath" />
                 <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UpdateUser" ColumnName="UpdateUser" />
@@ -3977,6 +3964,22 @@
                 <ScalarProperty Name="SchoolName" ColumnName="SchoolName" />
                 <ScalarProperty Name="SchoolSequenceNumber" ColumnName="SchoolSequenceNumber" />
                 <ScalarProperty Name="SchoolID" ColumnName="SchoolID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Media">
+            <EntityTypeMapping TypeName="OPDBModel.Medium">
+              <MappingFragment StoreEntitySet="Media">
+                <ScalarProperty Name="DeletionDate" ColumnName="DeletionDate" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="UpdateUser" ColumnName="UpdateUser" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
+                <ScalarProperty Name="MediaPath" ColumnName="MediaPath" />
+                <ScalarProperty Name="MediaTitle" ColumnName="MediaTitle" />
+                <ScalarProperty Name="MediaType" ColumnName="MediaType" />
+                <ScalarProperty Name="ActivityID" ColumnName="ActivityID" />
+                <ScalarProperty Name="MediaID" ColumnName="MediaID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
