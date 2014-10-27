@@ -237,9 +237,6 @@
     <Compile Include="Models\Feedback.cs">
       <DependentUpon>OPDBModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Goal.cs">
-      <DependentUpon>OPDBModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\HomeViewModel.cs" />
     <Compile Include="Models\Interest.cs">
       <DependentUpon>OPDBModel.tt</DependentUpon>

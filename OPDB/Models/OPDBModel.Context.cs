@@ -33,7 +33,6 @@ namespace OPDB.Models
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<Document> Documents { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
-        public DbSet<Goal> Goals { get; set; }
         public DbSet<Interest> Interests { get; set; }
         public DbSet<NoteType> NoteTypes { get; set; }
         public DbSet<OutreachEntityDetail> OutreachEntityDetails { get; set; }
