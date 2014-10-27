@@ -390,13 +390,38 @@ namespace OPDB.Controllers
             List<CalendarActivity> events = new List<CalendarActivity>();
             List<Activity> activities = (from activity in db.Activities.Include(a => a.ActivityType) where activity.DeletionDate == null select activity).ToList();
 
-            
-
             foreach (Activity a in activities)
             {
-                string startDate = Convert.ToDateTime(a.ActivityDate.Value.ToString()).ToString("yyyy-MM-ddTHH:mm:ss");
-                string startTime = DateTime.Parse(a.ActivityTime.ToString()).ToString("HH:mm:ss");
-                string startDateTime = startDate.Substring(0, 11) + startTime;
+                string startDate = "";
+                string startTime = "";
+                string startDateTime = "";
+
+                if (a.ActivityDate != null)
+                {
+                    startDate = Convert.ToDateTime(a.ActivityDate.Value.ToString()).ToString("yyyy-MM-ddTHH:mm:ss");
+                }
+                else
+                {
+                    startDate = null;
+                }
+
+                if (a.ActivityTime != null)
+                {
+                    startTime = DateTime.Parse(a.ActivityTime.ToString()).ToString("HH:mm:ss");
+                }
+                else
+                {
+                    startTime = null;
+                }
+
+                if (startDate != null)
+                {
+                    startDateTime = startDate.Substring(0, 11) + startTime;
+                }
+                else
+                {
+                    startDateTime = null;
+                }
 
                 CalendarActivity newEvent = new CalendarActivity
                 {
