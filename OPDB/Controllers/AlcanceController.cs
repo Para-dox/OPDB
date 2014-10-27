@@ -18,8 +18,12 @@ namespace OPDB.Controllers
 
         public ActionResult Index()
         {
-            var outreachentitydetails = db.OutreachEntityDetails.Include(o => o.OutreachEntityType).Include(o => o.User);
-            return View(outreachentitydetails.ToList());
+            //var outreachentitydetails = db.OutreachEntityDetails.Include(o => o.OutreachEntityType).Include(o => o.User);
+            //return View(outreachentitydetails);
+
+            var users = from u in db.Users.Include(u => u.UserDetails) where u.UserTypeID == 3 && u.DeletionDate == null select u;
+
+            return PartialView("Index", users.ToList());
         }
 
         //
@@ -54,6 +58,43 @@ namespace OPDB.Controllers
 
             return View(userViewModel);
         }
+
+        //[HttpPost]
+        //public ActionResult Crear(UserViewModel userViewModel)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        userViewModel.user.CreateDate = DateTime.Now;
+        //        userViewModel.user.UpdateDate = DateTime.Now;
+        //        userViewModel.user.UserStatus = false;
+
+        //        if (userViewModel.user.UserTypeID == 3)
+        //        {
+        //            userViewModel.outreachEntity.CreateDate = DateTime.Now;
+        //            userViewModel.outreachEntity.UpdateDate = DateTime.Now;
+        //            userViewModel.user.OutreachEntityDetails = new List<OutreachEntityDetail>();
+        //            userViewModel.user.OutreachEntityDetails.Add(userViewModel.outreachEntity);
+        //            db.Users.Add(userViewModel.user);
+        //        }
+
+        //        else
+        //        {
+        //            userViewModel.userDetail.CreateDate = DateTime.Now;
+        //            userViewModel.userDetail.UpdateDate = DateTime.Now;
+        //            userViewModel.user.UserDetails = new List<UserDetail>();
+        //            userViewModel.user.UserDetails.Add(userViewModel.userDetail);
+        //            db.Users.Add(userViewModel.user);
+        //        }
+
+        //        db.SaveChanges();
+
+        //        return RedirectToAction("Administracion", "Home", null);
+        //    }
+
+        //    userViewModel.userTypes = getUserTypes();
+        //    userViewModel.outreachTypes = getOutreachTypes();
+        //    return View(userViewModel);
+        //}
 
         //
         // GET: /Alcance/Edit/5
@@ -103,8 +144,8 @@ namespace OPDB.Controllers
 
         public ActionResult Remover(int id = 0)
         {
-            User outreach = db.Users.Find(id);
-            OutreachEntityDetail outreachDetail = db.OutreachEntityDetails.FirstOrDefault(i => i.UserID == id);
+            OutreachEntityDetail outreachDetail = db.OutreachEntityDetails.Find(id);
+            User outreach = db.Users.FirstOrDefault(i => i.UserID == outreachDetail.UserID);
             if (outreach == null)
             {
                 return HttpNotFound();
@@ -219,10 +260,23 @@ namespace OPDB.Controllers
 
         public ActionResult Lista()
         {
-            var users = from o in db.OutreachEntityDetails.Include(o => o.OutreachEntityType) where o.DeletionDate == null select o;
+            var users = (from outreachEntity in db.OutreachEntityDetails join user in db.Users on outreachEntity.UserID equals user.UserID where (user.UserTypeID == 3) && outreachEntity.DeletionDate == null orderby outreachEntity.OutreachEntityName ascending select outreachEntity).ToList();
 
-            return View(users.ToList());
+            UserViewModel userViewModel = new UserViewModel
+            {
+                Information = new List<UserInfoViewModel>()
+            };
 
+            foreach (var outreach in users)
+            {
+                userViewModel.Information.Add(new UserInfoViewModel
+                {
+                    User = db.Users.Find(outreach.UserID),
+                    OutreachEntity = outreach
+                });
+            }
+
+            return View(userViewModel);
         }
 
         public ActionResult Removidos()
