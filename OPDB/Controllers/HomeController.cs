@@ -407,5 +407,58 @@ namespace OPDB.Controllers
 
             return types;
         }
+
+        public JsonResult CalendarData()
+        {
+            List<CalendarActivity> events = new List<CalendarActivity>();
+            List<Activity> activities = (from activity in db.Activities.Include(a => a.ActivityType) where activity.DeletionDate == null select activity).ToList();
+
+            foreach (Activity a in activities)
+            {
+                string startDate = "";
+                string startTime = "";
+                string startDateTime = "";
+
+                if (a.ActivityDate != null)
+                {
+                    startDate = Convert.ToDateTime(a.ActivityDate.Value.ToString()).ToString("yyyy-MM-ddTHH:mm:ss");
+                }
+                else
+                {
+                    startDate = null;
+                }
+
+                if (a.ActivityTime != null)
+                {
+                    startTime = DateTime.Parse(a.ActivityTime.ToString()).ToString("HH:mm:ss");
+                }
+                else
+                {
+                    startTime = null;
+                }
+
+                if (startDate != null)
+                {
+                    startDateTime = startDate.Substring(0, 11) + startTime;
+                }
+                else
+                {
+                    startDateTime = null;
+                }
+
+                CalendarActivity newEvent = new CalendarActivity
+                {
+                    id = a.ActivityID + "",
+                    title = a.Title.ToString(),
+                    start = startDateTime,
+                    url = Url.Action("Detalles", "Actividades", new { id = a.ActivityID }),
+                    allDay = false,
+                };
+
+                events.Add(newEvent);
+            }
+
+            return Json(events, JsonRequestBehavior.AllowGet);
+        }
     }
 }

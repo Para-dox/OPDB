@@ -1,16 +1,17 @@
-﻿@{
+﻿@model OPDB.Models.ActivityViewModel
+
+
+@{
     ViewBag.Title = "Calendario";
 }
 
 
-
 <div id="calendario"></div>
-
-
 
 <script src="~/Scripts/moment/moment.js"></script>
 <script src="~/Scripts/fullcalendar/fullcalendar.min.js"></script>
 <script src="~/Scripts/fullcalendar/es.js"></script>
+
 <script type="text/javascript">
 
     $(document).ready(function () {
@@ -18,9 +19,11 @@
         $('#calendario').fullCalendar({
             theme: false,
             aspectRatio: 2,
+            firstDay: 0,
             contentHeight: "auto",
-            lang: "es"
-            
+            lang: "es",
+            events: "/Home/CalendarData/",
+            timeFormat: 'h:mmT'
         });
 
     });
