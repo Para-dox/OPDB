@@ -1,0 +1,93 @@
+﻿@model IEnumerable<OPDB.Models.User>
+
+@{
+    ViewBag.Title = "Removidos";
+}
+
+<style>
+    select {
+        width: 50px !important;
+        padding: 0.2rem !important;
+        height: 1.5rem !important;
+        margin: 0 !important;
+    }
+
+    label {
+        width: 100% !important;
+    }
+
+    input[type="search"] {
+        padding: 0.2rem;
+    }
+
+    th, td {
+        text-align: center !important;
+    }
+
+    .previous, .next {
+        display: none !important;
+    }
+</style>
+
+<table id="removedOutreach">
+    <thead>
+        <tr>
+            <th style="width:20%;">Nombre</th>
+            <th style="width:20%;">Tipo de Usuario</th>
+            <th style="width:20%;">Correo Electrónico</th>
+            <th>Removido En</th>
+            <th style="width:8%;"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(item.OutreachEntityDetails.FirstOrDefault(i => i.UserID == item.UserID).OutreachEntityName, "Detalles", "Alcance", new { id = item.OutreachEntityDetails.FirstOrDefault(outreach => outreach.UserID == item.UserID).OutreachEntityDetailID }, null)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserType.UserType1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.DeletionDate)</td>
+                <td>
+                    <i title="Restaurar" style="cursor:pointer;" class="fa fa-plus"></i>
+                </td>
+            </tr>
+
+        }
+    </tbody>
+</table>
+<br />
+
+<script src="~/Scripts/myScripts.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $('#removedOutreach').DataTable({
+            "sDom": '<"top"lf>t<"bottom"ipr><"clear">',
+            "sPaginationType": "full_numbers",
+            "bProcessing": false,
+            "iDisplayLength": 12,
+            "aaSorting": [[1, "asc"]],
+            "columnDefs": [
+                {
+                    "orderable": false,
+                    "targets": 4
+                }
+            ],
+            "oLanguage": {
+                "sEmptyTable": "No se ha removido ningún usuario",
+                "sZeroRecords": "No se ha encontrado ningún registro",
+                "sSearch": "Buscar:"
+            }
+        });
+
+        document.getElementsByTagName("loading")[0].innerHTML = "";
+    });
+
+</script>
+

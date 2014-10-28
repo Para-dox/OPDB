@@ -1,7 +1,7 @@
-﻿@model IEnumerable<OPDB.Models.OutreachEntityDetail>
+﻿@model OPDB.Models.UserViewModel
 
 @{
-    ViewBag.Title = "Lista";
+    ViewBag.Title = "Outreach";
 }
 
 <style>
@@ -20,8 +20,8 @@
         width: 100%;
     }
 
-    tr, td {
-        background-color: #ecfaff !important;
+    tr {
+        background-color: #e2e2e2 !important;
     }
 
     table {
@@ -31,47 +31,46 @@
     .last, .first, .previous, .next {
         display: none !important;
     }
-
-    span {
-        font-size: 0.875rem;
-        color: #4d4d4d;
-    }
-
-    r {
-        font-size: 0.875rem;
-    }
 </style>
 
-<h2>Organizaciones</h2><br />
+<h2>Organizaciónes de Alcance</h2><br />
+<table id="outreachList">
+    <thead hidden>
+        <tr><th></th></tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Information)
+        {
+            <tr>
+                <td class="panel callout large-12 columns">
+                    @Html.ActionLink(item.OutreachEntity.OutreachEntityName, "Detalles", "Alcance", new { id = item.OutreachEntity.OutreachEntityDetailID }, null)<br />
+                    <span>Misión: </span> @item.OutreachEntity.Mission<br />
+                    <span>Objetivos: </span> @item.OutreachEntity.Objectives<br />
+                    <span>Localización:</span> @item.OutreachEntity.Location<br />
+                    @if (item.OutreachEntity.User.PhoneNumber != null)
+                    {
+                        <span>Telefono: </span> @item.User.PhoneNumber
+                    }
+                </td>
+            </tr>
 
-<div class="large-7 columns panel callout">
-    <table id="outreachList">
-        <thead hidden>
-            <tr><th></th></tr>
-        </thead>
-        <tbody>
-            @foreach (var outreach in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.ActionLink(outreach.OutreachEntityName, "Detalles", "Alcance", new { id = outreach.OutreachEntityDetailID }, null)<br />
-                        <span>Tipo de Organización: </span><r>@outreach.OutreachEntityType.OutreachEntityType1</r><br />
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table><br />
-</div>
+        }
+    </tbody>
+</table>
 
 <script src="~/Scripts/myScripts.js"></script>
 <script>
     $(document).ready(function () {
 
         $('#outreachList').DataTable({
-            "sDom": '<"top"lf>t<"bottom"ipr><"clear">',
+            "sDom": '<"top">t<"bottom"pr><"clear">',
             "sPaginationType": "full_numbers",
             "bProcessing": false,
-            "oLanguage": { "sSearch": "Filter:" }
+            "oLanguage": { "sSearch": "Filter:" },
+            "oLanguage": {
+                "sEmptyTable": "No se ha añadido ninguna organización de alcance",
+                "sZeroRecords": "No se ha encontrado ningún registro"
+            }
         });
     });
 

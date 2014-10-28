@@ -1,4 +1,4 @@
-﻿@model IEnumerable<OPDB.Models.OutreachEntityDetail>
+﻿@model IEnumerable<OPDB.Models.User>
 
 @{
     ViewBag.Title = "Index";
@@ -29,12 +29,6 @@
     }
 
 </style>
-
-<h2>Organizaciones de Alcance</h2>
-
-<p>
-    @Html.ActionLink("Añadir Nueva Organizacion", "Crear")
-</p>
 <table id="outreach">
     <thead>
         <tr>
@@ -42,6 +36,8 @@
             <th>Nombre de Organización</th>
             <th>Email</th>
             <th>Número de Teléfono</th>
+            <th>Creado</th>
+            <th>Modificado</th>
             <th style="width:10%;"></th>
         </tr>
     </thead>
@@ -49,26 +45,38 @@
         @foreach (var item in Model)
         {
             <tr>
+                @*<td>
+                    @Html.ActionLink(item.OutreachEntityDetails.FirstOrDefault(i => i.UserID == item.UserID).OutreachEntityName, "Detalles", "Alcance", new { id = item.UserID}, null)
+                </td>*@
                 <td>
-                    @Html.DisplayFor(modelItem => item.OutreachEntityType.OutreachEntityType1)
+                    @Html.ActionLink(item.OutreachEntityDetails.FirstOrDefault(outreach => outreach.UserID == item.UserID).OutreachEntityName, "Detalles", "Alcance", new { id = item.OutreachEntityDetails.FirstOrDefault(outreach => outreach.UserID == item.UserID).OutreachEntityDetailID }, null)
                 </td>
                 <td>
-                    @Html.ActionLink(item.OutreachEntityName + " ", "Detalles", "Alcance", new { id = item.OutreachEntityDetailID}, null)
+                    @Html.DisplayFor(modelItem => item.OutreachEntityDetails.FirstOrDefault(outreach => outreach.UserID == item.UserID).OutreachEntityType.OutreachEntityType1)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.User.Email)
+                    @Html.DisplayFor(modelItem => item.Email)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.User.PhoneNumber)
+                    @Html.DisplayFor(modelItem => item.PhoneNumber)
                 </td>
                 <td>
-                    <a href="@Url.Action("Editar", "Alcance", new { id = item.OutreachEntityDetailID })"><i class="fa fa-pencil" title="Editar"></i></a>
-                    <i title="Remover" class="fa fa-remove" onclick="removeRecord(this)" data-url="@Url.Action("Remover", "Alcance", new { id = item.UserID })"></i>
+                    @Html.DisplayFor(modelItem => item.CreateDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UpdateDate)
+                </td>
+                <td>
+                    <a href="@Url.Action("Editar", "Alcance", new { id = item.OutreachEntityDetails.FirstOrDefault(outreach => outreach.UserID == item.UserID).OutreachEntityDetailID })"><i class="fa fa-pencil" title="Editar"></i></a>
+                    <i title="Remover" class="fa fa-remove" onclick="removeRecord(this, 'outreach')" data-url="@Url.Action("Remover", "Alcance", new { id = item.OutreachEntityDetails.FirstOrDefault(outreach => outreach.UserID == item.UserID).OutreachEntityDetailID })"></i>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+<br />
+
+    <input type="button" class="btn" value="Nueva Organización" onclick="location.href='@Url.Action("Crear", "Alcance")'" /><input type="button" value="Usuarios Removidos" class="btn" onclick="location.href='@Url.Action("Removidos", "Alcance")'" /><br />
 
 <script src="~/Scripts/myScripts.js"></script>
 <script>
@@ -86,9 +94,10 @@
                     "targets": 4
                 }
 
-
             ]
         });
+
+        document.getElementsByTagName("loading")[0].innerHTML = "";
     });
 
 </script>
