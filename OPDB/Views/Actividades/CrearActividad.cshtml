@@ -39,7 +39,7 @@
             </div>
             <div class="editor-field">
                 @Html.DropDownListFor(model => model.Activity.UserID, Model.OutreachEntities, new { @style = "width: 500px !important;" })
-            </div>
+            </div><br />
             <div class="editor-label">
                 @Html.LabelFor(model => model.Activity.ActivityTypeID, "Tipo de Actividad")
             </div>
@@ -51,8 +51,8 @@
                 @Html.LabelFor(model => model.Activity.Title, "Título de Actividad")
             </div>
             <div class="editor-field">
-                @Html.EditorFor(model => model.Activity.Title)
                 @Html.ValidationMessageFor(model => model.Activity.Title)
+                @Html.EditorFor(model => model.Activity.Title)               
             </div>
 
             <div class="editor-label">
@@ -87,8 +87,19 @@
             </div>
             <div class="editor-field">
                 @Html.DropDownListFor(model => model.Activity.SchoolID, Model.SchoolList, new { @style = "width: 500px !important;" })
+            </div><br />
+            <div class="editor-label">
+                @Html.LabelFor(model => model.ContactIDs, "Contactos de la Actividad")
             </div>
-
+            <div class="editor-field" style="text-align:left !important;">
+                @Html.DropDownListFor(model => model.ContactIDs, Model.Contacts, new { @style = "width: 500px !important;", @multiple = "multiple", @class = "chosen-select", @data_placeholder = "Buscar..." })
+            </div><br />
+            <div class="editor-label">
+                @Html.LabelFor(model => model.ResourceIDs, "Recursos Necesarios")
+            </div>
+            <div class="editor-field" style="text-align:left !important;">
+                @Html.DropDownListFor(model => model.ResourceIDs, Model.Resources, new { @style = "width: 500px !important;", @multiple = "multiple", @class = "chosen-select", @data_placeholder = "Buscar..." })
+            </div><br />
             <p style="text-align:left;">
                 <input type="submit" class="btn" value="Crear" /><input type="button" class="btn" value="Regresar" onclick="location.href='@Url.Action("Index","Actividades", null)'" />
             </p>
@@ -96,7 +107,7 @@
     </center>
 }
 <script>
-
+    $(document).ready(function(){
         $("#datepicker").datepicker({ dateFormat: 'dd/mm/yy' }).val();
 
         $("#timepicker").timepicker({
@@ -104,6 +115,8 @@
             'timeFormat': 'h:iA'
         }).val();
 
+        $(".chosen-select").chosen({ no_results_text: "No se encontró ningún record." });
+    });
 </script>
 
 @section Scripts {

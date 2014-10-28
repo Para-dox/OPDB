@@ -136,14 +136,19 @@ namespace OPDB.Controllers
 
             if (view == "_Alcance")
             {
-                UsuariosController controller = new UsuariosController();
-                searchViewModel.types = controller.getOutreachTypes();
+                searchViewModel.types = getOutreachTypes();
             }
 
             if (view == "_Usuarios")
             {
                searchViewModel.types = getUserTypes();
             }
+
+            if (view == "_Actividades")
+            {
+                searchViewModel.types = getActivityTypes();
+            }
+
             return PartialView(view, searchViewModel);
 
         }
@@ -234,7 +239,8 @@ namespace OPDB.Controllers
             searchViewModel.buscarActividades = true;
 
             var result = from activity in db.Activities
-                         where activity.DeletionDate == null 
+                         where activity.ActivityTypeID == searchViewModel.activity.ActivityTypeID &&
+                         activity.DeletionDate == null 
                          select activity;
 
             searchViewModel.activities = result;
@@ -391,6 +397,13 @@ namespace OPDB.Controllers
         public List<SelectListItem> getUserTypes()
         {
             List<SelectListItem> types = new List<SelectListItem>();
+
+            types.Add(new SelectListItem()
+            {
+                Text = "",
+                Value = ""
+            });
+
             foreach (var userType in db.UserTypes)
             {
 
@@ -460,5 +473,57 @@ namespace OPDB.Controllers
 
             return Json(events, JsonRequestBehavior.AllowGet);
         }
+
+        public List<SelectListItem> getOutreachTypes()
+        {
+            List<SelectListItem> types = new List<SelectListItem>();
+
+            types.Add(new SelectListItem()
+            {
+                Text = "",
+                Value = ""
+            });
+
+            foreach (var outreachType in db.OutreachEntityTypes)
+            {
+
+                types.Add(new SelectListItem()
+                {
+                    Text = outreachType.OutreachEntityType1,
+                    Value = outreachType.OutreachEntityTypeID + ""
+
+                });
+
+            }
+
+            return types;
+
+        }
+
+        public List<SelectListItem> getActivityTypes()
+        {
+            List<SelectListItem> types = new List<SelectListItem>();
+
+            types.Add(new SelectListItem()
+            {
+                Text = "",
+                Value = ""
+            });
+
+            foreach (var activityType in db.ActivityTypes)
+            {
+                types.Add(new SelectListItem()
+                {
+                    Text = activityType.ActivityType1,
+                    Value = activityType.ActivityTypeID + ""
+
+                });
+
+            }
+
+            return types;
+        }
+
+       
     }
 }

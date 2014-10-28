@@ -12,45 +12,38 @@
 </style>
 
 @using (Html.BeginForm("BuscarUsuarios", "Home", FormMethod.Post)) {
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
         <div class="editor-label">
             @Html.LabelFor(model => model.user.User.UserTypeID, "Tipo de Usuario")
         </div>
         <div class="editor-field">
             @Html.DropDownListFor(model => model.user.User.UserTypeID, Model.types)
-            @Html.ValidationMessageFor(model => model.user.User.UserTypeID)
-        </div>
+        </div><br />
        <div class="editor-label">
                 @Html.LabelFor(model => model.user.FirstName, "Nombre")
             </div>
             <div class="editor-field">
                 @Html.EditorFor(model => model.user.FirstName, new { @style = "width: 500px !important;" })
-                @Html.ValidationMessageFor(model => model.user.FirstName)
             </div>
             <div class="editor-label">
                 @Html.LabelFor(model => model.user.LastName, "Apellido")
             </div>
             <div class="editor-field">
                 @Html.EditorFor(model => model.user.LastName, new { @style = "width: 500px !important;" })
-                @Html.ValidationMessageFor(model => model.user.LastName)
             </div>
         <div class="editor-label">
             @Html.LabelFor(model => model.user.Role, "Rol")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.user.Role, new { @style = "width: 500px !important;" })
-            @Html.ValidationMessageFor(model => model.user.Role)
         </div>
         <div class="editor-label">
             @Html.LabelFor(model => model.user.Major, "Concentración")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.user.Major, new { @style = "width: 500px !important;" })
-            @Html.ValidationMessageFor(model => model.user.Major)
         </div>
 
         <p style="text-align:right;">
-            <input type="submit" value="Buscar" />
+            <input type="submit" class="btn" value="Buscar" />
         </p>
 }

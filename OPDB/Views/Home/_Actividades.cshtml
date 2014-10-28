@@ -12,24 +12,18 @@
 
 @using (Html.BeginForm("BuscarActividades", "Home", FormMethod.Post))
 {
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
-
-        @*<div class="editor-label">
-            @Html.LabelFor(model => model.ActivityTypeID, "ActivityType")
+        <div class="editor-label">
+            @Html.LabelFor(model => model.activity.ActivityTypeID, "Tipo de Actividad")
         </div>
         <div class="editor-field">
-            @Html.DropDownList("ActivityTypeID", String.Empty)
-            @Html.ValidationMessageFor(model => model.ActivityTypeID)
-        </div>*@
+            @Html.DropDownListFor(model => model.activity.ActivityTypeID, Model.types)
+        </div><br />
 
-       
-        <div class="editor-label">
+       <div class="editor-label">
             @Html.LabelFor(model => model.activity.Title, "Título")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.activity.Title)
-            @Html.ValidationMessageFor(model => model.activity.Title)
         </div>
 
         <div class="editor-label">
@@ -37,10 +31,9 @@
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.activity.Purpose)
-            @Html.ValidationMessageFor(model => model.activity.Purpose)
         </div>
                     
         <p style="float:right;">
-            <input type="submit" value="Buscar" />
+            <input type="submit" class="btn" value="Buscar" />
         </p>
 }

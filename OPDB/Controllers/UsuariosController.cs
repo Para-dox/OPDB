@@ -72,25 +72,87 @@ namespace OPDB.Controllers
                     userViewModel.user.CreateDate = DateTime.Now;
                     userViewModel.user.UpdateDate = DateTime.Now;
                     userViewModel.user.UserStatus = false;
+                    bool validModel = true;
 
                     if (userViewModel.user.UserTypeID == 3) {
-                        
-                        userViewModel.outreachEntity.CreateDate = DateTime.Now;
-                        userViewModel.outreachEntity.UpdateDate = DateTime.Now;
-                        userViewModel.user.OutreachEntityDetails = new List<OutreachEntityDetail>();
-                        userViewModel.user.OutreachEntityDetails.Add(userViewModel.outreachEntity);
-                        db.Users.Add(userViewModel.user);
+
+                        if (userViewModel.outreachEntity.OutreachEntityName == null)
+                        {
+                            ModelState.AddModelError("OutreachEntityDetail_OutreachEntityName_Required", Resources.WebResources.OutreachEntityDetail_OutreachEntityName_Required);
+                            validModel = false;
+                        }
+
+                        if (userViewModel.outreachEntity.Mission == null)
+                        {
+                            ModelState.AddModelError("OutreachEntityDetail_Mission_Required", Resources.WebResources.OutreachEntityDetail_Mission_Required);
+                            validModel = false;
+                        }
+
+                        if (userViewModel.outreachEntity.Vision == null)
+                        {
+                            ModelState.AddModelError("OutreachEntityDetail_Vision_Required", Resources.WebResources.OutreachEntityDetail_Vision_Required);
+                            validModel = false;
+                        }
+
+                        if (userViewModel.outreachEntity.Objectives == null)
+                        {
+                            ModelState.AddModelError("OutreachEntityDetail_Objectives_Required", Resources.WebResources.OutreachEntityDetail_Objectives_Required);
+                            validModel = false;
+                        }
+
+                        if (validModel) 
+                        { 
+                            userViewModel.outreachEntity.CreateDate = DateTime.Now;
+                            userViewModel.outreachEntity.UpdateDate = DateTime.Now;
+                            userViewModel.user.OutreachEntityDetails = new List<OutreachEntityDetail>();
+                            userViewModel.user.OutreachEntityDetails.Add(userViewModel.outreachEntity);
+                            db.Users.Add(userViewModel.user);
+                        }
+
+                        else
+                        {
+                            userViewModel.userTypes = getTypes();
+                            userViewModel.outreachTypes = getOutreachTypes();
+                            return View(userViewModel);
+                        }
                     }
 
                     else
                     {
-                        
-                        userViewModel.userDetail.CreateDate = DateTime.Now;
-                        userViewModel.userDetail.UpdateDate = DateTime.Now;
-                        userViewModel.user.UserDetails = new List<UserDetail>();
-                        userViewModel.user.UserDetails.Add(userViewModel.userDetail);
-                        db.Users.Add(userViewModel.user);
 
+                        if (userViewModel.userDetail.FirstName == null)
+                        {
+                            ModelState.AddModelError("UserDetail_FirstName_Required", Resources.WebResources.UserDetail_FirstName_Required);
+                            validModel = false;
+                        }
+
+                        if (userViewModel.userDetail.LastName == null)
+                        {
+                            ModelState.AddModelError("UserDetail_LastName_Required", Resources.WebResources.UserDetail_LastName_Required);
+                            validModel = false;
+                        }
+
+                        if (userViewModel.userDetail.Gender == null)
+                        {
+                            ModelState.AddModelError("UserDetail_Gender_Required", Resources.WebResources.UserDetail_Gender_Required);
+                            validModel = false;
+                        }
+
+                        if (validModel) 
+                        { 
+                            userViewModel.userDetail.CreateDate = DateTime.Now;
+                            userViewModel.userDetail.UpdateDate = DateTime.Now;
+                            userViewModel.user.UserDetails = new List<UserDetail>();
+                            userViewModel.user.UserDetails.Add(userViewModel.userDetail);
+                            db.Users.Add(userViewModel.user);
+                        }
+
+                        else
+                        {
+                            userViewModel.userTypes = getTypes();
+                            userViewModel.outreachTypes = getOutreachTypes();
+                            return View(userViewModel);
+                        }
                     }
 
                     db.SaveChanges();
@@ -140,7 +202,7 @@ namespace OPDB.Controllers
                 db.Entry(userViewModel.user).State = EntityState.Modified;
                 db.Entry(userViewModel.userDetail).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Administracion", "Home", null);
             }
             userViewModel.userTypes = getTypes();
             return View(userViewModel);
@@ -337,9 +399,23 @@ namespace OPDB.Controllers
 
         public ActionResult Lista()
         {
-            var users = from u in db.Users.Include(u => u.UserType).Include(u => u.UserDetails) where (u.UserTypeID != 3) && u.DeletionDate == null select u;
-            
-            return View(users.ToList());
+            var users = (from u in db.Users where u.UserTypeID != 3 && u.DeletionDate == null select u).ToList();
+
+            UserViewModel userViewModel = new UserViewModel
+            {
+                Information = new List<UserInfoViewModel>()
+            };
+
+            foreach (var user in users)
+            {
+                userViewModel.Information.Add(new UserInfoViewModel
+                {
+                    User = user,
+                    UserDetail = db.UserDetails.First(ud => ud.UserID == user.UserID)
+                });
+            }
+
+            return View(userViewModel);
 
         }
 
