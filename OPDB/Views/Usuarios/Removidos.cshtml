@@ -69,10 +69,10 @@
     $(document).ready(function () {
 
         $('#removedUsers').DataTable({
-            "sDom": '<"top"lf>t<"bottom"ipr><"clear">',
+            "sDom": '<"top"f>t<"bottom"ipr><"clear">',
             "sPaginationType": "full_numbers",
             "bProcessing": false,
-            "iDisplayLength": 12,
+            "iDisplayLength": 10,
             "aaSorting": [[1, "asc"]],
             "columnDefs": [
                 {
@@ -88,6 +88,7 @@
         });
 
         document.getElementsByTagName("loading")[0].innerHTML = "";
+        $("html").getNiceScroll().resize();
     });
 
 

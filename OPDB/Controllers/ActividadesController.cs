@@ -194,8 +194,7 @@ namespace OPDB.Controllers
 
             var allFeedback = (from feedback in db.Feedbacks where feedback.ActivityID == id && feedback.DeletionDate == null select feedback).ToList();
             var feedbackList = new List<UserInfoViewModel>();
-            var allContacts = (from contact in db.Contacts where contact.ActivityID == id && contact.DeletionDate == null select contact).ToList();
-            var contactList = new List<UserInfoViewModel>();
+            
             var interest = (from i in db.Interests where i.UserID == 1 && i.ActivityID == id select i).ToList();
             bool interested = false;
 
@@ -212,23 +211,13 @@ namespace OPDB.Controllers
                 });
             }
 
-            foreach (var contact in allContacts)
-            {
-                contactList.Add(new UserInfoViewModel
-                {
-                    Contact = contact,
-                    User = db.Users.Find(contact.UserID),
-                    UserDetail = db.UserDetails.First(user => user.UserID == contact.UserID)
-                });
-            }
+            
             
             ActivityViewModel activityViewModel = new ActivityViewModel
             {
                 Activity = foundActivity,
                 ActivityDate = date,
                 Feedbacks = feedbackList,
-                ActivityContacts = contactList,
-                Notes = from note in db.ActivityNotes.Include(note => note.NoteType) where note.ActivityID == id && note.DeletionDate == null select note,
                 Interested = interested,
                 Videos = (from video in db.Media where video.ActivityID == id && video.MediaType == "Video" && video.DeletionDate == null select video).ToList(),
                 Photos = (from photo in db.Media where photo.ActivityID == id && photo.MediaType == "Foto" && photo.DeletionDate == null select photo).ToList()
@@ -328,6 +317,62 @@ namespace OPDB.Controllers
             }
 
             return View(activityViewModel);
+        }
+
+        public ActionResult ContactosyRecursos(int id)
+        {
+            var allContacts = (from contact in db.Contacts where contact.ActivityID == id && contact.DeletionDate == null select contact).ToList();
+            var contactList = new List<UserInfoViewModel>();
+
+            var allResources = (from resource in db.ActivityResources where resource.ActivityID == id && resource.DeletionDate == null select resource).ToList();
+            var resourceList = new List<UserInfoViewModel>();
+
+            foreach (var contact in allContacts)
+            {
+                contactList.Add(new UserInfoViewModel
+                {
+                    Contact = contact,
+                    User = db.Users.Find(contact.UserID),
+                    UserDetail = db.UserDetails.First(user => user.UserID == contact.UserID)
+                });
+            }
+
+            foreach (var resource in allResources)
+            {
+                var tempResource = db.Resources.Find(resource.ResourceID);
+
+                var unit = db.Units.Find(tempResource.UnitID);
+                    
+                resourceList.Add(new UserInfoViewModel
+                {
+                    ActivityResource = resource,
+                    Resource = tempResource,
+                    Unit = unit,
+                    
+                });
+            }
+
+            ActivityViewModel activityViewModel = new ActivityViewModel{
+                Activity = db.Activities.Find(id),
+                ActivityContacts = contactList,
+                ActivityResources = resourceList
+            
+            };
+
+
+            return PartialView("ContactosyRecursos", activityViewModel);
+        }
+
+
+        public ActionResult Notas(int id)
+        {
+            ActivityViewModel activityViewModel = new ActivityViewModel
+            {
+                Activity = db.Activities.Find(id),
+                Notes = from note in db.ActivityNotes.Include(note => note.NoteType) where note.ActivityID == id && note.DeletionDate == null select note
+            };
+
+            return PartialView("Notas", activityViewModel);
         }
 
         // GET: /Actividades/Edit/5

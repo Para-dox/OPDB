@@ -494,6 +494,7 @@
     <Content Include="Scripts\multi-select\chosen.jquery.js" />
     <Content Include="Scripts\multi-select\jquery.multi-select.js" />
     <Content Include="Scripts\myScripts.js" />
+    <Content Include="Scripts\nicescroll\jquery.nicescroll.js" />
     <Content Include="Scripts\timepicker\jquery.timepicker.js" />
     <Content Include="Scripts\timepicker\jquery.timepicker.min.js" />
     <Content Include="Web.config" />
@@ -595,6 +596,8 @@
     <Content Include="Views\Alcance\VerNota.cshtml" />
     <Content Include="Views\Actividades\Upload.cshtml" />
     <Content Include="Views\Actividades\Interes.cshtml" />
+    <Content Include="Views\Actividades\ContactosyRecursos.cshtml" />
+    <Content Include="Views\Actividades\Notas.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

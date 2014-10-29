@@ -1,0 +1,95 @@
+﻿@model OPDB.Models.ActivityViewModel
+
+
+    <div>
+       <h3>Contactos</h3>
+        <table id="activityContacts" style="border:none;">
+            <thead hidden>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    @*<th></th>*@
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var contact in Model.ActivityContacts)
+                {
+                    <tr>
+                        <td>@contact.UserDetail.FirstName @contact.UserDetail.MiddleInitial @contact.UserDetail.LastName</td>
+                        <td>@contact.User.Email</td>
+                        <td>@contact.User.PhoneNumber</td>
+                        @*<td style="width:6% !important;">
+
+                            <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this, 'schoolNotes')" data-url="@Url.Action("RemoverContacto", "Actividades", new { id = contact.Contact.UserID })"></i>
+
+                        </td>*@
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    </div><br />
+   <div> <h3>Recursos Necesarios</h3>
+       <table id="activityResources" style="border:none;">
+           <thead hidden>
+               <tr>
+                   <th></th>
+                   <th></th>
+                   <th></th>
+                   @*<th></th>*@
+               </tr>
+           </thead>
+           <tbody>
+               @foreach (var resource in Model.ActivityResources)
+               {
+                   <tr>
+                       <td>@resource.Resource.Resource1
+                       <td>@resource.Unit.UnitName</td>
+                       <td>@resource.Unit.PhoneNumber</td>
+                       @*<td style="width:6% !important;">
+                        <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this, 'activityResources')" data-url="@Url.Action("RemoverRecurso", "Actividades", new { id = resource.ActivityResource.ResourceID })"></i>
+                        </td>*@
+                   </tr>
+               }
+           </tbody>
+
+       </table>
+</div><br />
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        document.getElementsByTagName("loading")[0].innerHTML = "";
+
+        $('#activityResources').DataTable({
+            "sDom": '<"top">t<"bottom"pr><"clear">',
+            "sPaginationType": "full_numbers",
+            "bProcessing": false,
+            "iDisplayLength": 3,
+            "aaSorting": [[1, "asc"]],
+            "oLanguage": {
+                "sEmptyTable": "No se necesitan recursos",
+                "sZeroRecords": "No se ha encontrado ningún registro",
+                "sSearch": "Buscar:"
+            }
+        });
+
+        $('#activityContacts').DataTable({
+            "sDom": '<"top">t<"bottom"pr><"clear">',
+            "sPaginationType": "full_numbers",
+            "bProcessing": false,
+            "iDisplayLength": 3,
+            "aaSorting": [[1, "asc"]],
+            "oLanguage": {
+                "sEmptyTable": "No existen contactos.",
+                "sZeroRecords": "No se ha encontrado ningún registro",
+                "sSearch": "Buscar:"
+            }
+        });
+
+    });
+
+</script>

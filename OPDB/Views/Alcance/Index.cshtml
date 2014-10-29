@@ -83,10 +83,10 @@
     $(document).ready(function () {
 
         $('#outreach').DataTable({
-            "sDom": '<"top"lf>t<"bottom"ipr><"clear">',
+            "sDom": '<"top"f>t<"bottom"ipr><"clear">',
             "sPaginationType": "full_numbers",
             "bProcessing": false,
-            "iDisplayLength": 12,
+            "iDisplayLength": 10,
             "aaSorting": [[1, "asc"]],
             "columnDefs": [
                 {
@@ -94,7 +94,12 @@
                     "targets": 4
                 }
 
-            ]
+            ],
+            "oLanguage": {
+                "sEmptyTable": "No se ha creado ninguna entidad de alcance",
+                "sZeroRecords": "No se ha encontrado ningún registro",
+                "sSearch": "Buscar:"
+            }
         });
 
         document.getElementsByTagName("loading")[0].innerHTML = "";

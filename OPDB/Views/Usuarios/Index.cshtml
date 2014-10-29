@@ -68,7 +68,7 @@
 </table>
 <br />
 
-    <input type="button" class="btn" value="Nuevo Usuario" onclick="location.href='@Url.Action("Crear", "Usuarios")'" /><input type="button" value="Usuarios Removidos" class="btn" onclick="location.href='@Url.Action("Removidos", "Usuarios")'" /><br />
+    <input type="button" class="btn" value="Nuevo Usuario" onclick="location.href='@Url.Action("Crear", "Usuarios")'" />
 
 
 <script src="~/Scripts/myScripts.js"></script>
@@ -76,10 +76,10 @@
     $(document).ready(function () {
 
         $('#users').DataTable({
-            "sDom": '<"top"lf>t<"bottom"ipr><"clear">',
+            "sDom": '<"top"f>t<"bottom"ipr><"clear">',
             "sPaginationType": "full_numbers",
             "bProcessing": false,
-            "iDisplayLength": 12,
+            "iDisplayLength": 10,
             "aaSorting": [[1, "asc"]],
             "columnDefs": [
                 {
@@ -94,6 +94,7 @@
                 "sSearch": "Buscar:" }
         });
         document.getElementsByTagName("loading")[0].innerHTML = "";
+        $("html").getNiceScroll().resize();
     });
 
 

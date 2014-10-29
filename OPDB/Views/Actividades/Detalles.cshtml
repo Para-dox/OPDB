@@ -31,8 +31,6 @@
     .last, .first, .previous, .next {
         display: none !important;
     }
-     .panel.callout a:not(.button) {
-      color: #222222; }
 
     /*playlist css*/
 
@@ -68,7 +66,21 @@
             min-height: 150px;
             width: 200px;
         }
+
+    a span i:hover{
+       color: #008cba;
+    }
+
+     .link:hover{
+          color: #008cba !important;
+      }
+
+      .fa-remove:hover{
+          color: #008cba !important;
+      }
 </style>
+
+
 
     <h2 style="text-align:center;">@Model.Activity.Title</h2>
 <div class="panel">
@@ -112,105 +124,29 @@
             </div>
             <br />
         }
-        @if (Model.Interested != true) { 
-        <a onclick="showInterest(this)" data-url="@Url.Action("Interes", "Actividades", new { id = Model.Activity.ActivityID })" title="Mostrar Interes" class="btn"><i class="fa fa-thumbs-up"></i> Me Interesa</a>   
-        }
-    </div>
-
-    <div class="large-7 columns">
-        <div>
-            <h3>Contactos</h3>
-            <table id="activityContacts">
-                <thead hidden>
-                    <tr>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var contact in Model.ActivityContacts)
-                    {
-                        <tr>
-                            <td>@contact.UserDetail.FirstName @contact.UserDetail.MiddleInitial @contact.UserDetail.LastName</td>
-                            <td>@contact.User.Email</td>
-                            <td>@contact.User.PhoneNumber</td>
-                            <td style="width:6% !important;">
-
-                                <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this, 'schoolNotes')" data-url="@Url.Action("RemoverContacto", "Actividades", new { id = contact.Contact.UserID })"></i>
-
-                            </td>
-                    </tr>
-                    }
-                </tbody>
-
-            </table>
-        </div><br />
-        @*<div>
-            <h3>Recursos</h3>
-            <table id="activityResources">
-                <thead hidden>
-                    <tr>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var contact in Model)
-                    {
-                        <tr>
-                            <td>@contact.UserDetail.FirstName @contact.UserDetail.MiddleInitial @contact.UserDetail.LastName</td>
-                            <td>@contact.User.Email</td>
-                            <td>@contact.User.PhoneNumber</td>
-                            <td>
-                                <a href="#" title="Editar" data-title="Editar Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarNota", "Actividades", new { id = note.ActivityNoteID })" class="modal_ajax_btn"><i class="fa fa-pencil"></i></a>
-                                <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this, 'schoolNotes')" data-url="@Url.Action("RemoverNota", "Actividades", new { id = note.ActivityNoteID })"></i>
-
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-
-            </table>
-        </div>*@
-    </div>
-
-    @*<div class="large-7 columns">
-        <h3>Notas</h3>
-        <table id="activityNotes">
-            <thead>
-                <tr>
-                    <th>Tipo</th>
-                    <th style="width:70%;">Nota</th>
-                    <th style="width:10%;"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var note in Model.Notes)
-                {
-                    <tr>
-                        <td>@note.NoteType.NoteType1</td>
-                        <td><a href="#" title="Ver Nota" data-validation="false" data-title="Detalles" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("VerNota", "Actividades", new { id = note.ActivityNoteID })" class="modal_ajax_btn">@String.Concat(note.Note.Substring(0, note.Note.Length > 100 ? 100 : note.Note.Length), "...")</a></td>
-                        <td>
-                            <a href="#" title="Editar" data-title="Editar Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarNota", "Actividades", new { id = note.ActivityNoteID })" class="modal_ajax_btn"><i class="fa fa-pencil"></i></a> 
-                            <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this, 'schoolNotes')" data-url="@Url.Action("RemoverNota", "Actividades", new { id = note.ActivityNoteID })"></i>
-
-                        </td>
-                    </tr>
-                }
-            </tbody>
-
-        </table><br />
         
-    </div>*@
+        @if (Model.Interested != true)
+        { <a title="Me Interesa" onclick="showInterest(this)" data-url="@Url.Action("Interes", "Actividades", new { id = Model.Activity.ActivityID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-thumbs-up fa-stack-1x fa-inverse"></i></span></a>}
+        <a title="Editar Actividad" href="@Url.Action("Editar", "Actividades", new { id = Model.Activity.ActivityID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-pencil fa-stack-1x fa-inverse"></i></span></a>
+        <a title="Regresar" onclick="window.history.back()"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-arrow-left fa-stack-1x fa-inverse"></i></span></a>
+        <a href="#" title="Añadir Multimedia" class="modal_ajax_btn" data-title="Añadir Multimedia" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("MediaUpload", "Actividades", new { id = Model.Activity.ActivityID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-file-video-o fa-stack-1x fa-inverse"></i></span></a>
+        <a title="Ver Notas" id="verNotas" onclick="loadRightDetailsView(this)" data-url="@Url.Action("Notas", "Actividades", new { id = Model.Activity.ActivityID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-file fa-stack-1x fa-inverse"></i></span></a>
+        <a title="Ver Contactos y Recursos" id="verContactos" onclick="loadRightDetailsView(this)" data-url="@Url.Action("ContactosyRecursos", "Actividades", new { id = Model.Activity.ActivityID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-user fa-stack-1x fa-inverse"></i></span></a>
+        
+     </div>
 
-</div>
-<div><input type="button" class="btn" value="Editar" onclick="location.href='@Url.Action("Editar", "Actividades", new { id = Model.Activity.ActivityID })'"/><input type="button" class="btn" value="Regresar" onclick="window.history.back()" /><a href="#" title="Añadir Nota" class="modal_ajax_btn" data-title="Nueva Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Actividades", new { id = Model.Activity.ActivityID })"><input type="button" class="btn" value="Añadir Nota" /></a><a href="#" title="Añadir Multimedia" class="modal_ajax_btn" data-title="Añadir Multimedia" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("MediaUpload", "Actividades", new { id = Model.Activity.ActivityID })"><input type="button" class="btn" value="Añadir Multimedia" /></a>
-    
+    <div  class="large-7 columns">
+        <loading></loading>
+            <div id="detailsRight">
+
+            </div>
+        
     </div>
+    
+</div>
+@*<div><input type="button" class="btn" value="Editar" onclick="location.href='@Url.Action("Editar", "Actividades", new { id = Model.Activity.ActivityID })'"/><input type="button" class="btn" value="Regresar" onclick="window.history.back()" /><a href="#" title="Añadir Multimedia" class="modal_ajax_btn" data-title="Añadir Multimedia" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("MediaUpload", "Actividades", new { id = Model.Activity.ActivityID })"><input type="button" class="btn" value="Añadir Multimedia" /></a>
+    <input type="button" id="verNotas" class="btn" value="Notas" onclick="loadRightDetailsView(this)" data-url="@Url.Action("Notas", "Actividades", new { id = Model.Activity.ActivityID })"/> <input type="button" id="verContactos" class="btn" value="Contactos Y Recursos" onclick="loadRightDetailsView(this)" data-url="@Url.Action("ContactosyRecursos", "Actividades", new { id = Model.Activity.ActivityID })" />
+    </div>*@
 <br />
 
 @if (Model.Videos.Count != 0 || Model.Photos.Count != 0)
@@ -261,7 +197,7 @@
                 <td style="float:left;">@feedback.Feedback.Feedback1 - @feedback.UserDetail.FirstName @if (feedback.UserDetail.MiddleInitial != null)
                                                                                                 { @feedback.UserDetail.MiddleInitial } @feedback.UserDetail.LastName</td>
                 <td style="width:6%;">
-                    <a href="#" title="Editar" data-title="Editar Comentario" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarComentario", "Actividades", new { id = feedback.Feedback.FeedbackID })" class="modal_ajax_btn"><i class="fa fa-pencil"></i></a>
+                    <a href="#" title="Editar" data-title="Editar Comentario" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarComentario", "Actividades", new { id = feedback.Feedback.FeedbackID })" class="modal_ajax_btn link"><i class="fa fa-pencil"></i></a>
                     <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this, 'activityFeedback')" data-url="@Url.Action("RemoverComentario", "Actividades", new { id = feedback.Feedback.FeedbackID })"></i>
                 </td>
             </tr>
@@ -275,26 +211,7 @@
 <script src="~/Scripts/myScripts.js"></script>
 <script>
     $(document).ready(function () {
-        $('#activityNotes').DataTable({
-            "sDom": '<"top"f>t<"bottom"pr><"clear">',
-            "sPaginationType": "full_numbers",
-            "bProcessing": false,
-            "iDisplayLength": 5,
-            "aaSorting": [[1, "asc"]],
-            "columnDefs": [
-                {
-                    "orderable": false,
-                    "targets": 2
-                }
-            ],
-            "oLanguage": {
-                "sEmptyTable": "No se ha dejado ninguna nota",
-                "sZeroRecords": "No se ha encontrado ningún registro",
-                "sSearch": "Buscar:"
-            }
-        });
-
-        $('#activityFeedback').DataTable({
+          $('#activityFeedback').DataTable({
             "sDom": '<"top">t<"bottom"pr><"clear">',
             "sPaginationType": "full_numbers",
             "bProcessing": false,
@@ -334,6 +251,8 @@
         })
 
         $(document).foundation('clearing', 'reflow');
+
+        loadRightDetailsView("<a id='verContactos' data-url='@Url.Action("ContactosyRecursos", "Actividades", new { id = Model.Activity.ActivityID })'></a>");
 
     });
 </script>

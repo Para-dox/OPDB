@@ -72,10 +72,10 @@
     $(document).ready(function () {
 
         $('#units').DataTable({
-            "sDom": '<"top"lf>t<"bottom"ipr><"clear">',
+            "sDom": '<"top"f>t<"bottom"ipr><"clear">',
             "sPaginationType": "full_numbers",
             "bProcessing": false,
-            "iDisplayLength": 12,
+            "iDisplayLength": 10,
             "columnDefs": [
                 {
                     "orderable": false,
@@ -85,9 +85,15 @@
                      "searchable": false,
                      "targets": [1, 2]
                  }
-            ]
+            ],
+            "oLanguage": {
+                "sEmptyTable": "No se ha creado ninguna unidad",
+                "sZeroRecords": "No se ha encontrado ningún registro",
+                "sSearch": "Buscar:"
+            }
         });
 
         document.getElementsByTagName("loading")[0].innerHTML = "";
+        $("html").getNiceScroll().resize();
     });
 </script>

@@ -1,0 +1,55 @@
+﻿@model OPDB.Models.ActivityViewModel
+
+
+<h3>Notas</h3>
+<table id="activityNotes">
+    <thead>
+        <tr>
+            <th>Tipo</th>
+            <th style="width:70%;">Nota</th>
+            <th style="width:10%;"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var note in Model.Notes)
+        {
+            <tr>
+                <td>@note.NoteType.NoteType1</td>
+                <td><a href="#" title="Ver Nota" data-validation="false" data-title="Detalles" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("VerNota", "Actividades", new { id = note.ActivityNoteID })" class="modal_ajax_btn link">@String.Concat(note.Note.Substring(0, note.Note.Length > 100 ? 100 : note.Note.Length), "...")</a></td>
+                <td>
+                    <a href="#" title="Editar" data-title="Editar Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarNota", "Actividades", new { id = note.ActivityNoteID })" class="modal_ajax_btn link"><i class="fa fa-pencil"></i></a>
+                    <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this, 'schoolNotes')" data-url="@Url.Action("RemoverNota", "Actividades", new { id = note.ActivityNoteID })"></i>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table><br />
+<a href="#" title="Añadir Nota" class="modal_ajax_btn" data-title="Nueva Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Actividades", new { id = Model.Activity.ActivityID })"><input type="button" class="btn" value="Añadir Nota" /></a>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        document.getElementsByTagName("loading")[0].innerHTML = "";
+
+        $('#activityNotes').DataTable({
+            "sDom": '<"top"f>t<"bottom"pr><"clear">',
+            "sPaginationType": "full_numbers",
+            "bProcessing": false,
+            "iDisplayLength": 5,
+            "aaSorting": [[1, "asc"]],
+            "columnDefs": [
+                {
+                    "orderable": false,
+                    "targets": 2
+                }
+            ],
+            "oLanguage": {
+                "sEmptyTable": "No se ha dejado ninguna nota",
+                "sZeroRecords": "No se ha encontrado ningún registro",
+                "sSearch": "Buscar:"
+            }
+        });
+    });
+
+</script>

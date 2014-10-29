@@ -100,11 +100,12 @@ function modalClose() {
 }
 
 function loadAdminView(e) {
-    document.getElementsByTagName("loading")[0].innerHTML = "<div style='text-align: center; width: 100%; height: 100%; position: fixed; top: 45px; left: 0; background-color: #efeeef;'><i class='fa fa-spinner fa-spin' style='font-size: 10em; color: gray; margin-top: 20%;'></i></div>";
+    document.getElementById('managementTables').innerHTML = "";
+    document.getElementsByTagName("loading")[0].innerHTML = "<div style='text-align: center; width: 100%; height: 100%;'><i class='fa fa-spinner fa-spin' style='font-size: 10em; color: gray; margin-top: 5%;'></i></div>";
     var url = $(e).attr('data-url');
     var id = $(e).attr('id');
-    var urlIDs = ["outreachURL", "activitiesURL", "schoolsURL", "resourcesURL", "unitsURL", "usersURL", "removedOutreachURL", "removedSchoolsURL", "removedUnitsURL", "removedUsersURL"];
-    var liIDs = ["outreachAdmin", "activitiesAdmin", "schoolsAdmin", "resourcesAdmin", "unitsAdmin", "usersAdmin", "removed", "removed", "removed", "removed"];
+    var urlIDs = ["outreachURL", "activitiesURL", "schoolsURL", "resourcesURL", "unitsURL", "usersURL", "removedOutreachURL", "removedSchoolsURL", "removedUsersURL"];
+    var liIDs = ["outreachAdmin", "activitiesAdmin", "schoolsAdmin", "resourcesAdmin", "unitsAdmin", "usersAdmin", "removed", "removed", "removed"];
     
     for (var i = 0; i < urlIDs.length; i++) {
 
@@ -118,6 +119,7 @@ function loadAdminView(e) {
     }
 
     $('#managementTables').load(url);
+    
 }
 
 function showInterest(e) {
@@ -125,5 +127,24 @@ function showInterest(e) {
     $.post(url);
     sleep(1000);
     window.location.reload();
+
+}
+
+function loadRightDetailsView(e) {
+    document.getElementById('detailsRight').innerHTML = "";
+    document.getElementsByTagName("loading")[0].innerHTML = "<div style='text-align: center; width: 100%; height: 100%;'><i class='fa fa-spinner fa-spin' style='font-size: 10em; color: gray; margin-top: 5%;'></i></div>";
+    var url = $(e).attr('data-url');
+    var id = $(e).attr('id');
+
+    if (id == "verNotas") {
+        $('#verNotas').attr("hidden", true);
+        $('#verContactos').attr("hidden", false);
+    }
+    else {
+        $('#verContactos').attr("hidden", true);
+        $('#verNotas').attr("hidden", false);
+    }
+
+    $('#detailsRight').load(url);
 
 }
