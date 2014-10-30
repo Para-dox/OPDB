@@ -15,9 +15,9 @@
         {
             <tr>
                 <td>@note.NoteType.NoteType1</td>
-                <td><a href="#" title="Ver Nota" data-validation="false" data-title="Detalles" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("VerNota", "Actividades", new { id = note.ActivityNoteID })" class="modal_ajax_btn link">@String.Concat(note.Note.Substring(0, note.Note.Length > 100 ? 100 : note.Note.Length), "...")</a></td>
+                <td><a href="#" title="Ver Nota" style="color:#222222;" data-validation="false" data-title="Detalles" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("VerNota", "Actividades", new { id = note.ActivityNoteID })" class="modal_ajax_btn link">@String.Concat(note.Note.Substring(0, note.Note.Length > 100 ? 100 : note.Note.Length), "...")</a></td>
                 <td>
-                    <a href="#" title="Editar" data-title="Editar Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarNota", "Actividades", new { id = note.ActivityNoteID })" class="modal_ajax_btn link"><i class="fa fa-pencil"></i></a>
+                    <a href="#" style="color:#222222;" title="Editar" data-title="Editar Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarNota", "Actividades", new { id = note.ActivityNoteID })" class="modal_ajax_btn link"><i class="fa fa-pencil"></i></a>
                     <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this, 'schoolNotes')" data-url="@Url.Action("RemoverNota", "Actividades", new { id = note.ActivityNoteID })"></i>
 
                 </td>
