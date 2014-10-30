@@ -156,9 +156,6 @@
 
         @if (Model.Videos.Count != 0)
         {
-            <div class="large-9 columns">
-                <iframe width="560" id="videoarea" height="315" src="//www.youtube.com/embed/" frameborder="0" allowfullscreen></iframe>
-            </div>
             <div class="large-3 columns">
                 <h5>Lista de Reproducción</h5>
                 <ul id="playlist">
@@ -167,6 +164,9 @@
                         <li data-url="@video.MediaPath">@video.MediaTitle</li>
                     }
                 </ul>
+            </div>
+            <div id="mediaFrame" class="large-9 columns">
+                <iframe width="560" id="videoarea" height="315" src="//www.youtube.com/embed/" frameborder="0" allowfullscreen></iframe>
             </div>
         }
         @if (Model.Photos.Count != 0)
@@ -222,33 +222,23 @@
             }
         });
 
-        $(function () {
-            $("#playlist li").on("click", function () {
-                debugger;
-                var currentUrl = $("#videoarea").attr("src");
-                var dataUrl = $(this).attr("data-url");
-                var index = 0;
-                var length = 0;
+          $(function () {
+              $("#playlist li").on("click", function () {
+                  var currentUrl = $("#videoarea").attr("src");
+                  var dataUrl = $(this).attr("data-url");
+                  var newUrl = "";
 
-                if (dataUrl.indexOf("watch?v=") != -1)
-                {
-                    index = dataUrl.lastIndexOf("watch?v=");
-                    length = "watch?v=".length;
-                }
-                else if (dataUrl.search("youtu.be/") != -1)
-                {
-                    index = dataUrl.lastIndexOf("youtu.be/");
-                    length = "youtu.be/".length;
-                }                    
-                 
-                var lastIndex = $(this).attr("data-url").length-1;
-                var newUrl = $(this).attr("data-url").substr(index+length, lastIndex);
-                currentUrl = currentUrl.substr(0, 24);
-                $("#videoarea").attr({
-                    "src": currentUrl + newUrl
-                })
-            })
-        })
+                  var regExp = /^.*(youtu.be\/|v\/|e\/|u\/\w+\/|embed\/|v=)([^#\&\?]*).*/;
+                  var match = dataUrl.match(regExp);
+                  if (match && match[2].length == 11)
+                      newUrl = match[2];
+
+                  currentUrl = currentUrl.substr(0, 24);
+                  $("#videoarea").attr({
+                      "src": currentUrl + newUrl
+                  });
+              });
+          });
 
         $(document).foundation('clearing', 'reflow');
 

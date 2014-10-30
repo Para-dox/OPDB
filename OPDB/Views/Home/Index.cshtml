@@ -34,14 +34,15 @@
             { <span>Fecha: </span><r>@item.Activity.ActivityDate.Value.ToString("dd/MM/yyyy")</r><br />}
             @if (item.Activity.ActivityTime != null && item.Activity.ActivityTime != "")
             { <span>Hora: </span><r>@item.Activity.ActivityTime</r><br />}
-        @if (item.Interested != true)
-        {
-            <a style="float:right;" class="btn btn-sm" onclick="showInterest(this)" data-url="@Url.Action("Interes", "Actividades", new { id = item.Activity.ActivityID })" title="Mostrar Interes"><i class="fa fa-thumbs-up"></i> Me Interesa</a>
-        }
-        else
-        {
-            <i style="float:right; font-size:0.875rem;">Te interesa esta actividad.</i>
-        }
+    @if (item.Interested != true)
+    {
+        <a style="float:right;" class="btn btn-sm" onclick="showInterest(this)" data-url="@Url.Action("Interes", "Actividades", new { id = item.Activity.ActivityID })" title="Mostrar Interes"><i class="fa fa-thumbs-up"></i> Me Interesa</a>
+    }
+    else
+    {
+        <i style="float:right; font-size:0.875rem;">Te interesa esta actividad.</i>
+    }
+
     </div>
 
 
@@ -53,10 +54,7 @@
     $(document).ready(function () {
 
         $(".activity").niceScroll();
-
-        //$("#activityDiv").niceScroll("#activity", { cursorcolor: "#000" });
-        //sleep(1500);
-        //$("#activityDiv").getNiceScroll().resize();
+               
 
     });
 </script>
