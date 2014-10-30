@@ -24,8 +24,8 @@
 @foreach (var item in Model.Information)
 {
 
-    <div class="large-6 columns panel" style="height:230px;">
-        <div class="activity" style="height:160px; overflow:hidden;">
+    <div class="large-6 columns panel" style="height:250px;">
+        <div class="activity" style="height:175px; overflow:hidden;" title="Desplace hacia abajo para más información">
             <h4>@Html.ActionLink(item.Activity.Title, "Detalles", "Actividades", new { id = item.Activity.ActivityID }, null)</h4>
             <span>Propósito: </span><r>@String.Concat(item.Activity.Purpose.Substring(0, item.Activity.Purpose.Length > 100 ? 100 : item.Activity.Purpose.Length), "")</r><br />
             <span>Tipo: </span><r>@item.Activity.ActivityType.ActivityType1</r><br />

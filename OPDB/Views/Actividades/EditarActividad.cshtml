@@ -103,7 +103,7 @@
                 @Html.ListBoxFor(model => model.ResourceIDs, Model.Resources, new { @style = "width: 500px !important;", @multiple = "multiple", @class = "chosen-select", @data_placeholder = "Buscar..." })
             </div><br />
             <p>
-                <input type="submit" class="btn" value="Guardar" /><input type="button" class="btn" value="Regresar" onclick="location.href='@Url.Action("Index","Actividades", null)'" />
+                <input type="submit" class="btn" style="float:left !important; width:40% !important; margin-left: 30px !important;" value="Guardar" /> <input type="button" value="Cancelar" class="btn" style="float:right !important; width:40% !important; margin-bottom: 20px !important; margin-right: 30px !important;" onclick="window.history.back()" />
             </p>
         </fieldset>
     </center>
