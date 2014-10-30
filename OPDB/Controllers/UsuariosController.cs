@@ -232,6 +232,26 @@ namespace OPDB.Controllers
             return RedirectToAction("Administracion", "Home", null);
         }
 
+        [HttpPost]
+        public ActionResult Restaurar(int id = 0)
+        {
+            User user = db.Users.Find(id);
+            UserDetail userDetail = db.UserDetails.FirstOrDefault(i => i.UserID == id);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+            else
+            {
+                user.DeletionDate = null;
+                userDetail.DeletionDate = null;
+                db.Entry(user).State = EntityState.Modified;
+                db.Entry(userDetail).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            return RedirectToAction("Administracion", "Home", null);
+        }
+
         public ActionResult RemoverNota(int id)
         {
             var note = db.UserNotes.Find(id);
