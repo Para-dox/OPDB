@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using OPDB.Models;
 using System.Data.Entity.Validation;
 using System.Diagnostics;
@@ -446,6 +447,73 @@ namespace OPDB.Controllers
             return str;
         }
 
+        public ActionResult IniciarSesion()
+        {
+            return View();
+        }
+
+        public ActionResult IniciarSesion(UserViewModel userViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                if (LoginValid(userViewModel.user.Email, userViewModel.user.UserPassword))
+                {
+                    FormsAuthentication.SetAuthCookie(userViewModel.user.Email, false);
+                    return RedirectToAction("Index","Home");
+                }
+                else
+                {
+                    // TODO: needs a validation message here
+                    ModelState.AddModelError("", "Invalid Login");
+                }
+            }
+
+            return View();
+        }
+
+        public ActionResult Registrar()
+        {
+            return View();
+        }
+
+        public ActionResult Registrar(UserViewModel userViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                // TODO: create here new user
+
+                // add the pass, email, etc., and store it in the DB
+
+                // db.SaveChanges etc...
+
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                // TODO: add validation messages here
+                ModelState.AddModelError("", "Registration Info is not valid");
+            }
+
+            return View();
+        }
+
+        private bool LoginValid(string email, string password)
+        {
+            bool isValid = false;
+            User user = db.Users.FirstOrDefault(u => u.Email == email);
+
+            // TODO: passwords have no encryption at all - fix later with SimpleCrypto NuGet Package
+
+            if (user != null)
+            {
+                if (user.UserPassword.ToString().Equals(password))
+                {
+                    isValid = true;
+                }
+            }
+
+            return isValid;
+        }
         public ActionResult EditarUsuario(int id)
         {
             var user = db.Users.Find(id);
@@ -461,5 +529,9 @@ namespace OPDB.Controllers
         }
 
        
+        public ActionResult CerrarSesion()
+        {
+            return View();
+        }
     }
 }
