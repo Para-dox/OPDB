@@ -514,20 +514,7 @@ namespace OPDB.Controllers
 
             return isValid;
         }
-        public ActionResult EditarUsuario(int id)
-        {
-            var user = db.Users.Find(id);
-
-            UserViewModel userViewModel = new UserViewModel
-            {
-                user = user,
-                userDetail = db.UserDetails.First(u => u.UserID == id),
-                userTypes = getUserTypes()
-            };
-
-            return View(userViewModel);
-        }
-
+        
        
         public ActionResult CerrarSesion()
         {
