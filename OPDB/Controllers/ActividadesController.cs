@@ -194,8 +194,7 @@ namespace OPDB.Controllers
 
             var allFeedback = (from feedback in db.Feedbacks where feedback.ActivityID == id && feedback.DeletionDate == null select feedback).ToList();
             var feedbackList = new List<UserInfoViewModel>();
-            var allContacts = (from contact in db.Contacts where contact.ActivityID == id && contact.DeletionDate == null select contact).ToList();
-            var contactList = new List<UserInfoViewModel>();
+            
             var interest = (from i in db.Interests where i.UserID == 1 && i.ActivityID == id select i).ToList();
             bool interested = false;
 
@@ -212,23 +211,13 @@ namespace OPDB.Controllers
                 });
             }
 
-            foreach (var contact in allContacts)
-            {
-                contactList.Add(new UserInfoViewModel
-                {
-                    Contact = contact,
-                    User = db.Users.Find(contact.UserID),
-                    UserDetail = db.UserDetails.First(user => user.UserID == contact.UserID)
-                });
-            }
+            
             
             ActivityViewModel activityViewModel = new ActivityViewModel
             {
                 Activity = foundActivity,
                 ActivityDate = date,
                 Feedbacks = feedbackList,
-                ActivityContacts = contactList,
-                Notes = from note in db.ActivityNotes.Include(note => note.NoteType) where note.ActivityID == id && note.DeletionDate == null select note,
                 Interested = interested,
                 Videos = (from video in db.Media where video.ActivityID == id && video.MediaType == "Video" && video.DeletionDate == null select video).ToList(),
                 Photos = (from photo in db.Media where photo.ActivityID == id && photo.MediaType == "Foto" && photo.DeletionDate == null select photo).ToList()
@@ -330,6 +319,62 @@ namespace OPDB.Controllers
             return View(activityViewModel);
         }
 
+        public ActionResult ContactosyRecursos(int id)
+        {
+            var allContacts = (from contact in db.Contacts where contact.ActivityID == id && contact.DeletionDate == null select contact).ToList();
+            var contactList = new List<UserInfoViewModel>();
+
+            var allResources = (from resource in db.ActivityResources where resource.ActivityID == id && resource.DeletionDate == null select resource).ToList();
+            var resourceList = new List<UserInfoViewModel>();
+
+            foreach (var contact in allContacts)
+            {
+                contactList.Add(new UserInfoViewModel
+                {
+                    Contact = contact,
+                    User = db.Users.Find(contact.UserID),
+                    UserDetail = db.UserDetails.First(user => user.UserID == contact.UserID)
+                });
+            }
+
+            foreach (var resource in allResources)
+            {
+                var tempResource = db.Resources.Find(resource.ResourceID);
+
+                var unit = db.Units.Find(tempResource.UnitID);
+                    
+                resourceList.Add(new UserInfoViewModel
+                {
+                    ActivityResource = resource,
+                    Resource = tempResource,
+                    Unit = unit,
+                    
+                });
+            }
+
+            ActivityViewModel activityViewModel = new ActivityViewModel{
+                Activity = db.Activities.Find(id),
+                ActivityContacts = contactList,
+                ActivityResources = resourceList
+            
+            };
+
+
+            return PartialView("ContactosyRecursos", activityViewModel);
+        }
+
+
+        public ActionResult Notas(int id)
+        {
+            ActivityViewModel activityViewModel = new ActivityViewModel
+            {
+                Activity = db.Activities.Find(id),
+                Notes = from note in db.ActivityNotes.Include(note => note.NoteType) where note.ActivityID == id && note.DeletionDate == null select note
+            };
+
+            return PartialView("Notas", activityViewModel);
+        }
+
         // GET: /Actividades/Edit/5
 
         public ActionResult Editar(int id = 0)
@@ -380,60 +425,74 @@ namespace OPDB.Controllers
                 activityViewModel.Activity.UpdateUser = 9;
                 activityViewModel.Activity.UpdateDate = DateTime.Now;
 
+                ///Contacts///
+                
+                ///Check if ID list is null, because if it is BOOM!
                 if (activityViewModel.ContactIDs != null) 
                 { 
+                    //Now check if it contains anything.
                     if (activityViewModel.ContactIDs.Count > 0)
                     {
-                        var contacts = (from contact in db.Contacts where contact.ActivityID == activityViewModel.Activity.ActivityID && contact.DeletionDate == null select contact).ToList();
+                        //Retrieve any pre-existing contacts.
+                        var contacts = (from contact in db.Contacts where contact.ActivityID == activityViewModel.Activity.ActivityID select contact).ToList();
 
+                        //Verify if any pre-existing contacts exist.
                         if (contacts.Count > 0) 
                         { 
                             foreach (var contact in contacts)
                             {
-                                if (!activityViewModel.ContactIDs.Contains(contact.UserID)) 
+                                //If there are existing contacts, verify if these contacts are contained in the new id list.
+                                if (contact.DeletionDate == null && !activityViewModel.ContactIDs.Contains(contact.UserID)) 
                                 { 
+                                    //If not delete them.
                                     contact.DeletionDate = DateTime.Now;
                                     db.Entry(contact).State = EntityState.Modified;
                                 }
-                            }
-                        }
-
-                        var removedContacts = (from contact in db.Contacts where contact.ActivityID == activityViewModel.Activity.ActivityID && contact.DeletionDate != null select contact).ToList();
-
-                        if (removedContacts.Count > 0)
-                        {
-                            foreach (var contact in removedContacts)
-                            {
-                                if (activityViewModel.ContactIDs.Contains(contact.UserID))
+                                //Else if they have been removed but are included in the ID list restore them.
+                                else if (contact.DeletionDate != null && activityViewModel.ContactIDs.Contains(contact.UserID))
                                 {
                                     contact.DeletionDate = null;
                                     db.Entry(contact).State = EntityState.Modified;
+
                                 }
                             }
                         }
-
+                                                
+                        //Now to take care of any new contacts.
                         foreach (var id in activityViewModel.ContactIDs)
                         {
-                            var contact = db.Contacts.First(user => user.UserID == id);
+                            //Retrieve all existing contacts, those with deletion date and without that match the id in the list.
+                            var contactList = (from cont in db.Contacts where cont.ActivityID == activityViewModel.Activity.ActivityID && cont.UserID == id select cont).ToList();
 
+                            Contact contact = null;
+
+                            //Is the list empty?
+                            if (contactList.Count > 0)
+                                contact = contactList.First();
+
+                            //If so that means it's new so we must add it.
                             if (contact == null)
                             {
                                 Contact ActivityContact = new Contact
                                 {
                                     UserID = id,
+                                    ActivityID = activityViewModel.Activity.ActivityID,
                                     CreateUser = 9,
                                     CreateDate = DateTime.Now,
                                     UpdateUser = 9,
                                     UpdateDate = DateTime.Now
                                 };
 
-                                activityViewModel.Activity.Contacts.Add(ActivityContact);
+                                //Since the activity already exists, we just add the new contact to the Contacts DB table.
+                                db.Contacts.Add(ActivityContact);
                             }                    
                         }
                     }
                 }
                 else
                 {
+                    //If none of the above things happen, verify if there are any existing contacts and remove them, 
+                    //because all contacts may have been removed.
                     var contacts = (from contact in db.Contacts where contact.ActivityID == activityViewModel.Activity.ActivityID && contact.DeletionDate == null select contact).ToList();
 
                     if (contacts.Count > 0)
@@ -446,16 +505,97 @@ namespace OPDB.Controllers
                     }
                 }
 
+                ////Resources////
+                
+                //Check if the ID list is null, because if so BOOM!
+                if (activityViewModel.ResourceIDs != null)
+                {
+                    //Now, is it empty?
+                    if (activityViewModel.ResourceIDs.Count > 0)
+                    {
+                        //Retrieve all existing resources that match this activity ID.
+                        var resources = (from resource in db.ActivityResources where resource.ActivityID == activityViewModel.Activity.ActivityID select resource).ToList();
+
+                        //Are there any matches?
+                        if (resources.Count > 0)
+                        {
+                            foreach (var resource in resources)
+                            {
+                                //If they are not contained in the current list, remove them.
+                                if (resource.DeletionDate == null && !activityViewModel.ResourceIDs.Contains(resource.ResourceID))
+                                {
+                                    resource.DeletionDate = DateTime.Now;
+                                    db.Entry(resource).State = EntityState.Modified;
+                                }
+                                //If they have been removed but are now restored.
+                                else if(resource.DeletionDate != null && activityViewModel.ResourceIDs.Contains(resource.ResourceID))
+                                {
+                                    //Then restore them in the DB as well.
+                                    resource.DeletionDate = null;
+                                    db.Entry(resource).State = EntityState.Modified;
+                                }
+                            }
+                        }
+
+                        
+                        //Now for all the remaining resource IDs
+                        foreach (var id in activityViewModel.ResourceIDs)
+                        {
+                            //Verify if a resource already exists with this ID.
+                            var resourceList = (from activityResource in db.ActivityResources where activityResource.ActivityID == activityViewModel.Activity.ActivityID && activityResource.ResourceID == id select activityResource).ToList();
+
+                            ActivityResource resource = null;
+
+                            if (resourceList.Count > 0)
+                                resource = resourceList.First();
+
+                            //If it's new, then add it.
+                            if (resource == null)
+                            {
+                                ActivityResource ActivityResource = new ActivityResource
+                                {
+                                    ResourceID = id,
+                                    ActivityID = activityViewModel.Activity.ActivityID,
+                                    ResourceStatus = false,
+                                    CreateUser = 9,
+                                    CreateDate = DateTime.Now,
+                                    UpdateUser = 9,
+                                    UpdateDate = DateTime.Now
+                                };
+
+                                //This activity already exists so we just add this resource to the ActivityResource DB table.
+                                db.ActivityResources.Add(ActivityResource);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    //Check if any resources exist, and if they do, they may have been removed.
+                    var resources = (from resource in db.ActivityResources where resource.ActivityID == activityViewModel.Activity.ActivityID && resource.DeletionDate == null select resource).ToList();
+
+                    if (resources.Count > 0)
+                    {
+                        foreach (var resource in resources)
+                        {
+                            //So remove them all.
+                            resource.DeletionDate = DateTime.Now;
+                            db.Entry(resource).State = EntityState.Modified;
+                        }
+                    }
+                }
 
                 db.Entry(activityViewModel.Activity).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");               
+
+                var outreachEntity = db.OutreachEntityDetails.First(outreach => outreach.UserID == activityViewModel.Activity.UserID);
+                
+                return RedirectToAction("Detalles", "Alcance", new { id = outreachEntity.OutreachEntityDetailID });               
 
             }
 
             activityViewModel.ActivityTypes = getActivityTypes();
             activityViewModel.SchoolList = getSchools();
-
             return View(activityViewModel);
         }
 
@@ -885,6 +1025,24 @@ namespace OPDB.Controllers
 
            }
 
+        [HttpPost]
+           public ActionResult Aprobar(int id)
+           {
+               var resource = db.ActivityResources.Find(id);
+
+               resource.ResourceStatus = true;
+               resource.UpdateDate = DateTime.Now;
+
+               //Change after login
+               resource.UpdateUser = 9;
+
+               db.Entry(resource).State = EntityState.Modified;
+               db.SaveChanges();
+
+               return RedirectToAction("Detalles", "Actividades", new { id = resource.ActivityID });
+
+           }
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// Admin activity creation methods.
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -897,7 +1055,9 @@ namespace OPDB.Controllers
                SchoolList = getSchools(),
                OutreachEntities = getOutreachEntities(),
                Contacts = getContacts(),
-               ContactIDs = new List<int>()
+               ContactIDs = new List<int>(),
+               Resources = getResources(),
+               ResourceIDs = new List<int>()
            };
 
          
@@ -998,10 +1158,174 @@ namespace OPDB.Controllers
            if (ModelState.IsValid)
            {
                //TODO acquire current user
-               activityViewModel.Activity.ActivityDate = DateTime.ParseExact(activityViewModel.ActivityDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-               activityViewModel.Activity.ActivityTime = activityViewModel.Activity.ActivityTime.Replace(" ", "");
+               if (activityViewModel.ActivityDate != "" && activityViewModel.ActivityDate != null)
+                   activityViewModel.Activity.ActivityDate = DateTime.ParseExact(activityViewModel.ActivityDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+
+               if (activityViewModel.Activity.ActivityTime != "" && activityViewModel.Activity.ActivityTime != null)
+                   activityViewModel.Activity.ActivityTime = activityViewModel.Activity.ActivityTime.Replace(" ", "");
+
                activityViewModel.Activity.UpdateUser = 3;
                activityViewModel.Activity.UpdateDate = DateTime.Now;
+
+               ///Contacts///
+
+               ///Check if ID list is null, because if it is BOOM!
+               if (activityViewModel.ContactIDs != null)
+               {
+                   //Now check if it contains anything.
+                   if (activityViewModel.ContactIDs.Count > 0)
+                   {
+                       //Retrieve any pre-existing contacts.
+                       var contacts = (from contact in db.Contacts where contact.ActivityID == activityViewModel.Activity.ActivityID select contact).ToList();
+
+                       //Verify if any pre-existing contacts exist.
+                       if (contacts.Count > 0)
+                       {
+                           foreach (var contact in contacts)
+                           {
+                               //If there are existing contacts, verify if these contacts are contained in the new id list.
+                               if (contact.DeletionDate == null && !activityViewModel.ContactIDs.Contains(contact.UserID))
+                               {
+                                   //If not delete them.
+                                   contact.DeletionDate = DateTime.Now;
+                                   db.Entry(contact).State = EntityState.Modified;
+                               }
+                               //Else if they have been removed but are included in the ID list restore them.
+                               else if (contact.DeletionDate != null && activityViewModel.ContactIDs.Contains(contact.UserID))
+                               {
+                                   contact.DeletionDate = null;
+                                   db.Entry(contact).State = EntityState.Modified;
+
+                               }
+                           }
+                       }
+
+                       //Now to take care of any new contacts.
+                       foreach (var id in activityViewModel.ContactIDs)
+                       {
+                           //Retrieve all existing contacts, those with deletion date and without that match the id in the list.
+                           var contactList = (from cont in db.Contacts where cont.ActivityID == activityViewModel.Activity.ActivityID && cont.UserID == id select cont).ToList();
+
+                           Contact contact = null;
+
+                           //Is the list empty?
+                           if (contactList.Count > 0)
+                               contact = contactList.First();
+
+                           //If so that means it's new so we must add it.
+                           if (contact == null)
+                           {
+                               Contact ActivityContact = new Contact
+                               {
+                                   UserID = id,
+                                   ActivityID = activityViewModel.Activity.ActivityID,
+                                   CreateUser = 9,
+                                   CreateDate = DateTime.Now,
+                                   UpdateUser = 9,
+                                   UpdateDate = DateTime.Now
+                               };
+
+                               //Since the activity already exists, we just add the new contact to the Contacts DB table.
+                               db.Contacts.Add(ActivityContact);
+                           }
+                       }
+                   }
+               }
+               else
+               {
+                   //If none of the above things happen, verify if there are any existing contacts and remove them, 
+                   //because all contacts may have been removed.
+                   var contacts = (from contact in db.Contacts where contact.ActivityID == activityViewModel.Activity.ActivityID && contact.DeletionDate == null select contact).ToList();
+
+                   if (contacts.Count > 0)
+                   {
+                       foreach (var contact in contacts)
+                       {
+                           contact.DeletionDate = DateTime.Now;
+                           db.Entry(contact).State = EntityState.Modified;
+                       }
+                   }
+               }
+
+               ////Resources////
+
+               //Check if the ID list is null, because if so BOOM!
+               if (activityViewModel.ResourceIDs != null)
+               {
+                   //Now, is it empty?
+                   if (activityViewModel.ResourceIDs.Count > 0)
+                   {
+                       //Retrieve all existing resources that match this activity ID.
+                       var resources = (from resource in db.ActivityResources where resource.ActivityID == activityViewModel.Activity.ActivityID select resource).ToList();
+
+                       //Are there any matches?
+                       if (resources.Count > 0)
+                       {
+                           foreach (var resource in resources)
+                           {
+                               //If they are not contained in the current list, remove them.
+                               if (resource.DeletionDate == null && !activityViewModel.ResourceIDs.Contains(resource.ResourceID))
+                               {
+                                   resource.DeletionDate = DateTime.Now;
+                                   db.Entry(resource).State = EntityState.Modified;
+                               }
+                               //If they have been removed but are now restored.
+                               else if (resource.DeletionDate != null && activityViewModel.ResourceIDs.Contains(resource.ResourceID))
+                               {
+                                   //Then restore them in the DB as well.
+                                   resource.DeletionDate = null;
+                                   db.Entry(resource).State = EntityState.Modified;
+                               }
+                           }
+                       }
+
+
+                       //Now for all the remaining resource IDs
+                       foreach (var id in activityViewModel.ResourceIDs)
+                       {
+                           //Verify if a resource already exists with this ID.
+                           var resourceList = (from activityResource in db.ActivityResources where activityResource.ActivityID == activityViewModel.Activity.ActivityID && activityResource.ResourceID == id select activityResource).ToList();
+
+                           ActivityResource resource = null;
+
+                           if (resourceList.Count > 0)
+                               resource = resourceList.First();
+
+                           //If it's new, then add it.
+                           if (resource == null)
+                           {
+                               ActivityResource ActivityResource = new ActivityResource
+                               {
+                                   ResourceID = id,
+                                   ActivityID = activityViewModel.Activity.ActivityID,
+                                   CreateUser = 9,
+                                   CreateDate = DateTime.Now,
+                                   UpdateUser = 9,
+                                   UpdateDate = DateTime.Now
+                               };
+
+                               //This activity already exists so we just add this resource to the ActivityResource DB table.
+                               db.ActivityResources.Add(ActivityResource);
+                           }
+                       }
+                   }
+               }
+               else
+               {
+                   //Check if any resources exist, and if they do, they may have been removed.
+                   var resources = (from resource in db.ActivityResources where resource.ActivityID == activityViewModel.Activity.ActivityID && resource.DeletionDate == null select resource).ToList();
+
+                   if (resources.Count > 0)
+                   {
+                       foreach (var resource in resources)
+                       {
+                           //So remove them all.
+                           resource.DeletionDate = DateTime.Now;
+                           db.Entry(resource).State = EntityState.Modified;
+                       }
+                   }
+               }
+
                db.Entry(activityViewModel.Activity).State = EntityState.Modified;
                db.SaveChanges();
                return RedirectToAction("Index");

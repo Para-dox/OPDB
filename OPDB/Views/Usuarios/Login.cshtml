@@ -20,7 +20,6 @@
                 <legend>Formulario de Inicio</legend>
                 <ol>
                     <li>
-                        @*<p style="float:left;">Correo Electrónico</p>*@
                         @Html.LabelFor(m => m.Email, new { @style = "float:left;"})
                         @Html.TextBoxFor(m => m.Email)
                         @Html.ValidationMessageFor(m => m.Email)

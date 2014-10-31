@@ -1,0 +1,118 @@
+﻿@model OPDB.Models.ActivityViewModel
+
+
+    <div>
+       <h3>Contactos</h3>
+        <table id="activityContacts" style="border:none;">
+            <thead hidden>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var contact in Model.ActivityContacts)
+                {
+                    <tr>
+                        <td>@contact.UserDetail.FirstName @contact.UserDetail.MiddleInitial @contact.UserDetail.LastName</td>
+                        <td>@contact.User.Email</td>
+                        <td>@contact.User.PhoneNumber</td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    </div><br />
+   <div> <h3>Recursos Necesarios</h3>
+       <table id="activityResources" style="border:none;">
+           <thead hidden>
+               <tr>
+                   <th></th>
+                   <th></th>
+                   <th></th>
+               </tr>
+           </thead>
+           <tbody>
+               @foreach (var resource in Model.ActivityResources)
+               {
+                   <tr>
+                       <td><a data-dropdown="hover-@resource.ActivityResource.ActivityResourceID" data-options="is_hover:true">@resource.Resource.Resource1</a></td>
+                       <td>
+                           <div id="hover-@resource.ActivityResource.ActivityResourceID" class="small content f-dropdown" data-dropdown-content>
+                               <p style="text-align:left !important; font-size: 0.77778rem !important;">Unidad: @resource.Unit.UnitName<br />
+                               Edificio: @resource.Unit.Building<br />
+                               Oficina: @resource.Unit.RoomNumber<br />
+                               Extensión: @resource.Unit.Extension</p>
+                           </div>
+                       </td>
+                       <td>
+                       @if (resource.ActivityResource.ResourceStatus == false)
+                       {
+                        <a title="Pendiente" id="activity-@resource.ActivityResource.ActivityResourceID" style="background-color:#222222 !important;" class="btn btn-sm" onclick="approve(this)" data-url="@Url.Action("Aprobar", "Actividades", new { id = resource.ActivityResource.ActivityResourceID })"><i class="fa fa-question"></i> Pendiente</a>
+                       }
+                       else
+                       {
+                        <a title="Aprobado" style="background-color:#222222 !important; color:white; cursor:default;" class="btn-sm"><i class="fa fa-check"></i> Aprobado</a>
+                       }
+                       </td>
+                                             
+                       
+                       
+                   </tr>
+                    
+               }
+               
+           </tbody>
+
+       </table>
+</div><br />
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        document.getElementsByTagName("loading")[0].innerHTML = "";
+
+        $('#activityResources').DataTable({
+            "sDom": '<"top">t<"bottom"pr><"clear">',
+            "sPaginationType": "full_numbers",
+            "bProcessing": false,
+            "iDisplayLength": 3,
+            "aaSorting": [[0, "asc"]],
+            "oLanguage": {
+                "sEmptyTable": "No se necesitan recursos",
+                "sZeroRecords": "No se ha encontrado ningún registro",
+                "sSearch": "Buscar:"
+            }
+        });
+
+        $('#activityContacts').DataTable({
+            "sDom": '<"top">t<"bottom"pr><"clear">',
+            "sPaginationType": "full_numbers",
+            "bProcessing": false,
+            "iDisplayLength": 3,
+            "aaSorting": [[0, "asc"]],
+            "oLanguage": {
+                "sEmptyTable": "No existen contactos.",
+                "sZeroRecords": "No se ha encontrado ningún registro",
+                "sSearch": "Buscar:"
+            }
+        });
+
+        $(document).foundation('dropdown', 'reflow');
+        
+
+    });
+
+    function approve(e) {
+        var url = $(e).attr('data-url');
+
+        $.post(url);
+        sleep(1000);
+
+        window.location.reload();
+    }
+
+</script>

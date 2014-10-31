@@ -1,34 +1,41 @@
 ﻿@{
     ViewBag.Title = "Administracion";
 }
-  
-        <nav class="top-bar" data-topbar role="navigation">
-            <section class="top-bar-section">
-                    <ul>
-                        <li id="outreachAdmin"><a id="outreachURL" onclick="loadAdminView(this)" data-url="@Url.Action("Index", "Alcance")">Alcance</a></li>
-                        <li id="activitiesAdmin"><a id="activitiesURL" onclick="loadAdminView(this)" data-url="@Url.Action("Index", "Actividades")">Actividades</a></li>
-                        <li id="schoolsAdmin"><a id="schoolsURL" onclick="loadAdminView(this)" data-url="@Url.Action("Index", "Escuelas")">Escuelas</a></li>
-                        <li id="resourcesAdmin"><a id="resourcesURL" onclick="loadAdminView(this)" data-url="@Url.Action("Index", "Recursos")">Recursos</a></li>
-                        <li id="unitsAdmin"><a id="unitsURL" onclick="loadAdminView(this)" data-url="@Url.Action("Index", "Unidades")">Unidades</a></li>
-                        <li id="usersAdmin"><a id="usersURL" onclick="loadAdminView(this)" data-url="@Url.Action("Index", "Usuarios")">Usuarios</a></li>
-                        <li id="removed" class="has-dropdown not-click">
-                            <a href="#">Removidos</a>
-                            <ul class="dropdown">
-                                <li><a id="removedOutreachURL" onclick="loadAdminView(this)" data-url="@Url.Action("Removidos", "Alcance")">Alcance</a></li>
-                                <li><a id="removedSchoolsURL" onclick="loadAdminView(this)" data-url="@Url.Action("Removidos", "Escuelas")">Escuelas</a></li>
-                                <li><a id="removedUnitsURL" onclick="loadAdminView(this)" data-url="@Url.Action("Removidos", "Unidades")">Unidades</a></li>
-                                <li><a id="removedUsersURL" onclick="loadAdminView(this)" data-url="@Url.Action("Removidos", "Usuarios")">Usuarios</a></li>
+    <nav class="top-bar" data-topbar role="navigation">
+        <section class="top-bar-section">
+            <ul>
+                <li id="outreachAdmin"><a id="outreachURL" onclick="loadAdminView(this)" data-url="@Url.Action("Index", "Alcance")">Alcance</a></li>
+                <li id="activitiesAdmin"><a id="activitiesURL" onclick="loadAdminView(this)" data-url="@Url.Action("Index", "Actividades")">Actividades</a></li>
+                <li id="schoolsAdmin"><a id="schoolsURL" onclick="loadAdminView(this)" data-url="@Url.Action("Index", "Escuelas")">Escuelas</a></li>
+                <li id="resourcesAdmin"><a id="resourcesURL" onclick="loadAdminView(this)" data-url="@Url.Action("Index", "Recursos")">Recursos</a></li>
+                <li id="unitsAdmin"><a id="unitsURL" onclick="loadAdminView(this)" data-url="@Url.Action("Index", "Unidades")">Unidades</a></li>
+                <li id="usersAdmin"><a id="usersURL" onclick="loadAdminView(this)" data-url="@Url.Action("Index", "Usuarios")">Usuarios</a></li>
+                <li id="removed" class="has-dropdown not-click">
+                    <a href="#">Removidos</a>
+                    <ul class="dropdown">
+                        <li><a id="removedOutreachURL" onclick="loadAdminView(this)" data-url="@Url.Action("Removidos", "Alcance")">Alcance</a></li>
+                        <li><a id="removedSchoolsURL" onclick="loadAdminView(this)" data-url="@Url.Action("Removidos", "Escuelas")">Escuelas</a></li>                        
+                        <li><a id="removedUsersURL" onclick="loadAdminView(this)" data-url="@Url.Action("Removidos", "Usuarios")">Usuarios</a></li>
 
-                            </ul>
-                        </li>
-                        
                     </ul>
-            </section>
-        </nav>  <br />
+                </li>
 
-       <div id="managementTables" style="height:310px;">
+            </ul>
+        </section>
+    </nav>  <br />
 
-       </div>
-
+    <div>
         <loading></loading>
+        <div id="managementTables">
+
+        </div>
+    </div>
+
 <script src="~/Scripts/myScripts.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        loadAdminView("<a id='activitiesURL' data-url='@Url.Action("Index", "Actividades")'></a>");
+    });
+
+
+</script>

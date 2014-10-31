@@ -12,23 +12,18 @@
 
 @using (Html.BeginForm("BuscarAlcance", "Home", FormMethod.Post))
 {
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
-
         <div class="editor-label">
             @Html.LabelFor(model => model.outreachEntity.OutreachEntityTypeID, "Tipo de Entidad")
         </div>
         <div class="editor-field">
             @Html.DropDownListFor(model => model.outreachEntity.OutreachEntityTypeID, Model.types)
-            @Html.ValidationMessageFor(model => model.outreachEntity.OutreachEntityTypeID)
-        </div>
+        </div><br />
 
         <div class="editor-label">
             @Html.LabelFor(model => model.outreachEntity.OutreachEntityName, "Nombre")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.outreachEntity.OutreachEntityName)
-            @Html.ValidationMessageFor(model => model.outreachEntity.OutreachEntityName)
         </div>
 
         <div class="editor-label">
@@ -36,7 +31,6 @@
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.outreachEntity.Mission)
-            @Html.ValidationMessageFor(model => model.outreachEntity.Mission)
         </div>
 
         <div class="editor-label">
@@ -44,7 +38,6 @@
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.outreachEntity.Vision)
-            @Html.ValidationMessageFor(model => model.outreachEntity.Vision)
         </div>
 
         <div class="editor-label">
@@ -52,9 +45,14 @@
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.outreachEntity.Objectives)
-            @Html.ValidationMessageFor(model => model.outreachEntity.Objectives)
         </div>
         <p style="float:right;">
-            <input type="submit" value="Buscar" />
+            <input type="submit" class="btn" value="Buscar" />
         </p>
 }
+
+<script>
+    $(document).ready(function () {
+        $("html").getNiceScroll().resize();
+    });
+</script>

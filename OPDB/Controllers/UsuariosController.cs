@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using OPDB.Models;
 using System.Data.Entity.Validation;
 using System.Diagnostics;
@@ -72,35 +73,98 @@ namespace OPDB.Controllers
                     userViewModel.user.CreateDate = DateTime.Now;
                     userViewModel.user.UpdateDate = DateTime.Now;
                     userViewModel.user.UserStatus = false;
+                    bool validModel = true;
 
                     if (userViewModel.user.UserTypeID == 3) {
-                        
-                        userViewModel.outreachEntity.CreateDate = DateTime.Now;
-                        userViewModel.outreachEntity.UpdateDate = DateTime.Now;
-                        userViewModel.user.OutreachEntityDetails = new List<OutreachEntityDetail>();
-                        userViewModel.user.OutreachEntityDetails.Add(userViewModel.outreachEntity);
-                        db.Users.Add(userViewModel.user);
+
+                        if (userViewModel.outreachEntity.OutreachEntityName == null)
+                        {
+                            ModelState.AddModelError("OutreachEntityDetail_OutreachEntityName_Required", Resources.WebResources.OutreachEntityDetail_OutreachEntityName_Required);
+                            validModel = false;
+                        }
+
+                        if (userViewModel.outreachEntity.Mission == null)
+                        {
+                            ModelState.AddModelError("OutreachEntityDetail_Mission_Required", Resources.WebResources.OutreachEntityDetail_Mission_Required);
+                            validModel = false;
+                        }
+
+                        if (userViewModel.outreachEntity.Vision == null)
+                        {
+                            ModelState.AddModelError("OutreachEntityDetail_Vision_Required", Resources.WebResources.OutreachEntityDetail_Vision_Required);
+                            validModel = false;
+                        }
+
+                        if (userViewModel.outreachEntity.Objectives == null)
+                        {
+                            ModelState.AddModelError("OutreachEntityDetail_Objectives_Required", Resources.WebResources.OutreachEntityDetail_Objectives_Required);
+                            validModel = false;
+                        }
+
+                        if (validModel) 
+                        { 
+                            userViewModel.outreachEntity.CreateDate = DateTime.Now;
+                            userViewModel.outreachEntity.UpdateDate = DateTime.Now;
+                            userViewModel.user.OutreachEntityDetails = new List<OutreachEntityDetail>();
+                            userViewModel.user.OutreachEntityDetails.Add(userViewModel.outreachEntity);
+                            db.Users.Add(userViewModel.user);
+                        }
+
+                        else
+                        {
+                            userViewModel.userTypes = getTypes();
+                            userViewModel.outreachTypes = getOutreachTypes();
+                            return View(userViewModel);
+                        }
                     }
 
                     else
                     {
-                        
-                        userViewModel.userDetail.CreateDate = DateTime.Now;
-                        userViewModel.userDetail.UpdateDate = DateTime.Now;
-                        userViewModel.user.UserDetails = new List<UserDetail>();
-                        userViewModel.user.UserDetails.Add(userViewModel.userDetail);
-                        db.Users.Add(userViewModel.user);
 
+                        if (userViewModel.userDetail.FirstName == null)
+                        {
+                            ModelState.AddModelError("UserDetail_FirstName_Required", Resources.WebResources.UserDetail_FirstName_Required);
+                            validModel = false;
+                        }
+
+                        if (userViewModel.userDetail.LastName == null)
+                        {
+                            ModelState.AddModelError("UserDetail_LastName_Required", Resources.WebResources.UserDetail_LastName_Required);
+                            validModel = false;
+                        }
+
+                        if (userViewModel.userDetail.Gender == null)
+                        {
+                            ModelState.AddModelError("UserDetail_Gender_Required", Resources.WebResources.UserDetail_Gender_Required);
+                            validModel = false;
+                        }
+
+                        if (validModel) 
+                        { 
+                            userViewModel.userDetail.CreateDate = DateTime.Now;
+                            userViewModel.userDetail.UpdateDate = DateTime.Now;
+                            userViewModel.user.UserDetails = new List<UserDetail>();
+                            userViewModel.user.UserDetails.Add(userViewModel.userDetail);
+                            db.Users.Add(userViewModel.user);
+                        }
+
+                        else
+                        {
+                            userViewModel.userTypes = getTypes();
+                            userViewModel.outreachTypes = getOutreachTypes();
+                            return View(userViewModel);
+                        }
                     }
 
                     db.SaveChanges();
 
-                    return RedirectToAction("Administracion", "Home", null);
+                    return RedirectToAction("Index", "Home", null); // changed to redirect to Index instead of Administracion, for now
                     
             }
 
             userViewModel.userTypes = getTypes();
             userViewModel.outreachTypes = getOutreachTypes();
+
             return View(userViewModel);
         }
 
@@ -140,7 +204,7 @@ namespace OPDB.Controllers
                 db.Entry(userViewModel.user).State = EntityState.Modified;
                 db.Entry(userViewModel.userDetail).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Administracion", "Home", null);
             }
             userViewModel.userTypes = getTypes();
             return View(userViewModel);
@@ -162,6 +226,26 @@ namespace OPDB.Controllers
             {
                 user.DeletionDate = DateTime.Now;
                 userDetail.DeletionDate = DateTime.Now;
+                db.Entry(user).State = EntityState.Modified;
+                db.Entry(userDetail).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            return RedirectToAction("Administracion", "Home", null);
+        }
+
+        [HttpPost]
+        public ActionResult Restaurar(int id = 0)
+        {
+            User user = db.Users.Find(id);
+            UserDetail userDetail = db.UserDetails.FirstOrDefault(i => i.UserID == id);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+            else
+            {
+                user.DeletionDate = null;
+                userDetail.DeletionDate = null;
                 db.Entry(user).State = EntityState.Modified;
                 db.Entry(userDetail).State = EntityState.Modified;
                 db.SaveChanges();
@@ -337,9 +421,23 @@ namespace OPDB.Controllers
 
         public ActionResult Lista()
         {
-            var users = from u in db.Users.Include(u => u.UserType).Include(u => u.UserDetails) where (u.UserTypeID != 3) && u.DeletionDate == null select u;
-            
-            return View(users.ToList());
+            var users = (from u in db.Users where u.UserTypeID != 3 && u.DeletionDate == null select u).ToList();
+
+            UserViewModel userViewModel = new UserViewModel
+            {
+                Information = new List<UserInfoViewModel>()
+            };
+
+            foreach (var user in users)
+            {
+                userViewModel.Information.Add(new UserInfoViewModel
+                {
+                    User = user,
+                    UserDetail = db.UserDetails.First(ud => ud.UserID == user.UserID)
+                });
+            }
+
+            return View(userViewModel);
 
         }
 
@@ -370,6 +468,81 @@ namespace OPDB.Controllers
             return str;
         }
 
+        public ActionResult IniciarSesion()
+        {
+            return View("Login");
+        }
+
+        [HttpPost]
+        public ActionResult IniciarSesion(LoginModel login)
+        {
+            if (ModelState.IsValid)
+            {
+                if (LoginValid(login.Email, login.Password))
+                {
+                    FormsAuthentication.SetAuthCookie(login.Email, false);
+                    return RedirectToAction("Index","Home");
+                }
+                else
+                {
+                    // TODO: needs a validation message here
+                    ModelState.AddModelError("", "Invalid Login");
+                }
+            }
+
+            return View("Login");
+        }
+
+        public ActionResult Registrar() // use Crear() instead
+        {
+            return View();
+        }
+
+        public ActionResult Registrar(UserViewModel userViewModel) // use Crear(View) instead
+        {
+            if (ModelState.IsValid)
+            {
+                // TODO: create here new user
+
+                // add the pass, email, etc., and store it in the DB
+
+                // db.SaveChanges etc...
+
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                // TODO: add validation messages here
+                ModelState.AddModelError("", "Registration Info is not valid");
+            }
+
+            return View();
+        }
+
+        private bool LoginValid(string email, string password)
+        {
+            bool isValid = false;
+            User user = db.Users.FirstOrDefault(u => u.Email == email);
+
+            // TODO: passwords have no encryption at all - fix later with SimpleCrypto NuGet Package
+
+            if (user != null)
+            {
+                if (user.UserPassword.ToString().Equals(password))
+                {
+                    isValid = true;
+                }
+            }
+
+            return isValid;
+        }
+        
        
+        public ActionResult CerrarSesion()
+        {
+            FormsAuthentication.SignOut();
+
+            return RedirectToAction("Index", "Home");
+        }
     }
 }

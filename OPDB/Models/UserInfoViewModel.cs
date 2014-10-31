@@ -14,6 +14,7 @@ namespace OPDB.Models
         public Unit Unit { get; set; }
         public User User { get; set; }
         public Contact Contact { get; set; }
+        public ActivityResource ActivityResource { get; set; }
 
         public bool Interested { get; set; }
 

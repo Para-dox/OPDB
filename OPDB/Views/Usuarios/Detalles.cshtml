@@ -30,8 +30,20 @@
         display: none !important;
     }
 
-      .panel.callout a:not(.button) {
-      color: #222222; }
+      /*.panel.callout a:not(.button) {
+      color: #222222; }*/
+
+      a span i:hover{
+           color: #008cba;
+      }
+
+      .link:hover{
+          color: #008cba !important;
+      }
+
+      .fa-remove:hover{
+          color: #008cba !important;
+      }
 </style>
 
 <h2>@Html.DisplayFor(model => model.userDetail.FirstName)&nbsp;@if (Model.userDetail.MiddleInitial != null){@Html.DisplayFor(model => model.userDetail.MiddleInitial)<r>&nbsp;</r>}@Html.DisplayFor(model => model.userDetail.LastName)</h2>
@@ -77,7 +89,10 @@
             </div>
             <br />
         }
-
+        <br />
+        <a title="Editar Usuario" href="@Url.Action("Editar", "Usuarios", new { id = Model.user.UserID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-pencil fa-stack-1x fa-inverse"></i></span></a>
+        <a title="Regresar" onclick="window.history.back()"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-arrow-left fa-stack-1x fa-inverse"></i></span></a>
+        
     </div>
     <div class="large-7 columns">
         <h3>Notas</h3>
@@ -94,9 +109,9 @@
                 {
                     <tr>
                         <td>@note.NoteType.NoteType1</td>
-                        <td><a href="#" title="Ver Nota" data-validation="false" data-title="Detalles" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("VerNota", "Usuarios", new { id = note.UserNoteID })" class="modal_ajax_btn">@String.Concat(note.Note.Substring(0, note.Note.Length > 100 ? 100 : note.Note.Length), "...")</a></td>
+                        <td><a href="#" title="Ver Nota" data-validation="false" style="color:#222222;" data-title="Detalles" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("VerNota", "Usuarios", new { id = note.UserNoteID })" class="modal_ajax_btn link">@String.Concat(note.Note.Substring(0, note.Note.Length > 100 ? 100 : note.Note.Length), "...")</a></td>
                         <td>
-                            <a href="#" title="Editar" data-title="Editar Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarNota", "Usuarios", new { id = note.UserNoteID })" class="modal_ajax_btn"><i class="fa fa-pencil"></i></a> 
+                            <a href="#" title="Editar" style="color:#222222;" data-title="Editar Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarNota", "Usuarios", new { id = note.UserNoteID })" class="modal_ajax_btn link"><i class="fa fa-pencil"></i></a> 
                             <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this, 'userNotes')" data-url="@Url.Action("RemoverNota", "Usuarios", new { id = note.UserNoteID })"></i>
 
                         </td>
@@ -104,18 +119,10 @@
                 }
             </tbody>
 
-        </table>
+        </table><br />
+        <a href="#" title="Añadir Nota" class="modal_ajax_btn" data-title="Nueva Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Usuarios", new { id = Model.user.UserID })"><input type="button" class="btn" value="Añadir Nota" /></a>
     </div>
 </div>
-<div class="large-12 columns">
-    <p>
-        
-        <input type="button" class="btn" value="Editar" onclick="location.href='@Url.Action("Editar", "Usuarios", new { id = Model.user.UserID })'" />
-        <a href="#" title="Añadir Nota" class="modal_ajax_btn" data-title="Nueva Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Usuarios", new { id = Model.user.UserID })"><input type="button" class="btn" value="Añadir Nota" /></a>
-        <input type="button" class="btn" value="Volver" onclick="window.history.back()">
-    </p>
-</div>
-
 
 <script src="~/Scripts/myScripts.js"></script>
 <script>

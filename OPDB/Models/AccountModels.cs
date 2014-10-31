@@ -57,7 +57,7 @@ namespace OPDB.Models
 
     public class LoginModel
     {
-        [Required]
+        //[Required] removed this, because at login the user is not identified yet
         [Display(Name = "User name")]
         public string UserName { get; set; }
 

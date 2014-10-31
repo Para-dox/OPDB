@@ -156,6 +156,9 @@
   <data name="School_PhoneNumber_Required" xml:space="preserve">
     <value>No ha ingresado un número telefónico para esta escuela</value>
   </data>
+  <data name="School_SchoolName_Required" xml:space="preserve">
+    <value>No ha ingresado el nombre de la escuela</value>
+  </data>
   <data name="School_SchoolSequenceNumber_Required" xml:space="preserve">
     <value>No ha ingresado el numero de identificación para esta escuela</value>
   </data>

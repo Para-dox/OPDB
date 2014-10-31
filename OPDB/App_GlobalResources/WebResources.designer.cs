@@ -178,6 +178,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No ha ingresado el nombre de la escuela.
+        /// </summary>
+        internal static string School_SchoolName_Required {
+            get {
+                return ResourceManager.GetString("School_SchoolName_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No ha ingresado el numero de identificación para esta escuela.
         /// </summary>
         internal static string School_SchoolSequenceNumber_Required {

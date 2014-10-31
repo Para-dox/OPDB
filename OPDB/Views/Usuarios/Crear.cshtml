@@ -20,12 +20,13 @@
     <center>
         <fieldset style="width:500px;">
             <label>Todos los campos con (*) son requeridos</label><br />
+            @Html.ValidationSummary(true)
             <div class="editor-label">
                 @Html.LabelFor(model => model.user.UserTypeID, "Tipo de Usuario *")
             </div>
             <div class="editor-field">
                 @Html.DropDownListFor(model => model.user.UserTypeID, Model.userTypes, new { @style = "width: 500px !important;", @id = "userType", @onchange = "getValue()" })
-            </div>
+            </div><br />
             <div class="editor-label">
                @Html.LabelFor(model => model.user.Email, "Correo Electrónico *")
             </div>
@@ -33,7 +34,6 @@
                 @Html.ValidationMessageFor(model => model.user.Email, null, new { @style = "float:left !important;" })
                 @Html.EditorFor(model => model.user.Email, new { @style = "width: 500px !important;" })
             </div>
-
                
             <div class="editor-label">
                 @Html.LabelFor(model => model.user.UserPassword, "Contraseña *")
@@ -48,14 +48,14 @@
                     @Html.LabelFor(model => model.userDetail.FirstName, "Nombre *")
                 </div>
                 <div class="editor-field">
-                    @Html.ValidationMessageFor(model => model.userDetail.FirstName, null, new { @style = "float:left !important;" })
+                    @Html.ValidationMessage("UserDetail_FirstName_Required", new { @style = "float:left !important;" })
                     @Html.EditorFor(model => model.userDetail.FirstName, new { @style = "width: 500px !important;" })
                 </div>
                 <div class="editor-label">
                     @Html.LabelFor(model => model.userDetail.LastName, "Apellido *")
                 </div>
                 <div class="editor-field">
-                    @Html.ValidationMessageFor(model => model.userDetail.LastName, null, new { @style = "float:left !important;" })
+                    @Html.ValidationMessage("UserDetail_LastName_Required", new { @style = "float:left !important;" })
                     @Html.EditorFor(model => model.userDetail.LastName, new { @style = "width: 500px !important;" })
                 </div>
                 <div class="editor-label">
@@ -69,7 +69,7 @@
                     @Html.LabelFor(model => model.userDetail.Gender, "Género *")
                 </div>
                 <div class="editor-field" style="text-align:left !important;">
-                    @Html.ValidationMessageFor(model => model.userDetail.Gender, null, new { @style = "float:left !important;" })<br />
+                    @Html.ValidationMessage("UserDetail_Gender_Required", new { @style = "float:left !important;" })<br />
                     @Html.RadioButtonFor(model => model.userDetail.Gender, "M")<label>Masculino</label>&nbsp;&nbsp;@Html.RadioButtonFor(model => model.userDetail.Gender, "F")<label>Femenino</label>
                 </div>
             </div>
@@ -80,26 +80,26 @@
                 </div>
                 <div class="editor-field">
                     @Html.DropDownListFor(model => model.outreachEntity.OutreachEntityTypeID, Model.outreachTypes, new { @style = "width: 500px !important;" })
-                </div>
+                </div><br />
                 <div class="editor-label">                    
                     @Html.LabelFor(model => model.outreachEntity.OutreachEntityName, "Nombre *")
                 </div>
                 <div class="editor-field">
-                    @Html.ValidationMessageFor(model => model.outreachEntity.OutreachEntityName, null, new { @style = "float:left !important;" })
+                    @Html.ValidationMessage("OutreachEntityDetail_OutreachEntityName_Required", new { @style = "float:left !important;" })
                     @Html.EditorFor(model => model.outreachEntity.OutreachEntityName, new { @style = "width: 500px !important;" })
                 </div>
                 <div class="editor-label">
                     @Html.LabelFor(model => model.outreachEntity.Mission, "Misión *")
                 </div>
                 <div class="editor-field">
-                    @Html.ValidationMessageFor(model => model.outreachEntity.Mission, null, new { @style = "float:left !important;" })
+                    @Html.ValidationMessage("OutreachEntityDetail_Mission_Required", new { @style = "float:left !important;" })
                     @Html.TextAreaFor(model => model.outreachEntity.Mission, new { @style = "resize:none; width: 500px !important; height: 100px !important;" })
                 </div>
                 <div class="editor-label">
                     @Html.LabelFor(model => model.outreachEntity.Vision, "Visión *")
                 </div>
                 <div class="editor-field">
-                    @Html.ValidationMessageFor(model => model.outreachEntity.Vision, null, new { @style = "float:left !important;" })
+                    @Html.ValidationMessage("OutreachEntityDetail_Vision_Required", new { @style = "float:left !important;" })
                     @Html.TextAreaFor(model => model.outreachEntity.Vision, new { @style = "resize:none; width: 500px !important; height: 100px !important;" })
                 </div>
 
@@ -107,7 +107,7 @@
                     @Html.LabelFor(model => model.outreachEntity.Objectives, "Objetivos *")
                 </div>
                 <div class="editor-field">
-                    @Html.ValidationMessageFor(model => model.outreachEntity.Objectives, null, new { @style = "float:left !important;" })
+                    @Html.ValidationMessage("OutreachEntityDetail_Objectives_Required", new { @style = "float:left !important;" })
                     @Html.TextAreaFor(model => model.outreachEntity.Objectives, new { @style = "resize:none; width: 500px !important; height: 100px !important;" })
                 </div>
 
@@ -115,7 +115,7 @@
             </div>
 
             <p style="text-align:left;">
-                <input type="submit" class="btn" value="Crear" /> <input type="button" class="btn" value="Cancelar" onclick="window.location='@Url.Action("Index", "Usuarios")'" />
+                <input type="submit" class="btn" style="float:left !important; width:40% !important; margin-left: 30px !important;" value="Crear" /> <input type="button" value="Cancelar" class="btn" style="float:right !important; width:40% !important; margin-bottom: 20px !important; margin-right: 30px !important;" onclick="window.history.back()" />
             </p>
 
 

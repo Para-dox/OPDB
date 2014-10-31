@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="htmlPage">
 
 <head>
     <meta charset="utf-8" />
@@ -33,7 +33,8 @@
 
     
     <script src="~/Scripts/jquery-1.8.2.min.js"></script>
-    <script src="~/Scripts/jquery-ui-1.8.24.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.8.24.min.js"></script>  
+    <script src="~/Scripts/nicescroll/jquery.nicescroll.js"></script>  
     <script src="~/Scripts/modal.js"></script>
     <script src="~/Scripts/modalmanager.js"></script>
     <script src="~/Scripts/ajaxmodal.js"></script>
@@ -93,10 +94,6 @@
                
                 <br /><br /><br />
             </div>
-
-
-       
-
     </header>
 
     <div id="body">
@@ -105,13 +102,13 @@
             @RenderBody()
         </section>
     </div>
-    @*<footer id="foot">
-        <div class="content-wrapper" style="padding-top:10px;">
+    <footer id="foot">
+        <div class="content-wrapper">
             <div>
                 <p style="font-size:0.6em">&copy; @DateTime.Now.Year - Paradox Solutions</p>
             </div>
         </div>
-    </footer>*@
+    </footer>
 
 
     @RenderSection("scripts", required: false)
@@ -131,6 +128,7 @@
 
         $(document).ready(function () {
             $('.busqueda').load("@Url.Action("_Buscar", "Home")");
+            $("html").niceScroll();
         });
 
     </script>
