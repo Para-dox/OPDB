@@ -117,11 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ActivityNote_Note_Invalid" xml:space="preserve">
+    <value>El contenido de la nota es inválido</value>
+  </data>
   <data name="ActivityNote_Note_Required" xml:space="preserve">
     <value>No ha ingresado el contenido de la nota</value>
   </data>
+  <data name="Activity_Purpose_Invalid" xml:space="preserve">
+    <value>El propósito de la actividad es inválido</value>
+  </data>
   <data name="Activity_Purpose_Required" xml:space="preserve">
     <value>No ha ingresado el propósito de esta actividad</value>
+  </data>
+  <data name="Activity_Title_Invalid" xml:space="preserve">
+    <value>El título entrado no es válido</value>
   </data>
   <data name="Activity_Title_Required" xml:space="preserve">
     <value>No ha ingresado el título de esta actividad</value>
@@ -129,23 +138,47 @@
   <data name="Feedback_Feedback_Required" xml:space="preserve">
     <value>No ha ingresado su comentario</value>
   </data>
+  <data name="Media_MediaPath_Invalid" xml:space="preserve">
+    <value>El enlace del documento es inválido</value>
+  </data>
   <data name="Media_MediaPath_Required" xml:space="preserve">
     <value>No ha ingresado el enlace de este medio</value>
+  </data>
+  <data name="Media_MediaTitle_Invalid" xml:space="preserve">
+    <value>El título del documento es inválido</value>
+  </data>
+  <data name="OutreachEntityDetail_Mission_Invalid" xml:space="preserve">
+    <value>El contenido de la misión de la entidad de alcance es inválido</value>
   </data>
   <data name="OutreachEntityDetail_Mission_Required" xml:space="preserve">
     <value>No ha ingresado la misión de la organización</value>
   </data>
+  <data name="OutreachEntityDetail_Objectives_Invalid" xml:space="preserve">
+    <value>El contenido de los objetivos de la entidad de alcance es inválido</value>
+  </data>
   <data name="OutreachEntityDetail_Objectives_Required" xml:space="preserve">
     <value>No ha ingresado los objetivos de la organización</value>
+  </data>
+  <data name="OutreachEntityDetail_OutreachEntityName_Invalid" xml:space="preserve">
+    <value>El nombre de la entidad de alcance es inválido</value>
   </data>
   <data name="OutreachEntityDetail_OutreachEntityName_Required" xml:space="preserve">
     <value>No ha ingresado el nombre de la organización</value>
   </data>
+  <data name="OutreachEntityDetail_Vision_Invalid" xml:space="preserve">
+    <value>El contenido de la visión de la entidad de alcance es inválido</value>
+  </data>
   <data name="OutreachEntityDetail_Vision_Required" xml:space="preserve">
     <value>No ha ingresado la visión de la organización</value>
   </data>
+  <data name="Resource_ResourceName_Invalid" xml:space="preserve">
+    <value>El nombre del recurso es inválido</value>
+  </data>
   <data name="Resource_ResourceName_Required" xml:space="preserve">
     <value>No ha ingresado un nombre para este recurso</value>
+  </data>
+  <data name="SchoolNote_Note_Invalid" xml:space="preserve">
+    <value>El contenido de la nota es inválido</value>
   </data>
   <data name="SchoolNote_Note_Required" xml:space="preserve">
     <value>No ha ingresado el contenido de la nota</value>
@@ -153,11 +186,20 @@
   <data name="School_Address_Required" xml:space="preserve">
     <value>No ha ingresado una dirección para esta escuela</value>
   </data>
+  <data name="School_PhoneNumber_Invalid" xml:space="preserve">
+    <value>El número telefónico de la escuela es inválido</value>
+  </data>
   <data name="School_PhoneNumber_Required" xml:space="preserve">
     <value>No ha ingresado un número telefónico para esta escuela</value>
   </data>
+  <data name="School_SchoolName_Invalid" xml:space="preserve">
+    <value>El nombre de la escuelas es inválido</value>
+  </data>
   <data name="School_SchoolName_Required" xml:space="preserve">
     <value>No ha ingresado el nombre de la escuela</value>
+  </data>
+  <data name="School_SchoolSequenceNumber_Invalid" xml:space="preserve">
+    <value>El número de secuencia de la escuela es inválido</value>
   </data>
   <data name="School_SchoolSequenceNumber_Required" xml:space="preserve">
     <value>No ha ingresado el numero de identificación para esta escuela</value>
@@ -165,20 +207,47 @@
   <data name="School_SchoolSequenceNumber_Unique" xml:space="preserve">
     <value>Ya existe una escuela con ese numéro de identificación</value>
   </data>
+  <data name="Unit_PhoneNumber_Invalid" xml:space="preserve">
+    <value>El número telefónico de la unidad es inválido</value>
+  </data>
+  <data name="Unit_UnitName_Invalid" xml:space="preserve">
+    <value>El nombre de la unidad es inválido</value>
+  </data>
+  <data name="UserDetail_FirstName_Invalid" xml:space="preserve">
+    <value>Su nombre es inválido</value>
+  </data>
   <data name="UserDetail_FirstName_Required" xml:space="preserve">
     <value>No ha ingresado su nombre</value>
   </data>
   <data name="UserDetail_Gender_Required" xml:space="preserve">
     <value>No ha ingresado su género</value>
   </data>
+  <data name="UserDetail_LastName_Invalid" xml:space="preserve">
+    <value>Su apellido es inválido</value>
+  </data>
   <data name="UserDetail_LastName_Required" xml:space="preserve">
     <value>No ha ingresado su apellido</value>
+  </data>
+  <data name="UserDetail_MiddleInitial_Invalid" xml:space="preserve">
+    <value>Su inicial es inválida</value>
+  </data>
+  <data name="UserNote_Note_Invalid" xml:space="preserve">
+    <value>El contenido de la nota es inválido</value>
   </data>
   <data name="UserNote_Note_Required" xml:space="preserve">
     <value>No ha ingresado el contenido de la nota</value>
   </data>
-  <data name="User_UserEmail_Required" xml:space="preserve">
+  <data name="User_Email_Invalid" xml:space="preserve">
+    <value>Su correo electrónico es inválido</value>
+  </data>
+  <data name="User_Email_Required" xml:space="preserve">
     <value>No ha ingresado un correo electrónico</value>
+  </data>
+  <data name="User_PhoneNumber_Invalid" xml:space="preserve">
+    <value>Su número telefónico es inválido</value>
+  </data>
+  <data name="User_UserPassword_Invalid" xml:space="preserve">
+    <value>Su contraseña es inválida. </value>
   </data>
   <data name="User_UserPassword_Required" xml:space="preserve">
     <value>No ha ingresado contraseña</value>

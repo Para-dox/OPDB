@@ -11,6 +11,9 @@ namespace OPDB.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.Data;
+    using System.ComponentModel.DataAnnotations;
+    using System.Runtime.Serialization;
     
     public partial class Unit
     {
@@ -20,10 +23,15 @@ namespace OPDB.Models
         }
     
         public int UnitID { get; set; }
+
+        [RegularExpression(@"^[a-zA-Z\u00c0-\u017e''-'\s]{1,40}$", ErrorMessageResourceName = "Unit_UnitName_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string UnitName { get; set; }
         public string Building { get; set; }
         public string RoomNumber { get; set; }
+
+        [RegularExpression(@"^(\([2-9]\d{2}\)|[2-9]\d{2})[- .]?\d{3}[- .]?\d{4}$", ErrorMessageResourceName = "Unit_PhoneNumber_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string PhoneNumber { get; set; }
+
         public string Extension { get; set; }
         public int CreateUser { get; set; }
         public System.DateTime CreateDate { get; set; }

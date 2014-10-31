@@ -67,13 +67,17 @@ namespace OPDB.Models
         public int UserID { get; set; }
         public int UserTypeID { get; set; }
 
+        [RegularExpression(@"(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{8,10})$", ErrorMessageResourceName = "User_UserPassword_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
         [Required(ErrorMessageResourceName = "User_UserPassword_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string UserPassword { get; set; }
 
-        [Required(ErrorMessageResourceName = "User_UserEmail_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
+        [RegularExpression(@"^(?("")("".+?""@)|(([0-9a-zA-Z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-zA-Z])@))(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,6}))$", ErrorMessageResourceName = "User_Email_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
+        [Required(ErrorMessageResourceName = "User_Email_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Email { get; set; }
 
+        [RegularExpression(@"^[01]?[- .]?(\([2-9]\d{2}\)|[2-9]\d{2})[- .]?\d{3}[- .]?\d{4}$", ErrorMessageResourceName = "User_PhoneNumber_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string PhoneNumber { get; set; }
+
         public bool UserStatus { get; set; }
         public System.DateTime CreateDate { get; set; }
         public System.DateTime UpdateDate { get; set; }

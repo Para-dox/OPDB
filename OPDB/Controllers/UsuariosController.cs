@@ -9,6 +9,7 @@ using System.Web.Security;
 using OPDB.Models;
 using System.Data.Entity.Validation;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace OPDB.Controllers
 {
@@ -77,28 +78,76 @@ namespace OPDB.Controllers
 
                     if (userViewModel.user.UserTypeID == 3) {
 
-                        if (userViewModel.outreachEntity.OutreachEntityName == null)
+                        if (userViewModel.outreachEntity.OutreachEntityName == null || userViewModel.outreachEntity.OutreachEntityName == "")
                         {
                             ModelState.AddModelError("OutreachEntityDetail_OutreachEntityName_Required", Resources.WebResources.OutreachEntityDetail_OutreachEntityName_Required);
                             validModel = false;
                         }
+                        else 
+                        {
+                            string pattern = @"^[a-zA-Z\u00c0-\u017e''-'\s]{1,50}$";
+                            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                            MatchCollection matches = rgx.Matches(userViewModel.outreachEntity.OutreachEntityName);
+                            if (matches.Count == 0)
+                            {
+                                ModelState.AddModelError("OutreachEntity_OutreachEntityName_Invalid", Resources.WebResources.OutreachEntityDetail_OutreachEntityName_Invalid);
+                                validModel = false;
+                            }
 
-                        if (userViewModel.outreachEntity.Mission == null)
+                        }
+
+                        if (userViewModel.outreachEntity.Mission == null || userViewModel.outreachEntity.Mission == "")
                         {
                             ModelState.AddModelError("OutreachEntityDetail_Mission_Required", Resources.WebResources.OutreachEntityDetail_Mission_Required);
                             validModel = false;
                         }
+                        else
+                        {
+                            string pattern = @"^[a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""''-'\s]+$";
+                            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                            MatchCollection matches = rgx.Matches(userViewModel.outreachEntity.Mission);
+                            if (matches.Count == 0)
+                            {
+                                ModelState.AddModelError("OutreachEntityDetail_Mission_Invalid", Resources.WebResources.OutreachEntityDetail_Mission_Invalid);
+                                validModel = false;
+                            }
 
-                        if (userViewModel.outreachEntity.Vision == null)
+                        }
+
+                        if (userViewModel.outreachEntity.Vision == null|| userViewModel.outreachEntity.Vision == "")
                         {
                             ModelState.AddModelError("OutreachEntityDetail_Vision_Required", Resources.WebResources.OutreachEntityDetail_Vision_Required);
                             validModel = false;
                         }
+                        else
+                        {
+                            string pattern = @"^[a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""''-'\s]+$";
+                            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                            MatchCollection matches = rgx.Matches(userViewModel.outreachEntity.Vision);
+                            if (matches.Count == 0)
+                            {
+                                ModelState.AddModelError("OutreachEntityDetail_Vision_Invalid", Resources.WebResources.OutreachEntityDetail_Vision_Invalid);
+                                validModel = false;
+                            }
 
-                        if (userViewModel.outreachEntity.Objectives == null)
+                        }
+
+                        if (userViewModel.outreachEntity.Objectives == null|| userViewModel.outreachEntity.Objectives == "")
                         {
                             ModelState.AddModelError("OutreachEntityDetail_Objectives_Required", Resources.WebResources.OutreachEntityDetail_Objectives_Required);
                             validModel = false;
+                        }
+                        else
+                        {
+                            string pattern = @"^[a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""''-'\s]+$";
+                            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                            MatchCollection matches = rgx.Matches(userViewModel.outreachEntity.Objectives);
+                            if (matches.Count == 0)
+                            {
+                                ModelState.AddModelError("OutreachEntityDetail_Objectives_Invalid", Resources.WebResources.OutreachEntityDetail_Objectives_Invalid);
+                                validModel = false;
+                            }
+
                         }
 
                         if (validModel) 
@@ -121,22 +170,59 @@ namespace OPDB.Controllers
                     else
                     {
 
-                        if (userViewModel.userDetail.FirstName == null)
+                        if (userViewModel.userDetail.FirstName == null || userViewModel.userDetail.FirstName == "")
                         {
                             ModelState.AddModelError("UserDetail_FirstName_Required", Resources.WebResources.UserDetail_FirstName_Required);
                             validModel = false;
                         }
+                        else
+                        {
+                            string pattern = @"^[a-zA-Z\u00c0-\u017e''-'\s]{1,50}$";
+                            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                            MatchCollection matches = rgx.Matches(userViewModel.userDetail.FirstName);
+                            if (matches.Count == 0)
+                            {
+                                ModelState.AddModelError("UserDetail_FirstName_Invalid", Resources.WebResources.UserDetail_FirstName_Invalid);
+                                validModel = false;
+                            }
 
-                        if (userViewModel.userDetail.LastName == null)
+                        }
+
+                        if (userViewModel.userDetail.LastName == null|| userViewModel.userDetail.LastName == "")
                         {
                             ModelState.AddModelError("UserDetail_LastName_Required", Resources.WebResources.UserDetail_LastName_Required);
                             validModel = false;
                         }
+                        else
+                        {
+                            string pattern = @"^[a-zA-Z\u00c0-\u017e''-'\s]{1,50}$";
+                            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                            MatchCollection matches = rgx.Matches(userViewModel.userDetail.LastName);
+                            if (matches.Count == 0)
+                            {
+                                ModelState.AddModelError("UserDetail_LastName_Invalid", Resources.WebResources.UserDetail_LastName_Invalid);
+                                validModel = false;
+                            }
 
-                        if (userViewModel.userDetail.Gender == null)
+                        }
+
+                        if (userViewModel.userDetail.Gender == null || userViewModel.userDetail.Gender == "")
                         {
                             ModelState.AddModelError("UserDetail_Gender_Required", Resources.WebResources.UserDetail_Gender_Required);
                             validModel = false;
+                        }
+
+                        if (userViewModel.userDetail.MiddleInitial != null)
+                        {
+                            string pattern = @"^[A-Z]{1}$";
+                            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                            MatchCollection matches = rgx.Matches(userViewModel.userDetail.MiddleInitial);
+                            if (matches.Count == 0)
+                            {
+                                ModelState.AddModelError("UserDetail_MiddleInitial_Invalid", Resources.WebResources.UserDetail_MiddleInitial_Invalid);
+                                validModel = false;
+                            }
+
                         }
 
                         if (validModel) 
@@ -199,13 +285,82 @@ namespace OPDB.Controllers
         {
             if (ModelState.IsValid)
             {
-                userViewModel.user.UpdateDate = DateTime.Now;
-                userViewModel.userDetail.UpdateDate = DateTime.Now;
-                db.Entry(userViewModel.user).State = EntityState.Modified;
-                db.Entry(userViewModel.userDetail).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Administracion", "Home", null);
+                bool validModel = true;
+
+                if (userViewModel.userDetail.FirstName == null || userViewModel.userDetail.FirstName == "")
+                {
+                    ModelState.AddModelError("UserDetail_FirstName_Required", Resources.WebResources.UserDetail_FirstName_Required);
+                    validModel = false;
+                }
+                else
+                {
+                    string pattern = @"^[a-zA-Z\u00c0-\u017e''-'\s]{1,50}$";
+                    Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                    MatchCollection matches = rgx.Matches(userViewModel.userDetail.FirstName);
+                    if (matches.Count == 0)
+                    {
+                        ModelState.AddModelError("UserDetail_FirstName_Invalid", Resources.WebResources.UserDetail_FirstName_Invalid);
+                        validModel = false;
+                    }
+
+                }
+
+                if (userViewModel.userDetail.LastName == null || userViewModel.userDetail.LastName == "")
+                {
+                    ModelState.AddModelError("UserDetail_LastName_Required", Resources.WebResources.UserDetail_LastName_Required);
+                    validModel = false;
+                }
+                else
+                {
+                    string pattern = @"^[a-zA-Z\u00c0-\u017e''-'\s]{1,50}$";
+                    Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                    MatchCollection matches = rgx.Matches(userViewModel.userDetail.LastName);
+                    if (matches.Count == 0)
+                    {
+                        ModelState.AddModelError("UserDetail_LastName_Invalid", Resources.WebResources.UserDetail_LastName_Invalid);
+                        validModel = false;
+                    }
+
+                }
+
+                if (userViewModel.userDetail.Gender == null || userViewModel.userDetail.Gender == "")
+                {
+                    ModelState.AddModelError("UserDetail_Gender_Required", Resources.WebResources.UserDetail_Gender_Required);
+                    validModel = false;
+                }
+
+                if (userViewModel.userDetail.MiddleInitial != null)
+                {
+                    string pattern = @"^[A-Z]{1}$";
+                    Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                    MatchCollection matches = rgx.Matches(userViewModel.userDetail.MiddleInitial);
+                    if (matches.Count == 0)
+                    {
+                        ModelState.AddModelError("UserDetail_MiddleInitial_Invalid", Resources.WebResources.UserDetail_MiddleInitial_Invalid);
+                        validModel = false;
+                    }
+
+                }
+
+                if (validModel)
+                {
+                    userViewModel.user.UpdateDate = DateTime.Now;
+                    userViewModel.userDetail.UpdateDate = DateTime.Now;
+                    db.Entry(userViewModel.user).State = EntityState.Modified;
+                    db.Entry(userViewModel.userDetail).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Administracion", "Home", null);
+                }
+
+                else
+                {
+                    userViewModel.userTypes = getTypes();
+                    return View(userViewModel);
+                }
+
+               
             }
+
             userViewModel.userTypes = getTypes();
             return View(userViewModel);
         }
@@ -474,13 +629,15 @@ namespace OPDB.Controllers
         }
 
         [HttpPost]
-        public ActionResult IniciarSesion(LoginModel login)
+        public ActionResult IniciarSesion(UserViewModel userViewModel)
         {
             if (ModelState.IsValid)
             {
-                if (LoginValid(login.Email, login.Password))
+                if (LoginValid(userViewModel.user.Email, userViewModel.user.UserPassword))
                 {
-                    FormsAuthentication.SetAuthCookie(login.Email, false);
+                    //Session["user"] = userViewModel.user;
+                    FormsAuthentication.SetAuthCookie(userViewModel.user.Email, false);
+
                     return RedirectToAction("Index","Home");
                 }
                 else

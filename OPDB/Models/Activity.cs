@@ -32,9 +32,11 @@ namespace OPDB.Models
         public int ActivityTypeID { get; set; }
         public int UserID { get; set; }
 
+        [RegularExpression(@"^[a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""''-'\s]+$", ErrorMessageResourceName = "Activity_Title_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
         [Required(ErrorMessageResourceName = "Activity_Title_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Title { get; set; }
 
+        [RegularExpression(@"^[a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""''-'\s]+$", ErrorMessageResourceName = "Activity_Purpose_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
         [Required(ErrorMessageResourceName = "Activity_Purpose_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Purpose { get; set; }
 

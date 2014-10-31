@@ -36,7 +36,7 @@
             </div>
                
             <div class="editor-label">
-                @Html.LabelFor(model => model.user.UserPassword, "Contraseña *")
+                @Html.LabelFor(model => model.user.UserPassword, "Contraseña *")<i style="float:right; cursor:pointer;" class="fa fa-question-circle" title="Su contraseña debe contener: de 8 a 10 caracteres, al menos un digito, al menos un caracter alfabetico y no debe contener caracteres especiales."></i>
             </div>
             <div class="editor-field">
                 @Html.ValidationMessageFor(model => model.user.UserPassword, null, new { @style = "float:left !important;" })
@@ -48,6 +48,7 @@
                     @Html.LabelFor(model => model.userDetail.FirstName, "Nombre *")
                 </div>
                 <div class="editor-field">
+                    @Html.ValidationMessage("UserDetail_FirstName_Invalid", new { @style = "float:left !important;" })
                     @Html.ValidationMessage("UserDetail_FirstName_Required", new { @style = "float:left !important;" })
                     @Html.EditorFor(model => model.userDetail.FirstName, new { @style = "width: 500px !important;" })
                 </div>
@@ -55,10 +56,12 @@
                     @Html.LabelFor(model => model.userDetail.LastName, "Apellido *")
                 </div>
                 <div class="editor-field">
+                    @Html.ValidationMessage("UserDetail_LastName_Invalid", new { @style = "float:left !important;" })
                     @Html.ValidationMessage("UserDetail_LastName_Required", new { @style = "float:left !important;" })
                     @Html.EditorFor(model => model.userDetail.LastName, new { @style = "width: 500px !important;" })
                 </div>
                 <div class="editor-label">
+                    @Html.ValidationMessage("UserDetail_MiddleInitial_Invalid", new { @style = "float:left !important;" })
                     @Html.LabelFor(model => model.userDetail.MiddleInitial, "Inicial")
                 </div>
                 <div class="editor-field">
