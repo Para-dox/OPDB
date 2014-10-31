@@ -184,9 +184,8 @@ namespace OPDB.Controllers
 
         }
 
-        //
-        // GET: /Escuelas/Delete/5
-
+        
+        [HttpPost]
         public ActionResult Remover(int id = 0)
         {
             School school = db.Schools.Find(id);
@@ -199,6 +198,25 @@ namespace OPDB.Controllers
             else
             {
                 school.DeletionDate = DateTime.Now;
+                db.Entry(school).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            return RedirectToAction("Administracion", "Home", null);
+        }
+
+        [HttpPost]
+        public ActionResult Restaurar(int id = 0)
+        {
+            School school = db.Schools.Find(id);
+
+            if (school == null)
+            {
+                return HttpNotFound();
+            }
+
+            else
+            {
+                school.DeletionDate = null;
                 db.Entry(school).State = EntityState.Modified;
                 db.SaveChanges();
             }

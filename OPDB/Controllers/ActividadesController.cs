@@ -556,6 +556,7 @@ namespace OPDB.Controllers
                                 {
                                     ResourceID = id,
                                     ActivityID = activityViewModel.Activity.ActivityID,
+                                    ResourceStatus = false,
                                     CreateUser = 9,
                                     CreateDate = DateTime.Now,
                                     UpdateUser = 9,
@@ -1024,6 +1025,24 @@ namespace OPDB.Controllers
 
            }
 
+        [HttpPost]
+           public ActionResult Aprobar(int id)
+           {
+               var resource = db.ActivityResources.Find(id);
+
+               resource.ResourceStatus = true;
+               resource.UpdateDate = DateTime.Now;
+
+               //Change after login
+               resource.UpdateUser = 9;
+
+               db.Entry(resource).State = EntityState.Modified;
+               db.SaveChanges();
+
+               return RedirectToAction("Detalles", "Actividades", new { id = resource.ActivityID });
+
+           }
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// Admin activity creation methods.
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1036,7 +1055,9 @@ namespace OPDB.Controllers
                SchoolList = getSchools(),
                OutreachEntities = getOutreachEntities(),
                Contacts = getContacts(),
-               ContactIDs = new List<int>()
+               ContactIDs = new List<int>(),
+               Resources = getResources(),
+               ResourceIDs = new List<int>()
            };
 
          

@@ -9,7 +9,6 @@
                     <th></th>
                     <th></th>
                     <th></th>
-                    @*<th></th>*@
                 </tr>
             </thead>
             <tbody>
@@ -19,11 +18,6 @@
                         <td>@contact.UserDetail.FirstName @contact.UserDetail.MiddleInitial @contact.UserDetail.LastName</td>
                         <td>@contact.User.Email</td>
                         <td>@contact.User.PhoneNumber</td>
-                        @*<td style="width:6% !important;">
-
-                            <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this, 'schoolNotes')" data-url="@Url.Action("RemoverContacto", "Actividades", new { id = contact.Contact.UserID })"></i>
-
-                        </td>*@
                     </tr>
                 }
             </tbody>
@@ -37,21 +31,38 @@
                    <th></th>
                    <th></th>
                    <th></th>
-                   @*<th></th>*@
                </tr>
            </thead>
            <tbody>
                @foreach (var resource in Model.ActivityResources)
                {
                    <tr>
-                       <td>@resource.Resource.Resource1
-                       <td>@resource.Unit.UnitName</td>
-                       <td>@resource.Unit.PhoneNumber</td>
-                       @*<td style="width:6% !important;">
-                        <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this, 'activityResources')" data-url="@Url.Action("RemoverRecurso", "Actividades", new { id = resource.ActivityResource.ResourceID })"></i>
-                        </td>*@
+                       <td><a data-dropdown="hover-@resource.ActivityResource.ActivityResourceID" data-options="is_hover:true">@resource.Resource.Resource1</a></td>
+                       <td>
+                           <div id="hover-@resource.ActivityResource.ActivityResourceID" class="small content f-dropdown" data-dropdown-content>
+                               <p style="text-align:left !important; font-size: 0.77778rem !important;">Unidad: @resource.Unit.UnitName<br />
+                               Edificio: @resource.Unit.Building<br />
+                               Oficina: @resource.Unit.RoomNumber<br />
+                               Extensión: @resource.Unit.Extension</p>
+                           </div>
+                       </td>
+                       <td>
+                       @if (resource.ActivityResource.ResourceStatus == false)
+                       {
+                        <a title="Pendiente" id="activity-@resource.ActivityResource.ActivityResourceID" style="background-color:#222222 !important;" class="btn btn-sm" onclick="approve(this)" data-url="@Url.Action("Aprobar", "Actividades", new { id = resource.ActivityResource.ActivityResourceID })"><i class="fa fa-question"></i> Pendiente</a>
+                       }
+                       else
+                       {
+                        <a title="Aprobado" style="background-color:#222222 !important; color:white; cursor:default;" class="btn-sm"><i class="fa fa-check"></i> Aprobado</a>
+                       }
+                       </td>
+                                             
+                       
+                       
                    </tr>
+                    
                }
+               
            </tbody>
 
        </table>
@@ -69,7 +80,7 @@
             "sPaginationType": "full_numbers",
             "bProcessing": false,
             "iDisplayLength": 3,
-            "aaSorting": [[1, "asc"]],
+            "aaSorting": [[0, "asc"]],
             "oLanguage": {
                 "sEmptyTable": "No se necesitan recursos",
                 "sZeroRecords": "No se ha encontrado ningún registro",
@@ -82,7 +93,7 @@
             "sPaginationType": "full_numbers",
             "bProcessing": false,
             "iDisplayLength": 3,
-            "aaSorting": [[1, "asc"]],
+            "aaSorting": [[0, "asc"]],
             "oLanguage": {
                 "sEmptyTable": "No existen contactos.",
                 "sZeroRecords": "No se ha encontrado ningún registro",
@@ -90,6 +101,18 @@
             }
         });
 
+        $(document).foundation('dropdown', 'reflow');
+        
+
     });
+
+    function approve(e) {
+        var url = $(e).attr('data-url');
+
+        $.post(url);
+        sleep(1000);
+
+        window.location.reload();
+    }
 
 </script>

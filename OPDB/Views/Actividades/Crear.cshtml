@@ -96,7 +96,7 @@
                 @Html.DropDownListFor(model => model.ResourceIDs, Model.Resources, new { @style = "width: 500px !important;", @multiple = "multiple", @class = "chosen-select", @data_placeholder = "Buscar..." })
             </div><br />
             <p style="text-align:left;">
-                <input type="submit" class="btn" value="Crear" /><input type="button" value="Regresar" class="btn" onclick="location.href='@Url.Action("Detalles", "Alcance", new { id =  Model.Activity.UserID })'" />
+                <input type="submit" class="btn" style="float:left !important; width:40% !important; margin-left: 30px !important;" value="Crear" /> <input type="button" value="Cancelar" class="btn" style="float:right !important; width:40% !important; margin-bottom: 20px !important; margin-right: 30px !important;" onclick="location.href = '@Url.Action("Detalles", "Alcance", new { id =  Model.Activity.UserID })'" />
             </p>
         </fieldset>
     </center>

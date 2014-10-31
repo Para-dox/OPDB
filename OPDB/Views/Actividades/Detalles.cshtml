@@ -23,11 +23,7 @@
     th, td {
         text-align: center !important;
     }
-
-    /*#activityContacts tr {
-        background-color: none !important;
-    }*/
-
+    
     .last, .first, .previous, .next {
         display: none !important;
     }
@@ -144,9 +140,6 @@
     </div>
     
 </div>
-@*<div><input type="button" class="btn" value="Editar" onclick="location.href='@Url.Action("Editar", "Actividades", new { id = Model.Activity.ActivityID })'"/><input type="button" class="btn" value="Regresar" onclick="window.history.back()" /><a href="#" title="Añadir Multimedia" class="modal_ajax_btn" data-title="Añadir Multimedia" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("MediaUpload", "Actividades", new { id = Model.Activity.ActivityID })"><input type="button" class="btn" value="Añadir Multimedia" /></a>
-    <input type="button" id="verNotas" class="btn" value="Notas" onclick="loadRightDetailsView(this)" data-url="@Url.Action("Notas", "Actividades", new { id = Model.Activity.ActivityID })"/> <input type="button" id="verContactos" class="btn" value="Contactos Y Recursos" onclick="loadRightDetailsView(this)" data-url="@Url.Action("ContactosyRecursos", "Actividades", new { id = Model.Activity.ActivityID })" />
-    </div>*@
 <br />
 
 @if (Model.Videos.Count != 0 || Model.Photos.Count != 0)

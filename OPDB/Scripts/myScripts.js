@@ -148,3 +148,15 @@ function loadRightDetailsView(e) {
     $('#detailsRight').load(url);
 
 }
+
+function restoreRecord(e, table) {
+    var url = $(e).attr('data-url');
+    if (confirm("Este record será restaurado al sistema. ¿Esta seguro(a) que desea proceder?")) {
+        $.post(url);
+        sleep(1000);
+        window.location.reload();
+    }
+
+    $(table).dataTable().fnDraw();
+
+}
