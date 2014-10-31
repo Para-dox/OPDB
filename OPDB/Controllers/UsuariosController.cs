@@ -158,12 +158,13 @@ namespace OPDB.Controllers
 
                     db.SaveChanges();
 
-                    return RedirectToAction("Administracion", "Home", null);
+                    return RedirectToAction("Index", "Home", null); // changed to redirect to Index instead of Administracion, for now
                     
             }
 
             userViewModel.userTypes = getTypes();
             userViewModel.outreachTypes = getOutreachTypes();
+
             return View(userViewModel);
         }
 
@@ -449,16 +450,17 @@ namespace OPDB.Controllers
 
         public ActionResult IniciarSesion()
         {
-            return View();
+            return View("Login");
         }
 
-        public ActionResult IniciarSesion(UserViewModel userViewModel)
+        [HttpPost]
+        public ActionResult IniciarSesion(LoginModel login)
         {
             if (ModelState.IsValid)
             {
-                if (LoginValid(userViewModel.user.Email, userViewModel.user.UserPassword))
+                if (LoginValid(login.Email, login.Password))
                 {
-                    FormsAuthentication.SetAuthCookie(userViewModel.user.Email, false);
+                    FormsAuthentication.SetAuthCookie(login.Email, false);
                     return RedirectToAction("Index","Home");
                 }
                 else
@@ -468,15 +470,15 @@ namespace OPDB.Controllers
                 }
             }
 
-            return View();
+            return View("Login");
         }
 
-        public ActionResult Registrar()
+        public ActionResult Registrar() // use Crear() instead
         {
             return View();
         }
 
-        public ActionResult Registrar(UserViewModel userViewModel)
+        public ActionResult Registrar(UserViewModel userViewModel) // use Crear(View) instead
         {
             if (ModelState.IsValid)
             {
@@ -517,7 +519,9 @@ namespace OPDB.Controllers
 
         public ActionResult CerrarSesion()
         {
-            return View();
+            FormsAuthentication.SignOut();
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }
