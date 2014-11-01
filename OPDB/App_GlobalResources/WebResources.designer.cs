@@ -358,11 +358,29 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to El nombre del edificio es inválido.
         /// </summary>
-        internal static string String1 {
+        internal static string Unit_Building_Invalid {
             get {
-                return ResourceManager.GetString("String1", resourceCulture);
+                return ResourceManager.GetString("Unit_Building_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No ha ingresado un edificio para esta unidad.
+        /// </summary>
+        internal static string Unit_Building_Required {
+            get {
+                return ResourceManager.GetString("Unit_Building_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to La extensión entrada es inválida.
+        /// </summary>
+        internal static string Unit_Extension_Invalid {
+            get {
+                return ResourceManager.GetString("Unit_Extension_Invalid", resourceCulture);
             }
         }
         
@@ -376,11 +394,47 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No ha ingresado un número telefónico para esta unidad.
+        /// </summary>
+        internal static string Unit_PhoneNumber_Required {
+            get {
+                return ResourceManager.GetString("Unit_PhoneNumber_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to La oficina o salón entrado es inválido.
+        /// </summary>
+        internal static string Unit_RoomNumber_Invalid {
+            get {
+                return ResourceManager.GetString("Unit_RoomNumber_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No ha ingresado una oficina o salón para esta unidad.
+        /// </summary>
+        internal static string Unit_RoomNumber_Required {
+            get {
+                return ResourceManager.GetString("Unit_RoomNumber_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to El nombre de la unidad es inválido.
         /// </summary>
         internal static string Unit_UnitName_Invalid {
             get {
                 return ResourceManager.GetString("Unit_UnitName_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No ha ingresado un nombre para esta unidad.
+        /// </summary>
+        internal static string Unit_UnitName_Required {
+            get {
+                return ResourceManager.GetString("Unit_UnitName_Required", resourceCulture);
             }
         }
         

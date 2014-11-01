@@ -209,20 +209,45 @@ namespace OPDB.Controllers
         public ActionResult Remover(int id = 0)
         {
             OutreachEntityDetail outreachDetail = db.OutreachEntityDetails.Find(id);
-            User outreach = db.Users.FirstOrDefault(i => i.UserID == outreachDetail.UserID);
-            if (outreach == null)
+            User user = db.Users.Find(outreachDetail.UserID);
+
+            if (outreachDetail == null)
             {
                 return HttpNotFound();
             }
+
             else
             {
-                outreach.DeletionDate = DateTime.Now;
+                user.DeletionDate = DateTime.Now;
                 outreachDetail.DeletionDate = DateTime.Now;
-                db.Entry(outreach).State = EntityState.Modified;
+                db.Entry(user).State = EntityState.Modified;
                 db.Entry(outreachDetail).State = EntityState.Modified;
                 db.SaveChanges();
             }
-            return RedirectToAction("Index");
+
+            return RedirectToAction("Administracion", "Home", null);
+        }
+
+        public ActionResult Restaurar(int id = 0)
+        {
+            OutreachEntityDetail outreachDetail = db.OutreachEntityDetails.Find(id);
+            User user = db.Users.Find(outreachDetail.UserID);
+
+            if (outreachDetail == null)
+            {
+                return HttpNotFound();
+            }
+
+            else
+            {
+                user.DeletionDate = null;
+                outreachDetail.DeletionDate = null;
+                db.Entry(user).State = EntityState.Modified;
+                db.Entry(outreachDetail).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("Administracion", "Home", null);
         }
 
         public ActionResult RemoverNota(int id)
@@ -345,7 +370,7 @@ namespace OPDB.Controllers
 
         public ActionResult Removidos()
         {
-            var users = from o in db.OutreachEntityDetails.Include(o => o.OutreachEntityType) where o.DeletionDate != null select o;
+            var users = from outreach in db.Users.Include(outreach => outreach.OutreachEntityDetails) where outreach.UserTypeID == 3 && outreach.DeletionDate != null select outreach;
 
             return PartialView("Removidos", users.ToList());
 

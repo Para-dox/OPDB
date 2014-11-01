@@ -12,9 +12,10 @@ function getValue() {
 }
 
 function removeRecord(e, table) {
+    debugger;
     var url = $(e).attr('data-url');
     if (confirm("Este record será removido del sistema. ¿Esta seguro(a) que desea proceder?")) {
-        $.post(url);
+        $.post(url, null, function (e) { alert(e);});
         sleep(1000);
         window.location.reload();
     }
