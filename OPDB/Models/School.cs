@@ -38,7 +38,7 @@ namespace OPDB.Models
 
         public string Town { get; set; }
 
-        [RegularExpression(@"^[01]?[- .]?(\([2-9]\d{2}\)|[2-9]\d{2})[- .]?\d{3}[- .]?\d{4}$", ErrorMessageResourceName = "School_PhoneNumber_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
+        [RegularExpression(@"^([2-9]\d{2}|[2-9]\d{2})[- .]?\d{3}[- .]?\d{4}$", ErrorMessageResourceName = "School_PhoneNumber_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
         [Required(ErrorMessageResourceName = "School_PhoneNumber_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string PhoneNumber { get; set; }
 

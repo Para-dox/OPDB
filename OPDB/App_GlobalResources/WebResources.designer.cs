@@ -79,6 +79,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to El tiempo que ha entrado es inválido.
+        /// </summary>
+        internal static string Activity_ActivityTime_Invalid {
+            get {
+                return ResourceManager.GetString("Activity_ActivityTime_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to La localización que ha entrado es inválida.
+        /// </summary>
+        internal static string Activity_Location_Invalid {
+            get {
+                return ResourceManager.GetString("Activity_Location_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to El propósito de la actividad es inválido.
         /// </summary>
         internal static string Activity_Purpose_Invalid {
@@ -111,6 +129,15 @@ namespace Resources {
         internal static string Activity_Title_Required {
             get {
                 return ResourceManager.GetString("Activity_Title_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El contenido del comentario que ha entrado es inválido.
+        /// </summary>
+        internal static string Feedback_Feedback_Invalid {
+            get {
+                return ResourceManager.GetString("Feedback_Feedback_Invalid", resourceCulture);
             }
         }
         
@@ -331,6 +358,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string String1 {
+            get {
+                return ResourceManager.GetString("String1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to El número telefónico de la unidad es inválido.
         /// </summary>
         internal static string Unit_PhoneNumber_Invalid {
@@ -394,11 +430,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to La concentración entrada es inválida.
+        /// </summary>
+        internal static string UserDetail_Major_Invalid {
+            get {
+                return ResourceManager.GetString("UserDetail_Major_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Su inicial es inválida.
         /// </summary>
         internal static string UserDetail_MiddleInitial_Invalid {
             get {
                 return ResourceManager.GetString("UserDetail_MiddleInitial_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El rol entrado es inválido.
+        /// </summary>
+        internal static string UserDetail_Role_Invalid {
+            get {
+                return ResourceManager.GetString("UserDetail_Role_Invalid", resourceCulture);
             }
         }
         

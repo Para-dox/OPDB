@@ -75,7 +75,7 @@ namespace OPDB.Models
         [Required(ErrorMessageResourceName = "User_Email_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Email { get; set; }
 
-        [RegularExpression(@"^[01]?[- .]?(\([2-9]\d{2}\)|[2-9]\d{2})[- .]?\d{3}[- .]?\d{4}$", ErrorMessageResourceName = "User_PhoneNumber_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
+        [RegularExpression(@"^([2-9]\d{2}|[2-9]\d{2})[- .]?\d{3}[- .]?\d{4}$", ErrorMessageResourceName = "User_PhoneNumber_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string PhoneNumber { get; set; }
 
         public bool UserStatus { get; set; }
