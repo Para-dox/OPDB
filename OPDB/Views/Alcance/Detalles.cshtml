@@ -13,6 +13,7 @@
     }
 
     label {
+        cursor: default !important;
         width: 100% !important;
     }
 
@@ -28,11 +29,20 @@
         display: none !important;
     }
 
-     .panel.callout a:not(.button) {
-      color: #222222; 
+    /*.panel.callout a:not(.button) {
+      color: #222222; }*/
 
+    a span i:hover {
+        color: #008cba;
     }
 
+    .link:hover {
+        color: #008cba !important;
+    }
+
+    .fa-remove:hover {
+        color: #008cba !important;
+    }
 </style>
 
 <h2> @Html.DisplayFor(model => model.outreachEntity.OutreachEntityName)</h2>
@@ -94,7 +104,13 @@
     <div class="display-field">
             @Html.DisplayFor(model => model.outreachEntity.Location)
     </div>
+        <p>
+            <br />
+            <a title="Editar Usuario" href="@Url.Action("Editar", "Alcance", new { id = Model.outreachEntity.OutreachEntityDetailID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-pencil fa-stack-1x fa-inverse"></i></span></a>
+            <a title="Regresar" onclick="window.history.back()"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-arrow-left fa-stack-1x fa-inverse"></i></span></a>
+        </p>
     </div>
+
     <div class="large-7 columns">
         <h3>Notas</h3>
         <table id="outreachNotes">
@@ -121,16 +137,8 @@
             </tbody>
 
         </table>
+        <a href="#" title="Añadir Nota" class="modal_ajax_btn" data-title="Nueva Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Alcance", new { id = Model.outreachEntity.UserID })"><input type="button" value="Añadir Nota" class="btn" /></a>
     </div>
-</div>
-
-<div class="large-12 columns">
-    <p>
-        <input type="button" class="btn" value="Editar" onclick="location.href='@Url.Action("Editar", "Alcance", new { id = Model.outreachEntity.OutreachEntityDetailID })'" />
-        <a href="#" title="Añadir Nota" class="modal_ajax_btn" data-title="Nueva Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Alcance", new { id = Model.outreachEntity.UserID })"><input type="button" value="Añadir Nota" class="btn"/></a>
-        <input type="button" class="btn" value="Volver" onclick="window.history.back()" />
-        @*<input type="button" class="btn" value="Volver a Lista" onclick="location.href='@Url.Action("Lista", "Alcance")'">*@
-    </p>
 </div>
 
 <script src="~/Scripts/myScripts.js"></script>

@@ -36,13 +36,17 @@ namespace OPDB.Models
         [Required(ErrorMessageResourceName = "Activity_Title_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Title { get; set; }
 
-        [RegularExpression(@"^[a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""''-'\s]+$", ErrorMessageResourceName = "Activity_Purpose_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
+        [RegularExpression(@"^[a-zA-Z\u00c0-\u017e0-9¿\?.,;:¡!()""''-'\s]+$", ErrorMessageResourceName = "Activity_Purpose_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
         [Required(ErrorMessageResourceName = "Activity_Purpose_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Purpose { get; set; }
 
+        [RegularExpression(@"^[a-zA-Z\u00c0-\u017e0-9\s]{1,100}$", ErrorMessageResourceName = "Activity_Location_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Location { get; set; }
         public Nullable<System.DateTime> ActivityDate { get; set; }
+
+        [RegularExpression(@"^(([1][0-2])|([0-9])):[0-5][0-9](AM|PM)$", ErrorMessageResourceName = "Activity_ActivityTime_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string ActivityTime { get; set; }
+        
         public Nullable<int> SchoolID { get; set; }
         public int CreateUser { get; set; }
         public System.DateTime CreateDate { get; set; }

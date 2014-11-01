@@ -45,9 +45,6 @@
         @foreach (var item in Model)
         {
             <tr>
-                @*<td>
-                    @Html.ActionLink(item.OutreachEntityDetails.FirstOrDefault(i => i.UserID == item.UserID).OutreachEntityName, "Detalles", "Alcance", new { id = item.UserID}, null)
-                </td>*@
                 <td>
                     @Html.ActionLink(item.OutreachEntityDetails.FirstOrDefault(outreach => outreach.UserID == item.UserID).OutreachEntityName, "Detalles", "Alcance", new { id = item.OutreachEntityDetails.FirstOrDefault(outreach => outreach.UserID == item.UserID).OutreachEntityDetailID }, null)
                 </td>
@@ -76,7 +73,7 @@
 </table>
 <br />
 
-    <input type="button" class="btn" value="Nueva Organización" onclick="location.href='@Url.Action("Crear", "Alcance")'" /><input type="button" value="Usuarios Removidos" class="btn" onclick="location.href='@Url.Action("Removidos", "Alcance")'" /><br />
+<input type="button" class="btn" value="Nueva Organización" onclick="location.href='@Url.Action("Crear", "Alcance")'" />
 
 <script src="~/Scripts/myScripts.js"></script>
 <script>
@@ -91,7 +88,7 @@
             "columnDefs": [
                 {
                     "orderable": false,
-                    "targets": 4
+                    "targets": 6
                 }
 
             ],

@@ -85,7 +85,7 @@ namespace OPDB.Controllers
                         }
                         else 
                         {
-                            string pattern = @"^[a-zA-Z\u00c0-\u017e''-'\s]{1,50}$";
+                            string pattern = @"^[a-zA-Z\u00c0-\u017e''-'\s]{1,100}$";
                             Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
                             MatchCollection matches = rgx.Matches(userViewModel.outreachEntity.OutreachEntityName);
                             if (matches.Count == 0)
@@ -214,7 +214,7 @@ namespace OPDB.Controllers
 
                         if (userViewModel.userDetail.MiddleInitial != null)
                         {
-                            string pattern = @"^[A-Z]{1}$";
+                            string pattern = @"^[A-Z]$";
                             Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
                             MatchCollection matches = rgx.Matches(userViewModel.userDetail.MiddleInitial);
                             if (matches.Count == 0)
@@ -264,7 +264,10 @@ namespace OPDB.Controllers
             {
                 user = db.Users.Find(id),
                 userDetail = db.UserDetails.FirstOrDefault(i => i.UserID == id),
-                userTypes = getUserTypes()
+                userTypes = getUserTypes(),
+                Schools = getSchools(),
+                OutreachEntities = getOutreachEntities(),
+                Units = getUnits()
             };
 
             if (userViewModel.user == null)
@@ -285,6 +288,15 @@ namespace OPDB.Controllers
         {
             if (ModelState.IsValid)
             {
+                //if(userViewModel.SchoolID != "")
+                //    userViewModel.userDetail.AffiliateTypeID  = Int32.Parse(userViewModel.SchoolID);
+
+                //if(userViewModel.UnitID != "")
+                //    userViewModel.userDetail.AffiliateTypeID = Int32.Parse(userViewModel.UnitID);
+
+                //if(userViewModel.OutreachEntityDetailID != "")
+                //    userViewModel.userDetail.AffiliateTypeID = Int32.Parse(userViewModel.OutreachEntityDetailID);
+
                 bool validModel = true;
 
                 if (userViewModel.userDetail.FirstName == null || userViewModel.userDetail.FirstName == "")
@@ -331,12 +343,38 @@ namespace OPDB.Controllers
 
                 if (userViewModel.userDetail.MiddleInitial != null)
                 {
-                    string pattern = @"^[A-Z]{1}$";
+                    string pattern = @"^[A-Z]$";
                     Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
                     MatchCollection matches = rgx.Matches(userViewModel.userDetail.MiddleInitial);
                     if (matches.Count == 0)
                     {
                         ModelState.AddModelError("UserDetail_MiddleInitial_Invalid", Resources.WebResources.UserDetail_MiddleInitial_Invalid);
+                        validModel = false;
+                    }
+
+                }
+
+                if (userViewModel.userDetail.Role != null)
+                {
+                    string pattern = @"^[a-zA-Z\u00c0-\u017e]{1,50}$";
+                    Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                    MatchCollection matches = rgx.Matches(userViewModel.userDetail.Role);
+                    if (matches.Count == 0)
+                    {
+                        ModelState.AddModelError("UserDetail_Role_Invalid", Resources.WebResources.UserDetail_Role_Invalid);
+                        validModel = false;
+                    }
+
+                }
+
+                if (userViewModel.userDetail.Major != null)
+                {
+                    string pattern = @"^[a-zA-Z\u00c0-\u017e]{1,50}$";
+                    Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                    MatchCollection matches = rgx.Matches(userViewModel.userDetail.Major);
+                    if (matches.Count == 0)
+                    {
+                        ModelState.AddModelError("UserDetail_Major_Invalid", Resources.WebResources.UserDetail_Major_Invalid);
                         validModel = false;
                     }
 
@@ -483,6 +521,75 @@ namespace OPDB.Controllers
 
             return types;
 
+        }
+
+        public List<SelectListItem> getSchools()
+        {
+            var types = new List<SelectListItem>();
+            var schools = (from school in db.Schools where school.DeletionDate == null select school).ToList();
+            
+            types.Add(new SelectListItem()
+            {
+                Text = "",
+                Value = ""
+            });
+
+            foreach (var school in schools)
+            {
+                types.Add(new SelectListItem()
+                {
+                    Text = school.SchoolName,
+                    Value = school.SchoolID + ""
+                });
+            }
+
+            return types;
+        }
+
+        public List<SelectListItem> getUnits()
+        {
+            var types = new List<SelectListItem>();
+            var units = (from unit in db.Units where unit.DeletionDate == null select unit).ToList();
+
+            types.Add(new SelectListItem()
+            {
+                Text = "",
+                Value = ""
+            });
+
+            foreach (var unit in units)
+            {
+                types.Add(new SelectListItem()
+                {
+                    Text = unit.UnitName,
+                    Value = unit.UnitID + ""
+                });
+            }
+
+            return types;
+        }
+
+        public List<SelectListItem> getOutreachEntities()
+        {
+            var types = new List<SelectListItem>();
+            var outreachEntities = (from outreachEntity in db.OutreachEntityDetails where outreachEntity.DeletionDate == null select outreachEntity).ToList();
+
+            types.Add(new SelectListItem()
+            {
+                Text = "",
+                Value = ""
+            });
+
+            foreach (var outreachEntity in outreachEntities)
+            {
+                types.Add(new SelectListItem()
+                {
+                    Text = outreachEntity.OutreachEntityName,
+                    Value = outreachEntity.OutreachEntityDetailID + ""
+                });
+            }
+
+            return types;
         }
 
         [HttpPost]
@@ -663,5 +770,139 @@ namespace OPDB.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// Admin Methods
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        public List<SelectListItem> getAllUserTypes()
+        {
+            List<SelectListItem> types = new List<SelectListItem>();
+            foreach (var userType in db.UserTypes)
+            {
+
+                if (userType.UserTypeID != 3)
+                {
+                    types.Add(new SelectListItem()
+                    {
+                        Text = userType.UserType1,
+                        Value = userType.UserTypeID + ""
+
+                    });
+                }
+            }
+
+            return types;
+
+        }
+        
+        
+        public ActionResult CrearUsuario()
+        {
+
+            UserViewModel userViewModel = new UserViewModel
+            {
+
+                userTypes = getAllUserTypes()
+
+            };
+
+            return View("CrearUsuario", userViewModel);
+        }
+
+
+        [HttpPost]
+        public ActionResult CrearUsuario(UserViewModel userViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                    userViewModel.user.CreateDate = DateTime.Now;
+                    userViewModel.user.UpdateDate = DateTime.Now;
+                    userViewModel.user.UserStatus = false;
+                    bool validModel = true;
+
+                        if (userViewModel.userDetail.FirstName == null || userViewModel.userDetail.FirstName == "")
+                        {
+                            ModelState.AddModelError("UserDetail_FirstName_Required", Resources.WebResources.UserDetail_FirstName_Required);
+                            validModel = false;
+                        }
+                        else
+                        {
+                            string pattern = @"^[a-zA-Z\u00c0-\u017e''-'\s]{1,50}$";
+                            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                            MatchCollection matches = rgx.Matches(userViewModel.userDetail.FirstName);
+                            if (matches.Count == 0)
+                            {
+                                ModelState.AddModelError("UserDetail_FirstName_Invalid", Resources.WebResources.UserDetail_FirstName_Invalid);
+                                validModel = false;
+                            }
+
+                        }
+
+                        if (userViewModel.userDetail.LastName == null|| userViewModel.userDetail.LastName == "")
+                        {
+                            ModelState.AddModelError("UserDetail_LastName_Required", Resources.WebResources.UserDetail_LastName_Required);
+                            validModel = false;
+                        }
+                        else
+                        {
+                            string pattern = @"^[a-zA-Z\u00c0-\u017e''-'\s]{1,50}$";
+                            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                            MatchCollection matches = rgx.Matches(userViewModel.userDetail.LastName);
+                            if (matches.Count == 0)
+                            {
+                                ModelState.AddModelError("UserDetail_LastName_Invalid", Resources.WebResources.UserDetail_LastName_Invalid);
+                                validModel = false;
+                            }
+
+                        }
+
+                        if (userViewModel.userDetail.Gender == null || userViewModel.userDetail.Gender == "")
+                        {
+                            ModelState.AddModelError("UserDetail_Gender_Required", Resources.WebResources.UserDetail_Gender_Required);
+                            validModel = false;
+                        }
+
+                        if (userViewModel.userDetail.MiddleInitial != null)
+                        {
+                            string pattern = @"^[A-Z]$";
+                            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                            MatchCollection matches = rgx.Matches(userViewModel.userDetail.MiddleInitial);
+                            if (matches.Count == 0)
+                            {
+                                ModelState.AddModelError("UserDetail_MiddleInitial_Invalid", Resources.WebResources.UserDetail_MiddleInitial_Invalid);
+                                validModel = false;
+                            }
+
+                        }
+
+                        if (validModel) 
+                        { 
+                            userViewModel.userDetail.CreateDate = DateTime.Now;
+                            userViewModel.userDetail.UpdateDate = DateTime.Now;
+                            userViewModel.user.UserDetails = new List<UserDetail>();
+                            userViewModel.user.UserDetails.Add(userViewModel.userDetail);
+                            db.Users.Add(userViewModel.user);
+                        }
+
+                        else
+                        {
+                            userViewModel.userTypes = getAllUserTypes();
+                            return View("CrearUsuario", userViewModel);
+                        }
+
+                        db.SaveChanges();
+                        return RedirectToAction("Administracion", "Home", null);
+                    }
+
+
+                userViewModel.userTypes = getAllUserTypes();
+                return View("CrearUsuario", userViewModel);
+                    
+        }
+
+
+
     }
 }
+

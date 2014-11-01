@@ -160,3 +160,56 @@ function restoreRecord(e, table) {
     $(table).dataTable().fnDraw();
 
 }
+
+function getUserTypeValue() {
+    if (document.getElementById('userTypes').value == 4) {
+        document.getElementById('faculty').removeAttribute("hidden", "hidden");
+        document.getElementById('collegeStudent').setAttribute("hidden", "hidden");
+        document.getElementById('grade').setAttribute("hidden", "hidden");
+    }
+    else if (document.getElementById('userTypes').value == 5) {
+        document.getElementById('collegeStudent').removeAttribute("hidden", "hidden");
+        document.getElementById('faculty').setAttribute("hidden", "hidden");
+        document.getElementById('grade').setAttribute("hidden", "hidden");
+    }
+    else if (document.getElementById('userTypes').value == 7) {
+        document.getElementById('grade').removeAttribute("hidden", "hidden");
+        document.getElementById('faculty').setAttribute("hidden", "hidden");
+        document.getElementById('collegeStudent').setAttribute("hidden", "hidden");
+    }
+    else {
+        document.getElementById('collegeStudent').setAttribute("hidden", "hidden");
+        document.getElementById('faculty').setAttribute("hidden", "hidden");
+        document.getElementById('grade').setAttribute("hidden", "hidden");
+    }
+}
+
+function getAffiliateValue() {
+    debugger;
+    if (document.getElementById('affiliateTypes').value == "School") {
+        document.getElementById('schools').removeAttribute("hidden", "hidden");
+        document.getElementById('outreachEntities').setAttribute("hidden", "hidden");
+        $('#outreachEntity').val("");
+        document.getElementById('units').setAttribute("hidden", "hidden");
+        $('#unit').val("");
+    } else if (document.getElementById('affiliateTypes').value == "Outreach Entity") {
+        document.getElementById('outreachEntities').removeAttribute("hidden", "hidden");
+        document.getElementById('schools').setAttribute("hidden", "hidden");
+        $('#school').val("");
+        document.getElementById('units').setAttribute("hidden", "hidden");
+        $('#unit').val("");
+    } else if (document.getElementById('affiliateTypes').value == "Unit") {
+        document.getElementById('units').removeAttribute("hidden", "hidden");
+        document.getElementById('outreachEntities').setAttribute("hidden", "hidden");
+        $('#outreachEntity').val("");
+        document.getElementById('schools').setAttribute("hidden", "hidden");
+        $('#school').val("");
+    } else {
+        document.getElementById('schools').setAttribute("hidden", "hidden");
+        $('#school').val("");
+        document.getElementById('units').setAttribute("hidden", "hidden");
+        $('#unit').val("");
+        document.getElementById('outreachEntities').setAttribute("hidden", "hidden");
+        $('#outreachEntity').val("");
+    }
+}

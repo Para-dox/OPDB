@@ -321,7 +321,6 @@
     <Content Include="Content\multi-select\chosen-sprite.png" />
     <Content Include="Content\multi-select\chosen.css" />
     <Content Include="Content\multi-select\multi-select.css" />
-    <Content Include="Content\orderedList.css" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -589,7 +588,6 @@
     <Content Include="Views\Escuelas\Removidos.cshtml" />
     <Content Include="Views\Alcance\CrearNota.cshtml" />
     <Content Include="Views\Alcance\EditarNota.cshtml" />
-    <Content Include="Views\Alcance\Remover.cshtml" />
     <Content Include="Views\Usuarios\Lista.cshtml" />
     <Content Include="Views\Actividades\CrearActividad.cshtml" />
     <Content Include="Views\Actividades\EditarActividad.cshtml" />
@@ -600,6 +598,7 @@
     <Content Include="Views\Actividades\ContactosyRecursos.cshtml" />
     <Content Include="Views\Actividades\Notas.cshtml" />
     <Content Include="Views\Usuarios\Login.cshtml" />
+    <Content Include="Views\Alcance\Removidos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

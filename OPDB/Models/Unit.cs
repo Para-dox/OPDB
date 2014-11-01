@@ -29,7 +29,7 @@ namespace OPDB.Models
         public string Building { get; set; }
         public string RoomNumber { get; set; }
 
-        [RegularExpression(@"^(\([2-9]\d{2}\)|[2-9]\d{2})[- .]?\d{3}[- .]?\d{4}$", ErrorMessageResourceName = "Unit_PhoneNumber_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
+        [RegularExpression(@"^([2-9]\d{2}|[2-9]\d{2})[- .]?\d{3}[- .]?\d{4}$", ErrorMessageResourceName = "Unit_PhoneNumber_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string PhoneNumber { get; set; }
 
         public string Extension { get; set; }
