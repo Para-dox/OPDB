@@ -17,12 +17,8 @@ namespace OPDB.Controllers
         // GET: /Alcance/
 
         public ActionResult Index()
-        {
-            //var outreachentitydetails = db.OutreachEntityDetails.Include(o => o.OutreachEntityType).Include(o => o.User);
-            //return View(outreachentitydetails);
-
+        {     
             var users = from u in db.Users.Include(u => u.UserDetails) where u.UserTypeID == 3 && u.DeletionDate == null select u;
-
             return PartialView("Index", users.ToList());
         }
 
@@ -53,7 +49,9 @@ namespace OPDB.Controllers
         {
             UserViewModel userViewModel = new UserViewModel
             {
+                userTypes = getTypes(),
                 outreachTypes = getOutreachTypes()
+
             };
 
             return View(userViewModel);
@@ -324,6 +322,26 @@ namespace OPDB.Controllers
             return types;
         }
 
+        public List<SelectListItem> getTypes()
+        {
+            List<SelectListItem> types = new List<SelectListItem>();
+            foreach (var userType in db.UserTypes)
+            {
+
+                if (userType.UserTypeID > 2)
+                {
+                    types.Add(new SelectListItem()
+                    {
+                        Text = userType.UserType1,
+                        Value = userType.UserTypeID + ""
+
+                    });
+                }
+            }
+
+            return types;
+        }
+
         public List<SelectListItem> getUserTypes()
         {
             List<SelectListItem> types = new List<SelectListItem>();
@@ -342,7 +360,6 @@ namespace OPDB.Controllers
             }
 
             return types;
-
         }
 
         protected override void Dispose(bool disposing)
