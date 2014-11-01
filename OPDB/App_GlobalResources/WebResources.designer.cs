@@ -61,11 +61,47 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to El contenido de la nota es inválido.
+        /// </summary>
+        internal static string ActivityNote_Note_Invalid {
+            get {
+                return ResourceManager.GetString("ActivityNote_Note_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No ha ingresado el contenido de la nota.
         /// </summary>
         internal static string ActivityNote_Note_Required {
             get {
                 return ResourceManager.GetString("ActivityNote_Note_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El tiempo que ha entrado es inválido.
+        /// </summary>
+        internal static string Activity_ActivityTime_Invalid {
+            get {
+                return ResourceManager.GetString("Activity_ActivityTime_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to La localización que ha entrado es inválida.
+        /// </summary>
+        internal static string Activity_Location_Invalid {
+            get {
+                return ResourceManager.GetString("Activity_Location_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El propósito de la actividad es inválido.
+        /// </summary>
+        internal static string Activity_Purpose_Invalid {
+            get {
+                return ResourceManager.GetString("Activity_Purpose_Invalid", resourceCulture);
             }
         }
         
@@ -79,11 +115,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to El título entrado no es válido.
+        /// </summary>
+        internal static string Activity_Title_Invalid {
+            get {
+                return ResourceManager.GetString("Activity_Title_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No ha ingresado el título de esta actividad.
         /// </summary>
         internal static string Activity_Title_Required {
             get {
                 return ResourceManager.GetString("Activity_Title_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El contenido del comentario que ha entrado es inválido.
+        /// </summary>
+        internal static string Feedback_Feedback_Invalid {
+            get {
+                return ResourceManager.GetString("Feedback_Feedback_Invalid", resourceCulture);
             }
         }
         
@@ -97,11 +151,38 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to El enlace del documento es inválido.
+        /// </summary>
+        internal static string Media_MediaPath_Invalid {
+            get {
+                return ResourceManager.GetString("Media_MediaPath_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No ha ingresado el enlace de este medio.
         /// </summary>
         internal static string Media_MediaPath_Required {
             get {
                 return ResourceManager.GetString("Media_MediaPath_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El título del documento es inválido.
+        /// </summary>
+        internal static string Media_MediaTitle_Invalid {
+            get {
+                return ResourceManager.GetString("Media_MediaTitle_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El contenido de la misión de la entidad de alcance es inválido.
+        /// </summary>
+        internal static string OutreachEntityDetail_Mission_Invalid {
+            get {
+                return ResourceManager.GetString("OutreachEntityDetail_Mission_Invalid", resourceCulture);
             }
         }
         
@@ -115,11 +196,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to El contenido de los objetivos de la entidad de alcance es inválido.
+        /// </summary>
+        internal static string OutreachEntityDetail_Objectives_Invalid {
+            get {
+                return ResourceManager.GetString("OutreachEntityDetail_Objectives_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No ha ingresado los objetivos de la organización.
         /// </summary>
         internal static string OutreachEntityDetail_Objectives_Required {
             get {
                 return ResourceManager.GetString("OutreachEntityDetail_Objectives_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El nombre de la entidad de alcance es inválido.
+        /// </summary>
+        internal static string OutreachEntityDetail_OutreachEntityName_Invalid {
+            get {
+                return ResourceManager.GetString("OutreachEntityDetail_OutreachEntityName_Invalid", resourceCulture);
             }
         }
         
@@ -133,6 +232,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to El contenido de la visión de la entidad de alcance es inválido.
+        /// </summary>
+        internal static string OutreachEntityDetail_Vision_Invalid {
+            get {
+                return ResourceManager.GetString("OutreachEntityDetail_Vision_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No ha ingresado la visión de la organización.
         /// </summary>
         internal static string OutreachEntityDetail_Vision_Required {
@@ -142,11 +250,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to El nombre del recurso es inválido.
+        /// </summary>
+        internal static string Resource_ResourceName_Invalid {
+            get {
+                return ResourceManager.GetString("Resource_ResourceName_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No ha ingresado un nombre para este recurso.
         /// </summary>
         internal static string Resource_ResourceName_Required {
             get {
                 return ResourceManager.GetString("Resource_ResourceName_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El contenido de la nota es inválido.
+        /// </summary>
+        internal static string SchoolNote_Note_Invalid {
+            get {
+                return ResourceManager.GetString("SchoolNote_Note_Invalid", resourceCulture);
             }
         }
         
@@ -169,6 +295,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to El número telefónico de la escuela es inválido.
+        /// </summary>
+        internal static string School_PhoneNumber_Invalid {
+            get {
+                return ResourceManager.GetString("School_PhoneNumber_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No ha ingresado un número telefónico para esta escuela.
         /// </summary>
         internal static string School_PhoneNumber_Required {
@@ -178,11 +313,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to El nombre de la escuelas es inválido.
+        /// </summary>
+        internal static string School_SchoolName_Invalid {
+            get {
+                return ResourceManager.GetString("School_SchoolName_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No ha ingresado el nombre de la escuela.
         /// </summary>
         internal static string School_SchoolName_Required {
             get {
                 return ResourceManager.GetString("School_SchoolName_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El número de secuencia de la escuela es inválido.
+        /// </summary>
+        internal static string School_SchoolSequenceNumber_Invalid {
+            get {
+                return ResourceManager.GetString("School_SchoolSequenceNumber_Invalid", resourceCulture);
             }
         }
         
@@ -205,6 +358,42 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string String1 {
+            get {
+                return ResourceManager.GetString("String1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El número telefónico de la unidad es inválido.
+        /// </summary>
+        internal static string Unit_PhoneNumber_Invalid {
+            get {
+                return ResourceManager.GetString("Unit_PhoneNumber_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El nombre de la unidad es inválido.
+        /// </summary>
+        internal static string Unit_UnitName_Invalid {
+            get {
+                return ResourceManager.GetString("Unit_UnitName_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Su nombre es inválido.
+        /// </summary>
+        internal static string UserDetail_FirstName_Invalid {
+            get {
+                return ResourceManager.GetString("UserDetail_FirstName_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No ha ingresado su nombre.
         /// </summary>
         internal static string UserDetail_FirstName_Required {
@@ -223,11 +412,56 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Su apellido es inválido.
+        /// </summary>
+        internal static string UserDetail_LastName_Invalid {
+            get {
+                return ResourceManager.GetString("UserDetail_LastName_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No ha ingresado su apellido.
         /// </summary>
         internal static string UserDetail_LastName_Required {
             get {
                 return ResourceManager.GetString("UserDetail_LastName_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to La concentración entrada es inválida.
+        /// </summary>
+        internal static string UserDetail_Major_Invalid {
+            get {
+                return ResourceManager.GetString("UserDetail_Major_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Su inicial es inválida.
+        /// </summary>
+        internal static string UserDetail_MiddleInitial_Invalid {
+            get {
+                return ResourceManager.GetString("UserDetail_MiddleInitial_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El rol entrado es inválido.
+        /// </summary>
+        internal static string UserDetail_Role_Invalid {
+            get {
+                return ResourceManager.GetString("UserDetail_Role_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El contenido de la nota es inválido.
+        /// </summary>
+        internal static string UserNote_Note_Invalid {
+            get {
+                return ResourceManager.GetString("UserNote_Note_Invalid", resourceCulture);
             }
         }
         
@@ -241,11 +475,38 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Su correo electrónico es inválido.
+        /// </summary>
+        internal static string User_Email_Invalid {
+            get {
+                return ResourceManager.GetString("User_Email_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No ha ingresado un correo electrónico.
         /// </summary>
-        internal static string User_UserEmail_Required {
+        internal static string User_Email_Required {
             get {
-                return ResourceManager.GetString("User_UserEmail_Required", resourceCulture);
+                return ResourceManager.GetString("User_Email_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Su número telefónico es inválido.
+        /// </summary>
+        internal static string User_PhoneNumber_Invalid {
+            get {
+                return ResourceManager.GetString("User_PhoneNumber_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Su contraseña es inválida. .
+        /// </summary>
+        internal static string User_UserPassword_Invalid {
+            get {
+                return ResourceManager.GetString("User_UserPassword_Invalid", resourceCulture);
             }
         }
         

@@ -35,8 +35,8 @@
                 @Html.LabelFor(model => model.user.UserTypeID, "Tipo de Usuario")
             </div>
             <div class="editor-field">
-                @Html.DropDownListFor(model => model.user.UserTypeID, Model.userTypes, new { @style = "width: 500px;" })
-            </div>
+                @Html.DropDownListFor(model => model.user.UserTypeID, Model.userTypes, new { @style = "width: 500px;", @id = "userTypes", @onchange = "getUserTypeValue()" })
+            </div><br />
             <div class="editor-label">
                 @Html.LabelFor(model => model.user.Email, "Correo Electrónico")
             </div>
@@ -58,7 +58,6 @@
                 @Html.EditorFor(model => model.user.PhoneNumber)
                 @Html.ValidationMessageFor(model => model.user.PhoneNumber)
             </div>
-            <div id="user">
                 <div class="editor-label">
                     @Html.LabelFor(model => model.userDetail.FirstName, "Nombre")
                 </div>
@@ -89,9 +88,77 @@
                     @Html.RadioButtonFor(model => model.userDetail.Gender, "M")<label>Masculino</label>&nbsp;&nbsp;@Html.RadioButtonFor(model => model.userDetail.Gender, "F")<label>Femenino</label>
                     @Html.ValidationMessageFor(model => model.userDetail.Gender)
                 </div>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.userDetail.DateOfBirth, "Fecha de Nacimiento")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.userDetail.DateOfBirth)
+                    @Html.ValidationMessageFor(model => model.userDetail.DateOfBirth)
+                </div>
+            @*<div class="editor-label">
+                @Html.LabelFor(model => model.userDetail.AffiliateType, "Afiliación")
+            </div>
+            <div class="editor-field" style="text-align:left !important;">
+                @Html.DropDownListFor(model => model.userDetail.AffiliateType, Model.AffiliateTypes, new { @style = "width: 500px;", @id = "affiliateTypes", @onchange = "getAffiliateValue()" })
+            </div><br />
+
+            <div id="schools">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.SchoolID, "Escuela")
+                </div>
+                <div class="editor-field" style="text-align:left !important;">
+                    @Html.DropDownListFor(model => model.SchoolID, Model.Schools, new { @style = "width: 500px;", @id = "school" })
+                </div><br />
             </div>
 
+            <div id="outreachEntities">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.OutreachEntityDetailID, "Entidad de Alcance")
+                </div>
+                <div class="editor-field" style="text-align:left !important;">
+                    @Html.DropDownListFor(model => model.OutreachEntityDetailID, Model.OutreachEntities, new { @style = "width: 500px;", @id = "outreachEntity" })
+                </div><br />
+            </div>
+
+            <div id="units">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.UnitID, "Unidad")
+                </div>
+                <div class="editor-field" style="text-align:left !important;">
+                    @Html.DropDownListFor(model => model.UnitID, Model.Units, new { @style = "width: 500px;", @id = "unit" })
+                </div><br />
+            </div>*@
+
+            <div id="faculty">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.userDetail.Role, "Rol")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.userDetail.Role)
+                    @Html.ValidationMessageFor(model => model.userDetail.Role)
+                </div>
+            </div>
             
+            <div id="collegeStudent">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.userDetail.Major, "Concentración")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.userDetail.Major)
+                    @Html.ValidationMessageFor(model => model.userDetail.Major)
+                </div>
+            </div>
+
+            <div id="grade">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.userDetail.Grade, "Grado")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.userDetail.Grade)
+                    @Html.ValidationMessageFor(model => model.userDetail.Grade)
+                </div>
+            </div>
+           
             <p style="text-align:left;">
                 <input type="submit" class="btn" style="float:left !important; width:40% !important; margin-left: 30px !important;" value="Guardar" /> <input type="button" value="Cancelar" class="btn" style="float:right !important; width:40% !important; margin-bottom: 20px !important; margin-right: 30px !important;" onclick="window.history.back()" />
             </p>
@@ -101,6 +168,12 @@
 
 <script src="~/Scripts/myScripts.js"></script>
 
+<script>
+    $(document).ready(function () {
+        getUserTypeValue();
+        //getAffiliateValue();
+    })
+</script>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

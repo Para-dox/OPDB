@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using OPDB.Models;
+using System.Text.RegularExpressions;
 
 namespace OPDB.Controllers
 {
@@ -17,7 +18,7 @@ namespace OPDB.Controllers
         // GET: /Alcance/
 
         public ActionResult Index()
-        {     
+        {
             var users = from u in db.Users.Include(u => u.UserDetails) where u.UserTypeID == 3 && u.DeletionDate == null select u;
             return PartialView("Index", users.ToList());
         }
@@ -39,6 +40,7 @@ namespace OPDB.Controllers
             {
                 return HttpNotFound();
             }
+
             return View(outreachViewModel);
         }
 
@@ -49,53 +51,117 @@ namespace OPDB.Controllers
         {
             UserViewModel userViewModel = new UserViewModel
             {
-                userTypes = getTypes(),
-                outreachTypes = getOutreachTypes()
-
+                outreachTypes = getOutreachTypes(),
+                user = new User
+                {
+                    UserTypeID = 3
+                }
             };
 
             return View(userViewModel);
         }
 
-        //[HttpPost]
-        //public ActionResult Crear(UserViewModel userViewModel)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        userViewModel.user.CreateDate = DateTime.Now;
-        //        userViewModel.user.UpdateDate = DateTime.Now;
-        //        userViewModel.user.UserStatus = false;
+        [HttpPost]
+        public ActionResult Crear(UserViewModel userViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                bool validModel = true;
 
-        //        if (userViewModel.user.UserTypeID == 3)
-        //        {
-        //            userViewModel.outreachEntity.CreateDate = DateTime.Now;
-        //            userViewModel.outreachEntity.UpdateDate = DateTime.Now;
-        //            userViewModel.user.OutreachEntityDetails = new List<OutreachEntityDetail>();
-        //            userViewModel.user.OutreachEntityDetails.Add(userViewModel.outreachEntity);
-        //            db.Users.Add(userViewModel.user);
-        //        }
+                if (userViewModel.outreachEntity.OutreachEntityName == null || userViewModel.outreachEntity.OutreachEntityName == "")
+                {
+                    ModelState.AddModelError("OutreachEntityDetail_OutreachEntityName_Required", Resources.WebResources.OutreachEntityDetail_OutreachEntityName_Required);
+                    validModel = false;
+                }
+                else
+                {
+                    string pattern = @"^[a-zA-Z\u00c0-\u017e''-'\s]{1,100}$";
+                    Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                    MatchCollection matches = rgx.Matches(userViewModel.outreachEntity.OutreachEntityName);
+                    if (matches.Count == 0)
+                    {
+                        ModelState.AddModelError("OutreachEntity_OutreachEntityName_Invalid", Resources.WebResources.OutreachEntityDetail_OutreachEntityName_Invalid);
+                        validModel = false;
+                    }
 
-        //        else
-        //        {
-        //            userViewModel.userDetail.CreateDate = DateTime.Now;
-        //            userViewModel.userDetail.UpdateDate = DateTime.Now;
-        //            userViewModel.user.UserDetails = new List<UserDetail>();
-        //            userViewModel.user.UserDetails.Add(userViewModel.userDetail);
-        //            db.Users.Add(userViewModel.user);
-        //        }
+                }
 
-        //        db.SaveChanges();
+                if (userViewModel.outreachEntity.Mission == null || userViewModel.outreachEntity.Mission == "")
+                {
+                    ModelState.AddModelError("OutreachEntityDetail_Mission_Required", Resources.WebResources.OutreachEntityDetail_Mission_Required);
+                    validModel = false;
+                }
+                else
+                {
+                    string pattern = @"^[a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""''-'\s]+$";
+                    Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                    MatchCollection matches = rgx.Matches(userViewModel.outreachEntity.Mission);
+                    if (matches.Count == 0)
+                    {
+                        ModelState.AddModelError("OutreachEntityDetail_Mission_Invalid", Resources.WebResources.OutreachEntityDetail_Mission_Invalid);
+                        validModel = false;
+                    }
 
-        //        return RedirectToAction("Administracion", "Home", null);
-        //    }
+                }
 
-        //    userViewModel.userTypes = getUserTypes();
-        //    userViewModel.outreachTypes = getOutreachTypes();
-        //    return View(userViewModel);
-        //}
+                if (userViewModel.outreachEntity.Vision == null || userViewModel.outreachEntity.Vision == "")
+                {
+                    ModelState.AddModelError("OutreachEntityDetail_Vision_Required", Resources.WebResources.OutreachEntityDetail_Vision_Required);
+                    validModel = false;
+                }
+                else
+                {
+                    string pattern = @"^[a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""''-'\s]+$";
+                    Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                    MatchCollection matches = rgx.Matches(userViewModel.outreachEntity.Vision);
+                    if (matches.Count == 0)
+                    {
+                        ModelState.AddModelError("OutreachEntityDetail_Vision_Invalid", Resources.WebResources.OutreachEntityDetail_Vision_Invalid);
+                        validModel = false;
+                    }
 
-        //
-        // GET: /Alcance/Edit/5
+                }
+
+                if (userViewModel.outreachEntity.Objectives == null || userViewModel.outreachEntity.Objectives == "")
+                {
+                    ModelState.AddModelError("OutreachEntityDetail_Objectives_Required", Resources.WebResources.OutreachEntityDetail_Objectives_Required);
+                    validModel = false;
+                }
+                else
+                {
+                    string pattern = @"^[a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""''-'\s]+$";
+                    Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                    MatchCollection matches = rgx.Matches(userViewModel.outreachEntity.Objectives);
+                    if (matches.Count == 0)
+                    {
+                        ModelState.AddModelError("OutreachEntityDetail_Objectives_Invalid", Resources.WebResources.OutreachEntityDetail_Objectives_Invalid);
+                        validModel = false;
+                    }
+
+                }
+
+                if (validModel) { 
+
+                    userViewModel.user.CreateDate = DateTime.Now;
+                    userViewModel.user.UpdateDate = DateTime.Now;
+                    userViewModel.user.UserStatus = true;              
+                    userViewModel.outreachEntity.CreateDate = DateTime.Now;
+                    userViewModel.outreachEntity.UpdateDate = DateTime.Now;
+                    userViewModel.user.OutreachEntityDetails = new List<OutreachEntityDetail>();
+                    userViewModel.user.OutreachEntityDetails.Add(userViewModel.outreachEntity);
+                    db.Users.Add(userViewModel.user);                
+                    db.SaveChanges();
+
+                    return RedirectToAction("Administracion", "Home");
+                }
+
+
+            }
+
+                userViewModel.outreachTypes = getOutreachTypes();
+                return View(userViewModel);
+        }
+
 
         public ActionResult Editar(int id = 0)
         {
