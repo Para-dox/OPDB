@@ -606,8 +606,6 @@ namespace OPDB.Controllers
 
         public String GetErrorsFromModelState(UserViewModel userViewModel)
         {
-
-
             //retrieves the validation messages from the ModelState as strings    
             var str = "";
             var errorSates = from state in ModelState.Values
@@ -631,69 +629,33 @@ namespace OPDB.Controllers
         [HttpPost]
         public ActionResult IniciarSesion(UserViewModel userViewModel)
         {
-            if (ModelState.IsValid)
+            // TODO: passwords have no encryption at all - fix later with SimpleCrypto NuGet Package
+            User user = db.Users.FirstOrDefault(u => u.Email == userViewModel.user.Email);   
+
+            if (user != null)
             {
-                if (LoginValid(userViewModel.user.Email, userViewModel.user.UserPassword))
+                if (userViewModel.user.UserPassword.ToString().Equals(user.UserPassword))
                 {
                     //Session["user"] = userViewModel.user;
-                    FormsAuthentication.SetAuthCookie(userViewModel.user.Email, false);
+                    
+                    FormsAuthentication.SetAuthCookie(user.UserID+"", false);
 
-                    return RedirectToAction("Index","Home");
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {
                     // TODO: needs a validation message here
-                    ModelState.AddModelError("", "Invalid Login");
+                    ModelState.AddModelError("", "Contraseña Invalida");
                 }
-            }
-
-            return View("Login");
-        }
-
-        public ActionResult Registrar() // use Crear() instead
-        {
-            return View();
-        }
-
-        public ActionResult Registrar(UserViewModel userViewModel) // use Crear(View) instead
-        {
-            if (ModelState.IsValid)
-            {
-                // TODO: create here new user
-
-                // add the pass, email, etc., and store it in the DB
-
-                // db.SaveChanges etc...
-
-                return RedirectToAction("Index", "Home");
             }
             else
             {
-                // TODO: add validation messages here
-                ModelState.AddModelError("", "Registration Info is not valid");
+                // TODO: needs a validation message here
+                ModelState.AddModelError("", "Usuario no existe");
             }
-
-            return View();
+           
+            return View("Login");
         }
-
-        private bool LoginValid(string email, string password)
-        {
-            bool isValid = false;
-            User user = db.Users.FirstOrDefault(u => u.Email == email);
-
-            // TODO: passwords have no encryption at all - fix later with SimpleCrypto NuGet Package
-
-            if (user != null)
-            {
-                if (user.UserPassword.ToString().Equals(password))
-                {
-                    isValid = true;
-                }
-            }
-
-            return isValid;
-        }
-        
        
         public ActionResult CerrarSesion()
         {
