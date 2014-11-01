@@ -598,6 +598,7 @@
     <Content Include="Views\Actividades\ContactosyRecursos.cshtml" />
     <Content Include="Views\Actividades\Notas.cshtml" />
     <Content Include="Views\Usuarios\Login.cshtml" />
+    <Content Include="Views\Alcance\Removidos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
