@@ -39,6 +39,15 @@ namespace OPDB.Controllers
                 Activities = (from activity in db.Activities where activity.UserID == id && activity.DeletionDate == null select activity).ToList()
             };
 
+            foreach (var activity in outreachViewModel.Activities)
+            {
+                if (activity.ActivityDate == null)
+                    activity.ActivityDate = new DateTime();
+
+                if (activity.ActivityTime == null)
+                    activity.ActivityTime = "";
+            }
+
             if (outreachViewModel.outreachEntity == null)
             {
                 return HttpNotFound();

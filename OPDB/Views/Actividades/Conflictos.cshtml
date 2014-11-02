@@ -1,7 +1,7 @@
 ﻿@model OPDB.Models.ActivityViewModel
 
 @{
-    
+    ViewBag.Title = "Conflictos";
 }
 
 <h3>Conflictos</h3><br />
@@ -30,7 +30,7 @@
             {
                 <li>
                     Actividad: @activity.Activity.Title<br />
-                    Organizada Por: @activity.OutreachEntity.OutreachEntityName
+                    Organizada Por: @activity.OutreachEntity.OutreachEntityName<br /><br />
                 </li>
             }
         </ul>

@@ -447,7 +447,7 @@ namespace OPDB.Controllers
                 if (activityViewModel.ContactIDs != null) 
                 { 
                     //Now check if it contains anything.
-                    if (activityViewModel.ContactIDs.Count > 0)
+                    if (activityViewModel.ContactIDs.Count > 0 && activityViewModel.ContactIDs.First() != 0)
                     {
                         //Retrieve any pre-existing contacts.
                         var contacts = (from contact in db.Contacts where contact.ActivityID == activityViewModel.Activity.ActivityID select contact).ToList();
@@ -527,7 +527,7 @@ namespace OPDB.Controllers
                 if (activityViewModel.ResourceIDs != null)
                 {
                     //Now, is it empty?
-                    if (activityViewModel.ResourceIDs.Count > 0)
+                    if (activityViewModel.ResourceIDs.Count > 0 && activityViewModel.ResourceIDs.First() != 0)
                     {
                         //Retrieve all existing resources that match this activity ID.
                         var resources = (from resource in db.ActivityResources where resource.ActivityID == activityViewModel.Activity.ActivityID select resource).ToList();
@@ -1125,7 +1125,7 @@ namespace OPDB.Controllers
 
                if (activityViewModel.ContactIDs != null) 
                { 
-                   if (activityViewModel.ContactIDs.Count > 0)
+                   if (activityViewModel.ContactIDs.Count > 0 && activityViewModel.ContactIDs.First() != 0)
                    {
                        activityViewModel.Activity.Contacts = new List<Contact>();
 
@@ -1147,8 +1147,8 @@ namespace OPDB.Controllers
                }
 
                if (activityViewModel.ResourceIDs != null) 
-               { 
-                   if (activityViewModel.ResourceIDs.Count > 0)
+               {
+                   if (activityViewModel.ResourceIDs.Count > 0 && activityViewModel.ResourceIDs.First() != 0)
                    {
                        activityViewModel.Activity.ActivityResources = new List<ActivityResource>();
 
@@ -1236,7 +1236,7 @@ namespace OPDB.Controllers
                if (activityViewModel.ContactIDs != null)
                {
                    //Now check if it contains anything.
-                   if (activityViewModel.ContactIDs.Count > 0)
+                   if (activityViewModel.ContactIDs.Count > 0 && activityViewModel.ContactIDs.First() != 0)
                    {
                        //Retrieve any pre-existing contacts.
                        var contacts = (from contact in db.Contacts where contact.ActivityID == activityViewModel.Activity.ActivityID select contact).ToList();
@@ -1316,7 +1316,7 @@ namespace OPDB.Controllers
                if (activityViewModel.ResourceIDs != null)
                {
                    //Now, is it empty?
-                   if (activityViewModel.ResourceIDs.Count > 0)
+                   if (activityViewModel.ResourceIDs.Count > 0 && activityViewModel.ResourceIDs.First() != 0)
                    {
                        //Retrieve all existing resources that match this activity ID.
                        var resources = (from resource in db.ActivityResources where resource.ActivityID == activityViewModel.Activity.ActivityID select resource).ToList();
