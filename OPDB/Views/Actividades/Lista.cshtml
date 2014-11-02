@@ -58,7 +58,6 @@
         }
     </tbody>
 </table><br />
-<input type="button" class="btn" value="Nueva Actividad" onclick="location.href='@Url.Action("Crear", "Actividades", null)'" />
 
 <script src="~/Scripts/myScripts.js"></script>
 <script>
@@ -72,6 +71,9 @@
             "oLanguage": {
                 "sEmptyTable": "No se ha añadido ninguna actividad",
                 "sZeroRecords": "No se ha encontrado ningún registro"
+            },
+            "fnDrawCallback": function() {
+                $("html").getNiceScroll().resize();
             }
         });
     });

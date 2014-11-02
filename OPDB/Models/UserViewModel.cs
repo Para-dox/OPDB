@@ -57,6 +57,8 @@ namespace OPDB.Models
         public string SchoolID { get; set; }
         public string OutreachEntityDetailID { get; set; }
         public string UnitID { get; set; }
+
+        public List<Activity> Activities { get; set; }
         
     }
 }

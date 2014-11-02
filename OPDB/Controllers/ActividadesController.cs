@@ -215,6 +215,8 @@ namespace OPDB.Controllers
             
             ActivityViewModel activityViewModel = new ActivityViewModel
             {
+                User = db.Users.Find(foundActivity.UserID),
+                OutreachEntity = db.OutreachEntityDetails.First(outreach => outreach.UserID == foundActivity.UserID),
                 Activity = foundActivity,
                 ActivityDate = date,
                 Feedbacks = feedbackList,
@@ -232,18 +234,19 @@ namespace OPDB.Controllers
 
         // GET: /Actividades/Create
 
-        public ActionResult Crear()
+        public ActionResult Crear(int id)
         {
             ActivityViewModel activityViewModel = new ActivityViewModel {
                 ActivityTypes = getActivityTypes(), 
                 SchoolList = getSchools(),
                 Activity = new Activity {
-                    UserID = 9
+                    UserID = id
                 },
                 ContactIDs = new List<int>(),
                 Contacts = getContacts(),
                 Resources = getResources(),
-                ResourceIDs = new List<int>()
+                ResourceIDs = new List<int>(),
+                Information = new List<UserInfoViewModel>()
             };
 
             return View(activityViewModel);
@@ -252,7 +255,6 @@ namespace OPDB.Controllers
         // POST
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult Crear(ActivityViewModel activityViewModel)
         {
             if (ModelState.IsValid)
@@ -264,56 +266,67 @@ namespace OPDB.Controllers
                 activityViewModel.Activity.UpdateDate = DateTime.Now;
                 activityViewModel.Activity.CreateDate = DateTime.Now;
 
-                if (activityViewModel.ContactIDs.Count > 0)
+                if (activityViewModel.ContactIDs != null)
                 {
-                    activityViewModel.Activity.Contacts = new List<Contact>();
-
-                    foreach (var contact in activityViewModel.ContactIDs)
+                    if (activityViewModel.ContactIDs.Count > 0 && activityViewModel.ContactIDs.First() != 0)
                     {
-                        Contact ActivityContact = new Contact
+                        activityViewModel.Activity.Contacts = new List<Contact>();
+
+                        foreach (var contact in activityViewModel.ContactIDs)
                         {
-                            UserID = contact,
-                            CreateUser = 9,
-                            CreateDate = DateTime.Now,
-                            UpdateUser = 9,
-                            UpdateDate = DateTime.Now
-                        };
+                            Contact ActivityContact = new Contact
+                            {
+                                UserID = contact,
+                                CreateUser = 9,
+                                CreateDate = DateTime.Now,
+                                UpdateUser = 9,
+                                UpdateDate = DateTime.Now
+                            };
 
-                        activityViewModel.Activity.Contacts.Add(ActivityContact);
+                            activityViewModel.Activity.Contacts.Add(ActivityContact);
+                        }
+
                     }
+                }
+                if (activityViewModel.ResourceIDs != null) 
+                { 
+                    if (activityViewModel.ResourceIDs.Count > 0 && activityViewModel.ResourceIDs.First() != 0)
+                    {
+                        activityViewModel.Activity.ActivityResources = new List<ActivityResource>();
 
+                        foreach (var resource in activityViewModel.ResourceIDs)
+                        {
+                            ActivityResource Resource = new ActivityResource
+                            {
+                                ResourceID = resource,
+                                ResourceStatus = false,
+                                CreateUser = 9,
+                                CreateDate = DateTime.Now,
+                                UpdateUser = 9,
+                                UpdateDate = DateTime.Now
+                            };
+
+                            activityViewModel.Activity.ActivityResources.Add(Resource);
+                        }
+
+                    }
                 }
 
-                if (activityViewModel.ResourceIDs.Count > 0)
-                {
-                    activityViewModel.Activity.ActivityResources = new List<ActivityResource>();
+                activityViewModel.Information = CheckForConflicts(activityViewModel.Activity);
+                if (activityViewModel.Information.Count == 0 || activityViewModel.ForceCreate == true) 
+                { 
+                    activityViewModel.Activity.CreateUser = 3;
+                    activityViewModel.Activity.UpdateUser = 3;
 
-                    foreach (var resource in activityViewModel.ResourceIDs)
-                    {
-                        ActivityResource Resource = new ActivityResource
-                        {
-                            ResourceID = resource,
-                            ResourceStatus = false,
-                            CreateUser = 9,
-                            CreateDate = DateTime.Now,
-                            UpdateUser = 9,
-                            UpdateDate = DateTime.Now
-                        };
+                    db.Activities.Add(activityViewModel.Activity);
+                    db.SaveChanges();
 
-                        activityViewModel.Activity.ActivityResources.Add(Resource);
-                    }
-
+                    return RedirectToAction("Detalles", "Alcance", new { id = activityViewModel.Activity.UserID });
                 }
-
-                activityViewModel.Activity.CreateUser = 3;
-                activityViewModel.Activity.UpdateUser = 3;
-
-                db.Activities.Add(activityViewModel.Activity);
-                db.SaveChanges();
-
-                var outreachEntity = db.OutreachEntityDetails.First(u => u.UserID == activityViewModel.Activity.UserID);
-
-                return RedirectToAction("Detalles", "Alcance", new { id = outreachEntity.OutreachEntityDetailID });
+                else
+                {
+                    return View("Conflictos", activityViewModel);
+                }
             }
 
             return View(activityViewModel);
@@ -1043,6 +1056,31 @@ namespace OPDB.Controllers
 
            }
 
+            private List<UserInfoViewModel> CheckForConflicts(Activity createdActivity)
+            {
+                List<UserInfoViewModel> conflictingActivities = new List<UserInfoViewModel>();
+
+                var activities = (from activity in db.Activities where activity.DeletionDate == null select activity).ToList();
+
+                if (createdActivity.ActivityDate != null && createdActivity.ActivityTime != null && createdActivity.SchoolID != null) 
+                { 
+                    foreach (var activity in activities)
+                    {
+                        if (activity.ActivityDate != null && activity.ActivityTime != null && activity.SchoolID != null) 
+                        {
+                            if (activity.ActivityDate.Value.Date.Equals(createdActivity.ActivityDate.Value.Date) && activity.ActivityTime == createdActivity.ActivityTime && activity.SchoolID == createdActivity.SchoolID) 
+                            { 
+                                conflictingActivities.Add(new UserInfoViewModel { 
+                                    Activity = activity,
+                                    OutreachEntity = db.OutreachEntityDetails.First(outreach => outreach.UserID == activity.UserID)
+                                });
+                            }
+                        }
+                    }
+                }
+                return conflictingActivities;
+            }
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// Admin activity creation methods.
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1075,45 +1113,51 @@ namespace OPDB.Controllers
                activityViewModel.Activity.UpdateDate = DateTime.Now;
                activityViewModel.Activity.CreateDate = DateTime.Now;
 
-               if (activityViewModel.ContactIDs.Count > 0)
-               {
-                   activityViewModel.Activity.Contacts = new List<Contact>();
-
-                   foreach (var contact in activityViewModel.ContactIDs)
+               if (activityViewModel.ContactIDs != null) 
+               { 
+                   if (activityViewModel.ContactIDs.Count > 0)
                    {
-                       Contact ActivityContact = new Contact
+                       activityViewModel.Activity.Contacts = new List<Contact>();
+
+                       foreach (var contact in activityViewModel.ContactIDs)
                        {
-                           UserID = contact,
-                           CreateUser = 9,
-                           CreateDate = DateTime.Now,
-                           UpdateUser = 9,
-                           UpdateDate = DateTime.Now
-                       };
+                           Contact ActivityContact = new Contact
+                           {
+                               UserID = contact,
+                               CreateUser = 9,
+                               CreateDate = DateTime.Now,
+                               UpdateUser = 9,
+                               UpdateDate = DateTime.Now
+                           };
 
-                       activityViewModel.Activity.Contacts.Add(ActivityContact);
+                           activityViewModel.Activity.Contacts.Add(ActivityContact);
+                       }
+
                    }
-
                }
 
-               if (activityViewModel.ResourceIDs.Count > 0)
-               {
-                   activityViewModel.Activity.ActivityResources = new List<ActivityResource>();
-
-                   foreach (var resource in activityViewModel.ResourceIDs)
+               if (activityViewModel.ResourceIDs != null) 
+               { 
+                   if (activityViewModel.ResourceIDs.Count > 0)
                    {
-                       ActivityResource Resource = new ActivityResource
+                       activityViewModel.Activity.ActivityResources = new List<ActivityResource>();
+
+                       foreach (var resource in activityViewModel.ResourceIDs)
                        {
-                           ResourceID = resource,
-                           ResourceStatus = false,
-                           CreateUser = 9,
-                           CreateDate = DateTime.Now,
-                           UpdateUser = 9,
-                           UpdateDate = DateTime.Now
-                       };
+                           ActivityResource Resource = new ActivityResource
+                           {
+                               ResourceID = resource,
+                               ResourceStatus = false,
+                               CreateUser = 9,
+                               CreateDate = DateTime.Now,
+                               UpdateUser = 9,
+                               UpdateDate = DateTime.Now
+                           };
 
-                       activityViewModel.Activity.ActivityResources.Add(Resource);
+                           activityViewModel.Activity.ActivityResources.Add(Resource);
+                       }
+
                    }
-
                }
 
                activityViewModel.Activity.CreateUser = 3;
@@ -1121,7 +1165,7 @@ namespace OPDB.Controllers
 
                db.Activities.Add(activityViewModel.Activity);
                db.SaveChanges();
-               return RedirectToAction("Index");
+               return RedirectToAction("Administracion", "Home", null);
            }
 
            activityViewModel.ActivityTypes = getActivityTypes();

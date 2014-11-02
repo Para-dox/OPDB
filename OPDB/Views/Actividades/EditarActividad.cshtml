@@ -33,7 +33,7 @@
     <center>
         <fieldset style="width:500px;">
             <legend>Activity</legend>
-
+            <label>Todos los campos con (*) son requeridos</label><br />
             @Html.HiddenFor(model => model.Activity.ActivityID)
             @Html.HiddenFor(model => model.Activity.CreateUser)
             @Html.HiddenFor(model => model.Activity.CreateDate)
@@ -51,7 +51,7 @@
                 @Html.DropDownListFor(model => model.Activity.ActivityTypeID, Model.ActivityTypes, new { @style = "width: 500px !important;" })
             </div>
             <div class="editor-label">
-                @Html.LabelFor(model => model.Activity.Title, "Título de Actividad")
+                @Html.LabelFor(model => model.Activity.Title, "Título de Actividad *")
             </div>
             <div class="editor-field">
                 @Html.EditorFor(model => model.Activity.Title)
@@ -59,7 +59,7 @@
             </div>
 
             <div class="editor-label">
-                @Html.LabelFor(model => model.Activity.Purpose, "Propósito")
+                @Html.LabelFor(model => model.Activity.Purpose, "Propósito *")
             </div>
             <div class="editor-field">
                 @Html.EditorFor(model => model.Activity.Purpose)
@@ -72,7 +72,13 @@
             <div class="editor-field">
                 @Html.EditorFor(model => model.Activity.Location)
                 @Html.ValidationMessageFor(model => model.Activity.Location)
+            </div><br />
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Activity.Details, "Detalles")
             </div>
+            <div class="editor-field">
+                @Html.TextAreaFor(model => model.Activity.Details, new { @style = "width: 500px !important; height: 300px !important;", @id = "bbcodeEditor" })
+            </div><br />
             <div class="editor-field">
                 <div class="large-6 columns" style="text-align:left;">
                     <span>Fecha </span><br />
@@ -81,8 +87,9 @@
                 <div class="large-6 columns" style="text-align:left;">
                     <span>Hora </span><br />
                     @Html.TextBoxFor(model => model.Activity.ActivityTime, new { id = "timepicker" }) &nbsp;<i class="fa fa-clock-o"></i>
-                    @Html.ValidationMessageFor(model => model.Activity.ActivityDate)
                 </div>
+                @Html.ValidationMessageFor(model => model.Activity.ActivityDate)
+                @Html.ValidationMessageFor(model => model.Activity.ActivityTime)
             </div>
             <div class="editor-label">
                 @Html.LabelFor(model => model.Activity.SchoolID, "Escuela")

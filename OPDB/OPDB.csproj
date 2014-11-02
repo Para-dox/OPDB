@@ -321,6 +321,9 @@
     <Content Include="Content\multi-select\chosen-sprite.png" />
     <Content Include="Content\multi-select\chosen.css" />
     <Content Include="Content\multi-select\multi-select.css" />
+    <Content Include="Content\sceditor\default.min.css" />
+    <Content Include="Content\sceditor\famfamfam.png" />
+    <Content Include="Content\sceditor\jquery.sceditor.default.min.css" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -495,6 +498,7 @@
     <Content Include="Scripts\multi-select\jquery.multi-select.js" />
     <Content Include="Scripts\myScripts.js" />
     <Content Include="Scripts\nicescroll\jquery.nicescroll.js" />
+    <Content Include="Scripts\sceditor\jquery.sceditor.xhtml.min.js" />
     <Content Include="Scripts\timepicker\jquery.timepicker.js" />
     <Content Include="Scripts\timepicker\jquery.timepicker.min.js" />
     <Content Include="Web.config" />
@@ -599,6 +603,7 @@
     <Content Include="Views\Actividades\Notas.cshtml" />
     <Content Include="Views\Usuarios\Login.cshtml" />
     <Content Include="Views\Alcance\Removidos.cshtml" />
+    <Content Include="Views\Actividades\Conflictos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

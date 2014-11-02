@@ -8,7 +8,7 @@
     select {
         width: 50px !important;
         padding: 0.2rem !important;
-        height: 1.5rem !important;
+        height: 1.6rem !important;
         margin: 0 !important;
     }
 
@@ -91,7 +91,28 @@
 <div class="columns panel callout">
     <div class="large-5 columns">
         <h3>Detalles de Actividad</h3><br />
-
+        <div class="display-label">
+            @Html.LabelFor(model => model.OutreachEntity.OutreachEntityName, "Organizada Por")
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.OutreachEntity.OutreachEntityName)
+        </div>
+        <br />
+        <div class="display-label">
+            @Html.LabelFor(model => model.User.Email, "Correo Electrónico")
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.User.Email)
+        </div><br />
+        @if (Model.User.PhoneNumber != null && Model.User.PhoneNumber != "")
+        {
+         <div class="display-label">
+            @Html.LabelFor(model => model.User.PhoneNumber, "Número Telefónico")
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.User.PhoneNumber)
+        </div><br />   
+        }
         @if (Model.Activity.Location != "" && Model.Activity.Location != null) { 
         <div class="display-label">
             @Html.LabelFor(model => model.Activity.Location, "Localización")
@@ -141,6 +162,13 @@
     
 </div>
 <br />
+
+    @if (Model.Activity.Details != null && Model.Activity.Details != "") { 
+        <div id="activityDetails" class="large-12 columns panel callout">
+            <h4>Más Detalles</h4><br />
+            @Html.Raw(Model.Activity.Details)
+        </div>
+    }
 
 @if (Model.Videos.Count != 0 || Model.Photos.Count != 0)
 {

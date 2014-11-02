@@ -13,6 +13,8 @@ namespace OPDB.Models
         public Feedback Feedback { get; set; }
         public ActivityNote Note { get; set; }
         public Medium Media { get; set; }
+        public User User { get; set; }
+        public OutreachEntityDetail OutreachEntity { get; set; }
 
         public List<UserInfoViewModel> Feedbacks { get; set; }
 
@@ -46,5 +48,9 @@ namespace OPDB.Models
         public List<SelectListItem> Resources { get; set; }
 
         public List<int> ResourceIDs { get; set; }
+
+        public bool ForceCreate { get; set; }
+
+        public bool ShowPopUp { get; set; }
     }
 }

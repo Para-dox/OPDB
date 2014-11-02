@@ -22,7 +22,7 @@
 
     <fieldset style="width: 500px;">
         <legend>OutreachEntityDetail</legend>
-
+        <label>Todos los campos con (*) son requeridos</label><br />
         <div class="editor-label">
             @Html.LabelFor(model => model.outreachEntity.OutreachEntityTypeID, "Tipo de Organización")
         </div>
@@ -33,7 +33,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.outreachEntity.OutreachEntityName, "Nombre de Organización")
+            @Html.LabelFor(model => model.outreachEntity.OutreachEntityName, "Nombre de Organización *")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.outreachEntity.OutreachEntityName, new { @style = "width: 500px !important;" })
@@ -41,7 +41,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.outreachEntity.Mission, "Misión")
+            @Html.LabelFor(model => model.outreachEntity.Mission, "Misión *")
         </div>
         <div class="editor-field">
             @Html.TextAreaFor(model => model.outreachEntity.Mission, new { @style = "resize:none; width: 500px !important; height: 100px !important;" })
@@ -49,7 +49,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.outreachEntity.Vision, "Visión")
+            @Html.LabelFor(model => model.outreachEntity.Vision, "Visión *")
         </div>
         <div class="editor-field">
             @Html.TextAreaFor(model => model.outreachEntity.Vision, new { @style = "resize:none; width: 500px !important; height: 100px !important;" })
@@ -57,7 +57,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.outreachEntity.Objectives, "Objetivos")
+            @Html.LabelFor(model => model.outreachEntity.Objectives, "Objetivos *")
         </div>
         <div class="editor-field">
             @Html.TextAreaFor(model => model.outreachEntity.Objectives, new { @style = "resize:none; width: 500px !important; height: 100px !important;" })

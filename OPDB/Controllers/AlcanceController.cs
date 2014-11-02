@@ -28,12 +28,15 @@ namespace OPDB.Controllers
 
         public ActionResult Detalles(int id = 0)
         {
-            var outreach = db.OutreachEntityDetails.Find(id);
+            var user = db.Users.Find(id);
+            var outreachEntity = db.OutreachEntityDetails.First(outreach => outreach.UserID == id);
 
             UserViewModel outreachViewModel = new UserViewModel
             {
-                outreachEntity = outreach,
-                Notes = from note in db.UserNotes.Include(note => note.NoteType) where note.SubjectID == outreach.UserID && note.DeletionDate == null select note
+                user = user,
+                outreachEntity = outreachEntity,
+                Notes = (from note in db.UserNotes.Include(note => note.NoteType) where note.SubjectID == id && note.DeletionDate == null select note).ToList(),
+                Activities = (from activity in db.Activities where activity.UserID == id && activity.DeletionDate == null select activity).ToList()
             };
 
             if (outreachViewModel.outreachEntity == null)
@@ -165,12 +168,13 @@ namespace OPDB.Controllers
 
         public ActionResult Editar(int id = 0)
         {
-            var outreach = db.OutreachEntityDetails.Find(id);
+            var user = db.Users.Find(id);
+            var outreachEntity = db.OutreachEntityDetails.First(outreach => outreach.UserID == id);
 
             UserViewModel outreachViewModel = new UserViewModel
             {
-                user = db.Users.Find(outreach.UserID),
-                outreachEntity = outreach,
+                user = user,
+                outreachEntity = outreachEntity,
                 outreachTypes = getOutreachTypes()
             };
 
@@ -208,8 +212,9 @@ namespace OPDB.Controllers
 
         public ActionResult Remover(int id = 0)
         {
-            OutreachEntityDetail outreachDetail = db.OutreachEntityDetails.Find(id);
-            User user = db.Users.Find(outreachDetail.UserID);
+            User user = db.Users.Find(id);
+            OutreachEntityDetail outreachDetail = db.OutreachEntityDetails.First(outreach => outreach.UserID == id);
+           
 
             if (outreachDetail == null)
             {
@@ -230,8 +235,9 @@ namespace OPDB.Controllers
 
         public ActionResult Restaurar(int id = 0)
         {
-            OutreachEntityDetail outreachDetail = db.OutreachEntityDetails.Find(id);
-            User user = db.Users.Find(outreachDetail.UserID);
+            User user = db.Users.Find(id);
+            OutreachEntityDetail outreachDetail = db.OutreachEntityDetails.First(outreach => outreach.UserID == id);
+            
 
             if (outreachDetail == null)
             {
@@ -281,8 +287,6 @@ namespace OPDB.Controllers
         [HttpPost]
         public ActionResult GuardarNota(UserViewModel userViewModel)
         {
-            try
-            {
                 userViewModel.note.UpdateUser = 2;
                 userViewModel.note.UpdateDate = DateTime.Now;
 
@@ -311,8 +315,7 @@ namespace OPDB.Controllers
                     return View("_Hack");
 
                 }
-            }
-            catch(Exception e) { return Content(e.ToString()); }
+            
             return Content(GetErrorsFromModelState(userViewModel));
         }
 

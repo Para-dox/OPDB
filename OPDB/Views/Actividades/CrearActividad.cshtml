@@ -33,7 +33,7 @@
     <center>
         <fieldset style="width:500px;">
             <legend>Activity</legend>
-
+            <label>Todos los campos con (*) son requeridos</label><br />
             <div class="editor-label">
                 @Html.LabelFor(model => model.Activity.UserID, "Entidad de Alcance")
             </div>
@@ -48,7 +48,7 @@
             </div><br />
 
             <div class="editor-label">
-                @Html.LabelFor(model => model.Activity.Title, "Título de Actividad")
+                @Html.LabelFor(model => model.Activity.Title, "Título de Actividad *")
             </div>
             <div class="editor-field">
                 @Html.ValidationMessageFor(model => model.Activity.Title)
@@ -56,7 +56,7 @@
             </div>
 
             <div class="editor-label">
-                @Html.LabelFor(model => model.Activity.Purpose, "Propósito")
+                @Html.LabelFor(model => model.Activity.Purpose, "Propósito *")
             </div>
             <div class="editor-field">
                 @Html.EditorFor(model => model.Activity.Purpose)
@@ -70,17 +70,23 @@
                 @Html.EditorFor(model => model.Activity.Location)
                 @Html.ValidationMessageFor(model => model.Activity.Location)
             </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Activity.Details, "Detalles")
+            </div>
+            <div class="editor-field">
+                @Html.TextAreaFor(model => model.Activity.Details, new { @style = "width: 500px !important; height: 300px !important;", @id = "bbcodeEditor" })
+            </div><br />
             <div class="editor-field">
                 <div class="large-6 columns" style="text-align:left;">
                     <span>Fecha </span><br />
                     @Html.TextBoxFor(model => model.Activity.ActivityDate, new { id = "datepicker", @readonly = true }) &nbsp;<i class="fa fa-calendar"></i>
-                    @Html.ValidationMessageFor(model => model.Activity.ActivityTime)
                 </div>
                 <div class="large-6 columns" style="text-align:left;">
                     <span>Hora </span><br />
                     @Html.TextBoxFor(model => model.Activity.ActivityTime, new { id = "timepicker" }) &nbsp;<i class="fa fa-clock-o"></i>
-                    @Html.ValidationMessageFor(model => model.Activity.ActivityTime)
                 </div>
+                @Html.ValidationMessageFor(model => model.Activity.ActivityDate)
+                @Html.ValidationMessageFor(model => model.Activity.ActivityTime)
             </div>
             <div class="editor-label">
                 @Html.LabelFor(model => model.Activity.SchoolID, "Escuela")

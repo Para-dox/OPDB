@@ -14,7 +14,7 @@
             <tbody>
                 @foreach (var contact in Model.ActivityContacts)
                 {
-                    <tr>
+                    <tr style="background-color: #ecfaff !important;">
                         <td>@contact.UserDetail.FirstName @contact.UserDetail.MiddleInitial @contact.UserDetail.LastName</td>
                         <td>@contact.User.Email</td>
                         <td>@contact.User.PhoneNumber</td>
@@ -36,7 +36,7 @@
            <tbody>
                @foreach (var resource in Model.ActivityResources)
                {
-                   <tr>
+                   <tr style="background-color: #ecfaff !important;">
                        <td><a data-dropdown="hover-@resource.ActivityResource.ActivityResourceID" data-options="is_hover:true">@resource.Resource.Resource1</a></td>
                        <td>
                            <div id="hover-@resource.ActivityResource.ActivityResourceID" class="small content f-dropdown" data-dropdown-content>

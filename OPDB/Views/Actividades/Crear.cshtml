@@ -27,23 +27,23 @@
 <h2>Nueva Actividad</h2>
 
 @using (Html.BeginForm()) {
-    @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
     <center>
         <fieldset style="width:500px;">
             <legend>Activity</legend>
+            <label>Todos los campos con (*) son requeridos</label><br />
             @Html.HiddenFor(model => model.Activity.UserID)
 
             <div class="editor-label">
                 @Html.LabelFor(model => model.Activity.ActivityTypeID, "Tipo de Actividad")
             </div>
             <div class="editor-field">
-                @Html.DropDownListFor(model => model.Activity.ActivityTypeID, Model.ActivityTypes, new { @style = "width: 500px !important;" })
+                @Html.DropDownListFor(model => model.Activity.ActivityTypeID, Model.ActivityTypes, new { @style = "width: 500px !important; height: 2.55rem !important;" })
             </div><br />
 
             <div class="editor-label">
-                @Html.LabelFor(model => model.Activity.Title, "Título de Actividad")
+                @Html.LabelFor(model => model.Activity.Title, "Título de Actividad *")
             </div>
             <div class="editor-field">
                 @Html.EditorFor(model => model.Activity.Title)
@@ -51,7 +51,7 @@
             </div>
 
             <div class="editor-label">
-                @Html.LabelFor(model => model.Activity.Purpose, "Propósito")
+                @Html.LabelFor(model => model.Activity.Purpose, "Propósito *")
             </div>
             <div class="editor-field">
                 @Html.EditorFor(model => model.Activity.Purpose)
@@ -59,29 +59,35 @@
             </div>
 
             <div class="editor-label">
-                @Html.LabelFor(model => model.Activity.Location, "Localización")
+                @Html.LabelFor(model => model.Activity.Location, "Localización *")
             </div>
             <div class="editor-field">
                 @Html.EditorFor(model => model.Activity.Location)
                 @Html.ValidationMessageFor(model => model.Activity.Location)
             </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Activity.Details, "Detalles")
+            </div>
+            <div class="editor-field">
+                @Html.TextAreaFor(model => model.Activity.Details, new { @style = "width: 500px !important; height: 300px !important;", @id = "bbcodeEditor" })
+            </div><br />
             <div class="editor-field">
                 <div class="large-6 columns" style="text-align:left;">
                     <span>Fecha </span><br />
                     @Html.TextBoxFor(model => model.Activity.ActivityDate, new { id = "datepicker", @readonly = true }) &nbsp;<i class="fa fa-calendar"></i> 
-                    @Html.ValidationMessageFor(model => model.Activity.ActivityDate)
                 </div>
                 <div class="large-6 columns" style="text-align:left;">
                     <span>Hora </span><br />
                     @Html.TextBoxFor(model => model.Activity.ActivityTime, new { id = "timepicker" }) &nbsp;<i class="fa fa-clock-o"></i>
-                    @Html.ValidationMessageFor(model => model.Activity.ActivityTime)
                 </div>
+                @Html.ValidationMessageFor(model => model.Activity.ActivityDate)
+                @Html.ValidationMessageFor(model => model.Activity.ActivityTime)
             </div>
             <div class="editor-label">
                 @Html.LabelFor(model => model.Activity.SchoolID, "Escuela")
             </div>
             <div class="editor-field">
-                @Html.DropDownListFor(model => model.Activity.SchoolID, Model.SchoolList, new { @style = "width: 500px !important;" })
+                @Html.DropDownListFor(model => model.Activity.SchoolID, Model.SchoolList, new { @style = "width: 500px !important; height: 2.55rem !important;" })
             </div><br />
             <div class="editor-label">
                 @Html.LabelFor(model => model.ContactIDs, "Contactos de la Actividad")
@@ -100,12 +106,15 @@
             </p>
         </fieldset>
     </center>
+    
+    
+    
 }
+
 
 <script>
 
-    $(document).ready(function(){
-
+    $(document).ready(function () {
         $("#datepicker").datepicker({ dateFormat: 'dd/mm/yy' }).val();
  
         $("#timepicker").timepicker({

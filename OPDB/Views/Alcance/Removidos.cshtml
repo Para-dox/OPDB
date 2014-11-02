@@ -44,7 +44,7 @@
         {
             <tr>
                 <td>
-                    @Html.ActionLink(item.OutreachEntityDetails.FirstOrDefault(i => i.UserID == item.UserID).OutreachEntityName, "Detalles", "Alcance", new { id = item.OutreachEntityDetails.FirstOrDefault(outreach => outreach.UserID == item.UserID).OutreachEntityDetailID }, null)
+                    @Html.ActionLink(item.OutreachEntityDetails.FirstOrDefault(i => i.UserID == item.UserID).OutreachEntityName, "Detalles", "Alcance", new { id = item.UserID }, null)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.OutreachEntityDetails.FirstOrDefault(i => i.UserID == item.UserID).OutreachEntityType.OutreachEntityType1)
@@ -54,7 +54,7 @@
                 </td>
                 <td>@Html.DisplayFor(modelItem => item.DeletionDate)</td>
                 <td>
-                    <i title="Restaurar" style="cursor: pointer !important;" class="fa fa-plus" onclick="restoreRecord(this, 'removedUsers')" data-url="@Url.Action("Restaurar", "Alcance", new { id = item.OutreachEntityDetails.FirstOrDefault(i => i.UserID == item.UserID).OutreachEntityDetailID })"></i>                
+                    <i title="Restaurar" style="cursor: pointer !important;" class="fa fa-plus" onclick="restoreRecord(this, 'removedUsers')" data-url="@Url.Action("Restaurar", "Alcance", new { id = item.UserID })"></i>                
                 </td>
             </tr>
 

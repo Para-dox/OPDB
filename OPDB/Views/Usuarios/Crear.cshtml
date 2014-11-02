@@ -22,7 +22,7 @@
             <label>Todos los campos con (*) son requeridos</label><br />
             @Html.ValidationSummary(true)
             <div class="editor-label">
-                @Html.LabelFor(model => model.user.UserTypeID, "Tipo de Usuario *")
+                @Html.LabelFor(model => model.user.UserTypeID, "Tipo de Usuario")
             </div>
             <div class="editor-field">
                 @Html.DropDownListFor(model => model.user.UserTypeID, Model.userTypes, new { @style = "width: 500px !important;", @id = "userType", @onchange = "getValue()" })
@@ -40,7 +40,14 @@
             </div>
             <div class="editor-field">
                 @Html.ValidationMessageFor(model => model.user.UserPassword, null, new { @style = "float:left !important;" })
-                @Html.EditorFor(model => model.user.UserPassword, new { @style = "width: 500px !important;" })
+                @Html.PasswordFor(model => model.user.UserPassword, new { @style = "width: 500px !important;" })
+            </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.user.PhoneNumber, "Número Telefónico")<i style="float:right; cursor:pointer;" class="fa fa-question-circle" title="Su contraseña debe contener: de 8 a 10 caracteres, al menos un digito, al menos un caracter alfabetico y no debe contener caracteres especiales."></i>
+            </div>
+            <div class="editor-field">
+                @Html.ValidationMessageFor(model => model.user.PhoneNumber, null, new { @style = "float:left !important;" })
+                @Html.EditorFor(model => model.user.PhoneNumber, new { @style = "width: 500px !important;" })
             </div>
 
             <div id="user">
@@ -126,6 +133,7 @@
             </p>
         </fieldset>
     </center>
+       
 
 }
 
@@ -143,7 +151,7 @@
         getValue();
     })
 
-   
+    
 
 
 
