@@ -51,6 +51,6 @@ namespace OPDB.Models
 
         public bool ForceCreate { get; set; }
 
-        public bool ShowPopUp { get; set; }
+        public string Action { get; set; }
     }
 }

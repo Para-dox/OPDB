@@ -325,10 +325,13 @@ namespace OPDB.Controllers
                 }
                 else
                 {
+                    activityViewModel.Action = "Crear";
                     return View("Conflictos", activityViewModel);
                 }
             }
 
+            activityViewModel.ActivityTypes = getActivityTypes();
+            activityViewModel.SchoolList = getSchools();
             return View(activityViewModel);
         }
 
@@ -598,12 +601,19 @@ namespace OPDB.Controllers
                     }
                 }
 
-                db.Entry(activityViewModel.Activity).State = EntityState.Modified;
-                db.SaveChanges();
-
-                var outreachEntity = db.OutreachEntityDetails.First(outreach => outreach.UserID == activityViewModel.Activity.UserID);
-                
-                return RedirectToAction("Detalles", "Alcance", new { id = outreachEntity.OutreachEntityDetailID });               
+                activityViewModel.Information = CheckForConflicts(activityViewModel.Activity);
+                if (activityViewModel.Information.Count == 0 || activityViewModel.ForceCreate == true)
+                {
+                    db.Entry(activityViewModel.Activity).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Detalles", "Alcance", new { id = activityViewModel.Activity.UserID });
+                }
+                else
+                {
+                    activityViewModel.Action = "Editar";
+                    return View("Conflictos", activityViewModel);
+                }
+            
 
             }
 
@@ -1158,20 +1168,29 @@ namespace OPDB.Controllers
                        }
 
                    }
+               } 
+               
+               activityViewModel.Information = CheckForConflicts(activityViewModel.Activity);
+               if (activityViewModel.Information.Count == 0 || activityViewModel.ForceCreate == true)
+               {
+                   activityViewModel.Activity.CreateUser = 3;
+                   activityViewModel.Activity.UpdateUser = 3;
+
+                   db.Activities.Add(activityViewModel.Activity);
+                   db.SaveChanges();
+
+                   return RedirectToAction("Administracion", "Home", null);
                }
-
-               activityViewModel.Activity.CreateUser = 3;
-               activityViewModel.Activity.UpdateUser = 3;
-
-               db.Activities.Add(activityViewModel.Activity);
-               db.SaveChanges();
-               return RedirectToAction("Administracion", "Home", null);
+               else
+               {
+                   activityViewModel.Action = "CrearActividad";
+                   return View("Conflictos", activityViewModel);
+               }
            }
 
            activityViewModel.ActivityTypes = getActivityTypes();
            activityViewModel.SchoolList = getSchools();
            activityViewModel.OutreachEntities = getOutreachEntities();
-
            return View(activityViewModel);
        }
 
@@ -1370,16 +1389,24 @@ namespace OPDB.Controllers
                    }
                }
 
-               db.Entry(activityViewModel.Activity).State = EntityState.Modified;
-               db.SaveChanges();
-               return RedirectToAction("Index");
+               activityViewModel.Information = CheckForConflicts(activityViewModel.Activity);
+               if (activityViewModel.Information.Count == 0 || activityViewModel.ForceCreate == true)
+               {
+                   db.Entry(activityViewModel.Activity).State = EntityState.Modified;
+                   db.SaveChanges();
+                   return RedirectToAction("Administracion", "Home", null);
+               }
+               else
+               {
+                   activityViewModel.Action = "EditarActividad";
+                   return View("Conflictos", activityViewModel);
+               }
 
            }
 
            activityViewModel.ActivityTypes = getActivityTypes();
            activityViewModel.SchoolList = getSchools();
            activityViewModel.OutreachEntities = getOutreachEntities();
-
            return View(activityViewModel);
        }
 
