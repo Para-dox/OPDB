@@ -74,7 +74,15 @@
                                 <li>@Html.ActionLink("Escuelas", "Lista", "Escuelas")</li>
                                 <li>@Html.ActionLink("Unidades", "Lista", "Unidades")</li>
                                 <li>@Html.ActionLink("Usuarios", "Lista", "Usuarios")</li>
-                                <li>@Html.ActionLink("Admin", "Administracion", "Home")</li>
+
+                                @if (Request.IsAuthenticated)
+                                {
+                                    if (Int32.Parse(User.Identity.Name.ToString().Substring(User.Identity.Name.ToString().LastIndexOf('=') + 1).Trim()) == 1)
+                                    {
+                                        <li>@Html.ActionLink("Admin", "Administracion", "Home")</li>
+                                    }
+                                }
+                                
                             </ul>
                         </li>
                         @*<li class="name">@Html.ActionLink("Contact", "Contact", "Home")</li>*@

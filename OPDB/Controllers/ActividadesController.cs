@@ -124,7 +124,18 @@ namespace OPDB.Controllers
         public ActionResult Lista()
         {
             var activities = (from activity in db.Activities where activity.DeletionDate == null orderby activity.UpdateDate descending select activity).ToList();
-            
+
+            User currentUser = null;
+
+            if (User.Identity.IsAuthenticated)
+            {
+                int currentUserID = Int32.Parse(User.Identity.Name.Substring(0, User.Identity.Name.IndexOf("u")).Trim());
+                currentUser = db.Users.FirstOrDefault(u => u.UserID == currentUserID);
+            }
+            else
+            {
+                currentUser = null;
+            }
 
             ActivityViewModel activityViewModel = new ActivityViewModel
             {
@@ -139,7 +150,13 @@ namespace OPDB.Controllers
                 if (activity.ActivityTime == null)
                     activity.ActivityTime = "";
 
-                var interest = (from i in db.Interests where i.UserID == 1 && i.ActivityID == activity.ActivityID select i).ToList();
+                List<OPDB.Models.Interest> interest = new List<OPDB.Models.Interest>();
+
+                if (currentUser != null)
+                {
+                    interest = (from i in db.Interests where i.UserID == currentUser.UserID && i.ActivityID == activity.ActivityID select i).ToList();
+                }
+
                 bool interested = false;
 
                 if (interest.Count == 1)

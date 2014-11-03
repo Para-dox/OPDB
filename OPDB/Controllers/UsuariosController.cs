@@ -22,6 +22,11 @@ namespace OPDB.Controllers
 
         public ActionResult Index()
         {
+            if (!Request.IsAuthenticated || (Int32.Parse(User.Identity.Name.ToString().Substring(User.Identity.Name.ToString().LastIndexOf('=') + 1).Trim()) != 1))
+            {
+                return RedirectToAction("AccesoDenegado", "Home", null);
+            }
+
             var users = from u in db.Users.Include(u => u.UserType).Include(u => u.UserDetails) where u.UserTypeID != 3 && u.DeletionDate == null select u;
             return PartialView("Index", users.ToList());
         }
@@ -764,7 +769,7 @@ namespace OPDB.Controllers
                 {
                     //Session["user"] = userViewModel.user;
                     
-                    FormsAuthentication.SetAuthCookie(user.UserID+"", false);
+                    FormsAuthentication.SetAuthCookie(user.UserID+"ut="+user.UserTypeID, false);
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -916,12 +921,9 @@ namespace OPDB.Controllers
 
 
                 userViewModel.userTypes = getAllUserTypes();
+
                 return View("CrearUsuario", userViewModel);
-                    
         }
-
-
-
     }
 }
 

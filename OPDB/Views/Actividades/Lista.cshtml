@@ -33,7 +33,14 @@
     }
 </style>
 
-<div><h2 style="float:left;">Actividades</h2> <a class="btn btn-sm" style="float:right; margin-top:2%;" href="@Url.Action("DeInteres", "Actividades", null)">Actividades de Interes</a></div><br /> 
+<div><h2 style="float:left;">Actividades</h2>
+    @if (Request.IsAuthenticated)
+    {
+        <a class="btn btn-sm" style="float:right; margin-top:2%;" href="@Url.Action("DeInteres", "Actividades", null)">Actividades de Interes</a>
+    }
+</div>
+<br />
+
 <table id="activityList">
     <thead hidden>
         <tr><th></th></tr>
@@ -49,8 +56,15 @@
                         <div>@if (item.Activity.ActivityDate != new DateTime()){ <span>Fecha: </span> @item.Activity.ActivityDate.Value.ToString("dd/MM/yyyy") } @if(item.Activity.ActivityTime != ""){<span>Hora: </span> @item.Activity.ActivityTime}</div>
                         <span>Organizada Por: </span>@item.OutreachEntity.OutreachEntityName
                     </div>
-                @if (item.Interested != true) { 
-                    <div class="large-2 columns"><a class="btn btn-sm" onclick="showInterest(this)" data-url="@Url.Action("Interes", "Actividades", new { id = item.Activity.ActivityID })" title="Mostrar Interes"><i class="fa fa-thumbs-up"></i> Me Interesa</a></div>
+                @if (Request.IsAuthenticated)
+                {
+                    if (item.Interested != true) { 
+                        <div class="large-2 columns"><a class="btn btn-sm" onclick="showInterest(this)" data-url="@Url.Action("Interes", "Actividades", new { id = item.Activity.ActivityID })" title="Mostrar Interes"><i class="fa fa-thumbs-up"></i> Me Interesa</a></div>
+                    }
+                else
+                {
+                    <i style="float:right; font-size:0.875rem;">Te interesa esta actividad.</i>
+                }
                 }
                 </td>
             </tr>
@@ -58,7 +72,17 @@
         }
     </tbody>
 </table><br />
-<input type="button" class="btn" value="Nueva Actividad" onclick="location.href='@Url.Action("Crear", "Actividades", null)'" />
+
+@if (Request.IsAuthenticated)
+{
+    int userType = Int32.Parse(User.Identity.Name.ToString().Substring(User.Identity.Name.ToString().LastIndexOf('=') + 1).Trim());
+    
+    if (userType == 1)
+    {
+        <input type="button" class="btn" value="Nueva Actividad" onclick="location.href='@Url.Action("Crear", "Actividades", null)'" />
+    }
+}
+
 
 <script src="~/Scripts/myScripts.js"></script>
 <script>
