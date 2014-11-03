@@ -18,26 +18,40 @@ namespace OPDB.Controllers
 
         public ActionResult Index()
         {
-            List<Unit> units = (from unit in db.Units where unit.DeletionDate == null select unit).ToList();
-
-            UnitViewModel unitViewModel = new UnitViewModel
+            if (User.Identity.IsAuthenticated)
             {
-                Information = new List<UserInfoViewModel>()
-            };
-
-
-            foreach (var unit in units)
-            {
-                unitViewModel.Information.Add(new UserInfoViewModel
+                if (Int32.Parse((User.Identity.Name.Split(',')[1])) == 1)
                 {
-                    Unit = unit,
-                    CreateUser = db.UserDetails.First(u => u.UserID == unit.CreateUser),
-                    UpdateUser = db.UserDetails.First(u => u.UserID == unit.UpdateUser)
+                    List<Unit> units = (from unit in db.Units where unit.DeletionDate == null select unit).ToList();
 
-                });
+                    UnitViewModel unitViewModel = new UnitViewModel
+                    {
+                        Information = new List<UserInfoViewModel>()
+                    };
+
+
+                    foreach (var unit in units)
+                    {
+                        unitViewModel.Information.Add(new UserInfoViewModel
+                        {
+                            Unit = unit,
+                            CreateUser = db.UserDetails.First(u => u.UserID == unit.CreateUser),
+                            UpdateUser = db.UserDetails.First(u => u.UserID == unit.UpdateUser)
+
+                        });
+                    }
+
+                    return PartialView("Index", unitViewModel);
+                }
+                else
+                {
+                    return RedirectToAction("AccesoDenegado", "Home");
+                }
             }
-
-            return PartialView("Index", unitViewModel);
+            else
+            {
+                return RedirectToAction("AccesoDenegado", "Home");
+            }
         }
 
         [HttpPost]

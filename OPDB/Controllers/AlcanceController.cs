@@ -19,8 +19,22 @@ namespace OPDB.Controllers
 
         public ActionResult Index()
         {
-            var users = from u in db.Users.Include(u => u.UserDetails) where u.UserTypeID == 3 && u.DeletionDate == null && u.UserStatus == true select u;
-            return PartialView("Index", users.ToList());
+            if (User.Identity.IsAuthenticated)
+            {
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
+                    var users = from u in db.Users.Include(u => u.UserDetails) where u.UserTypeID == 3 && u.DeletionDate == null && u.UserStatus == true select u;
+                    return PartialView("Index", users.ToList());
+                }
+                else
+                {
+                    return RedirectToAction("AccesoDenegado", "Home");
+                }
+            }
+            else
+            {
+                return RedirectToAction("AccesoDenegado", "Home");
+            }
         }
 
         public ActionResult MenuAlcance()
