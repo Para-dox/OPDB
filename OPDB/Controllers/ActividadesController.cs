@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using OPDB.Models;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace OPDB.Controllers
 {
@@ -257,6 +258,23 @@ namespace OPDB.Controllers
         [HttpPost]
         public ActionResult Crear(ActivityViewModel activityViewModel)
         {
+            if (activityViewModel.Activity.ActivityDate != null)
+            {
+                if(activityViewModel.Activity.ActivityDate.Value.Date.CompareTo(DateTime.Now.Date) <= 0)
+                    ModelState.AddModelError("Activity_ActivityDate_EarlierThanCurrentDate", Resources.WebResources.Activity_ActivityDate_EarlierThanCurrentDate);
+            }
+
+            if (activityViewModel.Activity.Details != null && activityViewModel.Activity.Details != "")
+            {
+                string pattern = @"^<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>$";
+                Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                MatchCollection matches = rgx.Matches(activityViewModel.Activity.Details);
+                
+                if (matches.Count > 0)
+                    ModelState.AddModelError("Activity_Details_Invalid", Resources.WebResources.Activity_Details_Invalid);
+                
+            }
+
             if (ModelState.IsValid)
             {
                 //TODO needs to acquire current user 
@@ -332,6 +350,8 @@ namespace OPDB.Controllers
 
             activityViewModel.ActivityTypes = getActivityTypes();
             activityViewModel.SchoolList = getSchools();
+            activityViewModel.Contacts = getContacts();
+            activityViewModel.Resources = getResources();
             return View(activityViewModel);
         }
 
@@ -429,12 +449,28 @@ namespace OPDB.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Editar(ActivityViewModel activityViewModel)
         {
+            if (activityViewModel.ActivityDate != "" && activityViewModel.ActivityDate != null)
+                activityViewModel.Activity.ActivityDate = DateTime.ParseExact(activityViewModel.ActivityDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+
+            if (activityViewModel.Activity.ActivityDate != null)
+            {
+                if (activityViewModel.Activity.ActivityDate.Value.Date.CompareTo(DateTime.Now.Date) <= 0)
+                    ModelState.AddModelError("Activity_ActivityDate_EarlierThanCurrentDate", Resources.WebResources.Activity_ActivityDate_EarlierThanCurrentDate);
+            }
+
+            if (activityViewModel.Activity.Details != null && activityViewModel.Activity.Details != "")
+            {
+                string pattern = @"^<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>$";
+                Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                MatchCollection matches = rgx.Matches(activityViewModel.Activity.Details);
+
+                if (matches.Count > 0)
+                    ModelState.AddModelError("Activity_Details_Invalid", Resources.WebResources.Activity_Details_Invalid);
+
+            }
+
             if (ModelState.IsValid)
             {
-                //TODO acquire current user
-                if (activityViewModel.ActivityDate != "" && activityViewModel.ActivityDate != null)
-                    activityViewModel.Activity.ActivityDate = DateTime.ParseExact(activityViewModel.ActivityDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                
                 if(activityViewModel.Activity.ActivityTime != "" && activityViewModel.Activity.ActivityTime != null)
                     activityViewModel.Activity.ActivityTime = activityViewModel.Activity.ActivityTime.Replace(" ", "");
                 
@@ -619,6 +655,8 @@ namespace OPDB.Controllers
 
             activityViewModel.ActivityTypes = getActivityTypes();
             activityViewModel.SchoolList = getSchools();
+            activityViewModel.Contacts = getContacts();
+            activityViewModel.Resources = getResources();
             return View(activityViewModel);
         }
 
@@ -1106,10 +1144,7 @@ namespace OPDB.Controllers
                ContactIDs = new List<int>(),
                Resources = getResources(),
                ResourceIDs = new List<int>()
-           };
-
-         
-           
+           };          
 
            return View(activityViewModel);
        }
@@ -1117,6 +1152,23 @@ namespace OPDB.Controllers
        [HttpPost]
        public ActionResult CrearActividad(ActivityViewModel activityViewModel)
        {
+           if (activityViewModel.Activity.ActivityDate != null)
+           {
+               if (activityViewModel.Activity.ActivityDate.Value.Date.CompareTo(DateTime.Now.Date) <= 0)
+                   ModelState.AddModelError("Activity_ActivityDate_EarlierThanCurrentDate", Resources.WebResources.Activity_ActivityDate_EarlierThanCurrentDate);
+           }
+
+           if (activityViewModel.Activity.Details != null && activityViewModel.Activity.Details != "")
+           {
+               string pattern = @"^<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>$";
+               Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+               MatchCollection matches = rgx.Matches(activityViewModel.Activity.Details);
+
+               if (matches.Count > 0)
+                   ModelState.AddModelError("Activity_Details_Invalid", Resources.WebResources.Activity_Details_Invalid);
+
+           }
+
            if (ModelState.IsValid)
            {
                //TODO needs to acquire current user 
@@ -1191,6 +1243,8 @@ namespace OPDB.Controllers
            activityViewModel.ActivityTypes = getActivityTypes();
            activityViewModel.SchoolList = getSchools();
            activityViewModel.OutreachEntities = getOutreachEntities();
+           activityViewModel.Contacts = getContacts();
+           activityViewModel.Resources = getResources();           
            return View(activityViewModel);
        }
 
@@ -1210,7 +1264,8 @@ namespace OPDB.Controllers
            activityViewModel.ActivityTypes = getActivityTypes();
            activityViewModel.SchoolList = getSchools();
            activityViewModel.OutreachEntities = getOutreachEntities();
-
+           activityViewModel.Contacts = getContacts();
+           activityViewModel.Resources = getResources();
            return View(activityViewModel);
        }
 
@@ -1218,13 +1273,29 @@ namespace OPDB.Controllers
        [ValidateAntiForgeryToken]
        public ActionResult EditarActividad(ActivityViewModel activityViewModel)
        {
+           if (activityViewModel.ActivityDate != "" && activityViewModel.ActivityDate != null)
+               activityViewModel.Activity.ActivityDate = DateTime.ParseExact(activityViewModel.ActivityDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+
+           if (activityViewModel.Activity.ActivityDate != null)
+           {
+               if (activityViewModel.Activity.ActivityDate.Value.Date.CompareTo(DateTime.Now.Date) <= 0)
+                   ModelState.AddModelError("Activity_ActivityDate_EarlierThanCurrentDate", Resources.WebResources.Activity_ActivityDate_EarlierThanCurrentDate);
+           }
+
+           if (activityViewModel.Activity.Details != null && activityViewModel.Activity.Details != "")
+           {
+               string pattern = @"^<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>$";
+               Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+               MatchCollection matches = rgx.Matches(activityViewModel.Activity.Details);
+
+               if (matches.Count > 0)
+                   ModelState.AddModelError("Activity_Details_Invalid", Resources.WebResources.Activity_Details_Invalid);
+
+           }
+
            if (ModelState.IsValid)
            {
-               //TODO acquire current user
-               if (activityViewModel.ActivityDate != "" && activityViewModel.ActivityDate != null)
-                   activityViewModel.Activity.ActivityDate = DateTime.ParseExact(activityViewModel.ActivityDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-
-               if (activityViewModel.Activity.ActivityTime != "" && activityViewModel.Activity.ActivityTime != null)
+              if (activityViewModel.Activity.ActivityTime != "" && activityViewModel.Activity.ActivityTime != null)
                    activityViewModel.Activity.ActivityTime = activityViewModel.Activity.ActivityTime.Replace(" ", "");
 
                activityViewModel.Activity.UpdateUser = 3;
@@ -1407,6 +1478,8 @@ namespace OPDB.Controllers
            activityViewModel.ActivityTypes = getActivityTypes();
            activityViewModel.SchoolList = getSchools();
            activityViewModel.OutreachEntities = getOutreachEntities();
+           activityViewModel.Contacts = getContacts();
+           activityViewModel.Resources = getResources();
            return View(activityViewModel);
        }
 

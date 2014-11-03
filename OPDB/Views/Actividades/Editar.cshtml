@@ -53,32 +53,31 @@
                 @Html.LabelFor(model => model.Activity.Title, "Título de Actividad *")
             </div>
             <div class="editor-field">
-                @Html.EditorFor(model => model.Activity.Title)
                 @Html.ValidationMessageFor(model => model.Activity.Title)
+                @Html.EditorFor(model => model.Activity.Title)
             </div>
 
             <div class="editor-label">
                 @Html.LabelFor(model => model.Activity.Purpose, "Propósito *")
             </div>
             <div class="editor-field">
-                @Html.EditorFor(model => model.Activity.Purpose)
                 @Html.ValidationMessageFor(model => model.Activity.Purpose)
+                @Html.EditorFor(model => model.Activity.Purpose)
             </div>
-
-            <div class="editor-label">
-                @Html.LabelFor(model => model.Activity.Details, "Detalles")
-            </div>
-            <div class="editor-field">
-                @Html.TextAreaFor(model => model.Activity.Details, new { @style = "width: 500px !important; height: 300px !important;", @id = "bbcodeEditor" })
-            </div><br />
-
             <div class="editor-label">
                 @Html.LabelFor(model => model.Activity.Location, "Localización")
             </div>
             <div class="editor-field">
-                @Html.EditorFor(model => model.Activity.Location)
                 @Html.ValidationMessageFor(model => model.Activity.Location)
+                @Html.EditorFor(model => model.Activity.Location)
             </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Activity.Details, "Detalles")
+            </div>
+            <div class="editor-field">
+                @Html.ValidationMessage("Activity_Details_Invalid", new { @style = "float:left !important;" })
+                @Html.TextAreaFor(model => model.Activity.Details, new { @style = "width: 500px !important; height: 300px !important;", @id = "bbcodeEditor" })
+            </div><br />
             <div class="editor-field">
                 <div class="large-6 columns" style="text-align:left;">
                     <span>Fecha </span><br />
@@ -88,9 +87,10 @@
                     <span>Hora </span><br />
                     @Html.TextBoxFor(model => model.Activity.ActivityTime, new { id = "timepicker" }) &nbsp;<i class="fa fa-clock-o"></i>
                 </div>
-                @Html.ValidationMessageFor(model => model.Activity.ActivityDate)
-                @Html.ValidationMessageFor(model => model.Activity.ActivityTime)
-            </div>
+                @Html.ValidationMessageFor(model => model.Activity.ActivityDate, null, new { @style = "float:left !important;" })
+                @Html.ValidationMessage("Activity_ActivityDate_EarlierThanCurrentDate", new { @style = "float:left !important;" })
+                @Html.ValidationMessageFor(model => model.Activity.ActivityTime, null, new { @style = "float:left !important;" })
+            </div><br />
             <div class="editor-label">
                 @Html.LabelFor(model => model.Activity.SchoolID, "Escuela")
             </div>
