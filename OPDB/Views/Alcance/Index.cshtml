@@ -8,7 +8,7 @@
     select {
         width: 50px !important;
         padding: 0.2rem !important;
-        height: 1.5rem !important;
+        height: 1.6rem !important;
         margin: 0 !important;
     }
 
@@ -46,7 +46,7 @@
         {
             <tr>
                 <td>
-                    @Html.ActionLink(item.OutreachEntityDetails.FirstOrDefault(outreach => outreach.UserID == item.UserID).OutreachEntityName, "Detalles", "Alcance", new { id = item.OutreachEntityDetails.FirstOrDefault(outreach => outreach.UserID == item.UserID).OutreachEntityDetailID }, null)
+                    @Html.ActionLink(item.OutreachEntityDetails.FirstOrDefault(outreach => outreach.UserID == item.UserID).OutreachEntityName, "Detalles", "Alcance", new { id = item.UserID }, null)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.OutreachEntityDetails.FirstOrDefault(outreach => outreach.UserID == item.UserID).OutreachEntityType.OutreachEntityType1)
@@ -64,8 +64,8 @@
                     @Html.DisplayFor(modelItem => item.UpdateDate)
                 </td>
                 <td>
-                    <a href="@Url.Action("Editar", "Alcance", new { id = item.OutreachEntityDetails.FirstOrDefault(outreach => outreach.UserID == item.UserID).OutreachEntityDetailID })"><i class="fa fa-pencil" title="Editar"></i></a>
-                    <i title="Remover" class="fa fa-remove" onclick="removeRecord(this, 'outreach')" data-url="@Url.Action("Remover", "Alcance", new { id = item.OutreachEntityDetails.FirstOrDefault(outreach => outreach.UserID == item.UserID).OutreachEntityDetailID })"></i>
+                    <a href="@Url.Action("Editar", "Alcance", new { id = item.UserID })"><i class="fa fa-pencil" title="Editar"></i></a>
+                    <i title="Remover" class="fa fa-remove" onclick="removeRecord(this, 'outreach')" data-url="@Url.Action("Remover", "Alcance", new { id = item.UserID })"></i>
                 </td>
             </tr>
         }

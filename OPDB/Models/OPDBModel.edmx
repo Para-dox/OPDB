@@ -14,6 +14,7 @@
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="Title" Type="text" Nullable="false" />
           <Property Name="Purpose" Type="text" Nullable="false" />
+          <Property Name="Details" Type="text" />
           <Property Name="Location" Type="varchar" MaxLength="100" />
           <Property Name="ActivityDate" Type="date" />
           <Property Name="ActivityTime" Type="varchar" MaxLength="7" />
@@ -2119,6 +2120,7 @@
           <NavigationProperty Name="User2" Relationship="OPDBModel.Activity_ibfk_5" FromRole="Activity" ToRole="User" />
           <NavigationProperty Name="School" Relationship="OPDBModel.Activity_ibfk_3" FromRole="Activity" ToRole="School" />
           <NavigationProperty Name="Media" Relationship="OPDBModel.Media_ibfk_1" FromRole="Activity" ToRole="Medium" />
+          <Property Name="Details" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ActivityNote">
           <Key>
@@ -3520,6 +3522,7 @@
           <EntitySetMapping Name="Activities">
             <EntityTypeMapping TypeName="OPDBModel.Activity">
               <MappingFragment StoreEntitySet="Activity">
+                <ScalarProperty Name="Details" ColumnName="Details" />
                 <ScalarProperty Name="ActivityID" ColumnName="ActivityID" />
                 <ScalarProperty Name="ActivityTypeID" ColumnName="ActivityTypeID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />

@@ -43,11 +43,12 @@
         {
             <tr>
                 <td class="panel callout large-12 columns">
-                    @Html.ActionLink(item.OutreachEntity.OutreachEntityName, "Detalles", "Alcance", new { id = item.OutreachEntity.OutreachEntityDetailID }, null)<br />
+                    @Html.ActionLink(item.OutreachEntity.OutreachEntityName, "Detalles", "Alcance", new { id = item.User.UserID }, null)<br />
                     <span>Misión: </span> @item.OutreachEntity.Mission<br />
                     <span>Objetivos: </span> @item.OutreachEntity.Objectives<br />
-                    <span>Localización:</span> @item.OutreachEntity.Location<br />
-                    @if (item.OutreachEntity.User.PhoneNumber != null)
+                    @if (item.OutreachEntity.Location != null && item.OutreachEntity.Location != "") { 
+                    <span>Localización:</span> @item.OutreachEntity.Location<br />}
+                    @if (item.User.PhoneNumber != null)
                     {
                         <span>Telefono: </span> @item.User.PhoneNumber
                     }
@@ -70,6 +71,9 @@
             "oLanguage": {
                 "sEmptyTable": "No se ha añadido ninguna organización de alcance",
                 "sZeroRecords": "No se ha encontrado ningún registro"
+            },
+            "fnDrawCallback": function () {
+                $("html").getNiceScroll().resize();
             }
         });
     });

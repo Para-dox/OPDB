@@ -8,7 +8,7 @@
     select {
         width: 50px !important;
         padding: 0.2rem !important;
-        height: 1.5rem !important;
+        height: 1.6rem !important;
         margin: 0 !important;
     }
 
@@ -64,16 +64,25 @@
             @Html.DisplayFor(model => model.outreachEntity.OutreachEntityName)
     </div>
         <br />
+        <div class="display-label">
+            @Html.LabelFor(model => model.user.Email, "Correo Eléctronico")
+        </div>
 
-    <div class="display-label">
-            @Html.LabelFor(model => model.outreachEntity.User.PhoneNumber, "Número de Telefono")
-    </div>
-
-    <div class="display-field">
-            @Html.DisplayFor(model => model.outreachEntity.User.PhoneNumber)
-    </div>  
+        <div class="display-field">
+            @Html.DisplayFor(model => model.user.Email)
+        </div>
         <br />
+    @if (Model.user.PhoneNumber != null && Model.user.PhoneNumber != "") 
+    { 
+        <div class="display-label">
+                @Html.LabelFor(model => model.user.PhoneNumber, "Número Telefónico")
+        </div>
 
+        <div class="display-field">
+                @Html.DisplayFor(model => model.user.PhoneNumber)
+        </div>  
+            <br />
+    }
     <div class="display-label">
             @Html.LabelFor(model => model.outreachEntity.Mission, "Misión")
     </div>
@@ -97,17 +106,20 @@
             @Html.DisplayFor(model => model.outreachEntity.Objectives)
     </div>
         <br />
-
-    <div class="display-label">
-            @Html.LabelFor(model => model.outreachEntity.Location, "Localización")
-    </div>
-    <div class="display-field">
-            @Html.DisplayFor(model => model.outreachEntity.Location)
-    </div>
+    @if (Model.outreachEntity.Location != null && Model.outreachEntity.Location != "") 
+    { 
+        <div class="display-label">
+                @Html.LabelFor(model => model.outreachEntity.Location, "Localización")
+        </div>
+        <div class="display-field">
+                @Html.DisplayFor(model => model.outreachEntity.Location)
+        </div>
+    }
         <p>
             <br />
-            <a title="Editar Usuario" href="@Url.Action("Editar", "Alcance", new { id = Model.outreachEntity.OutreachEntityDetailID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-pencil fa-stack-1x fa-inverse"></i></span></a>
+            <a title="Editar Entidad de Alcance" href="@Url.Action("Editar", "Alcance", new { id = Model.outreachEntity.UserID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-pencil fa-stack-1x fa-inverse"></i></span></a>
             <a title="Regresar" onclick="window.history.back()"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-arrow-left fa-stack-1x fa-inverse"></i></span></a>
+            <a title="Añadir Actividad" href="@Url.Action("Crear", "Actividades", new { id = Model.outreachEntity.UserID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-plus fa-stack-1x fa-inverse"></i></span></a>
         </p>
     </div>
 
@@ -136,9 +148,35 @@
                 }
             </tbody>
 
-        </table>
+        </table><br />
         <a href="#" title="Añadir Nota" class="modal_ajax_btn" data-title="Nueva Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Alcance", new { id = Model.outreachEntity.UserID })"><input type="button" value="Añadir Nota" class="btn" /></a>
     </div>
+</div>
+
+<div class="large-12 columns panel callout">
+    <h3>Actividades</h3>
+    <table id="activities" style="border:none;">
+        <thead hidden>
+            <tr>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var activity in Model.Activities)
+            {
+                <tr style="background-color: #ecfaff !important">
+                 <td style="text-align: left !important;">
+                    @Html.ActionLink(activity.Title, "Detalles", "Actividades", new { id = activity.ActivityID }, null)<br />
+                    <span>Propósito: </span> @activity.Purpose<br />
+                    <div>@if (activity.ActivityDate != new DateTime())
+                    { <span>Fecha: </span> @activity.ActivityDate.Value.ToString("dd/MM/yyyy") } @if (activity.ActivityTime != "")
+                    {<span>Hora: </span> @activity.ActivityTime}</div>
+                 </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
 </div>
 
 <script src="~/Scripts/myScripts.js"></script>
@@ -158,6 +196,18 @@
             ],
             "oLanguage": {
                 "sEmptyTable": "No se ha dejado ninguna nota",
+                "sZeroRecords": "No se ha encontrado ningún registro",
+                "sSearch": "Buscar:"
+            }
+        });
+
+        $('#activities').DataTable({
+            "sDom": '<"top">t<"bottom"pr><"clear">',
+            "sPaginationType": "full_numbers",
+            "bProcessing": false,
+            "iDisplayLength": 10,
+            "oLanguage": {
+                "sEmptyTable": "No se ha creado ninguna actividad",
                 "sZeroRecords": "No se ha encontrado ningún registro",
                 "sSearch": "Buscar:"
             }

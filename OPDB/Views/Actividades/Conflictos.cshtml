@@ -1,0 +1,45 @@
+﻿@model OPDB.Models.ActivityViewModel
+
+@{
+    ViewBag.Title = "Conflictos";
+}
+
+<h3>Conflictos</h3><br />
+<div class="large-10 callout panel">
+    @using (Html.BeginForm(Model.Action, "Actividades", FormMethod.Post))
+    {
+        @Html.HiddenFor(model => model.Activity.UserID)
+        @Html.HiddenFor(model => model.Activity.ActivityTypeID)
+        @Html.HiddenFor(model => model.Activity.Title)
+        @Html.HiddenFor(model => model.Activity.Purpose)
+        @Html.HiddenFor(model => model.Activity.Location)
+        @Html.HiddenFor(model => model.Activity.Details)
+        @Html.HiddenFor(model => model.Activity.ActivityDate)
+        @Html.HiddenFor(model => model.Activity.ActivityTime)
+        @Html.HiddenFor(model => model.Activity.SchoolID)
+        @Html.HiddenFor(model => model.ContactIDs)
+        @Html.HiddenFor(model => model.ResourceIDs)
+        @Html.HiddenFor(model => model.ForceCreate, new { Value = true })
+
+        
+        <div>
+            Las siguientes actividades confligen con la actividad que esta intentando crear:
+        </div><br />
+        <ul style="width: 100%; list-style-type: none;">
+            @foreach (var activity in Model.Information)
+            {
+                <li>
+                    Actividad: @activity.Activity.Title<br />
+                    Organizada Por: @activity.OutreachEntity.OutreachEntityName<br /><br />
+                </li>
+            }
+        </ul>
+        <div>
+            <div>
+                ¿Esta seguro que aún desear crear su actividad?
+            </div>            
+        </div><br />
+        <input type="submit" class="btn" style="float:left !important; width:40% !important; margin-left: 30px !important;" value="Sí" /> <input type="button" value="No" class="btn" style="float:right !important; width:40% !important; margin-bottom: 20px !important; margin-right: 30px !important;" onclick="location.href = '@Url.Action("Detalles", "Alcance", new { id =  Model.Activity.UserID })'" />
+
+    }
+</div>

@@ -67,6 +67,9 @@
             "oLanguage": {
                 "sEmptyTable": "No se ha añadido ninguna unidad",
                 "sZeroRecords": "No se ha encontrado ningún registro"
+            },
+            "fnDrawCallback": function () {
+                $("html").getNiceScroll().resize();
             }
         });
     });

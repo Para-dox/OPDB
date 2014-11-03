@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using OPDB.Models;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace OPDB.Controllers
 {
@@ -232,6 +233,8 @@ namespace OPDB.Controllers
             
             ActivityViewModel activityViewModel = new ActivityViewModel
             {
+                User = db.Users.Find(foundActivity.UserID),
+                OutreachEntity = db.OutreachEntityDetails.First(outreach => outreach.UserID == foundActivity.UserID),
                 Activity = foundActivity,
                 ActivityDate = date,
                 Feedbacks = feedbackList,
@@ -249,18 +252,19 @@ namespace OPDB.Controllers
 
         // GET: /Actividades/Create
 
-        public ActionResult Crear()
+        public ActionResult Crear(int id)
         {
             ActivityViewModel activityViewModel = new ActivityViewModel {
                 ActivityTypes = getActivityTypes(), 
                 SchoolList = getSchools(),
                 Activity = new Activity {
-                    UserID = 9
+                    UserID = id
                 },
                 ContactIDs = new List<int>(),
                 Contacts = getContacts(),
                 Resources = getResources(),
-                ResourceIDs = new List<int>()
+                ResourceIDs = new List<int>(),
+                Information = new List<UserInfoViewModel>()
             };
 
             return View(activityViewModel);
@@ -269,9 +273,25 @@ namespace OPDB.Controllers
         // POST
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult Crear(ActivityViewModel activityViewModel)
         {
+            if (activityViewModel.Activity.ActivityDate != null)
+            {
+                if(activityViewModel.Activity.ActivityDate.Value.Date.CompareTo(DateTime.Now.Date) <= 0)
+                    ModelState.AddModelError("Activity_ActivityDate_EarlierThanCurrentDate", Resources.WebResources.Activity_ActivityDate_EarlierThanCurrentDate);
+            }
+
+            if (activityViewModel.Activity.Details != null && activityViewModel.Activity.Details != "")
+            {
+                string pattern = @"^<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>$";
+                Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                MatchCollection matches = rgx.Matches(activityViewModel.Activity.Details);
+                
+                if (matches.Count > 0)
+                    ModelState.AddModelError("Activity_Details_Invalid", Resources.WebResources.Activity_Details_Invalid);
+                
+            }
+
             if (ModelState.IsValid)
             {
                 //TODO needs to acquire current user 
@@ -281,58 +301,74 @@ namespace OPDB.Controllers
                 activityViewModel.Activity.UpdateDate = DateTime.Now;
                 activityViewModel.Activity.CreateDate = DateTime.Now;
 
-                if (activityViewModel.ContactIDs.Count > 0)
+                if (activityViewModel.ContactIDs != null)
                 {
-                    activityViewModel.Activity.Contacts = new List<Contact>();
-
-                    foreach (var contact in activityViewModel.ContactIDs)
+                    if (activityViewModel.ContactIDs.Count > 0 && activityViewModel.ContactIDs.First() != 0)
                     {
-                        Contact ActivityContact = new Contact
+                        activityViewModel.Activity.Contacts = new List<Contact>();
+
+                        foreach (var contact in activityViewModel.ContactIDs)
                         {
-                            UserID = contact,
-                            CreateUser = 9,
-                            CreateDate = DateTime.Now,
-                            UpdateUser = 9,
-                            UpdateDate = DateTime.Now
-                        };
+                            Contact ActivityContact = new Contact
+                            {
+                                UserID = contact,
+                                CreateUser = 9,
+                                CreateDate = DateTime.Now,
+                                UpdateUser = 9,
+                                UpdateDate = DateTime.Now
+                            };
 
-                        activityViewModel.Activity.Contacts.Add(ActivityContact);
+                            activityViewModel.Activity.Contacts.Add(ActivityContact);
+                        }
+
                     }
+                }
+                if (activityViewModel.ResourceIDs != null) 
+                { 
+                    if (activityViewModel.ResourceIDs.Count > 0 && activityViewModel.ResourceIDs.First() != 0)
+                    {
+                        activityViewModel.Activity.ActivityResources = new List<ActivityResource>();
 
+                        foreach (var resource in activityViewModel.ResourceIDs)
+                        {
+                            ActivityResource Resource = new ActivityResource
+                            {
+                                ResourceID = resource,
+                                ResourceStatus = false,
+                                CreateUser = 9,
+                                CreateDate = DateTime.Now,
+                                UpdateUser = 9,
+                                UpdateDate = DateTime.Now
+                            };
+
+                            activityViewModel.Activity.ActivityResources.Add(Resource);
+                        }
+
+                    }
                 }
 
-                if (activityViewModel.ResourceIDs.Count > 0)
-                {
-                    activityViewModel.Activity.ActivityResources = new List<ActivityResource>();
+                activityViewModel.Information = CheckForConflicts(activityViewModel.Activity);
+                if (activityViewModel.Information.Count == 0 || activityViewModel.ForceCreate == true) 
+                { 
+                    activityViewModel.Activity.CreateUser = 3;
+                    activityViewModel.Activity.UpdateUser = 3;
 
-                    foreach (var resource in activityViewModel.ResourceIDs)
-                    {
-                        ActivityResource Resource = new ActivityResource
-                        {
-                            ResourceID = resource,
-                            ResourceStatus = false,
-                            CreateUser = 9,
-                            CreateDate = DateTime.Now,
-                            UpdateUser = 9,
-                            UpdateDate = DateTime.Now
-                        };
+                    db.Activities.Add(activityViewModel.Activity);
+                    db.SaveChanges();
 
-                        activityViewModel.Activity.ActivityResources.Add(Resource);
-                    }
-
+                    return RedirectToAction("Detalles", "Alcance", new { id = activityViewModel.Activity.UserID });
                 }
-
-                activityViewModel.Activity.CreateUser = 3;
-                activityViewModel.Activity.UpdateUser = 3;
-
-                db.Activities.Add(activityViewModel.Activity);
-                db.SaveChanges();
-
-                var outreachEntity = db.OutreachEntityDetails.First(u => u.UserID == activityViewModel.Activity.UserID);
-
-                return RedirectToAction("Detalles", "Alcance", new { id = outreachEntity.OutreachEntityDetailID });
+                else
+                {
+                    activityViewModel.Action = "Crear";
+                    return View("Conflictos", activityViewModel);
+                }
             }
 
+            activityViewModel.ActivityTypes = getActivityTypes();
+            activityViewModel.SchoolList = getSchools();
+            activityViewModel.Contacts = getContacts();
+            activityViewModel.Resources = getResources();
             return View(activityViewModel);
         }
 
@@ -430,12 +466,28 @@ namespace OPDB.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Editar(ActivityViewModel activityViewModel)
         {
+            if (activityViewModel.ActivityDate != "" && activityViewModel.ActivityDate != null)
+                activityViewModel.Activity.ActivityDate = DateTime.ParseExact(activityViewModel.ActivityDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+
+            if (activityViewModel.Activity.ActivityDate != null)
+            {
+                if (activityViewModel.Activity.ActivityDate.Value.Date.CompareTo(DateTime.Now.Date) <= 0)
+                    ModelState.AddModelError("Activity_ActivityDate_EarlierThanCurrentDate", Resources.WebResources.Activity_ActivityDate_EarlierThanCurrentDate);
+            }
+
+            if (activityViewModel.Activity.Details != null && activityViewModel.Activity.Details != "")
+            {
+                string pattern = @"^<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>$";
+                Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                MatchCollection matches = rgx.Matches(activityViewModel.Activity.Details);
+
+                if (matches.Count > 0)
+                    ModelState.AddModelError("Activity_Details_Invalid", Resources.WebResources.Activity_Details_Invalid);
+
+            }
+
             if (ModelState.IsValid)
             {
-                //TODO acquire current user
-                if (activityViewModel.ActivityDate != "" && activityViewModel.ActivityDate != null)
-                    activityViewModel.Activity.ActivityDate = DateTime.ParseExact(activityViewModel.ActivityDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                
                 if(activityViewModel.Activity.ActivityTime != "" && activityViewModel.Activity.ActivityTime != null)
                     activityViewModel.Activity.ActivityTime = activityViewModel.Activity.ActivityTime.Replace(" ", "");
                 
@@ -448,7 +500,7 @@ namespace OPDB.Controllers
                 if (activityViewModel.ContactIDs != null) 
                 { 
                     //Now check if it contains anything.
-                    if (activityViewModel.ContactIDs.Count > 0)
+                    if (activityViewModel.ContactIDs.Count > 0 && activityViewModel.ContactIDs.First() != 0)
                     {
                         //Retrieve any pre-existing contacts.
                         var contacts = (from contact in db.Contacts where contact.ActivityID == activityViewModel.Activity.ActivityID select contact).ToList();
@@ -528,7 +580,7 @@ namespace OPDB.Controllers
                 if (activityViewModel.ResourceIDs != null)
                 {
                     //Now, is it empty?
-                    if (activityViewModel.ResourceIDs.Count > 0)
+                    if (activityViewModel.ResourceIDs.Count > 0 && activityViewModel.ResourceIDs.First() != 0)
                     {
                         //Retrieve all existing resources that match this activity ID.
                         var resources = (from resource in db.ActivityResources where resource.ActivityID == activityViewModel.Activity.ActivityID select resource).ToList();
@@ -602,17 +654,26 @@ namespace OPDB.Controllers
                     }
                 }
 
-                db.Entry(activityViewModel.Activity).State = EntityState.Modified;
-                db.SaveChanges();
-
-                var outreachEntity = db.OutreachEntityDetails.First(outreach => outreach.UserID == activityViewModel.Activity.UserID);
-                
-                return RedirectToAction("Detalles", "Alcance", new { id = outreachEntity.OutreachEntityDetailID });               
+                activityViewModel.Information = CheckForConflicts(activityViewModel.Activity);
+                if (activityViewModel.Information.Count == 0 || activityViewModel.ForceCreate == true)
+                {
+                    db.Entry(activityViewModel.Activity).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Detalles", "Alcance", new { id = activityViewModel.Activity.UserID });
+                }
+                else
+                {
+                    activityViewModel.Action = "Editar";
+                    return View("Conflictos", activityViewModel);
+                }
+            
 
             }
 
             activityViewModel.ActivityTypes = getActivityTypes();
             activityViewModel.SchoolList = getSchools();
+            activityViewModel.Contacts = getContacts();
+            activityViewModel.Resources = getResources();
             return View(activityViewModel);
         }
 
@@ -1060,6 +1121,31 @@ namespace OPDB.Controllers
 
            }
 
+            private List<UserInfoViewModel> CheckForConflicts(Activity createdActivity)
+            {
+                List<UserInfoViewModel> conflictingActivities = new List<UserInfoViewModel>();
+
+                var activities = (from activity in db.Activities where activity.DeletionDate == null select activity).ToList();
+
+                if (createdActivity.ActivityDate != null && createdActivity.ActivityTime != null && createdActivity.SchoolID != null) 
+                { 
+                    foreach (var activity in activities)
+                    {
+                        if (activity.ActivityDate != null && activity.ActivityTime != null && activity.SchoolID != null) 
+                        {
+                            if (activity.ActivityDate.Value.Date.Equals(createdActivity.ActivityDate.Value.Date) && activity.ActivityTime == createdActivity.ActivityTime && activity.SchoolID == createdActivity.SchoolID) 
+                            { 
+                                conflictingActivities.Add(new UserInfoViewModel { 
+                                    Activity = activity,
+                                    OutreachEntity = db.OutreachEntityDetails.First(outreach => outreach.UserID == activity.UserID)
+                                });
+                            }
+                        }
+                    }
+                }
+                return conflictingActivities;
+            }
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// Admin activity creation methods.
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1075,10 +1161,7 @@ namespace OPDB.Controllers
                ContactIDs = new List<int>(),
                Resources = getResources(),
                ResourceIDs = new List<int>()
-           };
-
-         
-           
+           };          
 
            return View(activityViewModel);
        }
@@ -1086,65 +1169,99 @@ namespace OPDB.Controllers
        [HttpPost]
        public ActionResult CrearActividad(ActivityViewModel activityViewModel)
        {
+           if (activityViewModel.Activity.ActivityDate != null)
+           {
+               if (activityViewModel.Activity.ActivityDate.Value.Date.CompareTo(DateTime.Now.Date) <= 0)
+                   ModelState.AddModelError("Activity_ActivityDate_EarlierThanCurrentDate", Resources.WebResources.Activity_ActivityDate_EarlierThanCurrentDate);
+           }
+
+           if (activityViewModel.Activity.Details != null && activityViewModel.Activity.Details != "")
+           {
+               string pattern = @"^<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>$";
+               Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+               MatchCollection matches = rgx.Matches(activityViewModel.Activity.Details);
+
+               if (matches.Count > 0)
+                   ModelState.AddModelError("Activity_Details_Invalid", Resources.WebResources.Activity_Details_Invalid);
+
+           }
+
            if (ModelState.IsValid)
            {
                //TODO needs to acquire current user 
                activityViewModel.Activity.UpdateDate = DateTime.Now;
                activityViewModel.Activity.CreateDate = DateTime.Now;
 
-               if (activityViewModel.ContactIDs.Count > 0)
-               {
-                   activityViewModel.Activity.Contacts = new List<Contact>();
-
-                   foreach (var contact in activityViewModel.ContactIDs)
+               if (activityViewModel.ContactIDs != null) 
+               { 
+                   if (activityViewModel.ContactIDs.Count > 0 && activityViewModel.ContactIDs.First() != 0)
                    {
-                       Contact ActivityContact = new Contact
+                       activityViewModel.Activity.Contacts = new List<Contact>();
+
+                       foreach (var contact in activityViewModel.ContactIDs)
                        {
-                           UserID = contact,
-                           CreateUser = 9,
-                           CreateDate = DateTime.Now,
-                           UpdateUser = 9,
-                           UpdateDate = DateTime.Now
-                       };
+                           Contact ActivityContact = new Contact
+                           {
+                               UserID = contact,
+                               CreateUser = 9,
+                               CreateDate = DateTime.Now,
+                               UpdateUser = 9,
+                               UpdateDate = DateTime.Now
+                           };
 
-                       activityViewModel.Activity.Contacts.Add(ActivityContact);
+                           activityViewModel.Activity.Contacts.Add(ActivityContact);
+                       }
+
                    }
-
                }
 
-               if (activityViewModel.ResourceIDs.Count > 0)
+               if (activityViewModel.ResourceIDs != null) 
                {
-                   activityViewModel.Activity.ActivityResources = new List<ActivityResource>();
-
-                   foreach (var resource in activityViewModel.ResourceIDs)
+                   if (activityViewModel.ResourceIDs.Count > 0 && activityViewModel.ResourceIDs.First() != 0)
                    {
-                       ActivityResource Resource = new ActivityResource
+                       activityViewModel.Activity.ActivityResources = new List<ActivityResource>();
+
+                       foreach (var resource in activityViewModel.ResourceIDs)
                        {
-                           ResourceID = resource,
-                           ResourceStatus = false,
-                           CreateUser = 9,
-                           CreateDate = DateTime.Now,
-                           UpdateUser = 9,
-                           UpdateDate = DateTime.Now
-                       };
+                           ActivityResource Resource = new ActivityResource
+                           {
+                               ResourceID = resource,
+                               ResourceStatus = false,
+                               CreateUser = 9,
+                               CreateDate = DateTime.Now,
+                               UpdateUser = 9,
+                               UpdateDate = DateTime.Now
+                           };
 
-                       activityViewModel.Activity.ActivityResources.Add(Resource);
+                           activityViewModel.Activity.ActivityResources.Add(Resource);
+                       }
+
                    }
+               } 
+               
+               activityViewModel.Information = CheckForConflicts(activityViewModel.Activity);
+               if (activityViewModel.Information.Count == 0 || activityViewModel.ForceCreate == true)
+               {
+                   activityViewModel.Activity.CreateUser = 3;
+                   activityViewModel.Activity.UpdateUser = 3;
 
+                   db.Activities.Add(activityViewModel.Activity);
+                   db.SaveChanges();
+
+                   return RedirectToAction("Administracion", "Home", null);
                }
-
-               activityViewModel.Activity.CreateUser = 3;
-               activityViewModel.Activity.UpdateUser = 3;
-
-               db.Activities.Add(activityViewModel.Activity);
-               db.SaveChanges();
-               return RedirectToAction("Index");
+               else
+               {
+                   activityViewModel.Action = "CrearActividad";
+                   return View("Conflictos", activityViewModel);
+               }
            }
 
            activityViewModel.ActivityTypes = getActivityTypes();
            activityViewModel.SchoolList = getSchools();
            activityViewModel.OutreachEntities = getOutreachEntities();
-
+           activityViewModel.Contacts = getContacts();
+           activityViewModel.Resources = getResources();           
            return View(activityViewModel);
        }
 
@@ -1164,7 +1281,8 @@ namespace OPDB.Controllers
            activityViewModel.ActivityTypes = getActivityTypes();
            activityViewModel.SchoolList = getSchools();
            activityViewModel.OutreachEntities = getOutreachEntities();
-
+           activityViewModel.Contacts = getContacts();
+           activityViewModel.Resources = getResources();
            return View(activityViewModel);
        }
 
@@ -1172,13 +1290,29 @@ namespace OPDB.Controllers
        [ValidateAntiForgeryToken]
        public ActionResult EditarActividad(ActivityViewModel activityViewModel)
        {
+           if (activityViewModel.ActivityDate != "" && activityViewModel.ActivityDate != null)
+               activityViewModel.Activity.ActivityDate = DateTime.ParseExact(activityViewModel.ActivityDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+
+           if (activityViewModel.Activity.ActivityDate != null)
+           {
+               if (activityViewModel.Activity.ActivityDate.Value.Date.CompareTo(DateTime.Now.Date) <= 0)
+                   ModelState.AddModelError("Activity_ActivityDate_EarlierThanCurrentDate", Resources.WebResources.Activity_ActivityDate_EarlierThanCurrentDate);
+           }
+
+           if (activityViewModel.Activity.Details != null && activityViewModel.Activity.Details != "")
+           {
+               string pattern = @"^<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>$";
+               Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+               MatchCollection matches = rgx.Matches(activityViewModel.Activity.Details);
+
+               if (matches.Count > 0)
+                   ModelState.AddModelError("Activity_Details_Invalid", Resources.WebResources.Activity_Details_Invalid);
+
+           }
+
            if (ModelState.IsValid)
            {
-               //TODO acquire current user
-               if (activityViewModel.ActivityDate != "" && activityViewModel.ActivityDate != null)
-                   activityViewModel.Activity.ActivityDate = DateTime.ParseExact(activityViewModel.ActivityDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-
-               if (activityViewModel.Activity.ActivityTime != "" && activityViewModel.Activity.ActivityTime != null)
+              if (activityViewModel.Activity.ActivityTime != "" && activityViewModel.Activity.ActivityTime != null)
                    activityViewModel.Activity.ActivityTime = activityViewModel.Activity.ActivityTime.Replace(" ", "");
 
                activityViewModel.Activity.UpdateUser = 3;
@@ -1190,7 +1324,7 @@ namespace OPDB.Controllers
                if (activityViewModel.ContactIDs != null)
                {
                    //Now check if it contains anything.
-                   if (activityViewModel.ContactIDs.Count > 0)
+                   if (activityViewModel.ContactIDs.Count > 0 && activityViewModel.ContactIDs.First() != 0)
                    {
                        //Retrieve any pre-existing contacts.
                        var contacts = (from contact in db.Contacts where contact.ActivityID == activityViewModel.Activity.ActivityID select contact).ToList();
@@ -1270,7 +1404,7 @@ namespace OPDB.Controllers
                if (activityViewModel.ResourceIDs != null)
                {
                    //Now, is it empty?
-                   if (activityViewModel.ResourceIDs.Count > 0)
+                   if (activityViewModel.ResourceIDs.Count > 0 && activityViewModel.ResourceIDs.First() != 0)
                    {
                        //Retrieve all existing resources that match this activity ID.
                        var resources = (from resource in db.ActivityResources where resource.ActivityID == activityViewModel.Activity.ActivityID select resource).ToList();
@@ -1343,16 +1477,26 @@ namespace OPDB.Controllers
                    }
                }
 
-               db.Entry(activityViewModel.Activity).State = EntityState.Modified;
-               db.SaveChanges();
-               return RedirectToAction("Index");
+               activityViewModel.Information = CheckForConflicts(activityViewModel.Activity);
+               if (activityViewModel.Information.Count == 0 || activityViewModel.ForceCreate == true)
+               {
+                   db.Entry(activityViewModel.Activity).State = EntityState.Modified;
+                   db.SaveChanges();
+                   return RedirectToAction("Administracion", "Home", null);
+               }
+               else
+               {
+                   activityViewModel.Action = "EditarActividad";
+                   return View("Conflictos", activityViewModel);
+               }
 
            }
 
            activityViewModel.ActivityTypes = getActivityTypes();
            activityViewModel.SchoolList = getSchools();
            activityViewModel.OutreachEntities = getOutreachEntities();
-
+           activityViewModel.Contacts = getContacts();
+           activityViewModel.Resources = getResources();
            return View(activityViewModel);
        }
 

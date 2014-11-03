@@ -59,8 +59,8 @@
                 @if (Request.IsAuthenticated)
                 {
                     if (item.Interested != true) { 
-                        <div class="large-2 columns"><a class="btn btn-sm" onclick="showInterest(this)" data-url="@Url.Action("Interes", "Actividades", new { id = item.Activity.ActivityID })" title="Mostrar Interes"><i class="fa fa-thumbs-up"></i> Me Interesa</a></div>
-                    }
+                    <div class="large-2 columns"><a class="btn btn-sm" onclick="showInterest(this)" data-url="@Url.Action("Interes", "Actividades", new { id = item.Activity.ActivityID })" title="Mostrar Interes"><i class="fa fa-thumbs-up"></i> Me Interesa</a></div>
+                }
                 else
                 {
                     <i style="float:right; font-size:0.875rem;">Te interesa esta actividad.</i>
@@ -72,17 +72,6 @@
         }
     </tbody>
 </table><br />
-
-@if (Request.IsAuthenticated)
-{
-    int userType = Int32.Parse(User.Identity.Name.ToString().Substring(User.Identity.Name.ToString().LastIndexOf('=') + 1).Trim());
-    
-    if (userType == 1)
-    {
-        <input type="button" class="btn" value="Nueva Actividad" onclick="location.href='@Url.Action("Crear", "Actividades", null)'" />
-    }
-}
-
 
 <script src="~/Scripts/myScripts.js"></script>
 <script>
@@ -96,6 +85,9 @@
             "oLanguage": {
                 "sEmptyTable": "No se ha añadido ninguna actividad",
                 "sZeroRecords": "No se ha encontrado ningún registro"
+            },
+            "fnDrawCallback": function() {
+                $("html").getNiceScroll().resize();
             }
         });
     });

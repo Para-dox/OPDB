@@ -79,11 +79,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to La fecha entrada no puede ser menor o igual que hoy.
+        /// </summary>
+        internal static string Activity_ActivityDate_EarlierThanCurrentDate {
+            get {
+                return ResourceManager.GetString("Activity_ActivityDate_EarlierThanCurrentDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to El tiempo que ha entrado es inválido.
         /// </summary>
         internal static string Activity_ActivityTime_Invalid {
             get {
                 return ResourceManager.GetString("Activity_ActivityTime_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El contenido de la sección de detalles es inválido.
+        /// </summary>
+        internal static string Activity_Details_Invalid {
+            get {
+                return ResourceManager.GetString("Activity_Details_Invalid", resourceCulture);
             }
         }
         
