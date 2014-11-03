@@ -191,11 +191,20 @@ namespace OPDB.Controllers
             
             
             var result = from user in db.UserDetails
-                         where user.User.UserTypeID == searchViewModel.user.User.UserTypeID 
-                         && user.DeletionDate == null
+                         where user.DeletionDate == null
                          select user;
 
             searchViewModel.users = result;
+
+            if (searchViewModel.user.UserDetailID != 0)
+            {
+
+                result = from user in result
+                         where user.UserDetailID == searchViewModel.user.UserDetailID
+                         select user;
+
+                searchViewModel.users = result;
+            }
 
             if (searchViewModel.user.FirstName != null)
             {
@@ -205,8 +214,6 @@ namespace OPDB.Controllers
                          select user;
 
                 searchViewModel.users = result;
-
-
             }
 
             if (searchViewModel.user.LastName != null)
@@ -254,11 +261,20 @@ namespace OPDB.Controllers
             searchViewModel.buscarActividades = true;
 
             var result = from activity in db.Activities
-                         where activity.ActivityTypeID == searchViewModel.activity.ActivityTypeID &&
-                         activity.DeletionDate == null 
+                         where activity.DeletionDate == null 
                          select activity;
 
             searchViewModel.activities = result;
+
+            if (searchViewModel.activity.ActivityTypeID != 0)
+            {
+                result = from activity in result
+                         where activity.ActivityTypeID == searchViewModel.activity.ActivityTypeID
+                         && activity.DeletionDate == null
+                         select activity;
+
+                searchViewModel.activities = result;
+            }
 
             if (searchViewModel.activity.Title != null)
             {
@@ -295,11 +311,21 @@ namespace OPDB.Controllers
             searchViewModel.buscarAlcance = true;
 
             var result = from outreachEntity in db.OutreachEntityDetails
+                         where outreachEntity.DeletionDate == null
+                         select outreachEntity;
+
+            searchViewModel.outreachEntities = result;
+
+            if (searchViewModel.outreachEntity.OutreachEntityTypeID != 0)
+            {
+
+                result = from outreachEntity in result
                          where outreachEntity.OutreachEntityTypeID == searchViewModel.outreachEntity.OutreachEntityTypeID
                          && outreachEntity.DeletionDate == null
                          select outreachEntity;
 
-            searchViewModel.outreachEntities = result;
+                searchViewModel.outreachEntities = result;
+            }
 
             if(searchViewModel.outreachEntity.OutreachEntityName != null){
 
