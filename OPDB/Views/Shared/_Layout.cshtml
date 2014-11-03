@@ -80,7 +80,7 @@
 
                                 @if (Request.IsAuthenticated)
                                 {
-                                    if (Int32.Parse(User.Identity.Name.ToString().Substring(User.Identity.Name.ToString().LastIndexOf('=') + 1).Trim()) == 1)
+                                    if (Int32.Parse(User.Identity.Name.ToString().Split(',')[1]) == 1)
                                     {
                                         <li>@Html.ActionLink("Admin", "Administracion", "Home")</li>
                                     }

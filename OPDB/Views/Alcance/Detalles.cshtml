@@ -121,7 +121,7 @@
 
         @if (Request.IsAuthenticated)
         {
-            if (Int32.Parse(User.Identity.Name.Substring(0, User.Identity.Name.IndexOf("u")).Trim()) == Model.outreachEntity.UserID)
+            if (Int32.Parse(User.Identity.Name.ToString().Split(',')[0) == Model.outreachEntity.UserID)
             {
             <a title="Editar Entidad de Alcance" href="@Url.Action("Editar", "Alcance", new { id = Model.outreachEntity.UserID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-pencil fa-stack-1x fa-inverse"></i></span></a>
             <a title="Añadir Actividad" href="@Url.Action("Crear", "Actividades", new { id = Model.outreachEntity.UserID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-plus fa-stack-1x fa-inverse"></i></span></a>
