@@ -21,7 +21,7 @@ namespace OPDB.Controllers
         /// The resource index, returns the system admin view.
         /// </summary>
         /// <returns>The system admin view for resources.</returns>
-        public ActionResult Index(){
+        public ActionResult Index(string requested){
 
             List<Resource> resources = (from resource in db.Resources where resource.DeletionDate == null select resource).ToList();
             
