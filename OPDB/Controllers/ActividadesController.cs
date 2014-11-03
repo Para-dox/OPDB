@@ -1039,21 +1039,31 @@ namespace OPDB.Controllers
            [HttpPost]
            public ActionResult Interes(int id)
            {
-               Interest Interest = new Interest
+               if (User.Identity.IsAuthenticated) 
                {
-                   ActivityID = id,
-                   UserID = 1,
-                   CreateUser = 1,
-                   CreateDate = DateTime.Now,
-                   UpdateUser = 1,
-                   UpdateDate = DateTime.Now
+
+                   var userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
+
+                   Interest Interest = new Interest
+                   {
+                       ActivityID = id,
+                       UserID = userID,
+                       CreateUser = userID,
+                       CreateDate = DateTime.Now,
+                       UpdateUser = userID,
+                       UpdateDate = DateTime.Now
                    
-               };
+                   };
 
-               db.Interests.Add(Interest);
-               db.SaveChanges();
-
-               return Content("");               
+                   db.Interests.Add(Interest);
+                   db.SaveChanges();
+                   return Content("");
+               }
+               else
+               {
+                   return RedirectToAction("AccesoDenegado", "Home");
+               }
+                            
            }
 
            public List<SelectListItem> getContacts()

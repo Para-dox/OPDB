@@ -26,7 +26,7 @@ namespace OPDB.Controllers
 
             if (User.Identity.IsAuthenticated)
             {
-                int currentUserID = Int32.Parse(User.Identity.Name.ToString().Split(',')[0]);
+                int currentUserID = Int32.Parse(User.Identity.Name.Split(',')[0]);
                 currentUser = db.Users.FirstOrDefault(u => u.UserID == currentUserID);
             }
             else
