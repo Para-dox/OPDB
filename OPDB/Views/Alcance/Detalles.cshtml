@@ -117,12 +117,23 @@
     }
         <p>
             <br />
-            <a title="Editar Entidad de Alcance" href="@Url.Action("Editar", "Alcance", new { id = Model.outreachEntity.UserID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-pencil fa-stack-1x fa-inverse"></i></span></a>
             <a title="Regresar" onclick="window.history.back()"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-arrow-left fa-stack-1x fa-inverse"></i></span></a>
+
+        @if (Request.IsAuthenticated)
+        {
+            if (Int32.Parse(User.Identity.Name.Substring(0, User.Identity.Name.IndexOf("u")).Trim()) == Model.outreachEntity.UserID)
+            {
+            <a title="Editar Entidad de Alcance" href="@Url.Action("Editar", "Alcance", new { id = Model.outreachEntity.UserID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-pencil fa-stack-1x fa-inverse"></i></span></a>
             <a title="Añadir Actividad" href="@Url.Action("Crear", "Actividades", new { id = Model.outreachEntity.UserID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-plus fa-stack-1x fa-inverse"></i></span></a>
+            }
+        }
         </p>
     </div>
 
+    @if (Request.IsAuthenticated)
+    {
+        if (Int32.Parse(User.Identity.Name.Substring(0, User.Identity.Name.IndexOf("u")).Trim()) == Model.outreachEntity.UserID)
+        {
     <div class="large-7 columns">
         <h3>Notas</h3>
         <table id="outreachNotes">
@@ -151,6 +162,9 @@
         </table><br />
         <a href="#" title="Añadir Nota" class="modal_ajax_btn" data-title="Nueva Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Alcance", new { id = Model.outreachEntity.UserID })"><input type="button" value="Añadir Nota" class="btn" /></a>
     </div>
+    }
+    }
+
 </div>
 
 <div class="large-12 columns panel callout">

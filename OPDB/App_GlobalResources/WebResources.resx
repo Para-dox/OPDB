@@ -279,6 +279,9 @@
   <data name="UserNote_Note_Required" xml:space="preserve">
     <value>No ha ingresado el contenido de la nota</value>
   </data>
+  <data name="User_Email_Exists" xml:space="preserve">
+    <value>El correo electrónico ingresado ya esta en uso.</value>
+  </data>
   <data name="User_Email_Invalid" xml:space="preserve">
     <value>Su correo electrónico es inválido</value>
   </data>

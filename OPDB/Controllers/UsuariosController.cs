@@ -76,181 +76,190 @@ namespace OPDB.Controllers
         {
             if (ModelState.IsValid)
             {
-                    userViewModel.user.CreateDate = DateTime.Now;
-                    userViewModel.user.UpdateDate = DateTime.Now;
-                    userViewModel.user.UserStatus = false;
-                    bool validModel = true;
+                userViewModel.user.CreateDate = DateTime.Now;
+                userViewModel.user.UpdateDate = DateTime.Now;
+                userViewModel.user.UserStatus = false;
+                bool validModel = true;
 
-                    if (userViewModel.user.UserTypeID == 3) {
+                User matchingUser = db.Users.FirstOrDefault(u => u.Email == userViewModel.user.Email);
 
-                        if (userViewModel.outreachEntity.OutreachEntityName == null || userViewModel.outreachEntity.OutreachEntityName == "")
+                if (matchingUser != null)
+                {
+                    ModelState.AddModelError("User_Email_Exists", Resources.WebResources.User_Email_Exists);
+                    validModel = false;
+                }
+
+                if (userViewModel.user.UserTypeID == 3)
+                {
+
+                    if (userViewModel.outreachEntity.OutreachEntityName == null || userViewModel.outreachEntity.OutreachEntityName == "")
+                    {
+                        ModelState.AddModelError("OutreachEntityDetail_OutreachEntityName_Required", Resources.WebResources.OutreachEntityDetail_OutreachEntityName_Required);
+                        validModel = false;
+                    }
+                    else
+                    {
+                        string pattern = @"^[a-zA-Z\u00c0-\u017e''-'\s]{1,100}$";
+                        Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                        MatchCollection matches = rgx.Matches(userViewModel.outreachEntity.OutreachEntityName);
+                        if (matches.Count == 0)
                         {
-                            ModelState.AddModelError("OutreachEntityDetail_OutreachEntityName_Required", Resources.WebResources.OutreachEntityDetail_OutreachEntityName_Required);
+                            ModelState.AddModelError("OutreachEntity_OutreachEntityName_Invalid", Resources.WebResources.OutreachEntityDetail_OutreachEntityName_Invalid);
                             validModel = false;
                         }
-                        else 
-                        {
-                            string pattern = @"^[a-zA-Z\u00c0-\u017e''-'\s]{1,100}$";
-                            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                            MatchCollection matches = rgx.Matches(userViewModel.outreachEntity.OutreachEntityName);
-                            if (matches.Count == 0)
-                            {
-                                ModelState.AddModelError("OutreachEntity_OutreachEntityName_Invalid", Resources.WebResources.OutreachEntityDetail_OutreachEntityName_Invalid);
-                                validModel = false;
-                            }
 
-                        }
+                    }
 
-                        if (userViewModel.outreachEntity.Mission == null || userViewModel.outreachEntity.Mission == "")
+                    if (userViewModel.outreachEntity.Mission == null || userViewModel.outreachEntity.Mission == "")
+                    {
+                        ModelState.AddModelError("OutreachEntityDetail_Mission_Required", Resources.WebResources.OutreachEntityDetail_Mission_Required);
+                        validModel = false;
+                    }
+                    else
+                    {
+                        string pattern = @"^[a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""''-'\s]+$";
+                        Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                        MatchCollection matches = rgx.Matches(userViewModel.outreachEntity.Mission);
+                        if (matches.Count == 0)
                         {
-                            ModelState.AddModelError("OutreachEntityDetail_Mission_Required", Resources.WebResources.OutreachEntityDetail_Mission_Required);
+                            ModelState.AddModelError("OutreachEntityDetail_Mission_Invalid", Resources.WebResources.OutreachEntityDetail_Mission_Invalid);
                             validModel = false;
                         }
-                        else
-                        {
-                            string pattern = @"^[a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""''-'\s]+$";
-                            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                            MatchCollection matches = rgx.Matches(userViewModel.outreachEntity.Mission);
-                            if (matches.Count == 0)
-                            {
-                                ModelState.AddModelError("OutreachEntityDetail_Mission_Invalid", Resources.WebResources.OutreachEntityDetail_Mission_Invalid);
-                                validModel = false;
-                            }
 
-                        }
+                    }
 
-                        if (userViewModel.outreachEntity.Vision == null|| userViewModel.outreachEntity.Vision == "")
+                    if (userViewModel.outreachEntity.Vision == null || userViewModel.outreachEntity.Vision == "")
+                    {
+                        ModelState.AddModelError("OutreachEntityDetail_Vision_Required", Resources.WebResources.OutreachEntityDetail_Vision_Required);
+                        validModel = false;
+                    }
+                    else
+                    {
+                        string pattern = @"^[a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""''-'\s]+$";
+                        Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                        MatchCollection matches = rgx.Matches(userViewModel.outreachEntity.Vision);
+                        if (matches.Count == 0)
                         {
-                            ModelState.AddModelError("OutreachEntityDetail_Vision_Required", Resources.WebResources.OutreachEntityDetail_Vision_Required);
+                            ModelState.AddModelError("OutreachEntityDetail_Vision_Invalid", Resources.WebResources.OutreachEntityDetail_Vision_Invalid);
                             validModel = false;
                         }
-                        else
-                        {
-                            string pattern = @"^[a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""''-'\s]+$";
-                            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                            MatchCollection matches = rgx.Matches(userViewModel.outreachEntity.Vision);
-                            if (matches.Count == 0)
-                            {
-                                ModelState.AddModelError("OutreachEntityDetail_Vision_Invalid", Resources.WebResources.OutreachEntityDetail_Vision_Invalid);
-                                validModel = false;
-                            }
 
-                        }
+                    }
 
-                        if (userViewModel.outreachEntity.Objectives == null|| userViewModel.outreachEntity.Objectives == "")
+                    if (userViewModel.outreachEntity.Objectives == null || userViewModel.outreachEntity.Objectives == "")
+                    {
+                        ModelState.AddModelError("OutreachEntityDetail_Objectives_Required", Resources.WebResources.OutreachEntityDetail_Objectives_Required);
+                        validModel = false;
+                    }
+                    else
+                    {
+                        string pattern = @"^[a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""''-'\s]+$";
+                        Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                        MatchCollection matches = rgx.Matches(userViewModel.outreachEntity.Objectives);
+                        if (matches.Count == 0)
                         {
-                            ModelState.AddModelError("OutreachEntityDetail_Objectives_Required", Resources.WebResources.OutreachEntityDetail_Objectives_Required);
+                            ModelState.AddModelError("OutreachEntityDetail_Objectives_Invalid", Resources.WebResources.OutreachEntityDetail_Objectives_Invalid);
                             validModel = false;
                         }
-                        else
-                        {
-                            string pattern = @"^[a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""''-'\s]+$";
-                            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                            MatchCollection matches = rgx.Matches(userViewModel.outreachEntity.Objectives);
-                            if (matches.Count == 0)
-                            {
-                                ModelState.AddModelError("OutreachEntityDetail_Objectives_Invalid", Resources.WebResources.OutreachEntityDetail_Objectives_Invalid);
-                                validModel = false;
-                            }
 
-                        }
+                    }
 
-                        if (validModel) 
-                        { 
-                            userViewModel.outreachEntity.CreateDate = DateTime.Now;
-                            userViewModel.outreachEntity.UpdateDate = DateTime.Now;
-                            userViewModel.user.OutreachEntityDetails = new List<OutreachEntityDetail>();
-                            userViewModel.user.OutreachEntityDetails.Add(userViewModel.outreachEntity);
-                            db.Users.Add(userViewModel.user);
-                        }
-
-                        else
-                        {
-                            userViewModel.userTypes = getTypes();
-                            userViewModel.outreachTypes = getOutreachTypes();
-                            return View(userViewModel);
-                        }
+                    if (validModel)
+                    {
+                        userViewModel.outreachEntity.CreateDate = DateTime.Now;
+                        userViewModel.outreachEntity.UpdateDate = DateTime.Now;
+                        userViewModel.user.OutreachEntityDetails = new List<OutreachEntityDetail>();
+                        userViewModel.user.OutreachEntityDetails.Add(userViewModel.outreachEntity);
+                        db.Users.Add(userViewModel.user);
                     }
 
                     else
                     {
+                        userViewModel.userTypes = getTypes();
+                        userViewModel.outreachTypes = getOutreachTypes();
+                        return View(userViewModel);
+                    }
+                }
 
-                        if (userViewModel.userDetail.FirstName == null || userViewModel.userDetail.FirstName == "")
-                        {
-                            ModelState.AddModelError("UserDetail_FirstName_Required", Resources.WebResources.UserDetail_FirstName_Required);
-                            validModel = false;
-                        }
-                        else
-                        {
-                            string pattern = @"^[a-zA-Z\u00c0-\u017e''-'\s]{1,50}$";
-                            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                            MatchCollection matches = rgx.Matches(userViewModel.userDetail.FirstName);
-                            if (matches.Count == 0)
-                            {
-                                ModelState.AddModelError("UserDetail_FirstName_Invalid", Resources.WebResources.UserDetail_FirstName_Invalid);
-                                validModel = false;
-                            }
+                else
+                {
 
-                        }
-
-                        if (userViewModel.userDetail.LastName == null|| userViewModel.userDetail.LastName == "")
+                    if (userViewModel.userDetail.FirstName == null || userViewModel.userDetail.FirstName == "")
+                    {
+                        ModelState.AddModelError("UserDetail_FirstName_Required", Resources.WebResources.UserDetail_FirstName_Required);
+                        validModel = false;
+                    }
+                    else
+                    {
+                        string pattern = @"^[a-zA-Z\u00c0-\u017e''-'\s]{1,50}$";
+                        Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                        MatchCollection matches = rgx.Matches(userViewModel.userDetail.FirstName);
+                        if (matches.Count == 0)
                         {
-                            ModelState.AddModelError("UserDetail_LastName_Required", Resources.WebResources.UserDetail_LastName_Required);
-                            validModel = false;
-                        }
-                        else
-                        {
-                            string pattern = @"^[a-zA-Z\u00c0-\u017e''-'\s]{1,50}$";
-                            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                            MatchCollection matches = rgx.Matches(userViewModel.userDetail.LastName);
-                            if (matches.Count == 0)
-                            {
-                                ModelState.AddModelError("UserDetail_LastName_Invalid", Resources.WebResources.UserDetail_LastName_Invalid);
-                                validModel = false;
-                            }
-
-                        }
-
-                        if (userViewModel.userDetail.Gender == null || userViewModel.userDetail.Gender == "")
-                        {
-                            ModelState.AddModelError("UserDetail_Gender_Required", Resources.WebResources.UserDetail_Gender_Required);
+                            ModelState.AddModelError("UserDetail_FirstName_Invalid", Resources.WebResources.UserDetail_FirstName_Invalid);
                             validModel = false;
                         }
 
-                        if (userViewModel.userDetail.MiddleInitial != null)
-                        {
-                            string pattern = @"^[A-Z]$";
-                            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                            MatchCollection matches = rgx.Matches(userViewModel.userDetail.MiddleInitial);
-                            if (matches.Count == 0)
-                            {
-                                ModelState.AddModelError("UserDetail_MiddleInitial_Invalid", Resources.WebResources.UserDetail_MiddleInitial_Invalid);
-                                validModel = false;
-                            }
-
-                        }
-
-                        if (validModel) 
-                        { 
-                            userViewModel.userDetail.CreateDate = DateTime.Now;
-                            userViewModel.userDetail.UpdateDate = DateTime.Now;
-                            userViewModel.user.UserDetails = new List<UserDetail>();
-                            userViewModel.user.UserDetails.Add(userViewModel.userDetail);
-                            db.Users.Add(userViewModel.user);
-                        }
-
-                        else
-                        {
-                            userViewModel.userTypes = getTypes();
-                            userViewModel.outreachTypes = getOutreachTypes();
-                            return View(userViewModel);
-                        }
                     }
 
-                    db.SaveChanges();
+                    if (userViewModel.userDetail.LastName == null || userViewModel.userDetail.LastName == "")
+                    {
+                        ModelState.AddModelError("UserDetail_LastName_Required", Resources.WebResources.UserDetail_LastName_Required);
+                        validModel = false;
+                    }
+                    else
+                    {
+                        string pattern = @"^[a-zA-Z\u00c0-\u017e''-'\s]{1,50}$";
+                        Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                        MatchCollection matches = rgx.Matches(userViewModel.userDetail.LastName);
+                        if (matches.Count == 0)
+                        {
+                            ModelState.AddModelError("UserDetail_LastName_Invalid", Resources.WebResources.UserDetail_LastName_Invalid);
+                            validModel = false;
+                        }
 
-                    return RedirectToAction("Index", "Home", null); // changed to redirect to Index instead of Administracion, for now
-                    
+                    }
+
+                    if (userViewModel.userDetail.Gender == null || userViewModel.userDetail.Gender == "")
+                    {
+                        ModelState.AddModelError("UserDetail_Gender_Required", Resources.WebResources.UserDetail_Gender_Required);
+                        validModel = false;
+                    }
+
+                    if (userViewModel.userDetail.MiddleInitial != null)
+                    {
+                        string pattern = @"^[A-Z]$";
+                        Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                        MatchCollection matches = rgx.Matches(userViewModel.userDetail.MiddleInitial);
+                        if (matches.Count == 0)
+                        {
+                            ModelState.AddModelError("UserDetail_MiddleInitial_Invalid", Resources.WebResources.UserDetail_MiddleInitial_Invalid);
+                            validModel = false;
+                        }
+
+                    }
+
+                    if (validModel)
+                    {
+                        userViewModel.userDetail.CreateDate = DateTime.Now;
+                        userViewModel.userDetail.UpdateDate = DateTime.Now;
+                        userViewModel.user.UserDetails = new List<UserDetail>();
+                        userViewModel.user.UserDetails.Add(userViewModel.userDetail);
+                        db.Users.Add(userViewModel.user);
+                    }
+
+                    else
+                    {
+                        userViewModel.userTypes = getTypes();
+                        userViewModel.outreachTypes = getOutreachTypes();
+                        return View(userViewModel);
+                    }
+                }
+
+                db.SaveChanges();
+
+                return RedirectToAction("Index", "Home", null); // changed to redirect to Index instead of Administracion, for now
+
             }
 
             userViewModel.userTypes = getTypes();
@@ -840,84 +849,92 @@ namespace OPDB.Controllers
         {
             if (ModelState.IsValid)
             {
-                    userViewModel.user.CreateDate = DateTime.Now;
-                    userViewModel.user.UpdateDate = DateTime.Now;
-                    userViewModel.user.UserStatus = false;
-                    bool validModel = true;
+                userViewModel.user.CreateDate = DateTime.Now;
+                userViewModel.user.UpdateDate = DateTime.Now;
+                userViewModel.user.UserStatus = false;
+                bool validModel = true;
 
-                        if (userViewModel.userDetail.FirstName == null || userViewModel.userDetail.FirstName == "")
-                        {
-                            ModelState.AddModelError("UserDetail_FirstName_Required", Resources.WebResources.UserDetail_FirstName_Required);
-                            validModel = false;
-                        }
-                        else
-                        {
-                            string pattern = @"^[a-zA-Z\u00c0-\u017e''-'\s]{1,50}$";
-                            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                            MatchCollection matches = rgx.Matches(userViewModel.userDetail.FirstName);
-                            if (matches.Count == 0)
-                            {
-                                ModelState.AddModelError("UserDetail_FirstName_Invalid", Resources.WebResources.UserDetail_FirstName_Invalid);
-                                validModel = false;
-                            }
+                User matchingUser = db.Users.FirstOrDefault(u => u.Email == userViewModel.user.Email);
 
-                        }
+                if (matchingUser != null)
+                {
+                    ModelState.AddModelError("User_Email_Exists", Resources.WebResources.User_Email_Exists);
+                    validModel = false;
+                }
 
-                        if (userViewModel.userDetail.LastName == null|| userViewModel.userDetail.LastName == "")
-                        {
-                            ModelState.AddModelError("UserDetail_LastName_Required", Resources.WebResources.UserDetail_LastName_Required);
-                            validModel = false;
-                        }
-                        else
-                        {
-                            string pattern = @"^[a-zA-Z\u00c0-\u017e''-'\s]{1,50}$";
-                            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                            MatchCollection matches = rgx.Matches(userViewModel.userDetail.LastName);
-                            if (matches.Count == 0)
-                            {
-                                ModelState.AddModelError("UserDetail_LastName_Invalid", Resources.WebResources.UserDetail_LastName_Invalid);
-                                validModel = false;
-                            }
-
-                        }
-
-                        if (userViewModel.userDetail.Gender == null || userViewModel.userDetail.Gender == "")
-                        {
-                            ModelState.AddModelError("UserDetail_Gender_Required", Resources.WebResources.UserDetail_Gender_Required);
-                            validModel = false;
-                        }
-
-                        if (userViewModel.userDetail.MiddleInitial != null)
-                        {
-                            string pattern = @"^[A-Z]$";
-                            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                            MatchCollection matches = rgx.Matches(userViewModel.userDetail.MiddleInitial);
-                            if (matches.Count == 0)
-                            {
-                                ModelState.AddModelError("UserDetail_MiddleInitial_Invalid", Resources.WebResources.UserDetail_MiddleInitial_Invalid);
-                                validModel = false;
-                            }
-
-                        }
-
-                        if (validModel) 
-                        { 
-                            userViewModel.userDetail.CreateDate = DateTime.Now;
-                            userViewModel.userDetail.UpdateDate = DateTime.Now;
-                            userViewModel.user.UserDetails = new List<UserDetail>();
-                            userViewModel.user.UserDetails.Add(userViewModel.userDetail);
-                            db.Users.Add(userViewModel.user);
-                        }
-
-                        else
-                        {
-                            userViewModel.userTypes = getAllUserTypes();
-                            return View("CrearUsuario", userViewModel);
-                        }
-
-                        db.SaveChanges();
-                        return RedirectToAction("Administracion", "Home", null);
+                if (userViewModel.userDetail.FirstName == null || userViewModel.userDetail.FirstName == "")
+                {
+                    ModelState.AddModelError("UserDetail_FirstName_Required", Resources.WebResources.UserDetail_FirstName_Required);
+                    validModel = false;
+                }
+                else
+                {
+                    string pattern = @"^[a-zA-Z\u00c0-\u017e''-'\s]{1,50}$";
+                    Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                    MatchCollection matches = rgx.Matches(userViewModel.userDetail.FirstName);
+                    if (matches.Count == 0)
+                    {
+                        ModelState.AddModelError("UserDetail_FirstName_Invalid", Resources.WebResources.UserDetail_FirstName_Invalid);
+                        validModel = false;
                     }
+
+                }
+
+                if (userViewModel.userDetail.LastName == null || userViewModel.userDetail.LastName == "")
+                {
+                    ModelState.AddModelError("UserDetail_LastName_Required", Resources.WebResources.UserDetail_LastName_Required);
+                    validModel = false;
+                }
+                else
+                {
+                    string pattern = @"^[a-zA-Z\u00c0-\u017e''-'\s]{1,50}$";
+                    Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                    MatchCollection matches = rgx.Matches(userViewModel.userDetail.LastName);
+                    if (matches.Count == 0)
+                    {
+                        ModelState.AddModelError("UserDetail_LastName_Invalid", Resources.WebResources.UserDetail_LastName_Invalid);
+                        validModel = false;
+                    }
+
+                }
+
+                if (userViewModel.userDetail.Gender == null || userViewModel.userDetail.Gender == "")
+                {
+                    ModelState.AddModelError("UserDetail_Gender_Required", Resources.WebResources.UserDetail_Gender_Required);
+                    validModel = false;
+                }
+
+                if (userViewModel.userDetail.MiddleInitial != null)
+                {
+                    string pattern = @"^[A-Z]$";
+                    Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                    MatchCollection matches = rgx.Matches(userViewModel.userDetail.MiddleInitial);
+                    if (matches.Count == 0)
+                    {
+                        ModelState.AddModelError("UserDetail_MiddleInitial_Invalid", Resources.WebResources.UserDetail_MiddleInitial_Invalid);
+                        validModel = false;
+                    }
+
+                }
+
+                if (validModel)
+                {
+                    userViewModel.userDetail.CreateDate = DateTime.Now;
+                    userViewModel.userDetail.UpdateDate = DateTime.Now;
+                    userViewModel.user.UserDetails = new List<UserDetail>();
+                    userViewModel.user.UserDetails.Add(userViewModel.userDetail);
+                    db.Users.Add(userViewModel.user);
+                }
+
+                else
+                {
+                    userViewModel.userTypes = getAllUserTypes();
+                    return View("CrearUsuario", userViewModel);
+                }
+
+                db.SaveChanges();
+                return RedirectToAction("Administracion", "Home", null);
+            }
 
 
                 userViewModel.userTypes = getAllUserTypes();

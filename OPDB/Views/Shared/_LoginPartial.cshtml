@@ -1,15 +1,14 @@
 ﻿@if (Request.IsAuthenticated) {
-    @*<text>
-        Hello, @Html.ActionLink(User.Identity.Name, "Manage", "Account", routeValues: null, htmlAttributes: new { @class = "username", title = "Manage" })!
-        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" })) {
-            @Html.AntiForgeryToken()
-            <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
-        }
-    </text>*@
-    
     <ul>
-
-        <li>@Html.ActionLink("Mi Perfil", "Detalles", "Usuarios", new { id = Int32.Parse(User.Identity.Name.Substring(0, User.Identity.Name.IndexOf("u")).Trim()) }, null)</li>
+        @if (Int32.Parse(User.Identity.Name.ToString().Substring(User.Identity.Name.ToString().LastIndexOf('=') + 1).Trim()) == 3)
+        {
+            <li>@Html.ActionLink("Mi Perfil", "Detalles", "Alcance", new { id = Int32.Parse(User.Identity.Name.Substring(0, User.Identity.Name.IndexOf("u")).Trim()) }, null)</li>
+        }
+        else
+        {
+            <li>@Html.ActionLink("Mi Perfil", "Detalles", "Usuarios", new { id = Int32.Parse(User.Identity.Name.Substring(0, User.Identity.Name.IndexOf("u")).Trim()) }, null)</li>
+        }
+        
         <li>@Html.ActionLink("Cerrar Sesión", "CerrarSesion", "Usuarios", routeValues: null, htmlAttributes: new { id = "logoutLink" })</li>
     </ul>
 } else {

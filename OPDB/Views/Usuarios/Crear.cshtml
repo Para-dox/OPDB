@@ -31,6 +31,7 @@
                @Html.LabelFor(model => model.user.Email, "Correo Electrónico *")
             </div>
             <div>
+                @Html.ValidationMessage("User_Email_Exists", new { @style = "float:left !important;" })
                 @Html.ValidationMessageFor(model => model.user.Email, null, new { @style = "float:left !important;" })
                 @Html.EditorFor(model => model.user.Email, new { @style = "width: 500px !important;" })
             </div>
