@@ -101,10 +101,14 @@
             "oLanguage": {"sEmptyTable": "No se ha añadido ninguna escuela",
                 "sZeroRecords": "No se ha encontrado ningún registro",
                 "sSearch": "Buscar:"
+            },
+            "fnDrawCallback": function () {
+                $("html").getNiceScroll().resize();
             }
         });
+
         document.getElementsByTagName("loading")[0].innerHTML = "";
-        $("html").getNiceScroll().resize();
+        document.getElementsByTagName("loadinginner")[0].innerHTML = "";
     });
 
 

@@ -29,7 +29,7 @@
     }
 </style>
 
-<table id="removedUsers">
+<table id="removedUsersTable">
     <thead>
         <tr>
             <th style="width:20%;">Nombre</th>
@@ -68,7 +68,7 @@
 <script>
     $(document).ready(function () {
 
-        $('#removedUsers').DataTable({
+        $('#removedUsersTable').DataTable({
             "sDom": '<"top"f>t<"bottom"ipr><"clear">',
             "sPaginationType": "full_numbers",
             "bProcessing": false,
@@ -84,11 +84,14 @@
                 "sEmptyTable": "No se ha removido ningún usuario",
                 "sZeroRecords": "No se ha encontrado ningún registro",
                 "sSearch": "Buscar:"
+            },
+            "fnDrawCallback": function () {
+                $("html").getNiceScroll().resize();
             }
         });
 
         document.getElementsByTagName("loading")[0].innerHTML = "";
-        $("html").getNiceScroll().resize();
+        document.getElementsByTagName("loadinginner")[0].innerHTML = "";
     });
 
 

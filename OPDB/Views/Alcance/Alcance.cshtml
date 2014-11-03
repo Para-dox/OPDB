@@ -1,0 +1,20 @@
+﻿<dl class="sub-nav">
+    <dt></dt>
+    <dd id="activeOutreach"><a id="activeOutreachURL" onclick="loadAdminView(this)" data-url="@Url.Action("Index", "Alcance")">Activos</a></dd>
+    <dd id="pendingOutreach"><a id="pendingOutreachURL" onclick="loadAdminView(this)" data-url="@Url.Action("Pendientes", "Alcance")">Pendientes</a></dd>
+    <dd id="removedOutreach"><a id="removedOutreachURL" onclick="loadAdminView(this)" data-url="@Url.Action("Removidos", "Alcance")">Removidos</a></dd>
+</dl>
+
+    <div>
+        <loadinginner></loadinginner>
+        <div id="managementTableInner">
+        </div>
+    </div>
+
+<script src="~/Scripts/myScripts.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        document.getElementsByTagName("loading")[0].innerHTML = "";
+        loadAdminView("<a id='activeOutreachURL' data-url='@Url.Action("Index", "Alcance")'></a>");
+    });
+</script>

@@ -93,10 +93,13 @@
             ],
             "oLanguage": { "sEmptyTable": "No existe ningún usuario",
                 "sZeroRecords": "No se ha encontrado ningún registro",
-                "sSearch": "Buscar:" }
+                "sSearch": "Buscar:" },
+            "fnDrawCallback": function() {
+                $("html").getNiceScroll().resize();
+            }
         });
         document.getElementsByTagName("loading")[0].innerHTML = "";
-        $("html").getNiceScroll().resize();
+        document.getElementsByTagName("loadinginner")[0].innerHTML = "";
     });
 
 

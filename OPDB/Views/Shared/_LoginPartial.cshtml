@@ -1,12 +1,4 @@
-﻿@if (Request.IsAuthenticated) {
-    @*<text>
-        Hello, @Html.ActionLink(User.Identity.Name, "Manage", "Account", routeValues: null, htmlAttributes: new { @class = "username", title = "Manage" })!
-        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" })) {
-            @Html.AntiForgeryToken()
-            <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
-        }
-    </text>*@
-    
+﻿@if (Request.IsAuthenticated) {    
     <ul>
 
         <li>@Html.ActionLink("Mi Perfil", "Detalles", "Usuarios", new { id = Int32.Parse(User.Identity.Name.Substring(0, User.Identity.Name.IndexOf("u")).Trim()) }, null)</li>
@@ -15,6 +7,6 @@
 } else {
     <ul>
         <li>@Html.ActionLink("Inscribete", "Crear", "Usuarios", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-        <li>@Html.ActionLink("Iniciar Sesión", "IniciarSesion", "Usuarios", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+        <li><a href="#" data-validation="false" title="Iniciar Sesión" class="modal_ajax_btn" data-title="Iniciar Sesión" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("IniciarSesionPopUp", "Usuarios", routeValues: null)">Iniciar Sesión</a></li>
     </ul>
 }

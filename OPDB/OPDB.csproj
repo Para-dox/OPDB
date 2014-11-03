@@ -605,6 +605,10 @@
     <Content Include="Views\Alcance\Removidos.cshtml" />
     <Content Include="Views\Actividades\Conflictos.cshtml" />
     <Content Include="Views\Home\AccesoDenegado.cshtml" />
+    <Content Include="Views\Alcance\Pendientes.cshtml" />
+    <Content Include="Views\Alcance\Alcance.cshtml" />
+    <Content Include="Views\Escuelas\Escuelas.cshtml" />
+    <Content Include="Views\Usuarios\Usuarios.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

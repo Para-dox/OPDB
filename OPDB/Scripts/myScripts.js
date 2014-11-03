@@ -101,25 +101,49 @@ function modalClose() {
 }
 
 function loadAdminView(e) {
-    document.getElementById('managementTables').innerHTML = "";
-    document.getElementsByTagName("loading")[0].innerHTML = "<div style='text-align: center; width: 100%; height: 100%;'><i class='fa fa-spinner fa-spin' style='font-size: 10em; color: gray; margin-top: 5%;'></i></div>";
     var url = $(e).attr('data-url');
     var id = $(e).attr('id');
-    var urlIDs = ["outreachURL", "activitiesURL", "schoolsURL", "resourcesURL", "unitsURL", "usersURL", "removedOutreachURL", "removedSchoolsURL", "removedUsersURL"];
-    var liIDs = ["outreachAdmin", "activitiesAdmin", "schoolsAdmin", "resourcesAdmin", "unitsAdmin", "usersAdmin", "removed", "removed", "removed"];
+
+    if (id.search("active") != -1 || id.search("pending") != -1 || id.search("removed") != -1)
+    {
+        document.getElementById('managementTableInner').innerHTML = "";
+        document.getElementsByTagName("loadinginner")[0].innerHTML = "<div style='text-align: center; width: 100%; height: 100%;'><i class='fa fa-spinner fa-spin' style='font-size: 10em; color: gray; margin-top: 5%;'></i></div>";
+    }
+    else
+    {
+        document.getElementById('managementTables').innerHTML = "";
+        document.getElementsByTagName("loading")[0].innerHTML = "<div style='text-align: center; width: 100%; height: 100%;'><i class='fa fa-spinner fa-spin' style='font-size: 10em; color: gray; margin-top: 5%;'></i></div>";
+        
+    }            
+    
+    
+    var urlIDs = ["outreachURL", "activeOutreachURL", "pendingOutreachURL", "removedOutreachURL", "activitiesURL", "schoolsURL", "activeSchoolsURL", "removedSchoolsURL", "resourcesURL", "unitsURL", "usersURL", "activeUsersURL", "removedUsersURL"];
+    var liIDs = ["outreachAdmin", "activeOutreach", "pendingOutreach", "removedOutreach", "activitiesAdmin", "schoolsAdmin", "activeSchools", "removedSchools", "resourcesAdmin", "unitsAdmin", "usersAdmin", "activeUsers", "removedUsers"];
     
     for (var i = 0; i < urlIDs.length; i++) {
 
         if (id == urlIDs[i])
         {
-            $('.active').removeClass("active");
-            $('#' + liIDs[i]).addClass("active");
+            if (id.search("active") != -1 || id.search("pending") != -1 || id.search("removed") != -1) {
+                $('.sub-nav').find('.active').removeClass("active");               
+            }
+            else {
+                $('#adminBar').find('.active').removeClass("active");
+            }
+            $('#' + liIDs[i]).addClass("active");            
             break;
         }
 
     }
 
-    $('#managementTables').load(url);
+    if (id.search("active") != -1 || id.search("pending") != -1 || id.search("removed") != -1) {
+        $('#managementTableInner').load(url);
+    }
+    else {
+        $('#managementTables').load(url);
+    }
+
+    
     
 }
 

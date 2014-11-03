@@ -1,0 +1,21 @@
+﻿<dl class="sub-nav">
+    <dt></dt>
+    <dd id="activeSchools"><a id="activeSchoolsURL" onclick="loadAdminView(this)" data-url="@Url.Action("Index", "Escuelas")">Activas</a></dd>
+    <dd id="removedSchools"><a id="removedSchoolsURL" onclick="loadAdminView(this)" data-url="@Url.Action("Removidos", "Escuelas")">Removidas</a></dd>
+</dl>
+
+    <div>
+        <loadinginner></loadinginner>
+        <div id="managementTableInner">
+        </div>
+    </div>
+
+<script src="~/Scripts/myScripts.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        document.getElementsByTagName("loading")[0].innerHTML = "";
+        loadAdminView("<a id='activeSchoolsURL' data-url='@Url.Action("Index", "Escuelas")'></a>");
+    });
+
+
+</script>

@@ -19,8 +19,13 @@ namespace OPDB.Controllers
 
         public ActionResult Index()
         {
-            var users = from u in db.Users.Include(u => u.UserDetails) where u.UserTypeID == 3 && u.DeletionDate == null select u;
+            var users = from u in db.Users.Include(u => u.UserDetails) where u.UserTypeID == 3 && u.DeletionDate == null && u.UserStatus == true select u;
             return PartialView("Index", users.ToList());
+        }
+
+        public ActionResult MenuAlcance()
+        {
+            return PartialView("Alcance");
         }
 
         //
@@ -239,7 +244,7 @@ namespace OPDB.Controllers
                 db.SaveChanges();
             }
 
-            return RedirectToAction("Administracion", "Home", null);
+            return RedirectToAction("Administracion", "Home");
         }
 
         public ActionResult Restaurar(int id = 0)
@@ -262,7 +267,7 @@ namespace OPDB.Controllers
                 db.SaveChanges();
             }
 
-            return RedirectToAction("Administracion", "Home", null);
+            return RedirectToAction("Administracion", "Home");
         }
 
         public ActionResult RemoverNota(int id)
@@ -361,7 +366,7 @@ namespace OPDB.Controllers
 
         public ActionResult Lista()
         {
-            var users = (from outreachEntity in db.OutreachEntityDetails join user in db.Users on outreachEntity.UserID equals user.UserID where (user.UserTypeID == 3) && outreachEntity.DeletionDate == null orderby outreachEntity.OutreachEntityName ascending select outreachEntity).ToList();
+            var users = (from outreachEntity in db.OutreachEntityDetails join user in db.Users on outreachEntity.UserID equals user.UserID where (user.UserTypeID == 3) && outreachEntity.DeletionDate == null && user.UserStatus == true orderby outreachEntity.OutreachEntityName ascending select outreachEntity).ToList();
 
             UserViewModel userViewModel = new UserViewModel
             {
@@ -386,6 +391,12 @@ namespace OPDB.Controllers
 
             return PartialView("Removidos", users.ToList());
 
+        }
+
+        public ActionResult Pendientes()
+        {
+            var users = from u in db.Users.Include(u => u.UserDetails) where u.UserTypeID == 3 && u.DeletionDate == null && u.UserStatus != true select u;
+            return PartialView("Pendientes", users.ToList());
         }
 
         public String GetErrorsFromModelState(UserViewModel userViewModel)
@@ -463,6 +474,21 @@ namespace OPDB.Controllers
             }
 
             return types;
+        }
+
+        [HttpPost]
+        public ActionResult Aprobar(int id)
+        {
+            var user = db.Users.Find(id);
+
+            user.UserStatus = true;
+            user.UpdateDate = DateTime.Now;
+
+            db.Entry(user).State = EntityState.Modified;
+            db.SaveChanges();
+
+            return RedirectToAction("Administracion", "Home");
+
         }
 
         protected override void Dispose(bool disposing)
