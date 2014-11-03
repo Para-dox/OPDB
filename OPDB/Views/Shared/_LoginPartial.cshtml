@@ -9,7 +9,7 @@
     
     <ul>
 
-        <li>@Html.ActionLink("Mi Perfil", "Detalles", "Usuarios", new { id = Int32.Parse(User.Identity.Name) }, null)</li>
+        <li>@Html.ActionLink("Mi Perfil", "Detalles", "Usuarios", new { id = Int32.Parse(User.Identity.Name.Substring(0, User.Identity.Name.IndexOf("u")).Trim()) }, null)</li>
         <li>@Html.ActionLink("Cerrar Sesión", "CerrarSesion", "Usuarios", routeValues: null, htmlAttributes: new { id = "logoutLink" })</li>
     </ul>
 } else {

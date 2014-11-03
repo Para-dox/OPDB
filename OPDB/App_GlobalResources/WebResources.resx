@@ -123,8 +123,14 @@
   <data name="ActivityNote_Note_Required" xml:space="preserve">
     <value>No ha ingresado el contenido de la nota</value>
   </data>
+  <data name="Activity_ActivityDate_EarlierThanCurrentDate" xml:space="preserve">
+    <value>La fecha entrada no puede ser menor o igual que hoy</value>
+  </data>
   <data name="Activity_ActivityTime_Invalid" xml:space="preserve">
     <value>El tiempo que ha entrado es inválido</value>
+  </data>
+  <data name="Activity_Details_Invalid" xml:space="preserve">
+    <value>El contenido de la sección de detalles es inválido</value>
   </data>
   <data name="Activity_Location_Invalid" xml:space="preserve">
     <value>La localización que ha entrado es inválida</value>
