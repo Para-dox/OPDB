@@ -68,7 +68,7 @@
        </table>
 </div><br />
 
-
+<script src="~/Scripts/myScripts.js"></script>
 <script type="text/javascript">
 
     $(document).ready(function () {
@@ -104,15 +104,6 @@
         $(document).foundation('dropdown', 'reflow');
         
 
-    });
-
-    function approve(e) {
-        var url = $(e).attr('data-url');
-
-        $.post(url);
-        sleep(1000);
-
-        window.location.reload();
-    }
+    });    
 
 </script>
