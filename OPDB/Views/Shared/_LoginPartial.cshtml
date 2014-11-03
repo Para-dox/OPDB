@@ -1,12 +1,12 @@
 ﻿@if (Request.IsAuthenticated) {
     <ul>
-        @if (Int32.Parse(User.Identity.Name.ToString().Substring(User.Identity.Name.ToString().LastIndexOf('=') + 1).Trim()) == 3)
+        @if (Int32.Parse(User.Identity.Name.ToString().Split(',')[1]) == 3)
         {
-            <li>@Html.ActionLink("Mi Perfil", "Detalles", "Alcance", new { id = Int32.Parse(User.Identity.Name.Substring(0, User.Identity.Name.IndexOf("u")).Trim()) }, null)</li>
+            <li>@Html.ActionLink("Mi Perfil", "Detalles", "Alcance", new { id = Int32.Parse(User.Identity.Name.ToString().Split(',')[0]) }, null)</li>
         }
         else
         {
-            <li>@Html.ActionLink("Mi Perfil", "Detalles", "Usuarios", new { id = Int32.Parse(User.Identity.Name.Substring(0, User.Identity.Name.IndexOf("u")).Trim()) }, null)</li>
+            <li>@Html.ActionLink("Mi Perfil", "Detalles", "Usuarios", new { id = Int32.Parse(User.Identity.Name.ToString().Split(',')[0]) }, null)</li>
         }
 
         <li>@Html.ActionLink("Cerrar Sesión", "CerrarSesion", "Usuarios", routeValues: null, htmlAttributes: new { id = "logoutLink" })</li>

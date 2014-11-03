@@ -782,9 +782,7 @@ namespace OPDB.Controllers
             {
                 if (userViewModel.user.UserPassword.ToString().Equals(user.UserPassword))
                 {
-                    //Session["user"] = userViewModel.user;
-                    
-                    FormsAuthentication.SetAuthCookie(user.UserID+"ut="+user.UserTypeID, false);
+                    FormsAuthentication.SetAuthCookie(user.UserID+","+user.UserTypeID+","+user.UserStatus, false);
 
                     return RedirectToAction("Index", "Home");
                 }
