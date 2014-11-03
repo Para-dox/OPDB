@@ -209,6 +209,15 @@ function getUserTypeValue() {
     }
 }
 
+function approve(e) {
+    var url = $(e).attr('data-url');
+
+    $.post(url);
+    sleep(1000);
+
+    window.location.reload();
+}
+
 function getAffiliateValue() {
     debugger;
     if (document.getElementById('affiliateTypes').value == "School") {
