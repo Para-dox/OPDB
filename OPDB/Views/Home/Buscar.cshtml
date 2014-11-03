@@ -10,10 +10,18 @@
     {
         <h3>Usuarios</h3>
         <ul>
-            @foreach (var user in Model.users)
+            @if (Model.users.Count() > 0) { 
+                foreach (var user in Model.users)
+                {
+                    <li>
+                        @Html.ActionLink(user.FirstName + " " + user.LastName, "Detalles", "Usuarios", new { id = user.UserID }, null)
+                    </li>
+                }
+            }
+            else
             {
                 <li>
-                    @Html.ActionLink(user.FirstName + " " + user.LastName, "Detalles", "Usuarios", new { id = user.UserID }, null)
+                   No hubo resultados.
                 </li>
             }
         </ul>
@@ -23,10 +31,18 @@
     {
         <h3>Entidades de Alcance</h3>
         <ul>
-            @foreach (var outreach in Model.outreachEntities)
+            @if (Model.users.Count() > 0) {
+                foreach (var outreach in Model.outreachEntities)
+                {
+                    <li>
+                        @Html.ActionLink(outreach.OutreachEntityName, "Detalles", "Alcance", new { id = outreach.OutreachEntityDetailID }, null)
+                    </li>
+                }
+            }
+            else
             {
                 <li>
-                    @Html.ActionLink(outreach.OutreachEntityName, "Detalles", "Alcance", new { id = outreach.OutreachEntityDetailID }, null)
+                    No hubo resultados.
                 </li>
             }
         </ul>
@@ -36,10 +52,18 @@
     {
         <h3>Actividades</h3>
         <ul>
-            @foreach (var activity in Model.activities)
+            @if (Model.activities.Count() > 0) { 
+                foreach (var activity in Model.activities)
+                {
+                    <li>
+                        @Html.ActionLink(activity.Title, "Detalles", "Actividades", new { id = activity.ActivityID }, null)
+                    </li>
+                }
+            }
+            else
             {
                 <li>
-                    @Html.ActionLink(activity.Title, "Detalles", "Actividades", new { id = activity.ActivityID }, null)
+                    No hubo resultados.
                 </li>
             }
         </ul>
@@ -49,10 +73,18 @@
     {
         <h3>Unidades</h3>
         <ul>
-            @foreach (var unit in Model.units)
+            @if (Model.units.Count() > 0) { 
+                foreach (var unit in Model.units)
+                {
+                    <li>
+                        @Html.ActionLink(unit.UnitName, "Detalles", "Unidades", new { id = unit.UnitID }, null)
+                    </li>
+                }
+            }
+            else
             {
                 <li>
-                    @Html.ActionLink(unit.UnitName, "Detalles", "Unidades", new { id = unit.UnitID }, null)
+                    No hubo resultados.
                 </li>
             }
         </ul>
@@ -63,10 +95,18 @@
     {
         <h3>Escuelas</h3>
         <ul>
-            @foreach (var school in Model.schools)
+            @if (Model.schools.Count() > 0) { 
+                foreach (var school in Model.schools)
+                {
+                    <li>
+                        @Html.ActionLink(school.SchoolName, "Detalles", "Escuelas", new { id = school.SchoolID }, null)
+                    </li>
+                }
+            }
+            else
             {
                 <li>
-                    @Html.ActionLink(school.SchoolName, "Detalles", "Escuelas", new { id = school.SchoolID }, null)
+                    No hubo resultados.
                 </li>
             }
         </ul>
