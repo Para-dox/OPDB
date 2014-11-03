@@ -35,7 +35,6 @@
             <th>Tipo de Organización</th>
             <th>Nombre de Organización</th>
             <th>Email</th>
-            <th>Número de Teléfono</th>
             <th>Creado</th>
             <th>Modificado</th>
             <th style="width:10%;"></th>
@@ -55,9 +54,6 @@
                     @Html.DisplayFor(modelItem => item.Email)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.PhoneNumber)
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => item.CreateDate)
                 </td>
                 <td>
@@ -75,10 +71,10 @@
 
 <input type="button" class="btn" value="Nueva Organización" onclick="location.href='@Url.Action("Crear", "Alcance")'" />
 
+
 <script src="~/Scripts/myScripts.js"></script>
 <script>
     $(document).ready(function () {
-
         $('#outreach').DataTable({
             "sDom": '<"top"f>t<"bottom"ipr><"clear">',
             "sPaginationType": "full_numbers",
@@ -88,7 +84,7 @@
             "columnDefs": [
                 {
                     "orderable": false,
-                    "targets": 6
+                    "targets": 5
                 }
 
             ],
@@ -96,10 +92,14 @@
                 "sEmptyTable": "No se ha creado ninguna entidad de alcance",
                 "sZeroRecords": "No se ha encontrado ningún registro",
                 "sSearch": "Buscar:"
+            },
+            "fnDrawCallback": function() {
+                $("html").getNiceScroll().resize();
             }
         });
 
         document.getElementsByTagName("loading")[0].innerHTML = "";
+        document.getElementsByTagName("loadinginner")[0].innerHTML = "";
     });
 
 </script>

@@ -103,11 +103,13 @@
                 "sEmptyTable": "No se ha añadido ningún recurso",
                 "sZeroRecords": "No se ha encontrado ningún registro",
                 "sSearch": "Buscar:"
+            },
+            "fnDrawCallback": function () {
+                $("html").getNiceScroll().resize();
             }
         });
 
         document.getElementsByTagName("loading")[0].innerHTML = "";
-        $("html").getNiceScroll().resize();
     });
 
 </script>

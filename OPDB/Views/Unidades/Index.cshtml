@@ -90,10 +90,12 @@
                 "sEmptyTable": "No se ha creado ninguna unidad",
                 "sZeroRecords": "No se ha encontrado ningún registro",
                 "sSearch": "Buscar:"
+            },
+            "fnDrawCallback": function () {
+                $("html").getNiceScroll().resize();
             }
         });
 
         document.getElementsByTagName("loading")[0].innerHTML = "";
-        $("html").getNiceScroll().resize();
     });
 </script>

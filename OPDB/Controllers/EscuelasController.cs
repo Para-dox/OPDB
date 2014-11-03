@@ -39,6 +39,11 @@ namespace OPDB.Controllers
             return PartialView("Index", schoolViewModel);
         }
 
+        public ActionResult MenuEscuelas()
+        {
+            return PartialView("Escuelas");
+        }
+
         //
         // GET: /Escuelas/Details/5
 

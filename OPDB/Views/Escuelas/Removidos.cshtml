@@ -29,7 +29,7 @@
     }
 </style>
 
-<table id="removedSchools">
+<table id="removedSchoolsTable">
     <thead>
         <tr>
             <th>Nombre</th>
@@ -82,7 +82,7 @@
 <script>
     $(document).ready(function () {
 
-        $('#removedSchools').DataTable({
+        $('#removedSchoolsTable').DataTable({
             "sDom": '<"top"f>t<"bottom"ipr><"clear">',
             "sPaginationType": "full_numbers",
             "bProcessing": false,
@@ -97,11 +97,14 @@
             "oLanguage": {
                 "sEmptyTable": "No se ha removido ninguna escuela",
                 "sSearch": "Buscar:"
+            },
+            "fnDrawCallback": function () {
+                $("html").getNiceScroll().resize();
             }
         });
 
         document.getElementsByTagName("loading")[0].innerHTML = "";
-        $("html").getNiceScroll().resize();
+        document.getElementsByTagName("loadinginner")[0].innerHTML = "";
     });
 
 

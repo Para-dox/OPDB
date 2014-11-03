@@ -1,47 +1,27 @@
 ﻿@model OPDB.Models.UserViewModel
 
-@{
-    ViewBag.Title = "Iniciar Sesión";
-}
-
-<center>
-    <hgroup class="title">
-        <h1>@ViewBag.Title</h1>
-    </hgroup>
-
-
-    <section style="width:50%;">
-        @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl }))
-        {
+@using (Html.BeginForm("IniciarSesion", "Usuarios", FormMethod.Post, new { ReturnUrl = ViewBag.ReturnUrl }))
+{
             @Html.AntiForgeryToken()
             @Html.ValidationSummary(true)
+                <div>
+                    @Html.LabelFor(model => model.user.Email, "Correo Electrónico")
+                    @Html.TextBoxFor(model => model.user.Email)
+                    @Html.ValidationMessageFor(model => model.user.Email)
+                </div>
+                <div>
+                    @Html.LabelFor(model => model.user.UserPassword, "Contraseña")
+                    @Html.PasswordFor(model => model.user.UserPassword)
+                    @Html.ValidationMessageFor(model => model.user.UserPassword)
+                </div>
+    <div>
+        <input type="submit" class="btn" style="float:left !important; width:40% !important; margin-left: 30px !important;" value="Ingresar" /> <input type="button" value="Cancelar" class="btn" style="float:right !important; width:40% !important; margin-right: 30px !important;" onclick="modalClose()" />
+    </div><br /><br /><br />
+    <div style="text-align:center;">
+        @Html.ActionLink("Registrese", "Crear", "Usuarios") si no tiene cuenta.
+    </div>
 
-            <fieldset>
-                <legend>Formulario de Inicio</legend>
-                <ol>
-                    <li>
-                        @*<p style="float:left;">Correo Electrónico</p>*@
-                        @Html.LabelFor(model => model.user.Email, new { @style = "float:left;" })
-                        @Html.TextBoxFor(model => model.user.Email)
-                        @Html.ValidationMessageFor(model => model.user.Email)
-                    </li>
-                    <li>
-                        @Html.LabelFor(model => model.user.UserPassword, new { @style = "float:left;" })
-                        @Html.PasswordFor(model => model.user.UserPassword)
-                        @Html.ValidationMessageFor(model => model.user.UserPassword)
-                    </li>
-                    @*<li>
-                            @Html.CheckBoxFor(m => m.RememberMe)
-                            @Html.LabelFor(m => m.RememberMe, new { @class = "checkbox" })
-                        </li>*@
-                </ol>
-                <input type="submit" class="btn" value="Ingresar" />
-            </fieldset>
-            <p>
-                @Html.ActionLink("Registrese", "Crear", "Usuarios") si no tiene cuenta.
-            </p>
-        }
-    </section>
+}
 
     @section Scripts {
         @Scripts.Render("~/bundles/jqueryval")

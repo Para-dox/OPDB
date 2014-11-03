@@ -1,10 +1,14 @@
 ﻿@model IEnumerable<OPDB.Models.User>
 
+@{
+    ViewBag.Title = "Index";
+}
+
 <style>
     select {
         width: 50px !important;
         padding: 0.2rem !important;
-        height: 1.5rem !important;
+        height: 1.6rem !important;
         margin: 0 !important;
     }
 
@@ -24,15 +28,15 @@
         display: none !important;
     }
 </style>
-
-<table id="removedOutreachTable">
+<table id="outreach">
     <thead>
         <tr>
-            <th style="width:20%;">Nombre</th>
-            <th style="width:20%;">Tipo de Entidad</th>
-            <th style="width:20%;">Correo Electrónico</th>
-            <th>Removido En</th>
-            <th style="width:6%;"></th>
+            <th>Tipo de Organización</th>
+            <th>Nombre de Organización</th>
+            <th>Email</th>
+            <th>Creado</th>
+            <th>Modificado</th>
+            <th style="width:10%;"></th>
         </tr>
     </thead>
     <tbody>
@@ -40,29 +44,33 @@
         {
             <tr>
                 <td>
-                    @Html.ActionLink(item.OutreachEntityDetails.FirstOrDefault(i => i.UserID == item.UserID).OutreachEntityName, "Detalles", "Alcance", new { id = item.UserID }, null)
+                    @Html.ActionLink(item.OutreachEntityDetails.FirstOrDefault(outreach => outreach.UserID == item.UserID).OutreachEntityName, "Detalles", "Alcance", new { id = item.UserID }, null)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.OutreachEntityDetails.FirstOrDefault(i => i.UserID == item.UserID).OutreachEntityType.OutreachEntityType1)
+                    @Html.DisplayFor(modelItem => item.OutreachEntityDetails.FirstOrDefault(outreach => outreach.UserID == item.UserID).OutreachEntityType.OutreachEntityType1)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Email)
                 </td>
-                <td>@Html.DisplayFor(modelItem => item.DeletionDate)</td>
                 <td>
-                    <i title="Restaurar" style="cursor: pointer !important;" class="fa fa-plus" onclick="restoreRecord(this, 'removedUsers')" data-url="@Url.Action("Restaurar", "Alcance", new { id = item.UserID })"></i>                
+                    @Html.DisplayFor(modelItem => item.CreateDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UpdateDate)
+                </td>
+                <td>
+                    <a title="Pendiente" style="background-color:#222222 !important;" class="btn btn-sm" onclick="approve(this)" data-url="@Url.Action("Aprobar", "Alcance", new { id = item.UserID })">Aprobar <i class="fa fa-question"></i></a>
                 </td>
             </tr>
-
         }
     </tbody>
 </table>
 <br />
-
 <script src="~/Scripts/myScripts.js"></script>
 <script>
     $(document).ready(function () {
-        $('#removedOutreachTable').DataTable({
+
+        $('#outreach').DataTable({
             "sDom": '<"top"f>t<"bottom"ipr><"clear">',
             "sPaginationType": "full_numbers",
             "bProcessing": false,
@@ -71,22 +79,23 @@
             "columnDefs": [
                 {
                     "orderable": false,
-                    "targets": 4
+                    "targets": 5
                 }
+
             ],
             "oLanguage": {
-                "sEmptyTable": "No se ha removido ningúna entidad de alcance",
+                "sEmptyTable": "No se ha creado ninguna entidad de alcance",
                 "sZeroRecords": "No se ha encontrado ningún registro",
                 "sSearch": "Buscar:"
             },
-            "fnDrawCallback": function () {
+            "fnDrawCallback": function() {
                 $("html").getNiceScroll().resize();
             }
         });
 
         document.getElementsByTagName("loading")[0].innerHTML = "";
         document.getElementsByTagName("loadinginner")[0].innerHTML = "";
+
     });
 
 </script>
-

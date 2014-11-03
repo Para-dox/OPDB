@@ -31,6 +31,11 @@ namespace OPDB.Controllers
             return PartialView("Index", users.ToList());
         }
 
+        public ActionResult MenuUsuarios()
+        {
+            return PartialView("Usuarios");
+        }
+
         //
         // GET: /Usuarios/Details/5
 
@@ -761,9 +766,10 @@ namespace OPDB.Controllers
             return str;
         }
 
-        public ActionResult IniciarSesion()
+        [HttpPost]
+        public ActionResult IniciarSesionPopUp()
         {
-            return View("Login");
+            return PartialView("Login");
         }
 
         [HttpPost]
