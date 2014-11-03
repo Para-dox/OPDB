@@ -18,8 +18,15 @@ namespace OPDB.Controllers
         //
         // GET: /Actividades/
 
-        public ActionResult Index()
+        public ActionResult Index(string requested)
         {
+            if (requested != null) 
+            { 
+                if (User.Identity.IsAuthenticated && Boolean.Parse(requested)) {
+
+                    if (Int32.Parse(User.Identity.Name.ToString().Split(',')[1]) == 1) 
+                    { 
+                    
             List<Activity> activities = (from activity in db.Activities where activity.DeletionDate == null select activity).ToList();
 
             ActivityViewModel activityViewModel = new ActivityViewModel
@@ -121,6 +128,15 @@ namespace OPDB.Controllers
 
             return PartialView("Index", activityViewModel);
         }
+                    else
+                    {
+                        return RedirectToAction("AccesoDenegado", "Home");
+                    }
+                }
+            }
+
+            return RedirectToAction("AccesoDenegado", "Home");
+        }
 
         public ActionResult Lista()
         {
@@ -130,12 +146,8 @@ namespace OPDB.Controllers
 
             if (User.Identity.IsAuthenticated)
             {
-                int currentUserID = Int32.Parse(User.Identity.Name.Substring(0, User.Identity.Name.IndexOf("u")).Trim());
-                currentUser = db.Users.FirstOrDefault(u => u.UserID == currentUserID);
-            }
-            else
-            {
-                currentUser = null;
+                int currentUserID = Int32.Parse(User.Identity.Name.Split(',')[1]);
+                currentUser = db.Users.Find(currentUserID);
             }
 
             ActivityViewModel activityViewModel = new ActivityViewModel
@@ -205,6 +217,11 @@ namespace OPDB.Controllers
         {
             Activity foundActivity = db.Activities.Find(id);
 
+            User currentUser = null;
+
+            if (User.Identity.IsAuthenticated)
+                currentUser = db.Users.Find(Int32.Parse(User.Identity.Name.Split(',')[1]));
+
             string date = "";
 
             if (foundActivity.ActivityDate != null) 
@@ -213,7 +230,11 @@ namespace OPDB.Controllers
             var allFeedback = (from feedback in db.Feedbacks where feedback.ActivityID == id && feedback.DeletionDate == null select feedback).ToList();
             var feedbackList = new List<UserInfoViewModel>();
             
-            var interest = (from i in db.Interests where i.UserID == 1 && i.ActivityID == id select i).ToList();
+            var interest = new List<Interest>();
+
+            if(currentUser != null)
+                interest = (from i in db.Interests where i.UserID == currentUser.UserID && i.ActivityID == id select i).ToList();
+
             bool interested = false;
 
             if (interest.Count == 1)
@@ -247,6 +268,7 @@ namespace OPDB.Controllers
             {
                 return HttpNotFound();
             }
+
             return View(activityViewModel);
         }
 
@@ -275,6 +297,12 @@ namespace OPDB.Controllers
         [HttpPost]
         public ActionResult Crear(ActivityViewModel activityViewModel)
         {
+            if (User.Identity.IsAuthenticated) 
+            {
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.Split(',')[2])) 
+                {
+                    int id = Int32.Parse(User.Identity.Name.Split(',')[0]);
+
             if (activityViewModel.Activity.ActivityDate != null)
             {
                 if(activityViewModel.Activity.ActivityDate.Value.Date.CompareTo(DateTime.Now.Date) <= 0)
@@ -296,7 +324,7 @@ namespace OPDB.Controllers
             {
                 //TODO needs to acquire current user 
 
-                activityViewModel.Activity.UserID = 9;
+                        activityViewModel.Activity.UserID = id;
 
                 activityViewModel.Activity.UpdateDate = DateTime.Now;
                 activityViewModel.Activity.CreateDate = DateTime.Now;
@@ -312,9 +340,9 @@ namespace OPDB.Controllers
                             Contact ActivityContact = new Contact
                             {
                                 UserID = contact,
-                                CreateUser = 9,
+                                        CreateUser = id,
                                 CreateDate = DateTime.Now,
-                                UpdateUser = 9,
+                                        UpdateUser = id,
                                 UpdateDate = DateTime.Now
                             };
 
@@ -335,9 +363,9 @@ namespace OPDB.Controllers
                             {
                                 ResourceID = resource,
                                 ResourceStatus = false,
-                                CreateUser = 9,
+                                        CreateUser = id,
                                 CreateDate = DateTime.Now,
-                                UpdateUser = 9,
+                                        UpdateUser = id,
                                 UpdateDate = DateTime.Now
                             };
 
@@ -350,8 +378,8 @@ namespace OPDB.Controllers
                 activityViewModel.Information = CheckForConflicts(activityViewModel.Activity);
                 if (activityViewModel.Information.Count == 0 || activityViewModel.ForceCreate == true) 
                 { 
-                    activityViewModel.Activity.CreateUser = 3;
-                    activityViewModel.Activity.UpdateUser = 3;
+                            activityViewModel.Activity.CreateUser = id;
+                            activityViewModel.Activity.UpdateUser = id;
 
                     db.Activities.Add(activityViewModel.Activity);
                     db.SaveChanges();
@@ -370,6 +398,11 @@ namespace OPDB.Controllers
             activityViewModel.Contacts = getContacts();
             activityViewModel.Resources = getResources();
             return View(activityViewModel);
+        }
+            }
+
+            return RedirectToAction("AccesoDenegado", "Home");
+          
         }
 
         public ActionResult ContactosyRecursos(int id)
@@ -432,6 +465,10 @@ namespace OPDB.Controllers
 
         public ActionResult Editar(int id = 0)
         {
+            if (User.Identity.IsAuthenticated) 
+            {
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.Split(',')[2])) 
+                { 
             ActivityViewModel activityViewModel = new ActivityViewModel {
                 Activity = db.Activities.Find(id)
             };
@@ -458,6 +495,12 @@ namespace OPDB.Controllers
 
             return View(activityViewModel);
         }
+            }
+
+            return RedirectToAction("AccesoDenegado", "Home");
+            
+
+        }
 
         //
         // POST: /Actividades/Edit/5
@@ -466,6 +509,13 @@ namespace OPDB.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Editar(ActivityViewModel activityViewModel)
         {
+            if (User.Identity.IsAuthenticated) 
+            {
+
+                if ((Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name)) || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1) 
+                {
+                    int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
+
             if (activityViewModel.ActivityDate != "" && activityViewModel.ActivityDate != null)
                 activityViewModel.Activity.ActivityDate = DateTime.ParseExact(activityViewModel.ActivityDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
 
@@ -491,7 +541,7 @@ namespace OPDB.Controllers
                 if(activityViewModel.Activity.ActivityTime != "" && activityViewModel.Activity.ActivityTime != null)
                     activityViewModel.Activity.ActivityTime = activityViewModel.Activity.ActivityTime.Replace(" ", "");
                 
-                activityViewModel.Activity.UpdateUser = 9;
+                        activityViewModel.Activity.UpdateUser = userID;
                 activityViewModel.Activity.UpdateDate = DateTime.Now;
 
                 ///Contacts///
@@ -546,9 +596,9 @@ namespace OPDB.Controllers
                                 {
                                     UserID = id,
                                     ActivityID = activityViewModel.Activity.ActivityID,
-                                    CreateUser = 9,
+                                            CreateUser = userID,
                                     CreateDate = DateTime.Now,
-                                    UpdateUser = 9,
+                                            UpdateUser = userID,
                                     UpdateDate = DateTime.Now
                                 };
 
@@ -626,9 +676,9 @@ namespace OPDB.Controllers
                                     ResourceID = id,
                                     ActivityID = activityViewModel.Activity.ActivityID,
                                     ResourceStatus = false,
-                                    CreateUser = 9,
+                                            CreateUser = userID,
                                     CreateDate = DateTime.Now,
-                                    UpdateUser = 9,
+                                            UpdateUser = userID,
                                     UpdateDate = DateTime.Now
                                 };
 
@@ -676,10 +726,18 @@ namespace OPDB.Controllers
             activityViewModel.Resources = getResources();
             return View(activityViewModel);
         }
+            }
+
+            return RedirectToAction("AccesoDenegado", "Home");
+        }
 
         [HttpPost]
         public ActionResult EditarNota(int id)
         {
+            if (User.Identity.IsAuthenticated) 
+            {
+                if ((Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.Split(',')[2])) || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1) 
+                { 
             EscuelasController controller = new EscuelasController();
 
             ActivityViewModel activityViewModel = new ActivityViewModel
@@ -692,55 +750,98 @@ namespace OPDB.Controllers
 
             return PartialView("EditarNota", activityViewModel);
         }
+            }
+
+            return RedirectToAction("AccesoDenegado", "Home");
+        }
 
         //
         // GET: /Actividades/Delete/5
 
         public ActionResult Remover(int id = 0)
         {
+            if (User.Identity.IsAuthenticated)
+            {
             Activity activity = db.Activities.Find(id);
             if (activity == null)
             {
                 return HttpNotFound();
             }
-            else
+                else if (Int32.Parse(User.Identity.Name.Split(',')[0]) == activity.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
             {
+                    int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
+
                 activity.DeletionDate = DateTime.Now;
                 db.Entry(activity).State = EntityState.Modified;
                 db.SaveChanges();
+
+                    if (userID == activity.UserID)
+                        return RedirectToAction("Detalles", "Alcance", new { id = activity.UserID });
+                    else
+                        return RedirectToAction("Administracion", "Home");
+                }
+                    
+               
             }
-            return View(activity);
+
+            return RedirectToAction("AccesoDenegado", "Home");
         }
 
         public ActionResult RemoverNota(int id)
         {
-            var note = db.Activities.Find(id);
+            if (User.Identity.IsAuthenticated)
+            {
+                var note = db.ActivityNotes.Find(id);
+                
+                if(note == null)
+                    return HttpNotFound();
+
+                else if (Int32.Parse(User.Identity.Name.Split(',')[0]) == note.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
             note.DeletionDate = DateTime.Now;
             db.Entry(note).State = EntityState.Modified;
             db.SaveChanges();
             return RedirectToAction("Detalles", "Actividades", new { id = note.ActivityID });
         }
+            }
+
+            return RedirectToAction("AccesoDenegado", "Home");
+        }
 
         public ActionResult RemoverComentario(int id = 0)
         {
+            if (User.Identity.IsAuthenticated)
+            {                
             Feedback feedback = db.Feedbacks.Find(id);
             if (feedback == null)
             {
                 return HttpNotFound();
             }
-            else
+
+                else if(Int32.Parse(User.Identity.Name.Split(',')[0]) == feedback.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
             {
                 feedback.DeletionDate = DateTime.Now;
                 db.Entry(feedback).State = EntityState.Modified;
                 db.SaveChanges();
+                    return RedirectToAction("Detalles", "Actividades", new { id = feedback.ActivityID });
+                }
+                
             }
-            return RedirectToAction("Detalles", "Actividades", new { id = feedback.ActivityID });
+
+                return RedirectToAction("AccesoDenegado", "Home");
         }
+
 
         [HttpPost]
         public ActionResult GuardarNota(ActivityViewModel activityViewModel)
         {
-            activityViewModel.Note.UpdateUser = 2;
+            if (User.Identity.IsAuthenticated)
+            {
+                if ((Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.Split(',')[2])) || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
+                    int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
+
+                    activityViewModel.Note.UpdateUser = userID;
             activityViewModel.Note.UpdateDate = DateTime.Now;
             
             if (activityViewModel.Note.ActivityNoteID == 0)
@@ -749,8 +850,8 @@ namespace OPDB.Controllers
                 {
                     activityViewModel.Note.CreateDate = DateTime.Now;
 
-                    activityViewModel.Note.UserID = 2;
-                    activityViewModel.Note.CreateUser = 2;
+                            activityViewModel.Note.UserID = userID;
+                            activityViewModel.Note.CreateUser = userID;
 
                     db.ActivityNotes.Add(activityViewModel.Note);
                     db.SaveChanges();
@@ -771,10 +872,18 @@ namespace OPDB.Controllers
 
             return Content(GetErrorsFromModelState(activityViewModel));            
         }
+            }
+
+            return RedirectToAction("AccesoDenegado", "Home");
+        }
 
         [HttpPost]
         public ActionResult CrearNota(int id)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                if ((Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.Split(',')[2])) || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
             EscuelasController controller = new EscuelasController();
 
             ActivityViewModel activityViewModel = new ActivityViewModel
@@ -790,6 +899,10 @@ namespace OPDB.Controllers
             };
 
             return PartialView("CrearNota", activityViewModel);
+        }
+            }
+
+            return RedirectToAction("AccesoDenegado", "Home");
         }
 
        protected override void Dispose(bool disposing)
@@ -878,6 +991,10 @@ namespace OPDB.Controllers
        [HttpPost]
        public ActionResult VerNota(int id = 0)
        {
+           if (User.Identity.IsAuthenticated)
+           {
+               if ((Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.Split(',')[2])) || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+               {
            ActivityNote activityNote = db.ActivityNotes.Find(id);
            activityNote.NoteType = db.NoteTypes.Find(activityNote.NoteTypeID);
            activityNote.Activity = db.Activities.Find(activityNote.ActivityID);
@@ -894,10 +1011,23 @@ namespace OPDB.Controllers
 
            return PartialView("VerNota", activityViewModel);
        }
+           }
+
+           return RedirectToAction("AccesoDenegado", "Home");
+       }
 
        [HttpPost]
        public ActionResult NuevoComentario(int id)
        {
+           if (User.Identity.IsAuthenticated)
+           {
+               var activity = db.Activities.Find(id);
+
+               if (activity == null)
+                   return HttpNotFound();
+
+               else
+               {
            ActivityViewModel activityViewModel = new ActivityViewModel
            {
                Feedback = new Feedback
@@ -909,23 +1039,43 @@ namespace OPDB.Controllers
 
            return PartialView("NuevoComentario", activityViewModel);
        }
+           }
+
+           return RedirectToAction("AccesoDenegado", "Home");
+       }
 
        [HttpPost]
        public ActionResult EditarComentario(int id)
        {
+           if (User.Identity.IsAuthenticated)
+           {
            ActivityViewModel activityViewModel = new ActivityViewModel
            {
                Feedback = db.Feedbacks.Find(id)
 
            };
 
+               if (activityViewModel.Feedback == null)
+                   return HttpNotFound();
+
+               else if (Int32.Parse(User.Identity.Name.Split(',')[0]) == activityViewModel.Feedback.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+               {
            return PartialView("EditarComentario", activityViewModel);
+       }
+           }
+
+           return RedirectToAction("AccesoDenegado", "Home");
        }
 
        [HttpPost]
        public ActionResult GuardarComentario(ActivityViewModel activityViewModel)
        {
-           activityViewModel.Feedback.UpdateUser = 2;
+           if (User.Identity.IsAuthenticated)
+           {
+               
+                   int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
+
+                   activityViewModel.Feedback.UpdateUser = userID;
            activityViewModel.Feedback.UpdateDate = DateTime.Now;
 
            if (activityViewModel.Feedback.FeedbackID == 0)
@@ -934,8 +1084,8 @@ namespace OPDB.Controllers
                {
                    activityViewModel.Feedback.CreateDate = DateTime.Now;
 
-                   activityViewModel.Feedback.UserID = 2;
-                   activityViewModel.Feedback.CreateUser = 2;
+                           activityViewModel.Feedback.UserID = userID;
+                           activityViewModel.Feedback.CreateUser = userID;
 
                    db.Feedbacks.Add(activityViewModel.Feedback);
                    db.SaveChanges();
@@ -955,11 +1105,24 @@ namespace OPDB.Controllers
            }
 
            return Content(GetErrorsFromModelState(activityViewModel));  
+               
+       }
+
+           return RedirectToAction("AccesoDenegado", "Home");
        }
 
        [HttpPost]
        public ActionResult MediaUpload(int id = 0)
        {
+           if (User.Identity.IsAuthenticated)
+           {
+               var foundActivity = (from activity in db.Activities where activity.DeletionDate == null && activity.ActivityID == id select activity).ToList();
+
+               if (foundActivity.Count() == 0)
+                   return HttpNotFound();
+
+               if (Int32.Parse(User.Identity.Name.Split(',')[0]) == foundActivity.First().UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+               {
            ActivityViewModel activityViewModel = new ActivityViewModel
            {
                MediaTypes = getMediaTypes(),
@@ -970,6 +1133,10 @@ namespace OPDB.Controllers
            };
 
            return PartialView("Upload", activityViewModel);
+               }
+           }
+
+           return RedirectToAction("AccesoDenegado", "Home");
 
        }
 
@@ -996,18 +1163,24 @@ namespace OPDB.Controllers
        [HttpPost]
        public ActionResult Upload(ActivityViewModel activityViewModel)
        {
+               if (User.Identity.IsAuthenticated)
+               {
+
+                   if (Int32.Parse(User.Identity.Name.Split(',')[0]) == activityViewModel.Activity.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                   {
+                       int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
 
            activityViewModel.Media.UpdateDate = DateTime.Now;
 
            //To be changed with login implementation.
-           activityViewModel.Media.UpdateUser = 1;
+                       activityViewModel.Media.UpdateUser = userID;
 
            if (activityViewModel.Media.MediaID == 0)
            {
                if (ModelState.IsValid) 
                { 
                    //To be changed with login implementation.
-                   activityViewModel.Media.CreateUser = 1;
+                               activityViewModel.Media.CreateUser = userID;
                                              
                    activityViewModel.Media.CreateDate = DateTime.Now;
 
@@ -1035,14 +1208,16 @@ namespace OPDB.Controllers
                    }
                }
            }
+               }
+               return RedirectToAction("AccesoDenegado", "Home");
+           }
 
            [HttpPost]
            public ActionResult Interes(int id)
            {
                if (User.Identity.IsAuthenticated) 
                {
-
-                   var userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
+                   int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
 
                    Interest Interest = new Interest
                    {
@@ -1116,18 +1291,34 @@ namespace OPDB.Controllers
         [HttpPost]
            public ActionResult Aprobar(int id)
            {
+               if (User.Identity.IsAuthenticated)
+               {
                var resource = db.ActivityResources.Find(id);
+
+                   if (resource == null)
+                       return HttpNotFound();
+
+                   var activity = db.Activities.First(a => a.ActivityID == resource.ActivityID);
+
+                   if (Int32.Parse(User.Identity.Name.Split(',')[0]) == activity.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                   {
+                       int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
 
                resource.ResourceStatus = true;
                resource.UpdateDate = DateTime.Now;
 
-               //Change after login
-               resource.UpdateUser = 9;
+                       resource.UpdateUser = userID;
 
                db.Entry(resource).State = EntityState.Modified;
                db.SaveChanges();
 
                return RedirectToAction("Detalles", "Actividades", new { id = resource.ActivityID });
+                   }
+
+                  
+               }
+
+               return RedirectToAction("AccesoDenegado", "Home");
 
            }
 
@@ -1162,6 +1353,10 @@ namespace OPDB.Controllers
 
        public ActionResult CrearActividad()
        {
+           if (User.Identity.IsAuthenticated)
+           {
+               if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+               {
            ActivityViewModel activityViewModel = new ActivityViewModel
            {
                ActivityTypes = getActivityTypes(),
@@ -1175,10 +1370,20 @@ namespace OPDB.Controllers
 
            return View(activityViewModel);
        }
+           }
+
+           return RedirectToAction("AccesoDenegado", "Home");
+       }
 
        [HttpPost]
        public ActionResult CrearActividad(ActivityViewModel activityViewModel)
        {
+           if (User.Identity.IsAuthenticated)
+           {
+               if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+               {
+                   int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
+
            if (activityViewModel.Activity.ActivityDate != null)
            {
                if (activityViewModel.Activity.ActivityDate.Value.Date.CompareTo(DateTime.Now.Date) <= 0)
@@ -1213,9 +1418,9 @@ namespace OPDB.Controllers
                            Contact ActivityContact = new Contact
                            {
                                UserID = contact,
-                               CreateUser = 9,
+                                       CreateUser = userID,
                                CreateDate = DateTime.Now,
-                               UpdateUser = 9,
+                                       UpdateUser = userID,
                                UpdateDate = DateTime.Now
                            };
 
@@ -1237,9 +1442,9 @@ namespace OPDB.Controllers
                            {
                                ResourceID = resource,
                                ResourceStatus = false,
-                               CreateUser = 9,
+                                       CreateUser = userID,
                                CreateDate = DateTime.Now,
-                               UpdateUser = 9,
+                                       UpdateUser = userID,
                                UpdateDate = DateTime.Now
                            };
 
@@ -1252,8 +1457,8 @@ namespace OPDB.Controllers
                activityViewModel.Information = CheckForConflicts(activityViewModel.Activity);
                if (activityViewModel.Information.Count == 0 || activityViewModel.ForceCreate == true)
                {
-                   activityViewModel.Activity.CreateUser = 3;
-                   activityViewModel.Activity.UpdateUser = 3;
+                           activityViewModel.Activity.CreateUser = userID;
+                           activityViewModel.Activity.UpdateUser = userID;
 
                    db.Activities.Add(activityViewModel.Activity);
                    db.SaveChanges();
@@ -1274,9 +1479,18 @@ namespace OPDB.Controllers
            activityViewModel.Resources = getResources();           
            return View(activityViewModel);
        }
+           }
+
+           return RedirectToAction("AccesoDenegado", "Home");
+
+       }
 
        public ActionResult EditarActividad(int id = 0)
        {
+           if (User.Identity.IsAuthenticated)
+           {
+               if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+               {
            ActivityViewModel activityViewModel = new ActivityViewModel
            {
                Activity = db.Activities.Find(id)
@@ -1295,11 +1509,20 @@ namespace OPDB.Controllers
            activityViewModel.Resources = getResources();
            return View(activityViewModel);
        }
+           }
+           return RedirectToAction("AccesoDenegado", "Home");
+       }
 
        [HttpPost]
        [ValidateAntiForgeryToken]
        public ActionResult EditarActividad(ActivityViewModel activityViewModel)
        {
+           if (User.Identity.IsAuthenticated)
+           {
+               if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+               {
+                   int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
+
            if (activityViewModel.ActivityDate != "" && activityViewModel.ActivityDate != null)
                activityViewModel.Activity.ActivityDate = DateTime.ParseExact(activityViewModel.ActivityDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
 
@@ -1325,7 +1548,7 @@ namespace OPDB.Controllers
               if (activityViewModel.Activity.ActivityTime != "" && activityViewModel.Activity.ActivityTime != null)
                    activityViewModel.Activity.ActivityTime = activityViewModel.Activity.ActivityTime.Replace(" ", "");
 
-               activityViewModel.Activity.UpdateUser = 3;
+                       activityViewModel.Activity.UpdateUser = userID;
                activityViewModel.Activity.UpdateDate = DateTime.Now;
 
                ///Contacts///
@@ -1380,9 +1603,9 @@ namespace OPDB.Controllers
                                {
                                    UserID = id,
                                    ActivityID = activityViewModel.Activity.ActivityID,
-                                   CreateUser = 9,
+                                           CreateUser = userID,
                                    CreateDate = DateTime.Now,
-                                   UpdateUser = 9,
+                                           UpdateUser = userID,
                                    UpdateDate = DateTime.Now
                                };
 
@@ -1459,9 +1682,9 @@ namespace OPDB.Controllers
                                {
                                    ResourceID = id,
                                    ActivityID = activityViewModel.Activity.ActivityID,
-                                   CreateUser = 9,
+                                           CreateUser = userID,
                                    CreateDate = DateTime.Now,
-                                   UpdateUser = 9,
+                                           UpdateUser = userID,
                                    UpdateDate = DateTime.Now
                                };
 
@@ -1508,6 +1731,10 @@ namespace OPDB.Controllers
            activityViewModel.Contacts = getContacts();
            activityViewModel.Resources = getResources();
            return View(activityViewModel);
+       }
+           }
+
+           return RedirectToAction("AccesoDenegado", "Home");
        }
 
        
