@@ -303,7 +303,6 @@ namespace OPDB.Controllers
                         return HttpNotFound();
                     }
 
-
                     return View(userViewModel);
                 }
             }

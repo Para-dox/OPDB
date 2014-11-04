@@ -305,26 +305,25 @@ namespace OPDB.Controllers
                 {
                     int id = Int32.Parse(User.Identity.Name.Split(',')[0]);
 
-            if (activityViewModel.Activity.ActivityDate != null)
-            {
-                        if (activityViewModel.Activity.ActivityDate.Value.Date.CompareTo(DateTime.Now.Date) <= 0)
-                    ModelState.AddModelError("Activity_ActivityDate_EarlierThanCurrentDate", Resources.WebResources.Activity_ActivityDate_EarlierThanCurrentDate);
-            }
+                    if (activityViewModel.Activity.ActivityDate != null)
+                    {
+                                if (activityViewModel.Activity.ActivityDate.Value.Date.CompareTo(DateTime.Now.Date) <= 0)
+                            ModelState.AddModelError("Activity_ActivityDate_EarlierThanCurrentDate", Resources.WebResources.Activity_ActivityDate_EarlierThanCurrentDate);
+                    }
 
-            if (activityViewModel.Activity.Details != null && activityViewModel.Activity.Details != "")
-            {
-                string pattern = @"^<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>$";
-                Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                MatchCollection matches = rgx.Matches(activityViewModel.Activity.Details);
+                    if (activityViewModel.Activity.Details != null && activityViewModel.Activity.Details != "")
+                    {
+                        string pattern = @"^<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>$";
+                        Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                        MatchCollection matches = rgx.Matches(activityViewModel.Activity.Details);
                 
-                if (matches.Count > 0)
-                    ModelState.AddModelError("Activity_Details_Invalid", Resources.WebResources.Activity_Details_Invalid);
-                
-            }
+                        if (matches.Count > 0)
+                            ModelState.AddModelError("Activity_Details_Invalid", Resources.WebResources.Activity_Details_Invalid);               
+                    }
 
             if (ModelState.IsValid)
             {
-                        activityViewModel.Activity.UserID = id;
+                activityViewModel.Activity.UserID = id;
 
                 activityViewModel.Activity.UpdateDate = DateTime.Now;
                 activityViewModel.Activity.CreateDate = DateTime.Now;
@@ -1029,22 +1028,22 @@ namespace OPDB.Controllers
            {
                if ((Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.Split(',')[2])) || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
                {
-           ActivityNote activityNote = db.ActivityNotes.Find(id);
-           activityNote.NoteType = db.NoteTypes.Find(activityNote.NoteTypeID);
-           activityNote.Activity = db.Activities.Find(activityNote.ActivityID);
+                   ActivityNote activityNote = db.ActivityNotes.Find(id);
+                   activityNote.NoteType = db.NoteTypes.Find(activityNote.NoteTypeID);
+                   activityNote.Activity = db.Activities.Find(activityNote.ActivityID);
 
-           ActivityViewModel activityViewModel = new ActivityViewModel
-           {
-              Note = activityNote
-           };
+                   ActivityViewModel activityViewModel = new ActivityViewModel
+                   {
+                      Note = activityNote
+                   };
 
-           if (activityViewModel.Note == null)
-           {
-               return HttpNotFound();
-           }
+                   if (activityViewModel.Note == null)
+                   {
+                       return HttpNotFound();
+                   }
 
-           return PartialView("VerNota", activityViewModel);
-       }
+                   return PartialView("VerNota", activityViewModel);
+               }
            }
 
            return RedirectToAction("AccesoDenegado", "Home");
@@ -1575,7 +1574,7 @@ namespace OPDB.Controllers
 
            if (activityViewModel.Activity.Details != null && activityViewModel.Activity.Details != "")
            {
-                        string pattern = @"^(script\b[^<]*(?:(?!<\/script>)<[^<]*)*script)$";
+               string pattern = @"^(script\b[^<]*(?:(?!<\/script>)<[^<]*)*script)$";
                Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
                MatchCollection matches = rgx.Matches(activityViewModel.Activity.Details);
 

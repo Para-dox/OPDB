@@ -139,18 +139,25 @@ namespace OPDB.Controllers
         [HttpPost]
         public ActionResult PopUpEditar(int id = 0)
         {
-            SchoolViewModel schoolViewModel = new SchoolViewModel
+            if (User.Identity.IsAuthenticated)
             {
-                School = db.Schools.Find(id),
-                Towns = getTowns()
-            };
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
+                    SchoolViewModel schoolViewModel = new SchoolViewModel
+                    {
+                        School = db.Schools.Find(id),
+                        Towns = getTowns()
+                    };
 
-            if (schoolViewModel.School == null)
-            {
-                return HttpNotFound();
+                    if (schoolViewModel.School == null)
+                    {
+                        return HttpNotFound();
+                    }
+
+                    return View(schoolViewModel);
+                }
             }
-
-            return PartialView("Editar", schoolViewModel);
+            return PartialView("AccesoDenegado", "Home");
         }
 
        
@@ -160,6 +167,7 @@ namespace OPDB.Controllers
         {
             try 
             {
+
                 List<School> schools = (from school in db.Schools where school.SchoolSequenceNumber == schoolViewModel.School.SchoolSequenceNumber && school.DeletionDate == null select school).ToList();
 
                 School currentSchool = db.Schools.Find(schoolViewModel.School.SchoolID);
@@ -299,21 +307,30 @@ namespace OPDB.Controllers
         [HttpPost]
         public ActionResult VerNota(int id = 0)
         {
-            SchoolNote schoolNote = db.SchoolNotes.Find(id);
-            schoolNote.NoteType = db.NoteTypes.Find(schoolNote.NoteTypeID);
-            schoolNote.School = db.Schools.Find(schoolNote.SchoolID);
-
-            SchoolViewModel schoolViewModel = new SchoolViewModel
+            if (User.Identity.IsAuthenticated)
             {
-                Note = schoolNote
-            };
+                if ((Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.Split(',')[2])) || Int32.Parse(User.Identity.Name.Split(',')[2]) == 2 || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
 
-            if (schoolViewModel.Note == null)
-            {
-                return HttpNotFound();
-            }
+                    SchoolNote schoolNote = db.SchoolNotes.Find(id);
+                    schoolNote.NoteType = db.NoteTypes.Find(schoolNote.NoteTypeID);
+                    schoolNote.School = db.Schools.Find(schoolNote.SchoolID);
 
-            return PartialView("VerNota", schoolViewModel);
+                    SchoolViewModel schoolViewModel = new SchoolViewModel
+                    {
+                        Note = schoolNote
+                    };
+
+                    if (schoolViewModel.Note == null)
+                    {
+                        return HttpNotFound();
+                    }
+
+                    return PartialView("VerNota", schoolViewModel);
+
+                }
+            }       
+            return RedirectToAction("AccesoDenegado", "Home");
         }
 
         [HttpPost]
