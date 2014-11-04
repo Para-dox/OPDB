@@ -21,14 +21,14 @@ namespace OPDB.Controllers
 
         public ActionResult Index(string requested)
         {
-            if (requested != null)
-            {
-                if (User.Identity.IsAuthenticated && Boolean.Parse(requested))
+            if (requested != null) 
+            { 
+                if (User.Identity.IsAuthenticated && Boolean.Parse(requested)) 
                 {
 
-                    if (Int32.Parse(User.Identity.Name.ToString().Split(',')[1]) == 1)
-                    {
-
+                    if (Int32.Parse(User.Identity.Name.ToString().Split(',')[1]) == 1) 
+                    { 
+                    
                         List<Activity> activities = (from activity in db.Activities where activity.DeletionDate == null select activity).ToList();
 
                         ActivityViewModel activityViewModel = new ActivityViewModel
@@ -43,26 +43,26 @@ namespace OPDB.Controllers
 
                             if (CreateUser.UserTypeID == 3 && UpdateUser.UserTypeID == 3)
                             {
+                    
+                               activityViewModel.Information.Add(new UserInfoViewModel
+                                {
+                                    Activity = activity,
+                                    CreateEntity = db.OutreachEntityDetails.First(u => u.UserID == activity.CreateUser),
+                                    UpdateEntity = db.OutreachEntityDetails.First(u => u.UserID == activity.UpdateUser),
+                                    CreateUser = new UserDetail
+                                    {
+                                        FirstName = "",
+                                        MiddleInitial = "",
+                                        LastName = "",
+                                    },
+                                    UpdateUser = new UserDetail
+                                    {
+                                        FirstName = "",
+                                        MiddleInitial = "",
+                                        LastName = ""
+                                    }
 
-                                activityViewModel.Information.Add(new UserInfoViewModel
-                                 {
-                                     Activity = activity,
-                                     CreateEntity = db.OutreachEntityDetails.First(u => u.UserID == activity.CreateUser),
-                                     UpdateEntity = db.OutreachEntityDetails.First(u => u.UserID == activity.UpdateUser),
-                                     CreateUser = new UserDetail
-                                     {
-                                         FirstName = "",
-                                         MiddleInitial = "",
-                                         LastName = "",
-                                     },
-                                     UpdateUser = new UserDetail
-                                     {
-                                         FirstName = "",
-                                         MiddleInitial = "",
-                                         LastName = ""
-                                     }
-
-                                 });
+                                });
                             }
                             else if (CreateUser.UserTypeID == 3 && UpdateUser.UserTypeID != 3)
                             {
@@ -224,12 +224,12 @@ namespace OPDB.Controllers
 
             string date = "";
 
-            if (foundActivity.ActivityDate != null)
-                date = foundActivity.ActivityDate.Value.ToString("dd/MM/yyyy");
+            if (foundActivity.ActivityDate != null) 
+               date = foundActivity.ActivityDate.Value.ToString("dd/MM/yyyy");
 
             var allFeedback = (from feedback in db.Feedbacks where feedback.ActivityID == id && feedback.DeletionDate == null select feedback).ToList();
             var feedbackList = new List<UserInfoViewModel>();
-
+            
             var interest = new List<Interest>();
 
             if (currentUser != null)
@@ -250,8 +250,8 @@ namespace OPDB.Controllers
                 });
             }
 
-
-
+            
+            
             ActivityViewModel activityViewModel = new ActivityViewModel
             {
                 User = db.Users.Find(foundActivity.UserID),
@@ -263,7 +263,7 @@ namespace OPDB.Controllers
                 Videos = (from video in db.Media where video.ActivityID == id && video.MediaType == "Video" && video.DeletionDate == null select video).ToList(),
                 Photos = (from photo in db.Media where photo.ActivityID == id && photo.MediaType == "Foto" && photo.DeletionDate == null select photo).ToList()
             };
-
+            
             if (activityViewModel.Activity == null)
             {
                 return HttpNotFound();
@@ -278,7 +278,7 @@ namespace OPDB.Controllers
         {
             ActivityViewModel activityViewModel = new ActivityViewModel
             {
-                ActivityTypes = getActivityTypes(),
+                ActivityTypes = getActivityTypes(), 
                 SchoolList = getSchools(),
                 Activity = new Activity
                 {
@@ -299,112 +299,110 @@ namespace OPDB.Controllers
         [HttpPost]
         public ActionResult Crear(ActivityViewModel activityViewModel)
         {
-            if (User.Identity.IsAuthenticated)
+            if (User.Identity.IsAuthenticated) 
             {
                 if ((Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.Split(',')[2])) || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
                 {
                     int id = Int32.Parse(User.Identity.Name.Split(',')[0]);
 
-                    if (activityViewModel.Activity.ActivityDate != null)
-                    {
+            if (activityViewModel.Activity.ActivityDate != null)
+            {
                         if (activityViewModel.Activity.ActivityDate.Value.Date.CompareTo(DateTime.Now.Date) <= 0)
-                            ModelState.AddModelError("Activity_ActivityDate_EarlierThanCurrentDate", Resources.WebResources.Activity_ActivityDate_EarlierThanCurrentDate);
-                    }
+                    ModelState.AddModelError("Activity_ActivityDate_EarlierThanCurrentDate", Resources.WebResources.Activity_ActivityDate_EarlierThanCurrentDate);
+            }
 
-                    if (activityViewModel.Activity.Details != null && activityViewModel.Activity.Details != "")
-                    {
-                        string pattern = @"^<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>$";
-                        Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                        MatchCollection matches = rgx.Matches(activityViewModel.Activity.Details);
+            if (activityViewModel.Activity.Details != null && activityViewModel.Activity.Details != "")
+            {
+                string pattern = @"^<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>$";
+                Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                MatchCollection matches = rgx.Matches(activityViewModel.Activity.Details);
+                
+                if (matches.Count > 0)
+                    ModelState.AddModelError("Activity_Details_Invalid", Resources.WebResources.Activity_Details_Invalid);
+                
+            }
 
-                        if (matches.Count > 0)
-                            ModelState.AddModelError("Activity_Details_Invalid", Resources.WebResources.Activity_Details_Invalid);
-
-                    }
-
-                    if (ModelState.IsValid)
-                    {
-                        //TODO needs to acquire current user 
-
+            if (ModelState.IsValid)
+            {
                         activityViewModel.Activity.UserID = id;
 
-                        activityViewModel.Activity.UpdateDate = DateTime.Now;
-                        activityViewModel.Activity.CreateDate = DateTime.Now;
+                activityViewModel.Activity.UpdateDate = DateTime.Now;
+                activityViewModel.Activity.CreateDate = DateTime.Now;
 
-                        if (activityViewModel.ContactIDs != null)
+                if (activityViewModel.ContactIDs != null)
+                {
+                    if (activityViewModel.ContactIDs.Count > 0 && activityViewModel.ContactIDs.First() != 0)
+                    {
+                        activityViewModel.Activity.Contacts = new List<Contact>();
+
+                        foreach (var contact in activityViewModel.ContactIDs)
                         {
-                            if (activityViewModel.ContactIDs.Count > 0 && activityViewModel.ContactIDs.First() != 0)
+                            Contact ActivityContact = new Contact
                             {
-                                activityViewModel.Activity.Contacts = new List<Contact>();
-
-                                foreach (var contact in activityViewModel.ContactIDs)
-                                {
-                                    Contact ActivityContact = new Contact
-                                    {
-                                        UserID = contact,
+                                UserID = contact,
                                         CreateUser = id,
-                                        CreateDate = DateTime.Now,
+                                CreateDate = DateTime.Now,
                                         UpdateUser = id,
-                                        UpdateDate = DateTime.Now
-                                    };
+                                UpdateDate = DateTime.Now
+                            };
 
-                                    activityViewModel.Activity.Contacts.Add(ActivityContact);
-                                }
-
-                            }
-                        }
-                        if (activityViewModel.ResourceIDs != null)
-                        {
-                            if (activityViewModel.ResourceIDs.Count > 0 && activityViewModel.ResourceIDs.First() != 0)
-                            {
-                                activityViewModel.Activity.ActivityResources = new List<ActivityResource>();
-
-                                foreach (var resource in activityViewModel.ResourceIDs)
-                                {
-                                    ActivityResource Resource = new ActivityResource
-                                    {
-                                        ResourceID = resource,
-                                        ResourceStatus = false,
-                                        CreateUser = id,
-                                        CreateDate = DateTime.Now,
-                                        UpdateUser = id,
-                                        UpdateDate = DateTime.Now
-                                    };
-
-                                    activityViewModel.Activity.ActivityResources.Add(Resource);
-                                }
-
-                            }
+                            activityViewModel.Activity.Contacts.Add(ActivityContact);
                         }
 
-                        activityViewModel.Information = CheckForConflicts(activityViewModel.Activity);
-                        if (activityViewModel.Information.Count == 0 || activityViewModel.ForceCreate == true)
+                    }
+                }
+                if (activityViewModel.ResourceIDs != null) 
+                { 
+                    if (activityViewModel.ResourceIDs.Count > 0 && activityViewModel.ResourceIDs.First() != 0)
+                    {
+                        activityViewModel.Activity.ActivityResources = new List<ActivityResource>();
+
+                        foreach (var resource in activityViewModel.ResourceIDs)
                         {
+                            ActivityResource Resource = new ActivityResource
+                            {
+                                ResourceID = resource,
+                                ResourceStatus = false,
+                                        CreateUser = id,
+                                CreateDate = DateTime.Now,
+                                        UpdateUser = id,
+                                UpdateDate = DateTime.Now
+                            };
+
+                            activityViewModel.Activity.ActivityResources.Add(Resource);
+                        }
+
+                    }
+                }
+
+                activityViewModel.Information = CheckForConflicts(activityViewModel.Activity);
+                if (activityViewModel.Information.Count == 0 || activityViewModel.ForceCreate == true) 
+                { 
                             activityViewModel.Activity.CreateUser = id;
                             activityViewModel.Activity.UpdateUser = id;
 
-                            db.Activities.Add(activityViewModel.Activity);
-                            db.SaveChanges();
+                    db.Activities.Add(activityViewModel.Activity);
+                    db.SaveChanges();
 
-                            return RedirectToAction("Detalles", "Alcance", new { id = activityViewModel.Activity.UserID });
-                        }
-                        else
-                        {
-                            activityViewModel.Action = "Crear";
-                            return View("Conflictos", activityViewModel);
-                        }
-                    }
-
-                    activityViewModel.ActivityTypes = getActivityTypes();
-                    activityViewModel.SchoolList = getSchools();
-                    activityViewModel.Contacts = getContacts();
-                    activityViewModel.Resources = getResources();
-                    return View(activityViewModel);
+                    return RedirectToAction("Detalles", "Alcance", new { id = activityViewModel.Activity.UserID });
+                }
+                else
+                {
+                    activityViewModel.Action = "Crear";
+                    return View("Conflictos", activityViewModel);
                 }
             }
 
-            return RedirectToAction("AccesoDenegado", "Home");
+            activityViewModel.ActivityTypes = getActivityTypes();
+            activityViewModel.SchoolList = getSchools();
+            activityViewModel.Contacts = getContacts();
+            activityViewModel.Resources = getResources();
+            return View(activityViewModel);
+        }
+            }
 
+            return RedirectToAction("AccesoDenegado", "Home");
+          
         }
 
         public ActionResult ContactosyRecursos(int id)
@@ -430,13 +428,13 @@ namespace OPDB.Controllers
                 var tempResource = db.Resources.Find(resource.ResourceID);
 
                 var unit = db.Units.Find(tempResource.UnitID);
-
+                    
                 resourceList.Add(new UserInfoViewModel
                 {
                     ActivityResource = resource,
                     Resource = tempResource,
                     Unit = unit,
-
+                    
                 });
             }
 
@@ -445,7 +443,7 @@ namespace OPDB.Controllers
                 Activity = db.Activities.Find(id),
                 ActivityContacts = contactList,
                 ActivityResources = resourceList
-
+            
             };
 
 
@@ -459,17 +457,17 @@ namespace OPDB.Controllers
             {
                 ActivityViewModel activityViewModel = new ActivityViewModel
                 {
-                    Activity = db.Activities.Find(id)
+                        Activity = db.Activities.Find(id)                
                 };
 
                 if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 3)
                 {
-                    int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
+                    int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);                   
                     activityViewModel.Notes = from note in db.ActivityNotes.Include(note => note.NoteType) where note.ActivityID == id && note.UserID == userID && note.DeletionDate == null select note;
                 }
                 else if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
                 {
-                    activityViewModel.Notes = from note in db.ActivityNotes.Include(note => note.NoteType) where note.ActivityID == id && note.DeletionDate == null select note;
+                    activityViewModel.Notes = from note in db.ActivityNotes.Include(note => note.NoteType) where note.ActivityID == id && note.DeletionDate == null select note;                    
                 }
 
                 return PartialView("Notas", activityViewModel);
@@ -482,41 +480,41 @@ namespace OPDB.Controllers
 
         public ActionResult Editar(int id = 0)
         {
-            if (User.Identity.IsAuthenticated)
+            if (User.Identity.IsAuthenticated) 
             {
-                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.Split(',')[2]))
-                {
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.Split(',')[2])) 
+                { 
                     ActivityViewModel activityViewModel = new ActivityViewModel
                     {
-                        Activity = db.Activities.Find(id)
-                    };
+                Activity = db.Activities.Find(id)
+            };
 
-                    if (activityViewModel.Activity == null)
-                    {
-                        return HttpNotFound();
-                    }
+            if (activityViewModel.Activity == null)
+            {
+                return HttpNotFound();
+            }
 
-                    string date = "";
+            string date = "";
 
                     if (activityViewModel.Activity.ActivityDate != null)
-                        activityViewModel.Activity.ActivityDate.Value.ToString("dd/MM/yyyy");
+               activityViewModel.Activity.ActivityDate.Value.ToString("dd/MM/yyyy");
 
-                    activityViewModel.ActivityDate = date;
-                    activityViewModel.ActivityTypes = getActivityTypes();
-                    activityViewModel.SchoolList = getSchools();
+            activityViewModel.ActivityDate = date;
+            activityViewModel.ActivityTypes = getActivityTypes();
+            activityViewModel.SchoolList = getSchools();
+            
+            activityViewModel.ContactIDs = (from contact in db.Contacts where contact.ActivityID == id && contact.DeletionDate == null select contact.UserID).ToList();
+            activityViewModel.Contacts = getContacts();
 
-                    activityViewModel.ContactIDs = (from contact in db.Contacts where contact.ActivityID == id && contact.DeletionDate == null select contact.UserID).ToList();
-                    activityViewModel.Contacts = getContacts();
+            activityViewModel.ResourceIDs = (from resource in db.ActivityResources where resource.ActivityID == id && resource.DeletionDate == null select resource.ResourceID).ToList();
+            activityViewModel.Resources = getResources();
 
-                    activityViewModel.ResourceIDs = (from resource in db.ActivityResources where resource.ActivityID == id && resource.DeletionDate == null select resource.ResourceID).ToList();
-                    activityViewModel.Resources = getResources();
-
-                    return View(activityViewModel);
-                }
+            return View(activityViewModel);
+        }
             }
 
             return RedirectToAction("AccesoDenegado", "Home");
-
+            
 
         }
 
@@ -527,204 +525,204 @@ namespace OPDB.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Editar(ActivityViewModel activityViewModel)
         {
-            if (User.Identity.IsAuthenticated)
+            if (User.Identity.IsAuthenticated) 
             {
 
                 if ((Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name)))
                 {
                     int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
 
-                    if (activityViewModel.ActivityDate != "" && activityViewModel.ActivityDate != null)
-                        activityViewModel.Activity.ActivityDate = DateTime.ParseExact(activityViewModel.ActivityDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            if (activityViewModel.ActivityDate != "" && activityViewModel.ActivityDate != null)
+                activityViewModel.Activity.ActivityDate = DateTime.ParseExact(activityViewModel.ActivityDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
 
-                    if (activityViewModel.Activity.ActivityDate != null)
-                    {
-                        if (activityViewModel.Activity.ActivityDate.Value.Date.CompareTo(DateTime.Now.Date) <= 0)
-                            ModelState.AddModelError("Activity_ActivityDate_EarlierThanCurrentDate", Resources.WebResources.Activity_ActivityDate_EarlierThanCurrentDate);
-                    }
+            if (activityViewModel.Activity.ActivityDate != null)
+            {
+                if (activityViewModel.Activity.ActivityDate.Value.Date.CompareTo(DateTime.Now.Date) <= 0)
+                    ModelState.AddModelError("Activity_ActivityDate_EarlierThanCurrentDate", Resources.WebResources.Activity_ActivityDate_EarlierThanCurrentDate);
+            }
 
-                    if (activityViewModel.Activity.Details != null && activityViewModel.Activity.Details != "")
-                    {
-                        string pattern = @"^<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>$";
-                        Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                        MatchCollection matches = rgx.Matches(activityViewModel.Activity.Details);
+            if (activityViewModel.Activity.Details != null && activityViewModel.Activity.Details != "")
+            {
+                string pattern = @"^<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>$";
+                Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                MatchCollection matches = rgx.Matches(activityViewModel.Activity.Details);
 
-                        if (matches.Count > 0)
-                            ModelState.AddModelError("Activity_Details_Invalid", Resources.WebResources.Activity_Details_Invalid);
+                if (matches.Count > 0)
+                    ModelState.AddModelError("Activity_Details_Invalid", Resources.WebResources.Activity_Details_Invalid);
 
-                    }
+            }
 
-                    if (ModelState.IsValid)
-                    {
+            if (ModelState.IsValid)
+            {
                         if (activityViewModel.Activity.ActivityTime != "" && activityViewModel.Activity.ActivityTime != null)
-                            activityViewModel.Activity.ActivityTime = activityViewModel.Activity.ActivityTime.Replace(" ", "");
-
+                    activityViewModel.Activity.ActivityTime = activityViewModel.Activity.ActivityTime.Replace(" ", "");
+                
                         activityViewModel.Activity.UpdateUser = userID;
-                        activityViewModel.Activity.UpdateDate = DateTime.Now;
+                activityViewModel.Activity.UpdateDate = DateTime.Now;
 
-                        ///Contacts///
+                ///Contacts///
+                
+                ///Check if ID list is null, because if it is BOOM!
+                if (activityViewModel.ContactIDs != null) 
+                { 
+                    //Now check if it contains anything.
+                    if (activityViewModel.ContactIDs.Count > 0 && activityViewModel.ContactIDs.First() != 0)
+                    {
+                        //Retrieve any pre-existing contacts.
+                        var contacts = (from contact in db.Contacts where contact.ActivityID == activityViewModel.Activity.ActivityID select contact).ToList();
 
-                        ///Check if ID list is null, because if it is BOOM!
-                        if (activityViewModel.ContactIDs != null)
-                        {
-                            //Now check if it contains anything.
-                            if (activityViewModel.ContactIDs.Count > 0 && activityViewModel.ContactIDs.First() != 0)
+                        //Verify if any pre-existing contacts exist.
+                        if (contacts.Count > 0) 
+                        { 
+                            foreach (var contact in contacts)
                             {
-                                //Retrieve any pre-existing contacts.
-                                var contacts = (from contact in db.Contacts where contact.ActivityID == activityViewModel.Activity.ActivityID select contact).ToList();
-
-                                //Verify if any pre-existing contacts exist.
-                                if (contacts.Count > 0)
-                                {
-                                    foreach (var contact in contacts)
-                                    {
-                                        //If there are existing contacts, verify if these contacts are contained in the new id list.
-                                        if (contact.DeletionDate == null && !activityViewModel.ContactIDs.Contains(contact.UserID))
-                                        {
-                                            //If not delete them.
-                                            contact.DeletionDate = DateTime.Now;
-                                            db.Entry(contact).State = EntityState.Modified;
-                                        }
-                                        //Else if they have been removed but are included in the ID list restore them.
-                                        else if (contact.DeletionDate != null && activityViewModel.ContactIDs.Contains(contact.UserID))
-                                        {
-                                            contact.DeletionDate = null;
-                                            db.Entry(contact).State = EntityState.Modified;
-
-                                        }
-                                    }
-                                }
-
-                                //Now to take care of any new contacts.
-                                foreach (var id in activityViewModel.ContactIDs)
-                                {
-                                    //Retrieve all existing contacts, those with deletion date and without that match the id in the list.
-                                    var contactList = (from cont in db.Contacts where cont.ActivityID == activityViewModel.Activity.ActivityID && cont.UserID == id select cont).ToList();
-
-                                    Contact contact = null;
-
-                                    //Is the list empty?
-                                    if (contactList.Count > 0)
-                                        contact = contactList.First();
-
-                                    //If so that means it's new so we must add it.
-                                    if (contact == null)
-                                    {
-                                        Contact ActivityContact = new Contact
-                                        {
-                                            UserID = id,
-                                            ActivityID = activityViewModel.Activity.ActivityID,
-                                            CreateUser = userID,
-                                            CreateDate = DateTime.Now,
-                                            UpdateUser = userID,
-                                            UpdateDate = DateTime.Now
-                                        };
-
-                                        //Since the activity already exists, we just add the new contact to the Contacts DB table.
-                                        db.Contacts.Add(ActivityContact);
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            //If none of the above things happen, verify if there are any existing contacts and remove them, 
-                            //because all contacts may have been removed.
-                            var contacts = (from contact in db.Contacts where contact.ActivityID == activityViewModel.Activity.ActivityID && contact.DeletionDate == null select contact).ToList();
-
-                            if (contacts.Count > 0)
-                            {
-                                foreach (var contact in contacts)
-                                {
+                                //If there are existing contacts, verify if these contacts are contained in the new id list.
+                                if (contact.DeletionDate == null && !activityViewModel.ContactIDs.Contains(contact.UserID)) 
+                                { 
+                                    //If not delete them.
                                     contact.DeletionDate = DateTime.Now;
                                     db.Entry(contact).State = EntityState.Modified;
                                 }
+                                //Else if they have been removed but are included in the ID list restore them.
+                                else if (contact.DeletionDate != null && activityViewModel.ContactIDs.Contains(contact.UserID))
+                                {
+                                    contact.DeletionDate = null;
+                                    db.Entry(contact).State = EntityState.Modified;
+
+                                }
                             }
                         }
-
-                        ////Resources////
-
-                        //Check if the ID list is null, because if so BOOM!
-                        if (activityViewModel.ResourceIDs != null)
+                                                
+                        //Now to take care of any new contacts.
+                        foreach (var id in activityViewModel.ContactIDs)
                         {
-                            //Now, is it empty?
-                            if (activityViewModel.ResourceIDs.Count > 0 && activityViewModel.ResourceIDs.First() != 0)
+                            //Retrieve all existing contacts, those with deletion date and without that match the id in the list.
+                            var contactList = (from cont in db.Contacts where cont.ActivityID == activityViewModel.Activity.ActivityID && cont.UserID == id select cont).ToList();
+
+                            Contact contact = null;
+
+                            //Is the list empty?
+                            if (contactList.Count > 0)
+                                contact = contactList.First();
+
+                            //If so that means it's new so we must add it.
+                            if (contact == null)
                             {
-                                //Retrieve all existing resources that match this activity ID.
-                                var resources = (from resource in db.ActivityResources where resource.ActivityID == activityViewModel.Activity.ActivityID select resource).ToList();
-
-                                //Are there any matches?
-                                if (resources.Count > 0)
+                                Contact ActivityContact = new Contact
                                 {
-                                    foreach (var resource in resources)
-                                    {
-                                        //If they are not contained in the current list, remove them.
-                                        if (resource.DeletionDate == null && !activityViewModel.ResourceIDs.Contains(resource.ResourceID))
-                                        {
-                                            resource.DeletionDate = DateTime.Now;
-                                            db.Entry(resource).State = EntityState.Modified;
-                                        }
-                                        //If they have been removed but are now restored.
-                                        else if (resource.DeletionDate != null && activityViewModel.ResourceIDs.Contains(resource.ResourceID))
-                                        {
-                                            //Then restore them in the DB as well.
-                                            resource.DeletionDate = null;
-                                            db.Entry(resource).State = EntityState.Modified;
-                                        }
-                                    }
-                                }
-
-
-                                //Now for all the remaining resource IDs
-                                foreach (var id in activityViewModel.ResourceIDs)
-                                {
-                                    //Verify if a resource already exists with this ID.
-                                    var resourceList = (from activityResource in db.ActivityResources where activityResource.ActivityID == activityViewModel.Activity.ActivityID && activityResource.ResourceID == id select activityResource).ToList();
-
-                                    ActivityResource resource = null;
-
-                                    if (resourceList.Count > 0)
-                                        resource = resourceList.First();
-
-                                    //If it's new, then add it.
-                                    if (resource == null)
-                                    {
-                                        ActivityResource ActivityResource = new ActivityResource
-                                        {
-                                            ResourceID = id,
-                                            ActivityID = activityViewModel.Activity.ActivityID,
-                                            ResourceStatus = false,
+                                    UserID = id,
+                                    ActivityID = activityViewModel.Activity.ActivityID,
                                             CreateUser = userID,
-                                            CreateDate = DateTime.Now,
+                                    CreateDate = DateTime.Now,
                                             UpdateUser = userID,
-                                            UpdateDate = DateTime.Now
-                                        };
+                                    UpdateDate = DateTime.Now
+                                };
 
-                                        //This activity already exists so we just add this resource to the ActivityResource DB table.
-                                        db.ActivityResources.Add(ActivityResource);
-                                    }
-                                }
-                            }
+                                //Since the activity already exists, we just add the new contact to the Contacts DB table.
+                                db.Contacts.Add(ActivityContact);
+                            }                    
                         }
-                        else
-                        {
-                            //Check if any resources exist, and if they do, they may have been removed.
-                            var resources = (from resource in db.ActivityResources where resource.ActivityID == activityViewModel.Activity.ActivityID && resource.DeletionDate == null select resource).ToList();
+                    }
+                }
+                else
+                {
+                    //If none of the above things happen, verify if there are any existing contacts and remove them, 
+                    //because all contacts may have been removed.
+                    var contacts = (from contact in db.Contacts where contact.ActivityID == activityViewModel.Activity.ActivityID && contact.DeletionDate == null select contact).ToList();
 
-                            if (resources.Count > 0)
+                    if (contacts.Count > 0)
+                    {
+                        foreach (var contact in contacts)
+                        {                            
+                            contact.DeletionDate = DateTime.Now;
+                            db.Entry(contact).State = EntityState.Modified;
+                        }
+                    }
+                }
+
+                ////Resources////
+                
+                //Check if the ID list is null, because if so BOOM!
+                if (activityViewModel.ResourceIDs != null)
+                {
+                    //Now, is it empty?
+                    if (activityViewModel.ResourceIDs.Count > 0 && activityViewModel.ResourceIDs.First() != 0)
+                    {
+                        //Retrieve all existing resources that match this activity ID.
+                        var resources = (from resource in db.ActivityResources where resource.ActivityID == activityViewModel.Activity.ActivityID select resource).ToList();
+
+                        //Are there any matches?
+                        if (resources.Count > 0)
+                        {
+                            foreach (var resource in resources)
                             {
-                                foreach (var resource in resources)
+                                //If they are not contained in the current list, remove them.
+                                if (resource.DeletionDate == null && !activityViewModel.ResourceIDs.Contains(resource.ResourceID))
                                 {
-                                    //So remove them all.
                                     resource.DeletionDate = DateTime.Now;
+                                    db.Entry(resource).State = EntityState.Modified;
+                                }
+                                //If they have been removed but are now restored.
+                                        else if (resource.DeletionDate != null && activityViewModel.ResourceIDs.Contains(resource.ResourceID))
+                                {
+                                    //Then restore them in the DB as well.
+                                    resource.DeletionDate = null;
                                     db.Entry(resource).State = EntityState.Modified;
                                 }
                             }
                         }
 
-                        activityViewModel.Information = CheckForConflicts(activityViewModel.Activity);
-                        if (activityViewModel.Information.Count == 0 || activityViewModel.ForceCreate == true)
+                        
+                        //Now for all the remaining resource IDs
+                        foreach (var id in activityViewModel.ResourceIDs)
                         {
+                            //Verify if a resource already exists with this ID.
+                            var resourceList = (from activityResource in db.ActivityResources where activityResource.ActivityID == activityViewModel.Activity.ActivityID && activityResource.ResourceID == id select activityResource).ToList();
+
+                            ActivityResource resource = null;
+
+                            if (resourceList.Count > 0)
+                                resource = resourceList.First();
+
+                            //If it's new, then add it.
+                            if (resource == null)
+                            {
+                                ActivityResource ActivityResource = new ActivityResource
+                                {
+                                    ResourceID = id,
+                                    ActivityID = activityViewModel.Activity.ActivityID,
+                                    ResourceStatus = false,
+                                            CreateUser = userID,
+                                    CreateDate = DateTime.Now,
+                                            UpdateUser = userID,
+                                    UpdateDate = DateTime.Now
+                                };
+
+                                //This activity already exists so we just add this resource to the ActivityResource DB table.
+                                db.ActivityResources.Add(ActivityResource);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    //Check if any resources exist, and if they do, they may have been removed.
+                    var resources = (from resource in db.ActivityResources where resource.ActivityID == activityViewModel.Activity.ActivityID && resource.DeletionDate == null select resource).ToList();
+
+                    if (resources.Count > 0)
+                    {
+                        foreach (var resource in resources)
+                        {
+                            //So remove them all.
+                            resource.DeletionDate = DateTime.Now;
+                            db.Entry(resource).State = EntityState.Modified;
+                        }
+                    }
+                }
+
+                activityViewModel.Information = CheckForConflicts(activityViewModel.Activity);
+                if (activityViewModel.Information.Count == 0 || activityViewModel.ForceCreate == true)
+                {
                             var attachedEntity = db.Activities.Local.First(activity => activity.ActivityID == activityViewModel.Activity.ActivityID);
 
                             if (attachedEntity != null)
@@ -734,31 +732,31 @@ namespace OPDB.Controllers
                             }
                             else
                             {
-                                db.Entry(activityViewModel.Activity).State = EntityState.Modified;
+                    db.Entry(activityViewModel.Activity).State = EntityState.Modified;
                             }
 
-                            db.SaveChanges();
+                    db.SaveChanges();
 
                            
-                            return RedirectToAction("Detalles", "Alcance", new { id = activityViewModel.Activity.UserID });
+                    return RedirectToAction("Detalles", "Alcance", new { id = activityViewModel.Activity.UserID });
                                                        
 
-                        }
-                        else
-                        {
-                            activityViewModel.Action = "Editar";
-                            return View("Conflictos", activityViewModel);
-                        }
-
-
-                    }
-
-                    activityViewModel.ActivityTypes = getActivityTypes();
-                    activityViewModel.SchoolList = getSchools();
-                    activityViewModel.Contacts = getContacts();
-                    activityViewModel.Resources = getResources();
-                    return View(activityViewModel);
                 }
+                else
+                {
+                    activityViewModel.Action = "Editar";
+                    return View("Conflictos", activityViewModel);
+                }
+            
+
+            }
+
+            activityViewModel.ActivityTypes = getActivityTypes();
+            activityViewModel.SchoolList = getSchools();
+            activityViewModel.Contacts = getContacts();
+            activityViewModel.Resources = getResources();
+            return View(activityViewModel);
+        }
             }
 
             return RedirectToAction("AccesoDenegado", "Home");
@@ -767,22 +765,22 @@ namespace OPDB.Controllers
         [HttpPost]
         public ActionResult EditarNota(int id)
         {
-            if (User.Identity.IsAuthenticated)
+            if (User.Identity.IsAuthenticated) 
             {
-                if ((Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.Split(',')[2])) || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
-                {
-                    EscuelasController controller = new EscuelasController();
+                if ((Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.Split(',')[2])) || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1) 
+                { 
+            EscuelasController controller = new EscuelasController();
 
-                    ActivityViewModel activityViewModel = new ActivityViewModel
-                    {
+            ActivityViewModel activityViewModel = new ActivityViewModel
+            {
 
-                        NoteTypes = controller.getNoteTypes(),
-                        Note = db.ActivityNotes.Find(id)
+                NoteTypes = controller.getNoteTypes(),
+                Note = db.ActivityNotes.Find(id)
 
-                    };
+            };
 
-                    return PartialView("EditarNota", activityViewModel);
-                }
+            return PartialView("EditarNota", activityViewModel);
+        }
             }
 
             return RedirectToAction("AccesoDenegado", "Home");
@@ -795,26 +793,26 @@ namespace OPDB.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                Activity activity = db.Activities.Find(id);
-                if (activity == null)
-                {
-                    return HttpNotFound();
-                }
+            Activity activity = db.Activities.Find(id);
+            if (activity == null)
+            {
+                return HttpNotFound();
+            }
                 else if (Int32.Parse(User.Identity.Name.Split(',')[0]) == activity.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
-                {
+            {
                     int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
 
-                    activity.DeletionDate = DateTime.Now;
-                    db.Entry(activity).State = EntityState.Modified;
-                    db.SaveChanges();
+                activity.DeletionDate = DateTime.Now;
+                db.Entry(activity).State = EntityState.Modified;
+                db.SaveChanges();
 
                     if (userID == activity.UserID)
                         return RedirectToAction("Detalles", "Alcance", new { id = activity.UserID });
                     else
                         return RedirectToAction("Administracion", "Home");
                 }
-
-
+                    
+               
             }
 
             return RedirectToAction("AccesoDenegado", "Home");
@@ -825,17 +823,17 @@ namespace OPDB.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 var note = db.ActivityNotes.Find(id);
-
+                
                 if (note == null)
                     return HttpNotFound();
 
                 else if (Int32.Parse(User.Identity.Name.Split(',')[0]) == note.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
                 {
-                    note.DeletionDate = DateTime.Now;
-                    db.Entry(note).State = EntityState.Modified;
-                    db.SaveChanges();
-                    return RedirectToAction("Detalles", "Actividades", new { id = note.ActivityID });
-                }
+            note.DeletionDate = DateTime.Now;
+            db.Entry(note).State = EntityState.Modified;
+            db.SaveChanges();
+            return RedirectToAction("Detalles", "Actividades", new { id = note.ActivityID });
+        }
             }
 
             return RedirectToAction("AccesoDenegado", "Home");
@@ -844,24 +842,24 @@ namespace OPDB.Controllers
         public ActionResult RemoverComentario(int id = 0)
         {
             if (User.Identity.IsAuthenticated)
+            {                
+            Feedback feedback = db.Feedbacks.Find(id);
+            if (feedback == null)
             {
-                Feedback feedback = db.Feedbacks.Find(id);
-                if (feedback == null)
-                {
-                    return HttpNotFound();
-                }
-
-                else if (Int32.Parse(User.Identity.Name.Split(',')[0]) == feedback.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
-                {
-                    feedback.DeletionDate = DateTime.Now;
-                    db.Entry(feedback).State = EntityState.Modified;
-                    db.SaveChanges();
-                    return RedirectToAction("Detalles", "Actividades", new { id = feedback.ActivityID });
-                }
-
+                return HttpNotFound();
             }
 
-            return RedirectToAction("AccesoDenegado", "Home");
+                else if (Int32.Parse(User.Identity.Name.Split(',')[0]) == feedback.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+            {
+                feedback.DeletionDate = DateTime.Now;
+                db.Entry(feedback).State = EntityState.Modified;
+                db.SaveChanges();
+                    return RedirectToAction("Detalles", "Actividades", new { id = feedback.ActivityID });
+                }
+                
+            }
+
+                return RedirectToAction("AccesoDenegado", "Home");
         }
 
 
@@ -875,36 +873,36 @@ namespace OPDB.Controllers
                     int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
 
                     activityViewModel.Note.UpdateUser = userID;
-                    activityViewModel.Note.UpdateDate = DateTime.Now;
-
-                    if (activityViewModel.Note.ActivityNoteID == 0)
-                    {
-                        if (ModelState.IsValid)
-                        {
-                            activityViewModel.Note.CreateDate = DateTime.Now;
+            activityViewModel.Note.UpdateDate = DateTime.Now;
+            
+            if (activityViewModel.Note.ActivityNoteID == 0)
+            {
+                if (ModelState.IsValid)
+                {
+                    activityViewModel.Note.CreateDate = DateTime.Now;
 
                             activityViewModel.Note.UserID = userID;
                             activityViewModel.Note.CreateUser = userID;
 
-                            db.ActivityNotes.Add(activityViewModel.Note);
-                            db.SaveChanges();
+                    db.ActivityNotes.Add(activityViewModel.Note);
+                    db.SaveChanges();
 
-                            return View("_Hack");
-                        }
-
-                        return Content(GetErrorsFromModelState(activityViewModel));
-                    }
-                    else if (ModelState.IsValid)
-                    {
-
-                        db.Entry(activityViewModel.Note).State = EntityState.Modified;
-                        db.SaveChanges();
-                        return View("_Hack");
-
-                    }
-
-                    return Content(GetErrorsFromModelState(activityViewModel));
+                    return View("_Hack");
                 }
+
+                return Content(GetErrorsFromModelState(activityViewModel));
+            }
+            else if (ModelState.IsValid)
+            {
+
+                db.Entry(activityViewModel.Note).State = EntityState.Modified;
+                db.SaveChanges();
+                return View("_Hack");
+
+            }
+
+            return Content(GetErrorsFromModelState(activityViewModel));            
+        }
             }
 
             return RedirectToAction("AccesoDenegado", "Home");
@@ -917,843 +915,842 @@ namespace OPDB.Controllers
             {
                 if ((Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.Split(',')[2])) || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
                 {
-                    EscuelasController controller = new EscuelasController();
+            EscuelasController controller = new EscuelasController();
 
-                    ActivityViewModel activityViewModel = new ActivityViewModel
-                    {
+            ActivityViewModel activityViewModel = new ActivityViewModel
+            {
 
-                        NoteTypes = controller.getNoteTypes(),
-                        Note = new ActivityNote
-                        {
+                NoteTypes = controller.getNoteTypes(),
+                Note = new ActivityNote
+                {
 
-                            ActivityID = id
-                        }
-
-                    };
-
-                    return PartialView("CrearNota", activityViewModel);
+                    ActivityID = id
                 }
+
+            };
+
+            return PartialView("CrearNota", activityViewModel);
+        }
             }
 
             return RedirectToAction("AccesoDenegado", "Home");
         }
 
-        protected override void Dispose(bool disposing)
+       protected override void Dispose(bool disposing)
         {
             db.Dispose();
             base.Dispose(disposing);
         }
 
-        public List<SelectListItem> getActivityTypes()
-        {
-            List<SelectListItem> types = new List<SelectListItem>();
-            foreach (var activityType in db.ActivityTypes)
-            {
-                types.Add(new SelectListItem()
-                 {
-                     Text = activityType.ActivityType1,
-                     Value = activityType.ActivityTypeID + ""
-
-                 });
-
-            }
-
-            return types;
-        }
-
-        public List<SelectListItem> getSchools()
-        {
-            List<SelectListItem> schoolList = new List<SelectListItem>();
-
-            schoolList.Add(new SelectListItem()
-            {
-                Text = null,
-                Value = null
-            });
-
-            foreach (var school in db.Schools)
-            {
-                schoolList.Add(new SelectListItem()
+       public List<SelectListItem> getActivityTypes()
+       {
+           List<SelectListItem> types = new List<SelectListItem>();
+           foreach (var activityType in db.ActivityTypes)
+           {
+               types.Add(new SelectListItem()
                 {
-                    Text = school.SchoolName,
-                    Value = school.SchoolID + ""
-                });
-            }
-
-            return schoolList;
-        }
-
-        public List<SelectListItem> getOutreachEntities()
-        {
-            var outreachEntities = from outreach in db.OutreachEntityDetails where outreach.DeletionDate == null select outreach;
-            List<SelectListItem> types = new List<SelectListItem>();
-
-            foreach (var outreachEntity in outreachEntities)
-            {
-                types.Add(new SelectListItem()
-                {
-                    Text = outreachEntity.OutreachEntityName,
-                    Value = outreachEntity.UserID + ""
+                    Text = activityType.ActivityType1,
+                    Value = activityType.ActivityTypeID + ""
 
                 });
 
-            }
+           }
 
-            return types;
-        }
+           return types;
+       }
 
-        public String GetErrorsFromModelState(ActivityViewModel activityViewModel)
-        {
+       public List<SelectListItem> getSchools()
+       {
+           List<SelectListItem> schoolList = new List<SelectListItem>();
+
+           schoolList.Add(new SelectListItem()
+           {
+               Text = null,
+               Value = null
+           });
+
+           foreach (var school in db.Schools)
+           {
+               schoolList.Add(new SelectListItem()
+               {
+                   Text = school.SchoolName,
+                   Value = school.SchoolID + ""
+               });
+           }
+
+           return schoolList;
+       }
+
+       public List<SelectListItem> getOutreachEntities()
+       {
+           var outreachEntities = from outreach in db.OutreachEntityDetails where outreach.DeletionDate == null select outreach;
+           List<SelectListItem> types = new List<SelectListItem>();
+
+           foreach (var outreachEntity in outreachEntities)
+           {
+               types.Add(new SelectListItem()
+               {
+                   Text = outreachEntity.OutreachEntityName,
+                   Value = outreachEntity.UserID + ""
+
+               });
+
+           }
+
+           return types;
+       }
+
+       public String GetErrorsFromModelState(ActivityViewModel activityViewModel)
+       {
 
 
-            //retrieves the validation messages from the ModelState as strings    
-            var str = "";
-            var errorSates = from state in ModelState.Values
-                             from error in state.Errors
-                             select error.ErrorMessage;
+           //retrieves the validation messages from the ModelState as strings    
+           var str = "";
+           var errorSates = from state in ModelState.Values
+                            from error in state.Errors
+                            select error.ErrorMessage;
 
-            var errorList = errorSates.ToList();
-            foreach (var m in errorList)
-            {
-                str = str + "<li>* " + m + "</li>";
-            }
+           var errorList = errorSates.ToList();
+           foreach (var m in errorList)
+           {
+               str = str + "<li>* " + m + "</li>";
+           }
 
-            return str;
-        }
+           return str;
+       }
 
-        [HttpPost]
-        public ActionResult VerNota(int id = 0)
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                if ((Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.Split(',')[2])) || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
-                {
-                    ActivityNote activityNote = db.ActivityNotes.Find(id);
-                    activityNote.NoteType = db.NoteTypes.Find(activityNote.NoteTypeID);
-                    activityNote.Activity = db.Activities.Find(activityNote.ActivityID);
+       [HttpPost]
+       public ActionResult VerNota(int id = 0)
+       {
+           if (User.Identity.IsAuthenticated)
+           {
+               if ((Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.Split(',')[2])) || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+               {
+           ActivityNote activityNote = db.ActivityNotes.Find(id);
+           activityNote.NoteType = db.NoteTypes.Find(activityNote.NoteTypeID);
+           activityNote.Activity = db.Activities.Find(activityNote.ActivityID);
 
-                    ActivityViewModel activityViewModel = new ActivityViewModel
-                    {
-                        Note = activityNote
-                    };
+           ActivityViewModel activityViewModel = new ActivityViewModel
+           {
+              Note = activityNote
+           };
 
-                    if (activityViewModel.Note == null)
-                    {
-                        return HttpNotFound();
-                    }
+           if (activityViewModel.Note == null)
+           {
+               return HttpNotFound();
+           }
 
-                    return PartialView("VerNota", activityViewModel);
-                }
-            }
+           return PartialView("VerNota", activityViewModel);
+       }
+           }
 
-            return RedirectToAction("AccesoDenegado", "Home");
-        }
+           return RedirectToAction("AccesoDenegado", "Home");
+       }
 
-        [HttpPost]
-        public ActionResult NuevoComentario(int id)
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                var activity = db.Activities.Find(id);
+       [HttpPost]
+       public ActionResult NuevoComentario(int id)
+       {
+           if (User.Identity.IsAuthenticated)
+           {
+               var activity = db.Activities.Find(id);
 
-                if (activity == null)
-                    return HttpNotFound();
+               if (activity == null)
+                   return HttpNotFound();
 
-                else
-                {
-                    ActivityViewModel activityViewModel = new ActivityViewModel
-                    {
-                        Feedback = new Feedback
-                        {
-                            ActivityID = id
-                        }
+               else
+               {
+           ActivityViewModel activityViewModel = new ActivityViewModel
+           {
+               Feedback = new Feedback
+               {
+                   ActivityID = id
+               }
 
-                    };
+           };
 
-                    return PartialView("NuevoComentario", activityViewModel);
-                }
-            }
+           return PartialView("NuevoComentario", activityViewModel);
+       }
+           }
 
-            return RedirectToAction("AccesoDenegado", "Home");
-        }
+           return RedirectToAction("AccesoDenegado", "Home");
+       }
 
-        [HttpPost]
-        public ActionResult EditarComentario(int id)
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                ActivityViewModel activityViewModel = new ActivityViewModel
-                {
-                    Feedback = db.Feedbacks.Find(id)
+       [HttpPost]
+       public ActionResult EditarComentario(int id)
+       {
+           if (User.Identity.IsAuthenticated)
+           {
+           ActivityViewModel activityViewModel = new ActivityViewModel
+           {
+               Feedback = db.Feedbacks.Find(id)
 
-                };
+           };
 
-                if (activityViewModel.Feedback == null)
-                    return HttpNotFound();
+               if (activityViewModel.Feedback == null)
+                   return HttpNotFound();
 
-                else if (Int32.Parse(User.Identity.Name.Split(',')[0]) == activityViewModel.Feedback.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
-                {
-                    return PartialView("EditarComentario", activityViewModel);
-                }
-            }
+               else if (Int32.Parse(User.Identity.Name.Split(',')[0]) == activityViewModel.Feedback.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+               {
+           return PartialView("EditarComentario", activityViewModel);
+       }
+           }
 
-            return RedirectToAction("AccesoDenegado", "Home");
-        }
+           return RedirectToAction("AccesoDenegado", "Home");
+       }
 
-        [HttpPost]
-        public ActionResult GuardarComentario(ActivityViewModel activityViewModel)
-        {
-            if (User.Identity.IsAuthenticated)
-            {
+       [HttpPost]
+       public ActionResult GuardarComentario(ActivityViewModel activityViewModel)
+       {
+           if (User.Identity.IsAuthenticated)
+           {
+               
+                   int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
 
-                int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
+                   activityViewModel.Feedback.UpdateUser = userID;
+           activityViewModel.Feedback.UpdateDate = DateTime.Now;
 
-                activityViewModel.Feedback.UpdateUser = userID;
-                activityViewModel.Feedback.UpdateDate = DateTime.Now;
+           if (activityViewModel.Feedback.FeedbackID == 0)
+           {
+               if (ModelState.IsValid)
+               {
+                   activityViewModel.Feedback.CreateDate = DateTime.Now;
 
-                if (activityViewModel.Feedback.FeedbackID == 0)
-                {
-                    if (ModelState.IsValid)
-                    {
-                        activityViewModel.Feedback.CreateDate = DateTime.Now;
+                           activityViewModel.Feedback.UserID = userID;
+                           activityViewModel.Feedback.CreateUser = userID;
 
-                        activityViewModel.Feedback.UserID = userID;
-                        activityViewModel.Feedback.CreateUser = userID;
+                   db.Feedbacks.Add(activityViewModel.Feedback);
+                   db.SaveChanges();
 
-                        db.Feedbacks.Add(activityViewModel.Feedback);
-                        db.SaveChanges();
+                   return View("_Hack");
+               }
 
-                        return View("_Hack");
-                    }
+               return Content(GetErrorsFromModelState(activityViewModel));
+           }
+           else if (ModelState.IsValid)
+           {
 
-                    return Content(GetErrorsFromModelState(activityViewModel));
-                }
-                else if (ModelState.IsValid)
-                {
+               db.Entry(activityViewModel.Feedback).State = EntityState.Modified;
+               db.SaveChanges();
+               return View("_Hack");
 
-                    db.Entry(activityViewModel.Feedback).State = EntityState.Modified;
-                    db.SaveChanges();
-                    return View("_Hack");
+           }
 
-                }
+           return Content(GetErrorsFromModelState(activityViewModel));  
+               
+       }
 
-                return Content(GetErrorsFromModelState(activityViewModel));
+           return RedirectToAction("AccesoDenegado", "Home");
+       }
 
-            }
+       [HttpPost]
+       public ActionResult MediaUpload(int id = 0)
+       {
+           if (User.Identity.IsAuthenticated)
+           {
+               var foundActivity = (from activity in db.Activities where activity.DeletionDate == null && activity.ActivityID == id select activity).ToList();
 
-            return RedirectToAction("AccesoDenegado", "Home");
-        }
+               if (foundActivity.Count() == 0)
+                   return HttpNotFound();
 
-        [HttpPost]
-        public ActionResult MediaUpload(int id = 0)
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                var foundActivity = (from activity in db.Activities where activity.DeletionDate == null && activity.ActivityID == id select activity).ToList();
+               if (Int32.Parse(User.Identity.Name.Split(',')[0]) == foundActivity.First().UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+               {
+           ActivityViewModel activityViewModel = new ActivityViewModel
+           {
+               MediaTypes = getMediaTypes(),
+               Media = new Medium
+               {
+                   ActivityID = id
+               }
+           };
 
-                if (foundActivity.Count() == 0)
-                    return HttpNotFound();
+           return PartialView("Upload", activityViewModel);
+               }
+           }
 
-                if (Int32.Parse(User.Identity.Name.Split(',')[0]) == foundActivity.First().UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
-                {
-                    ActivityViewModel activityViewModel = new ActivityViewModel
-                    {
-                        MediaTypes = getMediaTypes(),
-                        Media = new Medium
-                        {
-                            ActivityID = id
-                        }
-                    };
+           return RedirectToAction("AccesoDenegado", "Home");
 
-                    return PartialView("Upload", activityViewModel);
-                }
-            }
+       }
 
-            return RedirectToAction("AccesoDenegado", "Home");
-
-        }
-
-        public List<SelectListItem> getMediaTypes()
-        {
+       public List<SelectListItem> getMediaTypes()
+       {
             String[] mediaTypes = new String[] { "Video", "Foto" };
 
-            List<SelectListItem> types = new List<SelectListItem>();
+           List<SelectListItem> types = new List<SelectListItem>();
 
             for (int i = 0; i < mediaTypes.Length; i++)
-            {
-                types.Add(new SelectListItem()
-                {
-                    Text = mediaTypes[i],
-                    Value = mediaTypes[i]
-                });
-            }
+           {
+               types.Add(new SelectListItem()
+               {
+                   Text = mediaTypes[i],
+                   Value = mediaTypes[i]
+               });
+           }
 
-            return types;
+           return types;
 
 
-        }
+       }
 
-        [HttpPost]
-        public ActionResult Upload(ActivityViewModel activityViewModel)
-        {
-            if (User.Identity.IsAuthenticated)
-            {
+       [HttpPost]
+       public ActionResult Upload(ActivityViewModel activityViewModel)
+       {
+               if (User.Identity.IsAuthenticated)
+               {
 
-                if (Int32.Parse(User.Identity.Name.Split(',')[0]) == activityViewModel.Activity.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
-                {
-                    int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
+                   if (Int32.Parse(User.Identity.Name.Split(',')[0]) == activityViewModel.Activity.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                   {
+                       int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
 
-                    activityViewModel.Media.UpdateDate = DateTime.Now;
+           activityViewModel.Media.UpdateDate = DateTime.Now;
 
-                    //To be changed with login implementation.
-                    activityViewModel.Media.UpdateUser = userID;
+           //To be changed with login implementation.
+                       activityViewModel.Media.UpdateUser = userID;
 
-                    if (activityViewModel.Media.MediaID == 0)
-                    {
-                        if (ModelState.IsValid)
-                        {
-                            //To be changed with login implementation.
-                            activityViewModel.Media.CreateUser = userID;
+           if (activityViewModel.Media.MediaID == 0)
+           {
+               if (ModelState.IsValid) 
+               { 
+                   //To be changed with login implementation.
+                               activityViewModel.Media.CreateUser = userID;
+                                             
+                   activityViewModel.Media.CreateDate = DateTime.Now;
 
-                            activityViewModel.Media.CreateDate = DateTime.Now;
+                   db.Media.Add(activityViewModel.Media);
+                   db.SaveChanges();
 
-                            db.Media.Add(activityViewModel.Media);
-                            db.SaveChanges();
+                   return View("_Hack");
+               }
+               else
+               {
+                   return Content(GetErrorsFromModelState(activityViewModel));
+               }
+           }
+           else
+           {
+                if (ModelState.IsValid) 
+                   { 
+                       db.Entry(activityViewModel.Media).State = EntityState.Modified;
+                       db.SaveChanges();
+                       return View("_Hack");
+                   }
+                   else
+                   {
+                       return Content(GetErrorsFromModelState(activityViewModel));
+                   }
+               }
+           }
+               }
+               return RedirectToAction("AccesoDenegado", "Home");
+           }
 
-                            return View("_Hack");
-                        }
-                        else
-                        {
-                            return Content(GetErrorsFromModelState(activityViewModel));
-                        }
-                    }
-                    else
-                    {
-                        if (ModelState.IsValid)
-                        {
-                            db.Entry(activityViewModel.Media).State = EntityState.Modified;
-                            db.SaveChanges();
-                            return View("_Hack");
-                        }
-                        else
-                        {
-                            return Content(GetErrorsFromModelState(activityViewModel));
-                        }
-                    }
-                }
-            }
-            return RedirectToAction("AccesoDenegado", "Home");
-        }
+           [HttpPost]
+           public ActionResult Interes(int id)
+           {
+               if (User.Identity.IsAuthenticated) 
+               {
+                   int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
 
-        [HttpPost]
-        public ActionResult Interes(int id)
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
+                   Interest Interest = new Interest
+                   {
+                       ActivityID = id,
+                       UserID = userID,
+                       CreateUser = userID,
+                       CreateDate = DateTime.Now,
+                       UpdateUser = userID,
+                       UpdateDate = DateTime.Now
+                   
+                   };
 
-                Interest Interest = new Interest
-                {
-                    ActivityID = id,
-                    UserID = userID,
-                    CreateUser = userID,
-                    CreateDate = DateTime.Now,
-                    UpdateUser = userID,
-                    UpdateDate = DateTime.Now
+                   db.Interests.Add(Interest);
+                   db.SaveChanges();
+                   return Content("");
+               }
+               else
+               {
+                   return RedirectToAction("AccesoDenegado", "Home");
+               }
+                            
+           }
 
-                };
+           public List<SelectListItem> getContacts()
+           {
+               var users = (from user in db.Users where (user.UserTypeID == 4 || user.UserTypeID == 5) && user.DeletionDate == null select user).ToList();
 
-                db.Interests.Add(Interest);
-                db.SaveChanges();
-                return Content("");
-            }
-            else
-            {
-                return RedirectToAction("AccesoDenegado", "Home");
-            }
-
-        }
-
-        public List<SelectListItem> getContacts()
-        {
-            var users = (from user in db.Users where (user.UserTypeID == 4 || user.UserTypeID == 5) && user.DeletionDate == null select user).ToList();
-
-            List<SelectListItem> types = new List<SelectListItem>();
+               List<SelectListItem> types = new List<SelectListItem>();
 
             if (users.Count > 0)
             {
-                foreach (var user in users)
-                {
-                    var userDetail = db.UserDetails.FirstOrDefault(u => u.UserID == user.UserID);
+                   foreach (var user in users)
+                   {
+                       var userDetail = db.UserDetails.FirstOrDefault(u => u.UserID == user.UserID);
 
-                    types.Add(new SelectListItem()
-                    {
-                        Text = userDetail.FirstName + " " + userDetail.MiddleInitial + " " + userDetail.LastName,
-                        Value = user.UserID + "",
-                    });
-                }
-            }
+                       types.Add(new SelectListItem()
+                       {
+                           Text = userDetail.FirstName + " " + userDetail.MiddleInitial + " " + userDetail.LastName,
+                           Value = user.UserID + "",
+                       });
+                   }
+               }
 
-            return types;
-
-
-        }
-
-        public List<SelectListItem> getResources()
-        {
-            var resources = (from resource in db.Resources where resource.DeletionDate == null select resource).ToList();
-
-            List<SelectListItem> types = new List<SelectListItem>();
-
-            if (resources.Count > 0)
-            {
-                foreach (var resource in resources)
-                {
-                    types.Add(new SelectListItem()
-                     {
-                         Text = resource.Resource1,
-                         Value = resource.ResourceID + "",
-                     });
-                }
-            }
-
-            return types;
+               return types;
 
 
-        }
+           }
+
+           public List<SelectListItem> getResources()
+           {
+               var resources = (from resource in db.Resources where resource.DeletionDate == null select resource).ToList();
+
+               List<SelectListItem> types = new List<SelectListItem>();
+
+               if (resources.Count > 0)
+               {
+                   foreach (var resource in resources)
+                   {
+                      types.Add(new SelectListItem()
+                       {
+                           Text = resource.Resource1,
+                           Value = resource.ResourceID + "",
+                       });
+                   }
+               }
+
+               return types;
+
+
+           }
 
         [HttpPost]
-        public ActionResult Aprobar(int id)
-        {
-            if (User.Identity.IsAuthenticated)
+           public ActionResult Aprobar(int id)
+           {
+               if (User.Identity.IsAuthenticated)
+               {
+               var resource = db.ActivityResources.Find(id);
+
+                   if (resource == null)
+                       return HttpNotFound();
+
+                   var activity = db.Activities.First(a => a.ActivityID == resource.ActivityID);
+
+                   if (Int32.Parse(User.Identity.Name.Split(',')[0]) == activity.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                   {
+                       int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
+
+               resource.ResourceStatus = true;
+               resource.UpdateDate = DateTime.Now;
+
+                       resource.UpdateUser = userID;
+
+               db.Entry(resource).State = EntityState.Modified;
+               db.SaveChanges();
+
+               return RedirectToAction("Detalles", "Actividades", new { id = resource.ActivityID });
+                   }
+
+                  
+               }
+
+               return RedirectToAction("AccesoDenegado", "Home");
+
+           }
+
+            private List<UserInfoViewModel> CheckForConflicts(Activity createdActivity)
             {
-                var resource = db.ActivityResources.Find(id);
+                List<UserInfoViewModel> conflictingActivities = new List<UserInfoViewModel>();
 
-                if (resource == null)
-                    return HttpNotFound();
+                var activities = (from activity in db.Activities where activity.DeletionDate == null select activity).ToList();
 
-                var activity = db.Activities.First(a => a.ActivityID == resource.ActivityID);
-
-                if (Int32.Parse(User.Identity.Name.Split(',')[0]) == activity.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
-                {
-                    int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
-
-                    resource.ResourceStatus = true;
-                    resource.UpdateDate = DateTime.Now;
-
-                    resource.UpdateUser = userID;
-
-                    db.Entry(resource).State = EntityState.Modified;
-                    db.SaveChanges();
-
-                    return RedirectToAction("Detalles", "Actividades", new { id = resource.ActivityID });
-                }
-
-
-            }
-
-            return RedirectToAction("AccesoDenegado", "Home");
-
-        }
-
-        private List<UserInfoViewModel> CheckForConflicts(Activity createdActivity)
-        {
-            List<UserInfoViewModel> conflictingActivities = new List<UserInfoViewModel>();
-
-            var activities = (from activity in db.Activities where activity.DeletionDate == null select activity).ToList();
-
-            if (createdActivity.ActivityDate != null && createdActivity.ActivityTime != null && createdActivity.SchoolID != null)
-            {
-                foreach (var activity in activities)
-                {
-                    if (activity.ActivityDate != null && activity.ActivityTime != null && activity.SchoolID != null)
+                if (createdActivity.ActivityDate != null && createdActivity.ActivityTime != null && createdActivity.SchoolID != null) 
+                { 
+                    foreach (var activity in activities)
                     {
-                        if (activity.ActivityDate.Value.Date.Equals(createdActivity.ActivityDate.Value.Date) && activity.ActivityTime == createdActivity.ActivityTime && activity.SchoolID == createdActivity.SchoolID)
+                        if (activity.ActivityDate != null && activity.ActivityTime != null && activity.SchoolID != null) 
                         {
+                            if (activity.ActivityDate.Value.Date.Equals(createdActivity.ActivityDate.Value.Date) && activity.ActivityTime == createdActivity.ActivityTime && activity.SchoolID == createdActivity.SchoolID) 
+                            { 
                             conflictingActivities.Add(new UserInfoViewModel
                             {
-                                Activity = activity,
-                                OutreachEntity = db.OutreachEntityDetails.First(outreach => outreach.UserID == activity.UserID)
-                            });
-                        }
-                    }
-                }
-            }
-
-            return conflictingActivities;
-        }
-
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        /// Admin activity creation methods.
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        public ActionResult CrearActividad()
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
-                {
-                    ActivityViewModel activityViewModel = new ActivityViewModel
-                    {
-                        ActivityTypes = getActivityTypes(),
-                        SchoolList = getSchools(),
-                        OutreachEntities = getOutreachEntities(),
-                        Contacts = getContacts(),
-                        ContactIDs = new List<int>(),
-                        Resources = getResources(),
-                        ResourceIDs = new List<int>()
-                    };
-
-                    return View(activityViewModel);
-                }
-            }
-
-            return RedirectToAction("AccesoDenegado", "Home");
-        }
-
-        [HttpPost]
-        public ActionResult CrearActividad(ActivityViewModel activityViewModel)
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
-                {
-                    int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
-
-                    if (activityViewModel.Activity.ActivityDate != null)
-                    {
-                        if (activityViewModel.Activity.ActivityDate.Value.Date.CompareTo(DateTime.Now.Date) <= 0)
-                            ModelState.AddModelError("Activity_ActivityDate_EarlierThanCurrentDate", Resources.WebResources.Activity_ActivityDate_EarlierThanCurrentDate);
-                    }
-
-                    if (activityViewModel.Activity.Details != null && activityViewModel.Activity.Details != "")
-                    {
-                        string pattern = @"^<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>$";
-                        Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                        MatchCollection matches = rgx.Matches(activityViewModel.Activity.Details);
-
-                        if (matches.Count > 0)
-                            ModelState.AddModelError("Activity_Details_Invalid", Resources.WebResources.Activity_Details_Invalid);
-
-                    }
-
-                    if (ModelState.IsValid)
-                    {
-                        //TODO needs to acquire current user 
-                        activityViewModel.Activity.UpdateDate = DateTime.Now;
-                        activityViewModel.Activity.CreateDate = DateTime.Now;
-
-                        if (activityViewModel.ContactIDs != null)
-                        {
-                            if (activityViewModel.ContactIDs.Count > 0 && activityViewModel.ContactIDs.First() != 0)
-                            {
-                                activityViewModel.Activity.Contacts = new List<Contact>();
-
-                                foreach (var contact in activityViewModel.ContactIDs)
-                                {
-                                    Contact ActivityContact = new Contact
-                                    {
-                                        UserID = contact,
-                                        CreateUser = userID,
-                                        CreateDate = DateTime.Now,
-                                        UpdateUser = userID,
-                                        UpdateDate = DateTime.Now
-                                    };
-
-                                    activityViewModel.Activity.Contacts.Add(ActivityContact);
-                                }
-
+                                    Activity = activity,
+                                    OutreachEntity = db.OutreachEntityDetails.First(outreach => outreach.UserID == activity.UserID)
+                                });
                             }
                         }
-
-                        if (activityViewModel.ResourceIDs != null)
-                        {
-                            if (activityViewModel.ResourceIDs.Count > 0 && activityViewModel.ResourceIDs.First() != 0)
-                            {
-                                activityViewModel.Activity.ActivityResources = new List<ActivityResource>();
-
-                                foreach (var resource in activityViewModel.ResourceIDs)
-                                {
-                                    ActivityResource Resource = new ActivityResource
-                                    {
-                                        ResourceID = resource,
-                                        ResourceStatus = false,
-                                        CreateUser = userID,
-                                        CreateDate = DateTime.Now,
-                                        UpdateUser = userID,
-                                        UpdateDate = DateTime.Now
-                                    };
-
-                                    activityViewModel.Activity.ActivityResources.Add(Resource);
-                                }
-
-                            }
-                        }
-
-                        activityViewModel.Information = CheckForConflicts(activityViewModel.Activity);
-                        if (activityViewModel.Information.Count == 0 || activityViewModel.ForceCreate == true)
-                        {
-                            activityViewModel.Activity.CreateUser = userID;
-                            activityViewModel.Activity.UpdateUser = userID;
-
-                            db.Activities.Add(activityViewModel.Activity);
-                            db.SaveChanges();
-
-                            return RedirectToAction("Administracion", "Home", null);
-                        }
-                        else
-                        {
-                            activityViewModel.Action = "CrearActividad";
-                            return View("Conflictos", activityViewModel);
-                        }
                     }
-
-                    activityViewModel.ActivityTypes = getActivityTypes();
-                    activityViewModel.SchoolList = getSchools();
-                    activityViewModel.OutreachEntities = getOutreachEntities();
-                    activityViewModel.Contacts = getContacts();
-                    activityViewModel.Resources = getResources();
-                    return View(activityViewModel);
                 }
+
+                return conflictingActivities;
             }
 
-            return RedirectToAction("AccesoDenegado", "Home");
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// Admin activity creation methods.
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        }
+       public ActionResult CrearActividad()
+       {
+           if (User.Identity.IsAuthenticated)
+           {
+               if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+               {
+                   ActivityViewModel activityViewModel = new ActivityViewModel
+                   {
+                       ActivityTypes = getActivityTypes(),
+                       SchoolList = getSchools(),
+                       OutreachEntities = getOutreachEntities(),
+                       Contacts = getContacts(),
+                       ContactIDs = new List<int>(),
+                       Resources = getResources(),
+                       ResourceIDs = new List<int>()
+                   };          
+
+                   return View(activityViewModel);
+               }
+           }
+
+           return RedirectToAction("AccesoDenegado", "Home");
+       }
+
+       [HttpPost]
+       public ActionResult CrearActividad(ActivityViewModel activityViewModel)
+       {
+           if (User.Identity.IsAuthenticated)
+           {
+               if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+               {
+                   int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
+
+           if (activityViewModel.Activity.ActivityDate != null)
+           {
+               if (activityViewModel.Activity.ActivityDate.Value.Date.CompareTo(DateTime.Now.Date) <= 0)
+                   ModelState.AddModelError("Activity_ActivityDate_EarlierThanCurrentDate", Resources.WebResources.Activity_ActivityDate_EarlierThanCurrentDate);
+           }
+
+           if (activityViewModel.Activity.Details != null && activityViewModel.Activity.Details != "")
+           {
+               string pattern = @"^<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>$";
+               Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+               MatchCollection matches = rgx.Matches(activityViewModel.Activity.Details);
+
+               if (matches.Count > 0)
+                   ModelState.AddModelError("Activity_Details_Invalid", Resources.WebResources.Activity_Details_Invalid);
+
+           }
+
+           if (ModelState.IsValid)
+           {
+               activityViewModel.Activity.UpdateDate = DateTime.Now;
+               activityViewModel.Activity.CreateDate = DateTime.Now;
+
+               if (activityViewModel.ContactIDs != null) 
+               { 
+                   if (activityViewModel.ContactIDs.Count > 0 && activityViewModel.ContactIDs.First() != 0)
+                   {
+                       activityViewModel.Activity.Contacts = new List<Contact>();
+
+                       foreach (var contact in activityViewModel.ContactIDs)
+                       {
+                           Contact ActivityContact = new Contact
+                           {
+                               UserID = contact,
+                                       CreateUser = userID,
+                               CreateDate = DateTime.Now,
+                                       UpdateUser = userID,
+                               UpdateDate = DateTime.Now
+                           };
+
+                           activityViewModel.Activity.Contacts.Add(ActivityContact);
+                       }
+
+                   }
+               }
+
+               if (activityViewModel.ResourceIDs != null) 
+               {
+                   if (activityViewModel.ResourceIDs.Count > 0 && activityViewModel.ResourceIDs.First() != 0)
+                   {
+                       activityViewModel.Activity.ActivityResources = new List<ActivityResource>();
+
+                       foreach (var resource in activityViewModel.ResourceIDs)
+                       {
+                           ActivityResource Resource = new ActivityResource
+                           {
+                               ResourceID = resource,
+                               ResourceStatus = false,
+                                       CreateUser = userID,
+                               CreateDate = DateTime.Now,
+                                       UpdateUser = userID,
+                               UpdateDate = DateTime.Now
+                           };
+
+                           activityViewModel.Activity.ActivityResources.Add(Resource);
+                       }
+
+                   }
+               } 
+               
+               activityViewModel.Information = CheckForConflicts(activityViewModel.Activity);
+               if (activityViewModel.Information.Count == 0 || activityViewModel.ForceCreate == true)
+               {
+                           activityViewModel.Activity.CreateUser = userID;
+                           activityViewModel.Activity.UpdateUser = userID;
+
+                   db.Activities.Add(activityViewModel.Activity);
+                   db.SaveChanges();
+
+                   return RedirectToAction("Administracion", "Home", null);
+               }
+               else
+               {
+                   activityViewModel.Action = "CrearActividad";
+                   return View("Conflictos", activityViewModel);
+               }
+           }
+
+           activityViewModel.ActivityTypes = getActivityTypes();
+           activityViewModel.SchoolList = getSchools();
+           activityViewModel.OutreachEntities = getOutreachEntities();
+           activityViewModel.Contacts = getContacts();
+           activityViewModel.Resources = getResources();           
+           return View(activityViewModel);
+       }
+           }
+
+           return RedirectToAction("AccesoDenegado", "Home");
+
+       }
 
         public ActionResult EditarActividad(string source, int id = 0)
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
-                {
-                    ActivityViewModel activityViewModel = new ActivityViewModel
-                    {
+       {
+           if (User.Identity.IsAuthenticated)
+           {
+               if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+               {
+           ActivityViewModel activityViewModel = new ActivityViewModel
+           {
                         Activity = db.Activities.Find(id),
                         Source = source
-                    };
+           };
 
-                    if (activityViewModel.Activity == null)
-                    {
-                        return HttpNotFound();
-                    }
+           if (activityViewModel.Activity == null)
+           {
+               return HttpNotFound();
+           }
 
                     if (activityViewModel.Activity.ActivityDate != null)
-                        activityViewModel.ActivityDate = activityViewModel.Activity.ActivityDate.Value.ToString("dd/MM/yyyy");
+           activityViewModel.ActivityDate = activityViewModel.Activity.ActivityDate.Value.ToString("dd/MM/yyyy");
 
                     activityViewModel.ContactIDs = (from contact in db.Contacts where contact.ActivityID == id && contact.DeletionDate == null select contact.UserID).ToList();
                     activityViewModel.ResourceIDs = (from resource in db.ActivityResources where resource.ActivityID == id && resource.DeletionDate == null select resource.ResourceID).ToList();
-                    activityViewModel.ActivityTypes = getActivityTypes();
-                    activityViewModel.SchoolList = getSchools();
-                    activityViewModel.OutreachEntities = getOutreachEntities();
-                    activityViewModel.Contacts = getContacts();
-                    activityViewModel.Resources = getResources();
-                    return View(activityViewModel);
-                }
-            }
-            return RedirectToAction("AccesoDenegado", "Home");
-        }
+           activityViewModel.ActivityTypes = getActivityTypes();
+           activityViewModel.SchoolList = getSchools();
+           activityViewModel.OutreachEntities = getOutreachEntities();
+           activityViewModel.Contacts = getContacts();
+           activityViewModel.Resources = getResources();
+           return View(activityViewModel);
+       }
+           }
+           return RedirectToAction("AccesoDenegado", "Home");
+       }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult EditarActividad(ActivityViewModel activityViewModel)
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
-                {
-                    int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
+       [HttpPost]
+       [ValidateAntiForgeryToken]
+       public ActionResult EditarActividad(ActivityViewModel activityViewModel)
+       {
+           if (User.Identity.IsAuthenticated)
+           {
+               if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+               {
+                   int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
 
-                    if (activityViewModel.ActivityDate != "" && activityViewModel.ActivityDate != null)
-                        activityViewModel.Activity.ActivityDate = DateTime.ParseExact(activityViewModel.ActivityDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+           if (activityViewModel.ActivityDate != "" && activityViewModel.ActivityDate != null)
+               activityViewModel.Activity.ActivityDate = DateTime.ParseExact(activityViewModel.ActivityDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
 
-                    if (activityViewModel.Activity.ActivityDate != null)
-                    {
-                        if (activityViewModel.Activity.ActivityDate.Value.Date.CompareTo(DateTime.Now.Date) <= 0)
-                            ModelState.AddModelError("Activity_ActivityDate_EarlierThanCurrentDate", Resources.WebResources.Activity_ActivityDate_EarlierThanCurrentDate);
-                    }
+           if (activityViewModel.Activity.ActivityDate != null)
+           {
+               if (activityViewModel.Activity.ActivityDate.Value.Date.CompareTo(DateTime.Now.Date) <= 0)
+                   ModelState.AddModelError("Activity_ActivityDate_EarlierThanCurrentDate", Resources.WebResources.Activity_ActivityDate_EarlierThanCurrentDate);
+           }
 
-                    if (activityViewModel.Activity.Details != null && activityViewModel.Activity.Details != "")
-                    {
+           if (activityViewModel.Activity.Details != null && activityViewModel.Activity.Details != "")
+           {
                         string pattern = @"^(script\b[^<]*(?:(?!<\/script>)<[^<]*)*script)$";
-                        Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                        MatchCollection matches = rgx.Matches(activityViewModel.Activity.Details);
+               Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+               MatchCollection matches = rgx.Matches(activityViewModel.Activity.Details);
 
-                        if (matches.Count > 0)
-                            ModelState.AddModelError("Activity_Details_Invalid", Resources.WebResources.Activity_Details_Invalid);
+               if (matches.Count > 0)
+                   ModelState.AddModelError("Activity_Details_Invalid", Resources.WebResources.Activity_Details_Invalid);
 
-                    }
+           }
 
-                    if (ModelState.IsValid)
-                    {
-                        if (activityViewModel.Activity.ActivityTime != "" && activityViewModel.Activity.ActivityTime != null)
-                            activityViewModel.Activity.ActivityTime = activityViewModel.Activity.ActivityTime.Replace(" ", "");
+           if (ModelState.IsValid)
+           {
+              if (activityViewModel.Activity.ActivityTime != "" && activityViewModel.Activity.ActivityTime != null)
+                   activityViewModel.Activity.ActivityTime = activityViewModel.Activity.ActivityTime.Replace(" ", "");
 
-                        activityViewModel.Activity.UpdateUser = userID;
-                        activityViewModel.Activity.UpdateDate = DateTime.Now;
+                       activityViewModel.Activity.UpdateUser = userID;
+               activityViewModel.Activity.UpdateDate = DateTime.Now;
 
-                        ///Contacts///
+               ///Contacts///
 
-                        ///Check if ID list is null, because if it is BOOM!
-                        if (activityViewModel.ContactIDs != null)
-                        {
-                            //Now check if it contains anything.
-                            if (activityViewModel.ContactIDs.Count > 0 && activityViewModel.ContactIDs.First() != 0)
-                            {
-                                //Retrieve any pre-existing contacts.
-                                var contacts = (from contact in db.Contacts where contact.ActivityID == activityViewModel.Activity.ActivityID select contact).ToList();
+               ///Check if ID list is null, because if it is BOOM!
+               if (activityViewModel.ContactIDs != null)
+               {
+                   //Now check if it contains anything.
+                   if (activityViewModel.ContactIDs.Count > 0 && activityViewModel.ContactIDs.First() != 0)
+                   {
+                       //Retrieve any pre-existing contacts.
+                       var contacts = (from contact in db.Contacts where contact.ActivityID == activityViewModel.Activity.ActivityID select contact).ToList();
 
-                                //Verify if any pre-existing contacts exist.
-                                if (contacts.Count > 0)
-                                {
-                                    foreach (var contact in contacts)
-                                    {
-                                        //If there are existing contacts, verify if these contacts are contained in the new id list.
-                                        if (contact.DeletionDate == null && !activityViewModel.ContactIDs.Contains(contact.UserID))
-                                        {
-                                            //If not delete them.
-                                            contact.DeletionDate = DateTime.Now;
-                                            db.Entry(contact).State = EntityState.Modified;
-                                        }
-                                        //Else if they have been removed but are included in the ID list restore them.
-                                        else if (contact.DeletionDate != null && activityViewModel.ContactIDs.Contains(contact.UserID))
-                                        {
-                                            contact.DeletionDate = null;
-                                            db.Entry(contact).State = EntityState.Modified;
+                       //Verify if any pre-existing contacts exist.
+                       if (contacts.Count > 0)
+                       {
+                           foreach (var contact in contacts)
+                           {
+                               //If there are existing contacts, verify if these contacts are contained in the new id list.
+                               if (contact.DeletionDate == null && !activityViewModel.ContactIDs.Contains(contact.UserID))
+                               {
+                                   //If not delete them.
+                                   contact.DeletionDate = DateTime.Now;
+                                   db.Entry(contact).State = EntityState.Modified;
+                               }
+                               //Else if they have been removed but are included in the ID list restore them.
+                               else if (contact.DeletionDate != null && activityViewModel.ContactIDs.Contains(contact.UserID))
+                               {
+                                   contact.DeletionDate = null;
+                                   db.Entry(contact).State = EntityState.Modified;
 
-                                        }
-                                    }
-                                }
+                               }
+                           }
+                       }
 
-                                //Now to take care of any new contacts.
-                                foreach (var id in activityViewModel.ContactIDs)
-                                {
-                                    //Retrieve all existing contacts, those with deletion date and without that match the id in the list.
-                                    var contactList = (from cont in db.Contacts where cont.ActivityID == activityViewModel.Activity.ActivityID && cont.UserID == id select cont).ToList();
+                       //Now to take care of any new contacts.
+                       foreach (var id in activityViewModel.ContactIDs)
+                       {
+                           //Retrieve all existing contacts, those with deletion date and without that match the id in the list.
+                           var contactList = (from cont in db.Contacts where cont.ActivityID == activityViewModel.Activity.ActivityID && cont.UserID == id select cont).ToList();
 
-                                    Contact contact = null;
+                           Contact contact = null;
 
-                                    //Is the list empty?
-                                    if (contactList.Count > 0)
-                                        contact = contactList.First();
+                           //Is the list empty?
+                           if (contactList.Count > 0)
+                               contact = contactList.First();
 
-                                    //If so that means it's new so we must add it.
-                                    if (contact == null)
-                                    {
-                                        Contact ActivityContact = new Contact
-                                        {
-                                            UserID = id,
-                                            ActivityID = activityViewModel.Activity.ActivityID,
-                                            CreateUser = userID,
-                                            CreateDate = DateTime.Now,
-                                            UpdateUser = userID,
-                                            UpdateDate = DateTime.Now
-                                        };
+                           //If so that means it's new so we must add it.
+                           if (contact == null)
+                           {
+                               Contact ActivityContact = new Contact
+                               {
+                                   UserID = id,
+                                   ActivityID = activityViewModel.Activity.ActivityID,
+                                           CreateUser = userID,
+                                   CreateDate = DateTime.Now,
+                                           UpdateUser = userID,
+                                   UpdateDate = DateTime.Now
+                               };
 
-                                        //Since the activity already exists, we just add the new contact to the Contacts DB table.
-                                        db.Contacts.Add(ActivityContact);
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            //If none of the above things happen, verify if there are any existing contacts and remove them, 
-                            //because all contacts may have been removed.
-                            var contacts = (from contact in db.Contacts where contact.ActivityID == activityViewModel.Activity.ActivityID && contact.DeletionDate == null select contact).ToList();
+                               //Since the activity already exists, we just add the new contact to the Contacts DB table.
+                               db.Contacts.Add(ActivityContact);
+                           }
+                       }
+                   }
+               }
+               else
+               {
+                   //If none of the above things happen, verify if there are any existing contacts and remove them, 
+                   //because all contacts may have been removed.
+                   var contacts = (from contact in db.Contacts where contact.ActivityID == activityViewModel.Activity.ActivityID && contact.DeletionDate == null select contact).ToList();
 
-                            if (contacts.Count > 0)
-                            {
-                                foreach (var contact in contacts)
-                                {
-                                    contact.DeletionDate = DateTime.Now;
-                                    db.Entry(contact).State = EntityState.Modified;
-                                }
-                            }
-                        }
+                   if (contacts.Count > 0)
+                   {
+                       foreach (var contact in contacts)
+                       {
+                           contact.DeletionDate = DateTime.Now;
+                           db.Entry(contact).State = EntityState.Modified;
+                       }
+                   }
+               }
 
-                        ////Resources////
+               ////Resources////
 
-                        //Check if the ID list is null, because if so BOOM!
-                        if (activityViewModel.ResourceIDs != null)
-                        {
-                            //Now, is it empty?
-                            if (activityViewModel.ResourceIDs.Count > 0 && activityViewModel.ResourceIDs.First() != 0)
-                            {
-                                //Retrieve all existing resources that match this activity ID.
-                                var resources = (from resource in db.ActivityResources where resource.ActivityID == activityViewModel.Activity.ActivityID select resource).ToList();
+               //Check if the ID list is null, because if so BOOM!
+               if (activityViewModel.ResourceIDs != null)
+               {
+                   //Now, is it empty?
+                   if (activityViewModel.ResourceIDs.Count > 0 && activityViewModel.ResourceIDs.First() != 0)
+                   {
+                       //Retrieve all existing resources that match this activity ID.
+                       var resources = (from resource in db.ActivityResources where resource.ActivityID == activityViewModel.Activity.ActivityID select resource).ToList();
 
-                                //Are there any matches?
-                                if (resources.Count > 0)
-                                {
-                                    foreach (var resource in resources)
-                                    {
-                                        //If they are not contained in the current list, remove them.
-                                        if (resource.DeletionDate == null && !activityViewModel.ResourceIDs.Contains(resource.ResourceID))
-                                        {
-                                            resource.DeletionDate = DateTime.Now;
-                                            db.Entry(resource).State = EntityState.Modified;
-                                        }
-                                        //If they have been removed but are now restored.
-                                        else if (resource.DeletionDate != null && activityViewModel.ResourceIDs.Contains(resource.ResourceID))
-                                        {
-                                            //Then restore them in the DB as well.
-                                            resource.DeletionDate = null;
-                                            db.Entry(resource).State = EntityState.Modified;
-                                        }
-                                    }
-                                }
+                       //Are there any matches?
+                       if (resources.Count > 0)
+                       {
+                           foreach (var resource in resources)
+                           {
+                               //If they are not contained in the current list, remove them.
+                               if (resource.DeletionDate == null && !activityViewModel.ResourceIDs.Contains(resource.ResourceID))
+                               {
+                                   resource.DeletionDate = DateTime.Now;
+                                   db.Entry(resource).State = EntityState.Modified;
+                               }
+                               //If they have been removed but are now restored.
+                               else if (resource.DeletionDate != null && activityViewModel.ResourceIDs.Contains(resource.ResourceID))
+                               {
+                                   //Then restore them in the DB as well.
+                                   resource.DeletionDate = null;
+                                   db.Entry(resource).State = EntityState.Modified;
+                               }
+                           }
+                       }
 
 
-                                //Now for all the remaining resource IDs
-                                foreach (var id in activityViewModel.ResourceIDs)
-                                {
-                                    //Verify if a resource already exists with this ID.
-                                    var resourceList = (from activityResource in db.ActivityResources where activityResource.ActivityID == activityViewModel.Activity.ActivityID && activityResource.ResourceID == id select activityResource).ToList();
+                       //Now for all the remaining resource IDs
+                       foreach (var id in activityViewModel.ResourceIDs)
+                       {
+                           //Verify if a resource already exists with this ID.
+                           var resourceList = (from activityResource in db.ActivityResources where activityResource.ActivityID == activityViewModel.Activity.ActivityID && activityResource.ResourceID == id select activityResource).ToList();
 
-                                    ActivityResource resource = null;
+                           ActivityResource resource = null;
 
-                                    if (resourceList.Count > 0)
-                                        resource = resourceList.First();
+                           if (resourceList.Count > 0)
+                               resource = resourceList.First();
 
-                                    //If it's new, then add it.
-                                    if (resource == null)
-                                    {
-                                        ActivityResource ActivityResource = new ActivityResource
-                                        {
-                                            ResourceID = id,
-                                            ActivityID = activityViewModel.Activity.ActivityID,
-                                            CreateUser = userID,
-                                            CreateDate = DateTime.Now,
-                                            UpdateUser = userID,
-                                            UpdateDate = DateTime.Now
-                                        };
+                           //If it's new, then add it.
+                           if (resource == null)
+                           {
+                               ActivityResource ActivityResource = new ActivityResource
+                               {
+                                   ResourceID = id,
+                                   ActivityID = activityViewModel.Activity.ActivityID,
+                                           CreateUser = userID,
+                                   CreateDate = DateTime.Now,
+                                           UpdateUser = userID,
+                                   UpdateDate = DateTime.Now
+                               };
 
-                                        //This activity already exists so we just add this resource to the ActivityResource DB table.
-                                        db.ActivityResources.Add(ActivityResource);
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            //Check if any resources exist, and if they do, they may have been removed.
-                            var resources = (from resource in db.ActivityResources where resource.ActivityID == activityViewModel.Activity.ActivityID && resource.DeletionDate == null select resource).ToList();
+                               //This activity already exists so we just add this resource to the ActivityResource DB table.
+                               db.ActivityResources.Add(ActivityResource);
+                           }
+                       }
+                   }
+               }
+               else
+               {
+                   //Check if any resources exist, and if they do, they may have been removed.
+                   var resources = (from resource in db.ActivityResources where resource.ActivityID == activityViewModel.Activity.ActivityID && resource.DeletionDate == null select resource).ToList();
 
-                            if (resources.Count > 0)
-                            {
-                                foreach (var resource in resources)
-                                {
-                                    //So remove them all.
-                                    resource.DeletionDate = DateTime.Now;
-                                    db.Entry(resource).State = EntityState.Modified;
-                                }
-                            }
-                        }
+                   if (resources.Count > 0)
+                   {
+                       foreach (var resource in resources)
+                       {
+                           //So remove them all.
+                           resource.DeletionDate = DateTime.Now;
+                           db.Entry(resource).State = EntityState.Modified;
+                       }
+                   }
+               }
 
-                        activityViewModel.Information = CheckForConflicts(activityViewModel.Activity);
-                        if (activityViewModel.Information.Count == 0 || activityViewModel.ForceCreate == true)
-                        {
+               activityViewModel.Information = CheckForConflicts(activityViewModel.Activity);
+               if (activityViewModel.Information.Count == 0 || activityViewModel.ForceCreate == true)
+               {
                             var attachedEntity = db.Activities.Local.First(activity => activity.ActivityID == activityViewModel.Activity.ActivityID);
 
                             if (attachedEntity != null)
@@ -1763,10 +1760,10 @@ namespace OPDB.Controllers
                             }
                             else
                             {
-                                db.Entry(activityViewModel.Activity).State = EntityState.Modified;
+                   db.Entry(activityViewModel.Activity).State = EntityState.Modified;
                             }
 
-                            db.SaveChanges();
+                   db.SaveChanges();
 
                             if (activityViewModel.Source == "Detalles")
                                 return RedirectToAction("Detalles", "Actividades", new { id = activityViewModel.Activity.ActivityID });
@@ -1775,27 +1772,25 @@ namespace OPDB.Controllers
                             {
                                 return RedirectToAction("Administracion", "Home");
                             }
-                        }
-                        else
-                        {
-                            activityViewModel.Action = "EditarActividad";
-                            return View("Conflictos", activityViewModel);
-                        }
+               }
+               else
+               {
+                   activityViewModel.Action = "EditarActividad";
+                   return View("Conflictos", activityViewModel);
+               }
 
-                    }
+           }
 
-                    activityViewModel.ActivityTypes = getActivityTypes();
-                    activityViewModel.SchoolList = getSchools();
-                    activityViewModel.OutreachEntities = getOutreachEntities();
-                    activityViewModel.Contacts = getContacts();
-                    activityViewModel.Resources = getResources();
-                    return View(activityViewModel);
-                }
-            }
+           activityViewModel.ActivityTypes = getActivityTypes();
+           activityViewModel.SchoolList = getSchools();
+           activityViewModel.OutreachEntities = getOutreachEntities();
+           activityViewModel.Contacts = getContacts();
+           activityViewModel.Resources = getResources();
+           return View(activityViewModel);
+       }
+           }
 
-            return RedirectToAction("AccesoDenegado", "Home");
-        }
-
-
+           return RedirectToAction("AccesoDenegado", "Home");
+       }
     }
 }
