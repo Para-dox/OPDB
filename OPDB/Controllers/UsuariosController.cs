@@ -22,7 +22,7 @@ namespace OPDB.Controllers
 
         public ActionResult Index()
         {
-            if (!Request.IsAuthenticated || (Int32.Parse(User.Identity.Name.ToString().Substring(User.Identity.Name.ToString().LastIndexOf('=') + 1).Trim()) != 1))
+            if (!Request.IsAuthenticated || (Int32.Parse(User.Identity.Name.Split(',')[1]) != 1))
             {
                 return RedirectToAction("AccesoDenegado", "Home", null);
             }
@@ -41,7 +41,6 @@ namespace OPDB.Controllers
 
         public ActionResult Detalles(int id = 0)
         {
-
             UserViewModel user = new UserViewModel
             {
                 user = db.Users.Find(id),
@@ -54,6 +53,7 @@ namespace OPDB.Controllers
             {
                 return HttpNotFound();
             }
+
             return View(user);
         }
 

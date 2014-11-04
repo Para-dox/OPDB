@@ -4,12 +4,12 @@
     <nav class="top-bar" data-topbar role="navigation" id="adminBar">
         <section class="top-bar-section">
             <ul>
-                <li id="outreachAdmin"><a id="outreachURL" onclick="loadAdminView(this)" data-url="@Url.Action("MenuAlcance", "Alcance")">Alcance</a></li>
-                <li id="activitiesAdmin"><a id="activitiesURL" onclick="loadAdminView(this)" data-url="@Url.Action("Index", "Actividades")">Actividades</a></li>
-                <li id="schoolsAdmin"><a id="schoolsURL" onclick="loadAdminView(this)" data-url="@Url.Action("MenuEscuelas", "Escuelas")">Escuelas</a></li>
-                <li id="resourcesAdmin"><a id="resourcesURL" onclick="loadAdminView(this)" data-url="@Url.Action("Index", "Recursos")">Recursos</a></li>
-                <li id="unitsAdmin"><a id="unitsURL" onclick="loadAdminView(this)" data-url="@Url.Action("Index", "Unidades")">Unidades</a></li>
-                <li id="usersAdmin"><a id="usersURL" onclick="loadAdminView(this)" data-url="@Url.Action("MenuUsuarios", "Usuarios")">Usuarios</a></li>
+                <li id="outreachAdmin"><a id="outreachURL" onclick="loadAdminView(this)" data-url="@Url.Action("MenuAlcance", "Alcance", new { requested = true })">Alcance</a></li>
+                <li id="activitiesAdmin"><a id="activitiesURL" onclick="loadAdminView(this)" data-url="@Url.Action("Index", "Actividades", new { requested = true })">Actividades</a></li>
+                <li id="schoolsAdmin"><a id="schoolsURL" onclick="loadAdminView(this)" data-url="@Url.Action("MenuEscuelas", "Escuelas", new { requested = true })">Escuelas</a></li>
+                <li id="resourcesAdmin"><a id="resourcesURL" onclick="loadAdminView(this)" data-url="@Url.Action("Index", "Recursos", new { requested = true })">Recursos</a></li>
+                <li id="unitsAdmin"><a id="unitsURL" onclick="loadAdminView(this)" data-url="@Url.Action("Index", "Unidades", new { requested = true })">Unidades</a></li>
+                <li id="usersAdmin"><a id="usersURL" onclick="loadAdminView(this)" data-url="@Url.Action("MenuUsuarios", "Usuarios", new { requested = true })">Usuarios</a></li>
             </ul>
         </section>
     </nav><br />
