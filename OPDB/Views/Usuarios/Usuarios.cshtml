@@ -1,7 +1,7 @@
 ﻿<dl class="sub-nav">
     <dt></dt>
-    <dd id="activeUsers"><a id="activeUsersURL" onclick="loadAdminView(this)" data-url="@Url.Action("Index", "Usuarios")">Activos</a></dd>
-    <dd id="removedUsers"><a id="removedUsersURL" onclick="loadAdminView(this)" data-url="@Url.Action("Removidos", "Usuarios")">Removidos</a></dd>
+    <dd id="activeUsers"><a id="activeUsersURL" onclick="loadAdminView(this)" data-url="@Url.Action("Index", "Usuarios", new { requested = true })">Activos</a></dd>
+    <dd id="removedUsers"><a id="removedUsersURL" onclick="loadAdminView(this)" data-url="@Url.Action("Removidos", "Usuarios", new { requested = true })">Removidos</a></dd>
 </dl>
 
 <div>
@@ -14,7 +14,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         document.getElementsByTagName("loading")[0].innerHTML = "";
-        loadAdminView("<a id='activeUsersURL' data-url='@Url.Action("Index", "Usuarios")'></a>");
+        loadAdminView("<a id='activeUsersURL' data-url='@Url.Action("Index", "Usuarios", new { requested = true })'></a>");
     });
 
 

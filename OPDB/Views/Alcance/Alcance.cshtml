@@ -1,8 +1,8 @@
 ﻿<dl class="sub-nav">
     <dt></dt>
     <dd id="activeOutreach"><a id="activeOutreachURL" onclick="loadAdminView(this)" data-url="@Url.Action("Index", "Alcance", new { requested = true })">Activos</a></dd>
-    <dd id="pendingOutreach"><a id="pendingOutreachURL" onclick="loadAdminView(this)" data-url="@Url.Action("Pendientes", "Alcance")">Pendientes</a></dd>
-    <dd id="removedOutreach"><a id="removedOutreachURL" onclick="loadAdminView(this)" data-url="@Url.Action("Removidos", "Alcance")">Removidos</a></dd>
+    <dd id="pendingOutreach"><a id="pendingOutreachURL" onclick="loadAdminView(this)" data-url="@Url.Action("Pendientes", "Alcance", new { requested = true })">Pendientes</a></dd>
+    <dd id="removedOutreach"><a id="removedOutreachURL" onclick="loadAdminView(this)" data-url="@Url.Action("Removidos", "Alcance", new { requested = true })">Removidos</a></dd>
 </dl>
 
     <div>
@@ -15,6 +15,6 @@
 <script type="text/javascript">
     $(document).ready(function () {
         document.getElementsByTagName("loading")[0].innerHTML = "";
-        loadAdminView("<a id='activeOutreachURL' data-url='@Url.Action("Index", "Alcance")'></a>");
+        loadAdminView("<a id='activeOutreachURL' data-url='@Url.Action("Index", "Alcance", new { requested = true })'></a>");
     });
 </script>

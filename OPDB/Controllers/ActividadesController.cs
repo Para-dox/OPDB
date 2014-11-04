@@ -22,112 +22,111 @@ namespace OPDB.Controllers
         {
             if (requested != null) 
             { 
-                if (User.Identity.IsAuthenticated && Boolean.Parse(requested)) {
+                if (User.Identity.IsAuthenticated && Boolean.Parse(requested)) 
+                {
 
                     if (Int32.Parse(User.Identity.Name.ToString().Split(',')[1]) == 1) 
                     { 
                     
-            List<Activity> activities = (from activity in db.Activities where activity.DeletionDate == null select activity).ToList();
+                        List<Activity> activities = (from activity in db.Activities where activity.DeletionDate == null select activity).ToList();
 
-            ActivityViewModel activityViewModel = new ActivityViewModel
-            {
-                Information = new List<UserInfoViewModel>()
-            };
+                        ActivityViewModel activityViewModel = new ActivityViewModel
+                        {
+                            Information = new List<UserInfoViewModel>()
+                        };
 
-            
+                        foreach (var activity in activities)
+                        {
+                            var CreateUser = db.Users.Find(activity.CreateUser);
+                            var UpdateUser = db.Users.Find(activity.UpdateUser);
 
-            foreach (var activity in activities)
-            {
-                var CreateUser = db.Users.Find(activity.CreateUser);
-                var UpdateUser = db.Users.Find(activity.UpdateUser);
-
-                if (CreateUser.UserTypeID == 3 && UpdateUser.UserTypeID == 3)
-                {
+                            if (CreateUser.UserTypeID == 3 && UpdateUser.UserTypeID == 3)
+                            {
                     
-                   activityViewModel.Information.Add(new UserInfoViewModel
-                    {
-                        Activity = activity,
-                        CreateEntity = db.OutreachEntityDetails.First(u => u.UserID == activity.CreateUser),
-                        UpdateEntity = db.OutreachEntityDetails.First(u => u.UserID == activity.UpdateUser),
-                        CreateUser = new UserDetail
-                        {
-                            FirstName = "",
-                            MiddleInitial = "",
-                            LastName = "",
-                        },
-                        UpdateUser = new UserDetail
-                        {
-                            FirstName = "",
-                            MiddleInitial = "",
-                            LastName = ""
+                               activityViewModel.Information.Add(new UserInfoViewModel
+                                {
+                                    Activity = activity,
+                                    CreateEntity = db.OutreachEntityDetails.First(u => u.UserID == activity.CreateUser),
+                                    UpdateEntity = db.OutreachEntityDetails.First(u => u.UserID == activity.UpdateUser),
+                                    CreateUser = new UserDetail
+                                    {
+                                        FirstName = "",
+                                        MiddleInitial = "",
+                                        LastName = "",
+                                    },
+                                    UpdateUser = new UserDetail
+                                    {
+                                        FirstName = "",
+                                        MiddleInitial = "",
+                                        LastName = ""
+                                    }
+
+                                });
+                            }
+                            else if (CreateUser.UserTypeID == 3 && UpdateUser.UserTypeID != 3)
+                            {
+                                activityViewModel.Information.Add(new UserInfoViewModel
+                                {
+                                    Activity = activity,
+                                    CreateEntity = db.OutreachEntityDetails.First(u => u.UserID == activity.CreateUser),
+                                    UpdateUser = db.UserDetails.First(u => u.UserID == activity.UpdateUser),
+                                    CreateUser = new UserDetail
+                                    {
+                                        FirstName = "",
+                                        MiddleInitial = "",
+                                        LastName = "",
+
+                                    },
+                                    UpdateEntity = new OutreachEntityDetail
+                                    {
+                                        OutreachEntityName = ""
+                                    }
+
+                                });
+                            }
+                            else if (CreateUser.UserTypeID != 3 && UpdateUser.UserTypeID == 3)
+                            {
+                                activityViewModel.Information.Add(new UserInfoViewModel
+                                {
+                                    Activity = activity,
+                                    CreateUser = db.UserDetails.First(u => u.UserID == activity.CreateUser),
+                                    UpdateEntity = db.OutreachEntityDetails.First(u => u.UserID == activity.UpdateUser),
+                                    UpdateUser = new UserDetail
+                                    {
+                                        FirstName = "",
+                                        MiddleInitial = "",
+                                        LastName = ""
+                                    },
+                                    CreateEntity = new OutreachEntityDetail
+                                    {
+                                        OutreachEntityName = ""
+                                    }
+
+                                });
+                            }
+                            else
+                            {
+                                activityViewModel.Information.Add(new UserInfoViewModel
+                                {
+                                    Activity = activity,
+                                    CreateUser = db.UserDetails.First(u => u.UserID == activity.CreateUser),
+                                    UpdateUser = db.UserDetails.First(u => u.UserID == activity.UpdateUser),
+                                    CreateEntity = new OutreachEntityDetail
+                                    {
+                                        OutreachEntityName = ""
+                                    },
+                                    UpdateEntity = new OutreachEntityDetail
+                                    {
+                                        OutreachEntityName = ""
+                                    }
+
+                                });
+                            }
+
                         }
 
-                    });
-                }
-                else if (CreateUser.UserTypeID == 3 && UpdateUser.UserTypeID != 3)
-                {
-                    activityViewModel.Information.Add(new UserInfoViewModel
-                    {
-                        Activity = activity,
-                        CreateEntity = db.OutreachEntityDetails.First(u => u.UserID == activity.CreateUser),
-                        UpdateUser = db.UserDetails.First(u => u.UserID == activity.UpdateUser),
-                        CreateUser = new UserDetail
-                        {
-                            FirstName = "",
-                            MiddleInitial = "",
-                            LastName = "",
-
-                        },
-                        UpdateEntity = new OutreachEntityDetail
-                        {
-                            OutreachEntityName = ""
-                        }
-
-                    });
-                }
-                else if (CreateUser.UserTypeID != 3 && UpdateUser.UserTypeID == 3)
-                {
-                    activityViewModel.Information.Add(new UserInfoViewModel
-                    {
-                        Activity = activity,
-                        CreateUser = db.UserDetails.First(u => u.UserID == activity.CreateUser),
-                        UpdateEntity = db.OutreachEntityDetails.First(u => u.UserID == activity.UpdateUser),
-                        UpdateUser = new UserDetail
-                        {
-                            FirstName = "",
-                            MiddleInitial = "",
-                            LastName = ""
-                        },
-                        CreateEntity = new OutreachEntityDetail
-                        {
-                            OutreachEntityName = ""
-                        }
-
-                    });
-                }
-                else
-                {
-                    activityViewModel.Information.Add(new UserInfoViewModel
-                    {
-                        Activity = activity,
-                        CreateUser = db.UserDetails.First(u => u.UserID == activity.CreateUser),
-                        UpdateUser = db.UserDetails.First(u => u.UserID == activity.UpdateUser),
-                        CreateEntity = new OutreachEntityDetail
-                        {
-                            OutreachEntityName = ""
-                        },
-                        UpdateEntity = new OutreachEntityDetail
-                        {
-                            OutreachEntityName = ""
-                        }
-
-                    });
-                }
-
-            }
-
-            return PartialView("Index", activityViewModel);
-        }
+                        return PartialView("Index", activityViewModel);
+                    }
                     else
                     {
                         return RedirectToAction("AccesoDenegado", "Home");
@@ -146,7 +145,7 @@ namespace OPDB.Controllers
 
             if (User.Identity.IsAuthenticated)
             {
-                int currentUserID = Int32.Parse(User.Identity.Name.Split(',')[1]);
+                int currentUserID = Int32.Parse(User.Identity.Name.Split(',')[0]);
                 currentUser = db.Users.Find(currentUserID);
             }
 
@@ -452,13 +451,27 @@ namespace OPDB.Controllers
 
         public ActionResult Notas(int id)
         {
-            ActivityViewModel activityViewModel = new ActivityViewModel
+            if (User.Identity.IsAuthenticated)
             {
-                Activity = db.Activities.Find(id),
-                Notes = from note in db.ActivityNotes.Include(note => note.NoteType) where note.ActivityID == id && note.DeletionDate == null select note
-            };
+                ActivityViewModel activityViewModel = new ActivityViewModel
+                {
+                        Activity = db.Activities.Find(id)                
+                };
 
-            return PartialView("Notas", activityViewModel);
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 3)
+                {
+                    int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);                   
+                    activityViewModel.Notes = from note in db.ActivityNotes.Include(note => note.NoteType) where note.ActivityID == id && note.UserID == userID && note.DeletionDate == null select note;
+                }
+                else if(Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
+                    activityViewModel.Notes = from note in db.ActivityNotes.Include(note => note.NoteType) where note.ActivityID == id && note.DeletionDate == null select note;                    
+                }
+
+                return PartialView("Notas", activityViewModel);
+            }
+
+            return RedirectToAction("AccesoDenegado", "Home");
         }
 
         // GET: /Actividades/Edit/5
@@ -1357,19 +1370,19 @@ namespace OPDB.Controllers
            {
                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
                {
-           ActivityViewModel activityViewModel = new ActivityViewModel
-           {
-               ActivityTypes = getActivityTypes(),
-               SchoolList = getSchools(),
-               OutreachEntities = getOutreachEntities(),
-               Contacts = getContacts(),
-               ContactIDs = new List<int>(),
-               Resources = getResources(),
-               ResourceIDs = new List<int>()
-           };          
+                   ActivityViewModel activityViewModel = new ActivityViewModel
+                   {
+                       ActivityTypes = getActivityTypes(),
+                       SchoolList = getSchools(),
+                       OutreachEntities = getOutreachEntities(),
+                       Contacts = getContacts(),
+                       ContactIDs = new List<int>(),
+                       Resources = getResources(),
+                       ResourceIDs = new List<int>()
+                   };          
 
-           return View(activityViewModel);
-       }
+                   return View(activityViewModel);
+               }
            }
 
            return RedirectToAction("AccesoDenegado", "Home");
