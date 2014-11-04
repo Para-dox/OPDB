@@ -423,6 +423,8 @@ namespace OPDB.Controllers
                 });
             }
 
+            var activity = db.Users.Find(id);
+
             foreach (var resource in allResources)
             {
                 var tempResource = db.Resources.Find(resource.ResourceID);
@@ -434,6 +436,7 @@ namespace OPDB.Controllers
                     ActivityResource = resource,
                     Resource = tempResource,
                     Unit = unit,
+                    User = db.Users.Find(activity.UserID)
                     
                 });
             }
