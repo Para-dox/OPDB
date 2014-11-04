@@ -47,14 +47,33 @@
                            </div>
                        </td>
                        <td>
-                       @if (resource.ActivityResource.ResourceStatus == false)
+                       @if (User.Identity.IsAuthenticated)
                        {
-                        <a title="Pendiente" id="activity-@resource.ActivityResource.ActivityResourceID" style="background-color:#222222 !important;" class="btn btn-sm" onclick="approve(this)" data-url="@Url.Action("Aprobar", "Actividades", new { id = resource.ActivityResource.ActivityResourceID })"><i class="fa fa-question"></i> Pendiente</a>
+                           if (Int32.Parse(User.Identity.Name.Split(',')[0]) == resource.User.UserID)
+                           {
+                               if (resource.ActivityResource.ResourceStatus == false)
+                               {
+                                <a title="Pendiente" id="activity-@resource.ActivityResource.ActivityResourceID" style="background-color:#222222 !important;" class="btn btn-sm" onclick="approve(this)" data-url="@Url.Action("Aprobar", "Actividades", new { id = resource.ActivityResource.ActivityResourceID })"><i class="fa fa-question"></i> Pendiente</a>
+                               }
+                               else
+                               {
+                                <a title="Aprobado" style="background-color:#222222 !important; color:white; cursor:default;" class="btn-sm"><i class="fa fa-check"></i> Aprobado</a>
+                               }
+
+                           }
                        }
                        else
                        {
-                        <a title="Aprobado" style="background-color:#222222 !important; color:white; cursor:default;" class="btn-sm"><i class="fa fa-check"></i> Aprobado</a>
+                           if (resource.ActivityResource.ResourceStatus == false)
+                           {
+                            <a title="Pendiente" id="activity-@resource.ActivityResource.ActivityResourceID" style="background-color:#222222 !important;" class="btn btn-sm">Pendiente <i class="fa fa-question"></i></a>
+                           }
+                           else
+                           {
+                            <a title="Aprobado" style="background-color:#222222 !important; color:white; cursor:default;" class="btn-sm">Aprobado <i class="fa fa-check"></i></a>
+                           }
                        }
+                       
                        </td>
                                              
                        

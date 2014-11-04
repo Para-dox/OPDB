@@ -1,18 +1,16 @@
 ﻿@model OPDB.Models.UserViewModel
 
-@using (Html.BeginForm("IniciarSesion", "Usuarios", FormMethod.Post, new { ReturnUrl = ViewBag.ReturnUrl }))
+@using (Ajax.BeginForm("IniciarSesion", "Usuarios", FormMethod.Post, new AjaxOptions{ HttpMethod = "POST", UpdateTargetId = "validation" }))
 {
             @Html.AntiForgeryToken()
             @Html.ValidationSummary(true)
                 <div>
                     @Html.LabelFor(model => model.user.Email, "Correo Electrónico")
                     @Html.TextBoxFor(model => model.user.Email)
-                    @Html.ValidationMessageFor(model => model.user.Email)
                 </div>
                 <div>
                     @Html.LabelFor(model => model.user.UserPassword, "Contraseña")
                     @Html.PasswordFor(model => model.user.UserPassword)
-                    @Html.ValidationMessageFor(model => model.user.UserPassword)
                 </div>
     <div>
         <input type="submit" class="btn" style="float:left !important; width:40% !important; margin-left: 30px !important;" value="Ingresar" /> <input type="button" value="Cancelar" class="btn" style="float:right !important; width:40% !important; margin-right: 30px !important;" onclick="modalClose()" />

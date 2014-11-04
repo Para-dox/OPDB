@@ -19,10 +19,33 @@
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
-
+    @Html.HiddenFor(model => model.user.UserTypeID)
     <fieldset style="width: 500px;">
         <legend>OutreachEntityDetail</legend>
         <label>Todos los campos con (*) son requeridos</label><br />
+        <div class="editor-label">
+            @Html.LabelFor(model => model.user.Email, "Correo Electrónico *")
+        </div>
+        <div>
+            @Html.ValidationMessage("User_Email_Exists", new { @style = "float:left !important;" })
+            @Html.ValidationMessageFor(model => model.user.Email, null, new { @style = "float:left !important;" })
+            @Html.EditorFor(model => model.user.Email, new { @style = "width: 500px !important;" })
+        </div>
+
+        <div class="editor-label">
+            <i style="float:right; cursor:pointer;" class="fa fa-question-circle" title="Su contraseña debe contener: de 8 a 20 caracteres, al menos un digito, al menos un caracter alfabetico y no debe contener caracteres especiales."></i> @Html.LabelFor(model => model.user.UserPassword, "Contraseña *")
+        </div>
+        <div class="editor-field">
+            @Html.ValidationMessageFor(model => model.user.UserPassword, null, new { @style = "float:left !important;" })
+            @Html.PasswordFor(model => model.user.UserPassword, new { @style = "width: 500px !important;" })
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.user.PhoneNumber, "Número Telefónico")
+        </div>
+        <div class="editor-field">
+            @Html.ValidationMessageFor(model => model.user.PhoneNumber, null, new { @style = "float:left !important;" })
+            @Html.EditorFor(model => model.user.PhoneNumber, new { @style = "width: 500px !important;" })
+        </div>
         <div class="editor-label">
             @Html.LabelFor(model => model.outreachEntity.OutreachEntityTypeID, "Tipo de Organización")
         </div>

@@ -145,7 +145,7 @@ namespace OPDB.Controllers
 
             if (User.Identity.IsAuthenticated)
             {
-                int currentUserID = Int32.Parse(User.Identity.Name.Split(',')[1]);
+                int currentUserID = Int32.Parse(User.Identity.Name.Split(',')[0]);
                 currentUser = db.Users.Find(currentUserID);
             }
 
@@ -451,13 +451,27 @@ namespace OPDB.Controllers
 
         public ActionResult Notas(int id)
         {
-            ActivityViewModel activityViewModel = new ActivityViewModel
+            if (User.Identity.IsAuthenticated)
             {
-                Activity = db.Activities.Find(id),
-                Notes = from note in db.ActivityNotes.Include(note => note.NoteType) where note.ActivityID == id && note.DeletionDate == null select note
-            };
+                ActivityViewModel activityViewModel = new ActivityViewModel
+                {
+                        Activity = db.Activities.Find(id)                
+                };
 
-            return PartialView("Notas", activityViewModel);
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 3)
+                {
+                    int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);                   
+                    activityViewModel.Notes = from note in db.ActivityNotes.Include(note => note.NoteType) where note.ActivityID == id && note.UserID == userID && note.DeletionDate == null select note;
+                }
+                else if(Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
+                    activityViewModel.Notes = from note in db.ActivityNotes.Include(note => note.NoteType) where note.ActivityID == id && note.DeletionDate == null select note;                    
+                }
+
+                return PartialView("Notas", activityViewModel);
+            }
+
+            return RedirectToAction("AccesoDenegado", "Home");
         }
 
         // GET: /Actividades/Edit/5

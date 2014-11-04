@@ -278,24 +278,37 @@ namespace OPDB.Controllers
 
         public ActionResult Editar(int id = 0)
         {
-            //User ;
-            UserViewModel userViewModel = new UserViewModel
+            if (User.Identity.IsAuthenticated)
             {
-                user = db.Users.Find(id),
-                userDetail = db.UserDetails.FirstOrDefault(i => i.UserID == id),
-                userTypes = getUserTypes(),
-                Schools = getSchools(),
-                OutreachEntities = getOutreachEntities(),
-                Units = getUnits()
-            };
+                if (Int32.Parse(User.Identity.Name.Split(',')[0]) == id || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
 
-            if (userViewModel.user == null)
-            {
-                return HttpNotFound();
+                    UserViewModel userViewModel = new UserViewModel
+                    {
+                        user = db.Users.Find(id),
+                        userDetail = db.UserDetails.FirstOrDefault(i => i.UserID == id),
+                        Schools = getSchools(),
+                        OutreachEntities = getOutreachEntities(),
+                        Units = getUnits()
+                    };
+
+                    if (Int32.Parse(User.Identity.Name.Split(',')[0]) == id)
+                        userViewModel.userTypes = getUserTypes();
+
+                    if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                        userViewModel.userTypes = getAllUserTypes();
+
+                    if (userViewModel.user == null)
+                    {
+                        return HttpNotFound();
+                    }
+
+
+                    return View(userViewModel);
+                }
             }
 
-
-            return View(userViewModel);
+            return RedirectToAction("AccesoDenegado", "Home");
         }
 
         //
@@ -784,21 +797,21 @@ namespace OPDB.Controllers
                 {
                     FormsAuthentication.SetAuthCookie(user.UserID+","+user.UserTypeID+","+user.UserStatus, false);
 
-                    return RedirectToAction("Index", "Home");
+                    return PartialView("_LoginHack");
                 }
                 else
                 {
                     // TODO: needs a validation message here
-                    ModelState.AddModelError("", "Contraseña Invalida");
+                    ModelState.AddModelError("", Resources.WebResources.User_UserPassword_NoMatch);
                 }
             }
             else
             {
                 // TODO: needs a validation message here
-                ModelState.AddModelError("", "Usuario no existe");
+                ModelState.AddModelError("", Resources.WebResources.User_Email_NoMatch);
             }
-           
-            return View("Login");
+
+            return Content(GetErrorsFromModelState(userViewModel));
         }
        
         public ActionResult CerrarSesion()
