@@ -288,6 +288,9 @@
   <data name="User_Email_NoMatch" xml:space="preserve">
     <value>Usuario no existe</value>
   </data>
+  <data name="User_Email_NotApproved" xml:space="preserve">
+    <value>El usuario ingresado no ha sido aprobado por un adminitrador</value>
+  </data>
   <data name="User_Email_Required" xml:space="preserve">
     <value>No ha ingresado un correo electrónico</value>
   </data>

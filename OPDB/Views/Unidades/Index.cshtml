@@ -56,7 +56,7 @@
                 </td>
                 <td>
                     <a href="#" title="Editar" data-title="Editar Unidad" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("PopUpEditar", "Unidades", new { id = item.Unit.UnitID })" class="modal_ajax_btn"><i class="fa fa-pencil"></i></a> 
-                    <i title="Remover" class="fa fa-remove" onclick="removeRecord(this, 'units')" data-url="@Url.Action("Remover", "Unidades", new { id = item.Unit.UnitID })"></i>
+                    <i title="Remover" style="cursor: pointer !important;" class="fa fa-remove" onclick="removeRecord(this, 'units')" data-url="@Url.Action("Remover", "Unidades", new { id = item.Unit.UnitID })"></i>
                    
                 </td>
             </tr>
