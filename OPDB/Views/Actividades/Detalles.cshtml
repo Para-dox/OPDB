@@ -162,6 +162,7 @@
             {
                 <a href="#" title="Añadir Multimedia" class="modal_ajax_btn" data-title="Añadir Multimedia" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("MediaUpload", "Actividades", new { id = Model.Activity.ActivityID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-file-video-o fa-stack-1x fa-inverse"></i></span></a>
                 <a title="Ver Notas" id="verNotas" onclick="loadRightDetailsView(this)" data-url="@Url.Action("Notas", "Actividades", new { id = Model.Activity.ActivityID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-file fa-stack-1x fa-inverse"></i></span></a>
+                <a title="Ver Contactos y Recursos" id="verContactos" onclick="loadRightDetailsView(this)" data-url="@Url.Action("ContactosyRecursos", "Actividades", new { id = Model.Activity.ActivityID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-user fa-stack-1x fa-inverse"></i></span></a>
             }
 
         }
