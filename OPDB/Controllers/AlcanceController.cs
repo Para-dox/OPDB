@@ -224,11 +224,95 @@ namespace OPDB.Controllers
             if (ModelState.IsValid)
             {
                 userViewModel.user.UpdateDate = DateTime.Now;
-                userViewModel.outreachEntity.UpdateDate = DateTime.Now;
-                db.Entry(userViewModel.user).State = EntityState.Modified;
-                db.Entry(userViewModel.outreachEntity).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                userViewModel.outreachEntity.UpdateDate = DateTime.Now;            
+                bool validModel = true;
+
+                    if (userViewModel.outreachEntity.OutreachEntityName == null || userViewModel.outreachEntity.OutreachEntityName == "")
+                    {
+                        ModelState.AddModelError("OutreachEntityDetail_OutreachEntityName_Required", Resources.WebResources.OutreachEntityDetail_OutreachEntityName_Required);
+                        validModel = false;
+                    }
+                    else
+                    {
+                        string pattern = @"^([a-zA-Z\u00c0-\u017e'\s]+[^\s-][-]?){1,100}$";
+                        Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                        MatchCollection matches = rgx.Matches(userViewModel.outreachEntity.OutreachEntityName);
+                        if (matches.Count == 0)
+                        {
+                            ModelState.AddModelError("OutreachEntity_OutreachEntityName_Invalid", Resources.WebResources.OutreachEntityDetail_OutreachEntityName_Invalid);
+                            validModel = false;
+                        }
+
+                    }
+
+                    if (userViewModel.outreachEntity.Mission == null || userViewModel.outreachEntity.Mission == "")
+                    {
+                        ModelState.AddModelError("OutreachEntityDetail_Mission_Required", Resources.WebResources.OutreachEntityDetail_Mission_Required);
+                        validModel = false;
+                    }
+                    else
+                    {
+                        string pattern = @"^([a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""'\s]+[^\s-][-]?)+$";
+                        Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                        MatchCollection matches = rgx.Matches(userViewModel.outreachEntity.Mission);
+                        if (matches.Count == 0)
+                        {
+                            ModelState.AddModelError("OutreachEntityDetail_Mission_Invalid", Resources.WebResources.OutreachEntityDetail_Mission_Invalid);
+                            validModel = false;
+                        }
+
+                    }
+
+                    if (userViewModel.outreachEntity.Vision == null || userViewModel.outreachEntity.Vision == "")
+                    {
+                        ModelState.AddModelError("OutreachEntityDetail_Vision_Required", Resources.WebResources.OutreachEntityDetail_Vision_Required);
+                        validModel = false;
+                    }
+                    else
+                    {
+                        string pattern = @"^([a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""'\s]+[^\s-][-]?)+$";
+                        Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                        MatchCollection matches = rgx.Matches(userViewModel.outreachEntity.Vision);
+                        if (matches.Count == 0)
+                        {
+                            ModelState.AddModelError("OutreachEntityDetail_Vision_Invalid", Resources.WebResources.OutreachEntityDetail_Vision_Invalid);
+                            validModel = false;
+                        }
+
+                    }
+
+                    if (userViewModel.outreachEntity.Objectives == null || userViewModel.outreachEntity.Objectives == "")
+                    {
+                        ModelState.AddModelError("OutreachEntityDetail_Objectives_Required", Resources.WebResources.OutreachEntityDetail_Objectives_Required);
+                        validModel = false;
+                    }
+                    else
+                    {
+                        string pattern = @"^([a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""'\s]+[^\s-][-]?)+$";
+                        Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                        MatchCollection matches = rgx.Matches(userViewModel.outreachEntity.Objectives);
+                        if (matches.Count == 0)
+                        {
+                            ModelState.AddModelError("OutreachEntityDetail_Objectives_Invalid", Resources.WebResources.OutreachEntityDetail_Objectives_Invalid);
+                            validModel = false;
+                        }
+
+                    }
+
+                    if (validModel)
+                    {
+                        db.Entry(userViewModel.user).State = EntityState.Modified;
+                        db.Entry(userViewModel.outreachEntity).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return RedirectToAction("Administracion", "Home");
+                    }
+
+                    else
+                    {
+                        userViewModel.outreachTypes = getOutreachTypes();
+                        return View(userViewModel);
+                    }
+                        
             }
 
             userViewModel.outreachTypes = getOutreachTypes();

@@ -23,7 +23,7 @@
     th, td {
         text-align: center !important;
     }
-    
+
     .last, .first, .previous, .next {
         display: none !important;
     }
@@ -63,22 +63,21 @@
             width: 200px;
         }
 
-    a span i:hover{
-       color: #008cba;
+    a span i:hover {
+        color: #008cba;
     }
 
-     .link:hover{
-          color: #008cba !important;
-      }
+    .link:hover {
+        color: #008cba !important;
+    }
 
-      .fa-remove:hover{
-          color: #008cba !important;
-      }
-
+    .fa-remove:hover {
+        color: #008cba !important;
+    }
 </style>
 
 
-    <h2 style="text-align:center;">@Model.Activity.Title</h2>
+<h2 style="text-align:center;">@Model.Activity.Title</h2>
 <div class="panel">
     <div class="display-label">
         @Html.LabelFor(model => model.Activity.Purpose, "Propósito")
@@ -106,23 +105,24 @@
         </div><br />
         @if (Model.User.PhoneNumber != null && Model.User.PhoneNumber != "")
         {
-         <div class="display-label">
-            @Html.LabelFor(model => model.User.PhoneNumber, "Número Telefónico")
-        </div>
-        <div class="display-field">
-            @Html.DisplayFor(model => model.User.PhoneNumber)
-        </div><br />   
+            <div class="display-label">
+                @Html.LabelFor(model => model.User.PhoneNumber, "Número Telefónico")
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.User.PhoneNumber)
+            </div><br />
         }
-        @if (Model.Activity.Location != "" && Model.Activity.Location != null) { 
-        <div class="display-label">
-            @Html.LabelFor(model => model.Activity.Location, "Localización")
-        </div>
-        <div class="display-field">
-            @Html.DisplayFor(model => model.Activity.Location)
-        </div>
-        <br />
+        @if (Model.Activity.Location != "" && Model.Activity.Location != null)
+        {
+            <div class="display-label">
+                @Html.LabelFor(model => model.Activity.Location, "Localización")
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.Activity.Location)
+            </div>
+            <br />
         }
-        @if (Model.ActivityDate != "" )
+        @if (Model.ActivityDate != "")
         {
             <div class="display-label">
                 @Html.LabelFor(model => model.Activity.ActivityDate, "Fecha")
@@ -142,38 +142,51 @@
             <br />
         }
         <a title="Regresar" onclick="window.history.back()"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-arrow-left fa-stack-1x fa-inverse"></i></span></a>
-        @if (User.Identity.IsAuthenticated) 
-        { 
+        @if (User.Identity.IsAuthenticated)
+        {
             if (Model.Interested != true && Int32.Parse(User.Identity.Name.Split(',')[1]) != 3)
-            { 
+            {
                 <a title="Me Interesa" onclick="showInterest(this)" data-url="@Url.Action("Interes", "Actividades", new { id = Model.Activity.ActivityID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-thumbs-up fa-stack-1x fa-inverse"></i></span></a>
-            }        
-        if (Int32.Parse(User.Identity.Name.Split(',')[0]) == Model.Activity.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
-        {<a title="Editar Actividad" href="@Url.Action("Editar", "Actividades", new { id = Model.Activity.ActivityID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-pencil fa-stack-1x fa-inverse"></i></span></a>        
-        <a href="#" title="Añadir Multimedia" class="modal_ajax_btn" data-title="Añadir Multimedia" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("MediaUpload", "Actividades", new { id = Model.Activity.ActivityID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-file-video-o fa-stack-1x fa-inverse"></i></span></a>
-        <a title="Ver Notas" id="verNotas" onclick="loadRightDetailsView(this)" data-url="@Url.Action("Notas", "Actividades", new { id = Model.Activity.ActivityID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-file fa-stack-1x fa-inverse"></i></span></a>
-        }        
+            }
+            
+            if (Int32.Parse(User.Identity.Name.Split(',')[0]) == Model.Activity.UserID && Boolean.Parse(User.Identity.Name.Split(',')[2]))
+            {
+                <a title="Editar Actividad" href="@Url.Action("Editar", "Actividades", new {id = Model.Activity.ActivityID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-pencil fa-stack-1x fa-inverse"></i></span></a>
+            }
+            else if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1) 
+            { 
+                <a title="Editar Actividad" href="@Url.Action("EditarActividad", "Actividades", new {source = "Detalles", id = Model.Activity.ActivityID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-pencil fa-stack-1x fa-inverse"></i></span></a>
+            }
+
+            if ((Int32.Parse(User.Identity.Name.Split(',')[0]) == Model.Activity.UserID && Boolean.Parse(User.Identity.Name.Split(',')[2])) || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+            {
+                <a href="#" title="Añadir Multimedia" class="modal_ajax_btn" data-title="Añadir Multimedia" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("MediaUpload", "Actividades", new { id = Model.Activity.ActivityID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-file-video-o fa-stack-1x fa-inverse"></i></span></a>
+                <a title="Ver Notas" id="verNotas" onclick="loadRightDetailsView(this)" data-url="@Url.Action("Notas", "Actividades", new { id = Model.Activity.ActivityID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-file fa-stack-1x fa-inverse"></i></span></a>
+            }
+
         }
         
-     </div>
 
-    <div  class="large-7 columns">
-        <loading></loading>
-            <div id="detailsRight">
-
-            </div>
-        
     </div>
-    
+
+    <div class="large-7 columns">
+        <loading></loading>
+        <div id="detailsRight">
+
+        </div>
+
+    </div>
+
 </div>
 <br />
 
-    @if (Model.Activity.Details != null && Model.Activity.Details != "") { 
-        <div id="activityDetails" class="large-12 columns panel callout">
-            <h4>Más Detalles</h4><br />
-            @Html.Raw(Model.Activity.Details)
-        </div>
-    }
+@if (Model.Activity.Details != null && Model.Activity.Details != "")
+{
+    <div id="activityDetails" class="large-12 columns panel callout">
+        <h4>Más Detalles</h4><br />
+        @Html.Raw(Model.Activity.Details)
+    </div>
+}
 
 @if (Model.Videos.Count != 0 || Model.Photos.Count != 0)
 {
@@ -197,12 +210,12 @@
         }
         @if (Model.Photos.Count != 0)
         {
-                <ul class="clearing-thumbs" data-clearing>
-                    @foreach (var photo in Model.Photos)
-                    {
-                        <li><a class="th thumb" href="@photo.MediaPath"><img data-caption="@photo.MediaTitle" src="@photo.MediaPath"></a></li>
-                    }
-                </ul>
+            <ul class="clearing-thumbs" data-clearing>
+                @foreach (var photo in Model.Photos)
+                {
+                    <li><a class="th thumb" href="@photo.MediaPath"><img data-caption="@photo.MediaTitle" src="@photo.MediaPath"></a></li>
+                }
+            </ul>
         }
 
     </div>
@@ -220,12 +233,15 @@
         @foreach (var feedback in Model.Feedbacks)
         {
             <tr>
-                <td style="float:left;">@feedback.Feedback.Feedback1 - @feedback.UserDetail.FirstName @if (feedback.UserDetail.MiddleInitial != null)
-                                                                                                { @feedback.UserDetail.MiddleInitial } @feedback.UserDetail.LastName</td>
+                <td style="float:left;">
+                    @feedback.Feedback.Feedback1 - @feedback.UserDetail.FirstName @if (feedback.UserDetail.MiddleInitial != null)
+                    { @feedback.UserDetail.MiddleInitial } @feedback.UserDetail.LastName
+                </td>
                 <td style="width:6%;">
-                    @if (Int32.Parse(User.Identity.Name.Split(',')[0]) == feedback.Feedback.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1) { 
-                    <a href="#" title="Editar" data-title="Editar Comentario" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarComentario", "Actividades", new { id = feedback.Feedback.FeedbackID })" class="modal_ajax_btn link"><i class="fa fa-pencil"></i></a>
-                    <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this, 'activityFeedback')" data-url="@Url.Action("RemoverComentario", "Actividades", new { id = feedback.Feedback.FeedbackID })"></i>
+                    @if (Int32.Parse(User.Identity.Name.Split(',')[0]) == feedback.Feedback.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                    {
+                        <a href="#" title="Editar" data-title="Editar Comentario" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarComentario", "Actividades", new { id = feedback.Feedback.FeedbackID })" class="modal_ajax_btn link"><i class="fa fa-pencil"></i></a>
+                        <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this, 'activityFeedback')" data-url="@Url.Action("RemoverComentario", "Actividades", new { id = feedback.Feedback.FeedbackID })"></i>
                     }
                 </td>
             </tr>
@@ -233,17 +249,18 @@
     </tbody>
 
 </table><br />
-@if (User.Identity.IsAuthenticated) {
-    if (Int32.Parse(User.Identity.Name.Split(',')[1]) != 3) 
-    { 
-<a href="#" title="Comentar" class="btn modal_ajax_btn" data-title="Nuevo Comentario" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("NuevoComentario", "Actividades", new { id = Model.Activity.ActivityID })"> Comentar</a><br /><br />}
+@if (User.Identity.IsAuthenticated)
+{
+    if (Int32.Parse(User.Identity.Name.Split(',')[1]) != 3)
+    {
+        <a href="#" title="Comentar" class="btn modal_ajax_btn" data-title="Nuevo Comentario" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("NuevoComentario", "Actividades", new { id = Model.Activity.ActivityID })"> Comentar</a><br /><br />}
 }
 
 
 <script src="~/Scripts/myScripts.js"></script>
 <script>
     $(document).ready(function () {
-          $('#activityFeedback').DataTable({
+        $('#activityFeedback').DataTable({
             "sDom": '<"top">t<"bottom"pr><"clear">',
             "sPaginationType": "full_numbers",
             "bProcessing": false,
@@ -254,27 +271,27 @@
             }
         });
 
-          $(function () {
-              $("#playlist li").on("click", function () {
-                  var currentUrl = $("#videoarea").attr("src");
-                  var dataUrl = $(this).attr("data-url");
-                  var newUrl = "";
+        $(function () {
+            $("#playlist li").on("click", function () {
+                var currentUrl = $("#videoarea").attr("src");
+                var dataUrl = $(this).attr("data-url");
+                var newUrl = "";
 
-                  var regExp = /^.*(youtu.be\/|v\/|e\/|u\/\w+\/|embed\/|v=)([^#\&\?]*).*/;
-                  var match = dataUrl.match(regExp);
-                  if (match && match[2].length == 11)
-                      newUrl = match[2];
+                var regExp = /^.*(youtu.be\/|v\/|e\/|u\/\w+\/|embed\/|v=)([^#\&\?]*).*/;
+                var match = dataUrl.match(regExp);
+                if (match && match[2].length == 11)
+                    newUrl = match[2];
 
-                  currentUrl = currentUrl.substr(0, 24);
-                  $("#videoarea").attr({
-                      "src": currentUrl + newUrl
-                  });
-              });
-          });
+                currentUrl = currentUrl.substr(0, 24);
+                $("#videoarea").attr({
+                    "src": currentUrl + newUrl
+                });
+            });
+        });
 
         $(document).foundation('clearing', 'reflow');
-    
-     
+
+
         loadRightDetailsView("<a id='verContactos' data-url='@Url.Action("ContactosyRecursos", "Actividades", new { id = Model.Activity.ActivityID })'></a>");
 
     });

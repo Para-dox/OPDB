@@ -104,7 +104,7 @@ namespace OPDB.Controllers
                     }
                     else
                     {
-                        string pattern = @"^[a-zA-Z\u00c0-\u017e''-'\s]{1,100}$";
+                        string pattern = @"^([a-zA-Z\u00c0-\u017e'\s]+[^\s-][-]?){1,100}$";
                         Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
                         MatchCollection matches = rgx.Matches(userViewModel.outreachEntity.OutreachEntityName);
                         if (matches.Count == 0)
@@ -122,7 +122,7 @@ namespace OPDB.Controllers
                     }
                     else
                     {
-                        string pattern = @"^[a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""''-'\s]+$";
+                        string pattern = @"^([a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""'\s]+[^\s-][-]?)+$";
                         Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
                         MatchCollection matches = rgx.Matches(userViewModel.outreachEntity.Mission);
                         if (matches.Count == 0)
@@ -140,7 +140,7 @@ namespace OPDB.Controllers
                     }
                     else
                     {
-                        string pattern = @"^[a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""''-'\s]+$";
+                        string pattern = @"^([a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""'\s]+[^\s-][-]?)+$";
                         Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
                         MatchCollection matches = rgx.Matches(userViewModel.outreachEntity.Vision);
                         if (matches.Count == 0)
@@ -158,7 +158,7 @@ namespace OPDB.Controllers
                     }
                     else
                     {
-                        string pattern = @"^[a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""''-'\s]+$";
+                        string pattern = @"^([a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""'\s]+[^\s-][-]?)+$";
                         Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
                         MatchCollection matches = rgx.Matches(userViewModel.outreachEntity.Objectives);
                         if (matches.Count == 0)
@@ -797,7 +797,7 @@ namespace OPDB.Controllers
                 {
                     FormsAuthentication.SetAuthCookie(user.UserID+","+user.UserTypeID+","+user.UserStatus, false);
 
-                    return PartialView("_LoginHack");
+                    return PartialView("_Hack");
                 }
                 else
                 {

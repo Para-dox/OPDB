@@ -466,18 +466,7 @@ namespace OPDB.Controllers
         {
             List<CalendarActivity> events = new List<CalendarActivity>();
             List<Activity> activities = (from activity in db.Activities.Include(a => a.ActivityType) where activity.DeletionDate == null select activity).ToList();
-            User currentUser = null;
-
-            if (User.Identity.IsAuthenticated)
-            {
-                int currentUserID = Int32.Parse(User.Identity.Name.Substring(0, User.Identity.Name.IndexOf("u")).Trim());
-                currentUser = db.Users.FirstOrDefault(u => u.UserID == currentUserID);
-            }
-            else
-            {
-                currentUser = null;
-            }
-
+            
             foreach (Activity a in activities)
             {
                 string startDate = "";

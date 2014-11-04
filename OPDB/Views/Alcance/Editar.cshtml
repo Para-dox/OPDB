@@ -21,7 +21,6 @@
         <fieldset style="width:500px;">
             <label>Todos los campos con (*) son requeridos</label><br />
                 @Html.AntiForgeryToken()
-                @Html.ValidationSummary(false)
                 @Html.HiddenFor(model => model.user.UserID)
                 @Html.HiddenFor(model => model.user.CreateDate)
                 @Html.HiddenFor(model => model.user.UserStatus)

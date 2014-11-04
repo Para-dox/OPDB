@@ -52,5 +52,7 @@ namespace OPDB.Models
         public bool ForceCreate { get; set; }
 
         public string Action { get; set; }
+
+        public string Source { get; set; }
     }
 }
