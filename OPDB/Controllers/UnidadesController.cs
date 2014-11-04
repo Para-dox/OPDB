@@ -89,17 +89,21 @@ namespace OPDB.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    unitViewModel.Unit.CreateDate = DateTime.Now;
-                    unitViewModel.Unit.UpdateDate = DateTime.Now;
 
-                    // Change after login implementation.
-                    unitViewModel.Unit.CreateUser = 1;
-                    unitViewModel.Unit.UpdateUser = 1;
+                    if (Request.IsAuthenticated)
+                    {
+                        unitViewModel.Unit.CreateDate = DateTime.Now;
+                        unitViewModel.Unit.UpdateDate = DateTime.Now;
 
-                    db.Units.Add(unitViewModel.Unit);
-                    db.SaveChanges();
+                        unitViewModel.Unit.CreateUser = Int32.Parse(User.Identity.Name.Split(',')[0]);
+                        unitViewModel.Unit.UpdateUser = Int32.Parse(User.Identity.Name.Split(',')[0]);
 
-                    return View("_Hack");
+                        db.Units.Add(unitViewModel.Unit);
+                        db.SaveChanges();
+
+                        return View("_Hack");
+                    }
+                    
                 }
 
                 return Content(GetErrorsFromModelState(unitViewModel));
@@ -135,8 +139,7 @@ namespace OPDB.Controllers
         {
             if (ModelState.IsValid)
             {
-                //To be changed with login.
-                unitViewModel.Unit.UpdateUser = 1;
+                unitViewModel.Unit.UpdateUser = Int32.Parse(User.Identity.Name.Split(',')[0]);
 
                 unitViewModel.Unit.UpdateDate = DateTime.Now;
                 db.Entry(unitViewModel.Unit).State = EntityState.Modified;
