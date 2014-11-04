@@ -571,7 +571,6 @@ namespace OPDB.Controllers
             }
 
             return types;
-
         }
 
         public List<SelectListItem> getSchools()
@@ -789,29 +788,36 @@ namespace OPDB.Controllers
         public ActionResult IniciarSesion(UserViewModel userViewModel)
         {
             // TODO: passwords have no encryption at all - fix later with SimpleCrypto NuGet Package
-            User user = db.Users.FirstOrDefault(u => u.Email == userViewModel.user.Email);   
+            User user = db.Users.FirstOrDefault(u => u.Email == userViewModel.user.Email);
 
-            if (user != null)
+            if (!user.UserStatus)
             {
-                if (userViewModel.user.UserPassword.ToString().Equals(user.UserPassword))
-                {
-                    FormsAuthentication.SetAuthCookie(user.UserID+","+user.UserTypeID+","+user.UserStatus, false);
+                ModelState.AddModelError("", Resources.WebResources.User_Email_NotApproved);
 
-                    return PartialView("_Hack");
-                }
-                else
-                {
-                    // TODO: needs a validation message here
-                    ModelState.AddModelError("", Resources.WebResources.User_UserPassword_NoMatch);
-                }
+                return Content(GetErrorsFromModelState(userViewModel));
             }
             else
             {
-                // TODO: needs a validation message here
-                ModelState.AddModelError("", Resources.WebResources.User_Email_NoMatch);
-            }
+                if (user != null)
+                {
+                    if (userViewModel.user.UserPassword.ToString().Equals(user.UserPassword))
+                    {
+                        FormsAuthentication.SetAuthCookie(user.UserID + "," + user.UserTypeID + "," + user.UserStatus, false);
 
-            return Content(GetErrorsFromModelState(userViewModel));
+                        return PartialView("_Hack");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", Resources.WebResources.User_UserPassword_NoMatch);
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", Resources.WebResources.User_Email_NoMatch);
+                }
+
+                return Content(GetErrorsFromModelState(userViewModel));
+            }
         }
        
         public ActionResult CerrarSesion()

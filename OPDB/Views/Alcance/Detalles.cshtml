@@ -29,9 +29,6 @@
         display: none !important;
     }
 
-    /*.panel.callout a:not(.button) {
-      color: #222222; }*/
-
     a span i:hover {
         color: #008cba;
     }
@@ -130,9 +127,9 @@
         </p>
     </div>
 
-    @if (Request.IsAuthenticated)
+    @if (Request.IsAuthenticated) // only logged users can see notes
     {
-        if (Int32.Parse(User.Identity.Name.Split(',')[0]) == Model.outreachEntity.UserID)
+        if (Int32.Parse(User.Identity.Name.Split(',')[1]) <= 3) //only admins, mods, and outreach entities can view notes
         {
     <div class="large-7 columns">
         <h3>Notas</h3>
@@ -162,6 +159,7 @@
         </table><br />
         <a href="#" title="Añadir Nota" class="modal_ajax_btn" data-title="Nueva Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Alcance", new { id = Model.outreachEntity.UserID })"><input type="button" value="Añadir Nota" class="btn" /></a>
     </div>
+    }
     }
     }
 
