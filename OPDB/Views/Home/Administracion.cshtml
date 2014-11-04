@@ -24,7 +24,7 @@
 <script src="~/Scripts/myScripts.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
-        loadAdminView("<a id='outreachURL' data-url='@Url.Action("MenuAlcance", "Alcance")'></a>");
+        loadAdminView("<a id='outreachURL' data-url='@Url.Action("MenuAlcance", "Alcance", new { requested = true })'></a>");
     });
 
 

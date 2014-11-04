@@ -612,6 +612,7 @@
     <Content Include="Views\Alcance\Alcance.cshtml" />
     <Content Include="Views\Escuelas\Escuelas.cshtml" />
     <Content Include="Views\Usuarios\Usuarios.cshtml" />
+    <Content Include="Views\Shared\_LoginHack.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

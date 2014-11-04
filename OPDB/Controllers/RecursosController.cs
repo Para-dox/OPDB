@@ -23,6 +23,12 @@ namespace OPDB.Controllers
         /// <returns>The system admin view for resources.</returns>
         public ActionResult Index(string requested){
 
+            if (requested != null)
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                    {
             List<Resource> resources = (from resource in db.Resources where resource.DeletionDate == null select resource).ToList();
             
             ResourceViewModel resourceViewModel = new ResourceViewModel
@@ -44,6 +50,11 @@ namespace OPDB.Controllers
 
            return PartialView("Index", resourceViewModel);
         }
+                }
+            }
+
+            return RedirectToAction("AccesoDenegado", "Home");
+        }
 
         /// <summary>
         /// Displays the resource detail page.
@@ -53,6 +64,10 @@ namespace OPDB.Controllers
         [HttpPost]
         public ActionResult Detalles(int id = 0)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
             Resource resource = db.Resources.Find(id);
 
             ResourceViewModel resourceViewModel = new ResourceViewModel
@@ -69,7 +84,11 @@ namespace OPDB.Controllers
 
             return PartialView("Detalles", resourceViewModel);
         }
+            }
 
+            return RedirectToAction("AccesoDenegado", "Home");
+        }
+       
        
         /// <summary>
         /// Create resource view.
@@ -78,13 +97,21 @@ namespace OPDB.Controllers
         [HttpPost]
         public ActionResult PopUpCrear()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
             ResourceViewModel resourceViewModel = new ResourceViewModel
             {
                 Units = getUnits()
             };
             return PartialView("Crear", resourceViewModel);
         }
+            }
 
+            return RedirectToAction("AccesoDenegado", "Home");
+        }
+       
        
         /// <summary>
         /// Create a new resource.
@@ -94,16 +121,22 @@ namespace OPDB.Controllers
         [HttpPost]
         public ActionResult Crear(ResourceViewModel resourceViewModel)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
+                    int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
            
-        try { 
+                    try
+                    {
                 if (ModelState.IsValid)
                 {
                     resourceViewModel.Resource.CreateDate = DateTime.Now;
                     resourceViewModel.Resource.UpdateDate = DateTime.Now;
 
                     // Change after login implementation.
-                    resourceViewModel.Resource.CreateUser = 1;
-                    resourceViewModel.Resource.UpdateUser = 1;
+                            resourceViewModel.Resource.CreateUser = userID;
+                            resourceViewModel.Resource.UpdateUser = userID;
 
                     db.Resources.Add(resourceViewModel.Resource);
                     db.SaveChanges();
@@ -113,10 +146,14 @@ namespace OPDB.Controllers
                 return Content(GetErrorsFromModelState(resourceViewModel));               
             }
                         
-            catch(Exception)
+                    catch (Exception)
             {
                 return Content(GetErrorsFromModelState(resourceViewModel));
             }
+                }
+            }
+
+            return RedirectToAction("AccesoDenegado", "Home");
 
         }
 
@@ -129,6 +166,10 @@ namespace OPDB.Controllers
         [HttpPost]
         public ActionResult PopUpEditar(int id = 0)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
 
             ResourceViewModel resourceViewModel = new ResourceViewModel
             {
@@ -142,8 +183,12 @@ namespace OPDB.Controllers
                 return HttpNotFound();
             }
 
-            //return View(resourceViewModel);
+             
             return PartialView("Editar", resourceViewModel);
+        }
+            }
+
+            return RedirectToAction("AccesoDenegado", "Home");
         }
 
       
@@ -155,10 +200,16 @@ namespace OPDB.Controllers
         [HttpPost]
         public ActionResult Editar(ResourceViewModel resourceViewModel)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
+                    int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
+
             if (ModelState.IsValid)
             {
                 //To be changed with login.
-                resourceViewModel.Resource.UpdateUser = 1;
+                        resourceViewModel.Resource.UpdateUser = userID;
 
                 resourceViewModel.Resource.UpdateDate = DateTime.Now;                
                 db.Entry(resourceViewModel.Resource).State = EntityState.Modified;
@@ -167,6 +218,10 @@ namespace OPDB.Controllers
             }
 
             return Content(GetErrorsFromModelState(resourceViewModel));   
+        }
+            }
+
+            return RedirectToAction("AccesoDenegado", "Home");
         }
 
         /// <summary>
@@ -177,6 +232,10 @@ namespace OPDB.Controllers
         [HttpPost]
         public ActionResult Remover(int id = 0)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
             Resource resource = db.Resources.Find(id);
             if (resource == null)
             {
@@ -189,6 +248,10 @@ namespace OPDB.Controllers
                 db.SaveChanges();
             }
             return RedirectToAction("Index");
+        }
+            }
+
+            return RedirectToAction("AccesoDenegado", "Home");
         }
 
         /// <summary>
