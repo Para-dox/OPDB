@@ -13,26 +13,26 @@
 </style>
 
 <div class="display-label">
-    @Html.LabelFor(model => model.userDetail, "Usuario")
+    @Html.LabelFor(model => model.UserDetail, "Usuario")
 </div>
 <div class="display-field">
-    @Model.userDetail.FirstName @Model.userDetail.MiddleInitial @Model.userDetail.LastName 
+    @Model.UserDetail.FirstName @Model.UserDetail.MiddleInitial @Model.UserDetail.LastName 
 </div>
 <br />
 <div class="display-label">
-    @Html.LabelFor(model => model.note.NoteType.NoteType1, "Tipo de Nota")
+    @Html.LabelFor(model => model.Note.NoteType.NoteType1, "Tipo de Nota")
 </div>
     <div class="display-field">
-       @Html.DisplayFor(model => model.note.NoteType.NoteType1)
+       @Html.DisplayFor(model => model.Note.NoteType.NoteType1)
     </div>
 <br />
 <div class="display-label">
-    @Html.LabelFor(model => model.note.Note, "Nota")
+    @Html.LabelFor(model => model.Note.Note, "Nota")
 </div>
 <div class="display-field">
-    @Html.DisplayFor(model => model.note.Note)
+    @Html.DisplayFor(model => model.Note.Note)
 </div>
 <br />
-<a href="#" title="Editar" class="modal_ajax_btn" data-title="Editar Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarNota", "Usuarios", new { id = Model.note.UserNoteID })"><input type="button" class="btn" style="float:left !important; width:40% !important; margin-left: 30px !important;" value="Editar" /></a>
+<a href="#" title="Editar" class="modal_ajax_btn" data-title="Editar Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarNota", "Usuarios", new { id = Model.Note.UserNoteID })"><input type="button" class="btn" style="float:left !important; width:40% !important; margin-left: 30px !important;" value="Editar" /></a>
 <input type="button" class="btn" style="float:right !important; width:40% !important; margin-bottom: 20px !important; margin-right: 30px !important;" value="Volver" onclick="modalClose()" />
 
