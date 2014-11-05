@@ -758,7 +758,6 @@ namespace OPDB.Controllers
             var users = from u in db.Users.Include(u => u.UserType).Include(u => u.UserDetails) where (u.UserTypeID != 3) && u.DeletionDate != null select u;
 
             return PartialView("Removidos", users.ToList());
-
         }
 
         public String GetErrorsFromModelState(UserViewModel userViewModel)
