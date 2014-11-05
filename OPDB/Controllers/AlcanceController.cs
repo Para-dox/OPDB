@@ -129,7 +129,7 @@ namespace OPDB.Controllers
                         }
                         else
                         {
-                            string pattern = @"^[a-zA-Z\u00c0-\u017e''-'\s]{1,100}$";
+                            string pattern = @"^([a-zA-Z\u00c0-\u017e'\s][^\s-][-]?){1,100}$";
                             Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
                             MatchCollection matches = rgx.Matches(userViewModel.OutreachEntity.OutreachEntityName);
                             if (matches.Count == 0)
@@ -147,7 +147,7 @@ namespace OPDB.Controllers
                         }
                         else
                         {
-                            string pattern = @"^[a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""''-'\s]+$";
+                            string pattern = @"^([a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""'\s]+[^\s-][-]?)+$";
                             Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
                             MatchCollection matches = rgx.Matches(userViewModel.OutreachEntity.Mission);
                             if (matches.Count == 0)
@@ -165,7 +165,7 @@ namespace OPDB.Controllers
                         }
                         else
                         {
-                            string pattern = @"^[a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""''-'\s]+$";
+                            string pattern = @"^([a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""'\s]+[^\s-][-]?)+$";
                             Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
                             MatchCollection matches = rgx.Matches(userViewModel.OutreachEntity.Vision);
                             if (matches.Count == 0)
@@ -183,7 +183,7 @@ namespace OPDB.Controllers
                         }
                         else
                         {
-                            string pattern = @"^[a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""''-'\s]+$";
+                            string pattern = @"^([a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""'\s]+[^\s-][-]?)+$";
                             Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
                             MatchCollection matches = rgx.Matches(userViewModel.OutreachEntity.Objectives);
                             if (matches.Count == 0)

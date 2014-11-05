@@ -21,12 +21,12 @@ namespace OPDB.Models
         public int ActivityID { get; set; }
         public string MediaType { get; set; }
 
+        [RegularExpression(@"^([a-zA-Z\u00c0-\u017e0-9'""\s][^\s-][-]?){1,40}$", ErrorMessageResourceName = "Media_MediaTitle_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
         [Required(ErrorMessageResourceName = "Media_MediaTitle_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
-        [RegularExpression(@"^[0-9a-zA-Z\u00c0-\u017e'""\-\s]{1,40}$", ErrorMessageResourceName = "Media_MediaTitle_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string MediaTitle { get; set; }
 
-        [Required(ErrorMessageResourceName = "Media_MediaPath_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         [RegularExpression(@"^(ht|f)tp(s?)\:\/\/[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*(:(0-9)*)*(\/?)([a-zA-Z0-9=\-\.\?\,\'\/\\\+&amp;%\$#_]*)?$", ErrorMessageResourceName = "Media_MediaPath_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
+        [Required(ErrorMessageResourceName = "Media_MediaPath_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string MediaPath { get; set; }
 
         public int CreateUser { get; set; }
