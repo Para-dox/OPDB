@@ -210,7 +210,7 @@ namespace OPDB.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                if ((Int32.Parse(User.Identity.Name.Split(',')[1]) == 1 && Boolean.Parse(User.Identity.Name)))
+                if ((Int32.Parse(User.Identity.Name.Split(',')[1]) == 1 && Boolean.Parse(User.Identity.Name.Split(',')[2])))
                 {
                     School school = db.Schools.Find(id);
 
