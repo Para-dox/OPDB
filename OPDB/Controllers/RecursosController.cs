@@ -16,12 +16,13 @@ namespace OPDB.Controllers
         /// </summary>
         private OPDBEntities db = new OPDBEntities();
 
-       
+
         /// <summary>
         /// The resource index, returns the system admin view.
         /// </summary>
         /// <returns>The system admin view for resources.</returns>
-        public ActionResult Index(string requested){
+        public ActionResult Index(string requested)
+        {
 
             if (requested != null)
             {
@@ -29,27 +30,27 @@ namespace OPDB.Controllers
                 {
                     if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
                     {
-            List<Resource> resources = (from resource in db.Resources where resource.DeletionDate == null select resource).ToList();
-            
-            ResourceViewModel resourceViewModel = new ResourceViewModel
-            {
-                Information = new List<UserInfoViewModel>()
-            };
+                        List<Resource> resources = (from resource in db.Resources where resource.DeletionDate == null select resource).ToList();
+
+                        ResourceViewModel resourceViewModel = new ResourceViewModel
+                        {
+                            Information = new List<UserInfoViewModel>()
+                        };
 
 
-            foreach (var resource in resources)
-            {
-                resourceViewModel.Information.Add(new UserInfoViewModel
-                {
-                    Resource = resource,
-                    CreateUser = db.UserDetails.First(r => r.UserID == resource.CreateUser),
-                    UpdateUser = db.UserDetails.First(r => r.UserID == resource.UpdateUser)
+                        foreach (var resource in resources)
+                        {
+                            resourceViewModel.Information.Add(new UserInfoViewModel
+                            {
+                                Resource = resource,
+                                CreateUser = db.UserDetails.First(r => r.UserID == resource.CreateUser),
+                                UpdateUser = db.UserDetails.First(r => r.UserID == resource.UpdateUser)
 
-                });
-            }
+                            });
+                        }
 
-           return PartialView("Index", resourceViewModel);
-        }
+                        return PartialView("Index", resourceViewModel);
+                    }
                 }
             }
 
@@ -68,28 +69,28 @@ namespace OPDB.Controllers
             {
                 if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
                 {
-            Resource resource = db.Resources.Find(id);
+                    Resource resource = db.Resources.Find(id);
 
-            ResourceViewModel resourceViewModel = new ResourceViewModel
-            {
-                Resource = resource,
-                Unit = db.Units.Find(resource.UnitID),
-                Units = getUnits()
-            };
+                    ResourceViewModel resourceViewModel = new ResourceViewModel
+                    {
+                        Resource = resource,
+                        Unit = db.Units.Find(resource.UnitID),
+                        Units = getUnits()
+                    };
 
-            if (resourceViewModel.Resource == null)
-            {
-                return HttpNotFound();
-            }
+                    if (resourceViewModel.Resource == null)
+                    {
+                        return HttpNotFound();
+                    }
 
-            return PartialView("Detalles", resourceViewModel);
-        }
+                    return PartialView("Detalles", resourceViewModel);
+                }
             }
 
             return RedirectToAction("AccesoDenegado", "Home");
         }
-       
-       
+
+
         /// <summary>
         /// Create resource view.
         /// </summary>
@@ -101,18 +102,18 @@ namespace OPDB.Controllers
             {
                 if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
                 {
-            ResourceViewModel resourceViewModel = new ResourceViewModel
-            {
-                Units = getUnits()
-            };
-            return PartialView("Crear", resourceViewModel);
-        }
+                    ResourceViewModel resourceViewModel = new ResourceViewModel
+                    {
+                        Units = getUnits()
+                    };
+                    return PartialView("Crear", resourceViewModel);
+                }
             }
 
             return RedirectToAction("AccesoDenegado", "Home");
         }
-       
-       
+
+
         /// <summary>
         /// Create a new resource.
         /// </summary>
@@ -126,30 +127,30 @@ namespace OPDB.Controllers
                 if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
                 {
                     int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
-           
+
                     try
                     {
-                if (ModelState.IsValid)
-                {
-                    resourceViewModel.Resource.CreateDate = DateTime.Now;
-                    resourceViewModel.Resource.UpdateDate = DateTime.Now;
+                        if (ModelState.IsValid)
+                        {
+                            resourceViewModel.Resource.CreateDate = DateTime.Now;
+                            resourceViewModel.Resource.UpdateDate = DateTime.Now;
 
-                    // Change after login implementation.
+                            // Change after login implementation.
                             resourceViewModel.Resource.CreateUser = userID;
                             resourceViewModel.Resource.UpdateUser = userID;
 
-                    db.Resources.Add(resourceViewModel.Resource);
-                    db.SaveChanges();
-                    return View("_Hack");
-                }
+                            db.Resources.Add(resourceViewModel.Resource);
+                            db.SaveChanges();
+                            return View("_Hack");
+                        }
 
-                return Content(GetErrorsFromModelState(resourceViewModel));               
-            }
-                        
+                        return Content(GetErrorsFromModelState(resourceViewModel));
+                    }
+
                     catch (Exception)
-            {
-                return Content(GetErrorsFromModelState(resourceViewModel));
-            }
+                    {
+                        return Content(GetErrorsFromModelState(resourceViewModel));
+                    }
                 }
             }
 
@@ -157,7 +158,7 @@ namespace OPDB.Controllers
 
         }
 
-      
+
         /// <summary>
         /// Edit resource view.
         /// </summary>
@@ -171,27 +172,27 @@ namespace OPDB.Controllers
                 if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
                 {
 
-            ResourceViewModel resourceViewModel = new ResourceViewModel
-            {
-                Resource = db.Resources.Find(id),
-                Units = getUnits()
+                    ResourceViewModel resourceViewModel = new ResourceViewModel
+                    {
+                        Resource = db.Resources.Find(id),
+                        Units = getUnits()
 
-            };
+                    };
 
-            if (resourceViewModel.Resource == null)
-            {
-                return HttpNotFound();
-            }
+                    if (resourceViewModel.Resource == null)
+                    {
+                        return HttpNotFound();
+                    }
 
-             
-            return PartialView("Editar", resourceViewModel);
-        }
+
+                    return PartialView("Editar", resourceViewModel);
+                }
             }
 
             return RedirectToAction("AccesoDenegado", "Home");
         }
 
-      
+
         /// <summary>
         /// Edit a resource.
         /// </summary>
@@ -206,19 +207,19 @@ namespace OPDB.Controllers
                 {
                     int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
 
-            if (ModelState.IsValid)
-            {
-                //To be changed with login.
+                    if (ModelState.IsValid)
+                    {
+                        //To be changed with login.
                         resourceViewModel.Resource.UpdateUser = userID;
 
-                resourceViewModel.Resource.UpdateDate = DateTime.Now;                
-                db.Entry(resourceViewModel.Resource).State = EntityState.Modified;
-                db.SaveChanges();
-                return View("_Hack");
-            }
+                        resourceViewModel.Resource.UpdateDate = DateTime.Now;
+                        db.Entry(resourceViewModel.Resource).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return View("_Hack");
+                    }
 
-            return Content(GetErrorsFromModelState(resourceViewModel));   
-        }
+                    return Content(GetErrorsFromModelState(resourceViewModel));
+                }
             }
 
             return RedirectToAction("AccesoDenegado", "Home");
@@ -236,19 +237,19 @@ namespace OPDB.Controllers
             {
                 if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
                 {
-            Resource resource = db.Resources.Find(id);
-            if (resource == null)
-            {
-                return HttpNotFound();
-            }
-            else
-            {
-                resource.DeletionDate = DateTime.Now;
-                db.Entry(resource).State = EntityState.Modified;
-                db.SaveChanges();
-            }
-            return RedirectToAction("Index");
-        }
+                    Resource resource = db.Resources.Find(id);
+                    if (resource == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    else
+                    {
+                        resource.DeletionDate = DateTime.Now;
+                        db.Entry(resource).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                    return RedirectToAction("Index");
+                }
             }
 
             return RedirectToAction("AccesoDenegado", "Home");
@@ -278,7 +279,7 @@ namespace OPDB.Controllers
 
         public String GetErrorsFromModelState(ResourceViewModel resourceViewModel)
         {
-            
+
             //retrieves the validation messages from the ModelState as strings    
             var str = "";
             var errorSates = from state in ModelState.Values
@@ -305,7 +306,7 @@ namespace OPDB.Controllers
         }
 
 
-        
+
 
 
     }
