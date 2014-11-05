@@ -167,7 +167,7 @@ namespace OPDB.Controllers
                         return HttpNotFound();
                     }
 
-                    return View(schoolViewModel);
+                    return PartialView(schoolViewModel);
                 }
             }
             return PartialView("AccesoDenegado", "Home");
@@ -180,6 +180,8 @@ namespace OPDB.Controllers
             {
                 if(Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
                 {
+                    int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
+
                     List<School> schools = (from school in db.Schools where school.SchoolSequenceNumber == schoolViewModel.School.SchoolSequenceNumber && school.DeletionDate == null select school).ToList();
 
                     School currentSchool = db.Schools.Find(schoolViewModel.School.SchoolID);
@@ -189,7 +191,7 @@ namespace OPDB.Controllers
 
                     if (ModelState.IsValid)
                     {
-                        schoolViewModel.School.UpdateUser = 2;
+                        schoolViewModel.School.UpdateUser = userID;
                         schoolViewModel.School.UpdateDate = DateTime.Now;
 
                         db.Entry(currentSchool).CurrentValues.SetValues(schoolViewModel.School);
@@ -209,7 +211,7 @@ namespace OPDB.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                if ((Int32.Parse(User.Identity.Name.Split(',')[1]) == 1 && Boolean.Parse(User.Identity.Name)))
                 {
                     School school = db.Schools.Find(id);
 

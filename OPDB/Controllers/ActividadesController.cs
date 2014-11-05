@@ -308,8 +308,8 @@ namespace OPDB.Controllers
 
                     if (activityViewModel.Activity.ActivityDate != null)
                     {
-                                if (activityViewModel.Activity.ActivityDate.Value.Date.CompareTo(DateTime.Now.Date) <= 0)
-                            ModelState.AddModelError("Activity_ActivityDate_EarlierThanCurrentDate", Resources.WebResources.Activity_ActivityDate_EarlierThanCurrentDate);
+                            if (activityViewModel.Activity.ActivityDate.Value.Date.CompareTo(DateTime.Now.Date) <= 0)
+                                ModelState.AddModelError("Activity_ActivityDate_EarlierThanCurrentDate", Resources.WebResources.Activity_ActivityDate_EarlierThanCurrentDate);
                     }
 
                     if (activityViewModel.Activity.Details != null && activityViewModel.Activity.Details != "")
@@ -500,25 +500,24 @@ namespace OPDB.Controllers
             string date = "";
 
                     if (activityViewModel.Activity.ActivityDate != null)
-               activityViewModel.Activity.ActivityDate.Value.ToString("dd/MM/yyyy");
+                        activityViewModel.Activity.ActivityDate.Value.ToString("dd/MM/yyyy");
 
-            activityViewModel.ActivityDate = date;
-            activityViewModel.ActivityTypes = getActivityTypes();
-            activityViewModel.SchoolList = getSchools();
+                        activityViewModel.ActivityDate = date;
+                        activityViewModel.ActivityTypes = getActivityTypes();
+                        activityViewModel.SchoolList = getSchools();
             
-            activityViewModel.ContactIDs = (from contact in db.Contacts where contact.ActivityID == id && contact.DeletionDate == null select contact.UserID).ToList();
-            activityViewModel.Contacts = getContacts();
+                        activityViewModel.ContactIDs = (from contact in db.Contacts where contact.ActivityID == id && contact.DeletionDate == null select contact.UserID).ToList();
+                        activityViewModel.Contacts = getContacts();
 
-            activityViewModel.ResourceIDs = (from resource in db.ActivityResources where resource.ActivityID == id && resource.DeletionDate == null select resource.ResourceID).ToList();
-            activityViewModel.Resources = getResources();
+                        activityViewModel.ResourceIDs = (from resource in db.ActivityResources where resource.ActivityID == id && resource.DeletionDate == null select resource.ResourceID).ToList();
+                        activityViewModel.Resources = getResources();
 
-            return View(activityViewModel);
-        }
+                        return View(activityViewModel);
+                }
             }
 
             return RedirectToAction("AccesoDenegado", "Home");
-            
-
+           
         }
 
         //
@@ -531,7 +530,7 @@ namespace OPDB.Controllers
             if (User.Identity.IsAuthenticated) 
             {
 
-                if ((Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name)))
+                if ((Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.Split(',')[2])))
                 {
                     int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
 
