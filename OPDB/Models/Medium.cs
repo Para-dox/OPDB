@@ -21,7 +21,7 @@ namespace OPDB.Models
         public int ActivityID { get; set; }
         public string MediaType { get; set; }
 
-        [RegularExpression(@"^[a-zA-Z\u00c0-\u017e0-9'""\s]{1,40}$", ErrorMessageResourceName = "Media_MediaTitle_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
+        [RegularExpression(@"^[a-zA-Z\u00c0-\u017e0-9'""/\s]{1,40}$", ErrorMessageResourceName = "Media_MediaTitle_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
         [Required(ErrorMessageResourceName = "Media_MediaTitle_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string MediaTitle { get; set; }
 

@@ -201,6 +201,9 @@
   <data name="SchoolNote_Note_Required" xml:space="preserve">
     <value>No ha ingresado el contenido de la nota</value>
   </data>
+  <data name="School_Address_Invalid" xml:space="preserve">
+    <value>La dirección es inválida</value>
+  </data>
   <data name="School_Address_Required" xml:space="preserve">
     <value>No ha ingresado una dirección para esta escuela</value>
   </data>
