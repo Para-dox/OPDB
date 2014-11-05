@@ -33,6 +33,7 @@ namespace OPDB.Models
         [Required(ErrorMessageResourceName = "School_SchoolName_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string SchoolName { get; set; }
 
+        [RegularExpression(@"^[a-zA-Z\u00c0-\u017e'\-\s]{1,100}$", ErrorMessageResourceName = "School_SchoolName_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
         [Required(ErrorMessageResourceName = "School_Address_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Address { get; set; }
 

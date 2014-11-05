@@ -16,27 +16,35 @@ namespace OPDB.Controllers
         //
         // GET: /Escuelas/
 
-        public ActionResult Index()
+        public ActionResult Index(string requested)
         {
-            var schools = (from school in db.Schools where school.DeletionDate == null select school).ToList();
-
-            SchoolViewModel schoolViewModel = new SchoolViewModel
+            if (User.Identity.IsAuthenticated)
             {
-                Information = new List<UserInfoViewModel>()
-            };
-
-            foreach (var school in schools)
-            {
-                schoolViewModel.Information.Add(new UserInfoViewModel
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1 && Boolean.Parse(requested))
                 {
-                    School = school,
-                    CreateUser = db.UserDetails.First(sch => sch.UserID == school.CreateUser),
-                    UpdateUser = db.UserDetails.First(sch => sch.UserID == school.UpdateUser)
+                    var schools = (from school in db.Schools where school.DeletionDate == null select school).ToList();
 
-                });
+                    SchoolViewModel schoolViewModel = new SchoolViewModel
+                    {
+                        Information = new List<UserInfoViewModel>()
+                    };
+
+                    foreach (var school in schools)
+                    {
+                        schoolViewModel.Information.Add(new UserInfoViewModel
+                        {
+                            School = school,
+                            CreateUser = db.UserDetails.First(sch => sch.UserID == school.CreateUser),
+                            UpdateUser = db.UserDetails.First(sch => sch.UserID == school.UpdateUser)
+
+                        });
+                    }
+
+                    return PartialView("Index", schoolViewModel);
+                }
             }
 
-            return PartialView("Index", schoolViewModel);
+            return RedirectToAction("AccesoDenegado", "Home");
         }
 
         public ActionResult MenuEscuelas()
@@ -89,12 +97,19 @@ namespace OPDB.Controllers
         [HttpPost]
         public ActionResult PopUpCrear()
         {
-            SchoolViewModel schoolViewModel = new SchoolViewModel
+            if (User.Identity.IsAuthenticated)
             {
-                Towns = getTowns()
-            };
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
+                    SchoolViewModel schoolViewModel = new SchoolViewModel
+                    {
+                        Towns = getTowns()
+                    };
 
-            return PartialView("Crear", schoolViewModel);
+                    return PartialView("Crear", schoolViewModel);
+                }
+            }
+            return RedirectToAction("AccesoDenegado", "Home");
         }
 
         //
@@ -103,138 +118,160 @@ namespace OPDB.Controllers
         [HttpPost]
         public ActionResult Crear(SchoolViewModel schoolViewModel)
         {
-            try {
-
-                var existingSchool = from school in db.Schools where school.SchoolSequenceNumber == schoolViewModel.School.SchoolSequenceNumber && school.DeletionDate == null select school;
-                    
-                if (existingSchool.Count() != 0)
-                    ModelState.AddModelError("", Resources.WebResources.School_SchoolSequenceNumber_Unique);
-
-                if (ModelState.IsValid)
-                {
-                   
-                    schoolViewModel.School.UpdateDate = DateTime.Now;
-                    schoolViewModel.School.CreateDate = DateTime.Now;
-
-                    //Change after login implementation.
-                    schoolViewModel.School.CreateUser = 2;
-                    schoolViewModel.School.UpdateUser = 2;
-
-                    db.Schools.Add(schoolViewModel.School);
-                    db.SaveChanges();
-
-                    return View("_Hack");
-                }
-
-                return Content(GetErrorsFromModelState(schoolViewModel));
-            }
-            catch(Exception e)
+            if (User.Identity.IsAuthenticated)
             {
-                return Content(e.ToString());
-            }
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
+                    var existingSchool = from school in db.Schools where school.SchoolSequenceNumber == schoolViewModel.School.SchoolSequenceNumber && school.DeletionDate == null select school;
 
+                    if (existingSchool.Count() != 0)
+                        ModelState.AddModelError("", Resources.WebResources.School_SchoolSequenceNumber_Unique);
+
+                    if (ModelState.IsValid)
+                    {
+
+                        schoolViewModel.School.UpdateDate = DateTime.Now;
+                        schoolViewModel.School.CreateDate = DateTime.Now;
+
+                        //Change after login implementation.
+                        schoolViewModel.School.CreateUser = Int32.Parse(User.Identity.Name.Split(',')[0]);
+                        schoolViewModel.School.UpdateUser = Int32.Parse(User.Identity.Name.Split(',')[0]);
+
+                        db.Schools.Add(schoolViewModel.School);
+                        db.SaveChanges();
+
+                        return View("_Hack");
+                    }
+                    return Content(GetErrorsFromModelState(schoolViewModel));
+                }
+            }
+            return RedirectToAction("AccesoDenegado", "Home");
         }
 
        
         [HttpPost]
         public ActionResult PopUpEditar(int id = 0)
         {
-            SchoolViewModel schoolViewModel = new SchoolViewModel
+            if (User.Identity.IsAuthenticated)
             {
-                School = db.Schools.Find(id),
-                Towns = getTowns()
-            };
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
+                    SchoolViewModel schoolViewModel = new SchoolViewModel
+                    {
+                        School = db.Schools.Find(id),
+                        Towns = getTowns()
+                    };
 
-            if (schoolViewModel.School == null)
-            {
-                return HttpNotFound();
+                    if (schoolViewModel.School == null)
+                    {
+                        return HttpNotFound();
+                    }
+
+                    return View(schoolViewModel);
+                }
             }
-
-            return PartialView("Editar", schoolViewModel);
-        }
-
-       
+            return PartialView("AccesoDenegado", "Home");
+        }      
 
         [HttpPost]
         public ActionResult Editar(SchoolViewModel schoolViewModel)
         {
-            try 
+            if (User.Identity.IsAuthenticated)
             {
-                List<School> schools = (from school in db.Schools where school.SchoolSequenceNumber == schoolViewModel.School.SchoolSequenceNumber && school.DeletionDate == null select school).ToList();
-
-                School currentSchool = db.Schools.Find(schoolViewModel.School.SchoolID);
-
-                if (schools.Count == 1 && schools.First().SchoolID != currentSchool.SchoolID)
-                    ModelState.AddModelError("", Resources.WebResources.School_SchoolSequenceNumber_Unique);
-
-                if (ModelState.IsValid)
+                if(Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
                 {
-                    schoolViewModel.School.UpdateUser = 2;
-                    schoolViewModel.School.UpdateDate = DateTime.Now;                                         
+                    List<School> schools = (from school in db.Schools where school.SchoolSequenceNumber == schoolViewModel.School.SchoolSequenceNumber && school.DeletionDate == null select school).ToList();
 
-                    db.Entry(currentSchool).CurrentValues.SetValues(schoolViewModel.School);
-                    db.SaveChanges();
+                    School currentSchool = db.Schools.Find(schoolViewModel.School.SchoolID);
 
-                    return View("_Hack");
+                    if (schools.Count == 1 && schools.First().SchoolID != currentSchool.SchoolID)
+                        ModelState.AddModelError("", Resources.WebResources.School_SchoolSequenceNumber_Unique);
+
+                    if (ModelState.IsValid)
+                    {
+                        schoolViewModel.School.UpdateUser = 2;
+                        schoolViewModel.School.UpdateDate = DateTime.Now;
+
+                        db.Entry(currentSchool).CurrentValues.SetValues(schoolViewModel.School);
+                        db.SaveChanges();
+
+                        return View("_Hack");
+                    }
+
+                    return Content(GetErrorsFromModelState(schoolViewModel));             
                 }
-                
-                return Content(GetErrorsFromModelState(schoolViewModel));
-
-
-            }
-            catch(Exception e)
-            {
-                return Content(e + "");
-            }
-
+             }
+            return RedirectToAction("AccesoDenegado", "Home");      
         }
-
         
         [HttpPost]
         public ActionResult Remover(int id = 0)
         {
-            School school = db.Schools.Find(id);
-
-            if (school == null)
+            if (User.Identity.IsAuthenticated)
             {
-                return HttpNotFound();
-            }
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
+                    School school = db.Schools.Find(id);
 
-            else
-            {
-                school.DeletionDate = DateTime.Now;
-                db.Entry(school).State = EntityState.Modified;
-                db.SaveChanges();
+                    if (school == null)
+                    {
+                        return HttpNotFound();
+                    }
+
+                    else
+                    {
+                        school.DeletionDate = DateTime.Now;
+                        db.Entry(school).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                    return RedirectToAction("Administracion", "Home", null);
+                }
             }
-            return RedirectToAction("Administracion", "Home", null);
+            return RedirectToAction("AccesoDenegado", "Home");
         }
 
         [HttpPost]
         public ActionResult Restaurar(int id = 0)
         {
-            School school = db.Schools.Find(id);
-
-            if (school == null)
+            if (User.Identity.IsAuthenticated)
             {
-                return HttpNotFound();
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
+                    School school = db.Schools.Find(id);
+
+                    if (school == null)
+                    {
+                        return HttpNotFound();
+                    }
+
+                    else
+                    {
+                        school.DeletionDate = null;
+                        db.Entry(school).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                    return RedirectToAction("Administracion", "Home", null);
+                }
             }
 
-            else
-            {
-                school.DeletionDate = null;
-                db.Entry(school).State = EntityState.Modified;
-                db.SaveChanges();
-            }
-            return RedirectToAction("Administracion", "Home", null);
+            return RedirectToAction("AccesoDenegado", "Home");
         }
 
         public ActionResult RemoverNota(int id)
         {
-            var note = db.SchoolNotes.Find(id);
-            note.DeletionDate = DateTime.Now;
-            db.Entry(note).State = EntityState.Modified;
-            db.SaveChanges();
-            return RedirectToAction("Detalles", "Escuelas", new { id = note.SchoolID });
+            if (User.Identity.IsAuthenticated)
+            {
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
+                    var note = db.SchoolNotes.Find(id);
+                    note.DeletionDate = DateTime.Now;
+                    db.Entry(note).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Detalles", "Escuelas", new { id = note.SchoolID });
+                }
+            }
+
+            return RedirectToAction("AccesoDenegado", "Home");
         }
         
         protected override void Dispose(bool disposing)
@@ -246,88 +283,119 @@ namespace OPDB.Controllers
         [HttpPost]
         public ActionResult GuardarNota(SchoolViewModel schoolViewModel)
         {
-
-            schoolViewModel.Note.UpdateUser = 2;
-            schoolViewModel.Note.UpdateDate = DateTime.Now;
-
-            if (schoolViewModel.Note.SchoolNoteID == 0)
+            if (User.Identity.IsAuthenticated)
             {
-                if (ModelState.IsValid)
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
                 {
-                    schoolViewModel.Note.CreateDate = DateTime.Now;
+                    schoolViewModel.Note.UpdateUser = Int32.Parse(User.Identity.Name.Split(',')[0]);
+                    schoolViewModel.Note.UpdateDate = DateTime.Now;
 
-                    schoolViewModel.Note.UserID = 2;
-                    schoolViewModel.Note.CreateUser = 2;
+                    if (schoolViewModel.Note.SchoolNoteID == 0)
+                    {
+                        if (ModelState.IsValid)
+                        {
+                            schoolViewModel.Note.CreateDate = DateTime.Now;
 
-                    db.SchoolNotes.Add(schoolViewModel.Note);
-                    db.SaveChanges();
+                            schoolViewModel.Note.UserID = 2;
+                            schoolViewModel.Note.CreateUser = 2;
 
-                    return View("_Hack");
+                            db.SchoolNotes.Add(schoolViewModel.Note);
+                            db.SaveChanges();
+
+                            return View("_Hack");
+                        }
+
+                        return Content(GetErrorsFromModelState(schoolViewModel));
+                    }
+                    else if (ModelState.IsValid)
+                    {
+
+                        db.Entry(schoolViewModel.Note).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return View("_Hack");
+
+                    }
+
+                    return Content(GetErrorsFromModelState(schoolViewModel)); 
                 }
-
-                return Content(GetErrorsFromModelState(schoolViewModel));
-            }
-            else if (ModelState.IsValid)
-            {
-
-                db.Entry(schoolViewModel.Note).State = EntityState.Modified;
-                db.SaveChanges();
-                return View("_Hack");
-
             }
 
-            return Content(GetErrorsFromModelState(schoolViewModel));   
+            return RedirectToAction("AccesoDenegado", "Home");   
         }
 
         [HttpPost]
         public ActionResult CrearNota(int id)
         {
-            SchoolViewModel schoolViewModel = new SchoolViewModel
+            if (User.Identity.IsAuthenticated)
             {
-
-                NoteTypes = getNoteTypes(),
-                Note = new SchoolNote
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
                 {
+                    SchoolViewModel schoolViewModel = new SchoolViewModel
+                    {
 
-                    SchoolID = id
+                        NoteTypes = getNoteTypes(),
+                        Note = new SchoolNote
+                        {
+
+                            SchoolID = id
+                        }
+                    };
+
+                    return PartialView(schoolViewModel);
                 }
-            };
+            }
 
-            return PartialView(schoolViewModel);
+            return PartialView("AccesoDenegado", "Home");
         }
 
         [HttpPost]
         public ActionResult VerNota(int id = 0)
         {
-            SchoolNote schoolNote = db.SchoolNotes.Find(id);
-            schoolNote.NoteType = db.NoteTypes.Find(schoolNote.NoteTypeID);
-            schoolNote.School = db.Schools.Find(schoolNote.SchoolID);
-
-            SchoolViewModel schoolViewModel = new SchoolViewModel
+            if (User.Identity.IsAuthenticated)
             {
-                Note = schoolNote
-            };
+                if ((Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.Split(',')[2])) || Int32.Parse(User.Identity.Name.Split(',')[2]) == 2 || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
 
-            if (schoolViewModel.Note == null)
-            {
-                return HttpNotFound();
-            }
+                    SchoolNote schoolNote = db.SchoolNotes.Find(id);
+                    schoolNote.NoteType = db.NoteTypes.Find(schoolNote.NoteTypeID);
+                    schoolNote.School = db.Schools.Find(schoolNote.SchoolID);
 
-            return PartialView("VerNota", schoolViewModel);
+                    SchoolViewModel schoolViewModel = new SchoolViewModel
+                    {
+                        Note = schoolNote
+                    };
+
+                    if (schoolViewModel.Note == null)
+                    {
+                        return HttpNotFound();
+                    }
+
+                    return PartialView("VerNota", schoolViewModel);
+
+                }
+            }       
+            return PartialView("AccesoDenegado", "Home");
         }
 
         [HttpPost]
         public ActionResult EditarNota(int id)
         {
-
-            SchoolViewModel schoolViewModel = new SchoolViewModel
+            if (User.Identity.IsAuthenticated)
             {
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
+                    SchoolViewModel schoolViewModel = new SchoolViewModel
+                    {
 
-                NoteTypes = getNoteTypes(),
-                Note = db.SchoolNotes.Find(id)
-            };
+                        NoteTypes = getNoteTypes(),
+                        Note = db.SchoolNotes.Find(id)
+                    };
 
-            return PartialView(schoolViewModel);
+                    return PartialView(schoolViewModel);
+                }
+            }
+
+            return PartialView("AccesoDenegado", "Home");
         }
 
         public List<SelectListItem> getNoteTypes()
@@ -357,7 +425,6 @@ namespace OPDB.Controllers
         public String GetErrorsFromModelState(SchoolViewModel schoolViewModel)
         {
 
-
             //retrieves the validation messages from the ModelState as strings    
             var str = "";
             var errorSates = from state in ModelState.Values
@@ -375,25 +442,33 @@ namespace OPDB.Controllers
 
         public ActionResult Removidos()
         {
-            var schools = (from school in db.Schools where school.DeletionDate != null select school).ToList();
-
-            SchoolViewModel schoolViewModel = new SchoolViewModel
+            if (User.Identity.IsAuthenticated)
             {
-                Information = new List<UserInfoViewModel>()
-            };
-
-            foreach (var school in schools)
-            {
-                schoolViewModel.Information.Add(new UserInfoViewModel
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
                 {
-                    School = school,
-                    CreateUser = db.UserDetails.First(sch => sch.UserID == school.CreateUser),
-                    UpdateUser = db.UserDetails.First(sch => sch.UserID == school.UpdateUser)
+                    var schools = (from school in db.Schools where school.DeletionDate != null select school).ToList();
 
-                });
+                    SchoolViewModel schoolViewModel = new SchoolViewModel
+                    {
+                        Information = new List<UserInfoViewModel>()
+                    };
+
+                    foreach (var school in schools)
+                    {
+                        schoolViewModel.Information.Add(new UserInfoViewModel
+                        {
+                            School = school,
+                            CreateUser = db.UserDetails.First(sch => sch.UserID == school.CreateUser),
+                            UpdateUser = db.UserDetails.First(sch => sch.UserID == school.UpdateUser)
+
+                        });
+                    }
+
+                    return PartialView("Removidos", schoolViewModel);
+                }
             }
 
-            return PartialView("Removidos", schoolViewModel);
+           return PartialView("AccesoDenegado", "Home");
         }
 
 
