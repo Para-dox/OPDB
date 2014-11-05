@@ -17,29 +17,39 @@ namespace OPDB.Controllers
         //
         // GET: /Alcance/
 
-        public ActionResult Index()
+        public ActionResult Index(string requested)
         {
-            if (User.Identity.IsAuthenticated)
+            if (requested != null)
             {
-                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                if (User.Identity.IsAuthenticated)
                 {
-                    var users = from u in db.Users.Include(u => u.UserDetails) where u.UserTypeID == 3 && u.DeletionDate == null && u.UserStatus == true select u;
-                    return PartialView("Index", users.ToList());
-                }
-                else
-                {
-                    return RedirectToAction("AccesoDenegado", "Home");
+                    if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1 && Boolean.Parse(requested))
+                    {
+                        var users = from u in db.Users.Include(u => u.UserDetails) where u.UserTypeID == 3 && u.DeletionDate == null && u.UserStatus == true select u;
+                        return PartialView("Index", users.ToList());
+                    }
+
                 }
             }
-            else
-            {
-                return RedirectToAction("AccesoDenegado", "Home");
-            }
+
+            return RedirectToAction("AccesoDenegado", "Home");
+
         }
 
-        public ActionResult MenuAlcance()
+        public ActionResult MenuAlcance(string requested)
         {
-            return PartialView("Alcance");
+            if (requested != null)
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1 && Boolean.Parse(requested))
+                    {
+                        return PartialView("Alcance");
+                    }
+                }
+            }
+
+            return RedirectToAction("AccesoDenegado", "Home");
         }
 
         //
@@ -52,8 +62,8 @@ namespace OPDB.Controllers
 
             UserViewModel outreachViewModel = new UserViewModel
             {
-                user = user,
-                outreachEntity = outreachEntity,
+                User = user,
+                OutreachEntity = outreachEntity,
                 Notes = (from note in db.UserNotes.Include(note => note.NoteType) where note.SubjectID == id && note.DeletionDate == null select note).ToList(),
                 Activities = (from activity in db.Activities where activity.UserID == id && activity.DeletionDate == null select activity).ToList()
             };
@@ -67,7 +77,7 @@ namespace OPDB.Controllers
                     activity.ActivityTime = "";
             }
 
-            if (outreachViewModel.outreachEntity == null)
+            if (outreachViewModel.OutreachEntity == null)
             {
                 return HttpNotFound();
             }
@@ -80,138 +90,165 @@ namespace OPDB.Controllers
 
         public ActionResult Crear()
         {
-            UserViewModel userViewModel = new UserViewModel
+            if (User.Identity.IsAuthenticated)
             {
-                outreachTypes = getOutreachTypes(),
-                user = new User
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
                 {
-                    UserTypeID = 3
-                }
-            };
+                    UserViewModel userViewModel = new UserViewModel
+                    {
+                        OutreachTypes = getOutreachTypes(),
+                        User = new User
+                        {
+                            UserTypeID = 3
+                        }
+                    };
 
-            return View(userViewModel);
+                    return View(userViewModel);
+                }
+            }
+
+            return RedirectToAction("AccesoDenegado", "Home");
         }
 
         [HttpPost]
         public ActionResult Crear(UserViewModel userViewModel)
         {
-            if (ModelState.IsValid)
+            if (User.Identity.IsAuthenticated)
             {
-                bool validModel = true;
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
 
-                if (userViewModel.outreachEntity.OutreachEntityName == null || userViewModel.outreachEntity.OutreachEntityName == "")
-                {
-                    ModelState.AddModelError("OutreachEntityDetail_OutreachEntityName_Required", Resources.WebResources.OutreachEntityDetail_OutreachEntityName_Required);
-                    validModel = false;
-                }
-                else
-                {
-                    string pattern = @"^[a-zA-Z\u00c0-\u017e''-'\s]{1,100}$";
-                    Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                    MatchCollection matches = rgx.Matches(userViewModel.outreachEntity.OutreachEntityName);
-                    if (matches.Count == 0)
+                    if (ModelState.IsValid)
                     {
-                        ModelState.AddModelError("OutreachEntity_OutreachEntityName_Invalid", Resources.WebResources.OutreachEntityDetail_OutreachEntityName_Invalid);
-                        validModel = false;
+                        bool validModel = true;
+
+                        if (userViewModel.OutreachEntity.OutreachEntityName == null || userViewModel.OutreachEntity.OutreachEntityName == "")
+                        {
+                            ModelState.AddModelError("OutreachEntityDetail_OutreachEntityName_Required", Resources.WebResources.OutreachEntityDetail_OutreachEntityName_Required);
+                            validModel = false;
+                        }
+                        else
+                        {
+                            string pattern = @"^[a-zA-Z\u00c0-\u017e''-'\s]{1,100}$";
+                            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                            MatchCollection matches = rgx.Matches(userViewModel.OutreachEntity.OutreachEntityName);
+                            if (matches.Count == 0)
+                            {
+                                ModelState.AddModelError("OutreachEntity_OutreachEntityName_Invalid", Resources.WebResources.OutreachEntityDetail_OutreachEntityName_Invalid);
+                                validModel = false;
+                            }
+
+                        }
+
+                        if (userViewModel.OutreachEntity.Mission == null || userViewModel.OutreachEntity.Mission == "")
+                        {
+                            ModelState.AddModelError("OutreachEntityDetail_Mission_Required", Resources.WebResources.OutreachEntityDetail_Mission_Required);
+                            validModel = false;
+                        }
+                        else
+                        {
+                            string pattern = @"^[a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""''-'\s]+$";
+                            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                            MatchCollection matches = rgx.Matches(userViewModel.OutreachEntity.Mission);
+                            if (matches.Count == 0)
+                            {
+                                ModelState.AddModelError("OutreachEntityDetail_Mission_Invalid", Resources.WebResources.OutreachEntityDetail_Mission_Invalid);
+                                validModel = false;
+                            }
+
+                        }
+
+                        if (userViewModel.OutreachEntity.Vision == null || userViewModel.OutreachEntity.Vision == "")
+                        {
+                            ModelState.AddModelError("OutreachEntityDetail_Vision_Required", Resources.WebResources.OutreachEntityDetail_Vision_Required);
+                            validModel = false;
+                        }
+                        else
+                        {
+                            string pattern = @"^[a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""''-'\s]+$";
+                            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                            MatchCollection matches = rgx.Matches(userViewModel.OutreachEntity.Vision);
+                            if (matches.Count == 0)
+                            {
+                                ModelState.AddModelError("OutreachEntityDetail_Vision_Invalid", Resources.WebResources.OutreachEntityDetail_Vision_Invalid);
+                                validModel = false;
+                            }
+
+                        }
+
+                        if (userViewModel.OutreachEntity.Objectives == null || userViewModel.OutreachEntity.Objectives == "")
+                        {
+                            ModelState.AddModelError("OutreachEntityDetail_Objectives_Required", Resources.WebResources.OutreachEntityDetail_Objectives_Required);
+                            validModel = false;
+                        }
+                        else
+                        {
+                            string pattern = @"^[a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""''-'\s]+$";
+                            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                            MatchCollection matches = rgx.Matches(userViewModel.OutreachEntity.Objectives);
+                            if (matches.Count == 0)
+                            {
+                                ModelState.AddModelError("OutreachEntityDetail_Objectives_Invalid", Resources.WebResources.OutreachEntityDetail_Objectives_Invalid);
+                                validModel = false;
+                            }
+
+                        }
+
+                        if (validModel)
+                        {
+
+                            userViewModel.User.CreateDate = DateTime.Now;
+                            userViewModel.User.UpdateDate = DateTime.Now;
+                            userViewModel.User.UserStatus = true;
+                            userViewModel.OutreachEntity.CreateDate = DateTime.Now;
+                            userViewModel.OutreachEntity.UpdateDate = DateTime.Now;
+                            userViewModel.User.OutreachEntityDetails = new List<OutreachEntityDetail>();
+                            userViewModel.User.OutreachEntityDetails.Add(userViewModel.OutreachEntity);
+                            db.Users.Add(userViewModel.User);
+                            db.SaveChanges();
+
+                            return RedirectToAction("Administracion", "Home");
+                        }
+
+
                     }
 
+                    userViewModel.OutreachTypes = getOutreachTypes();
+                    return View(userViewModel);
                 }
-
-                if (userViewModel.outreachEntity.Mission == null || userViewModel.outreachEntity.Mission == "")
-                {
-                    ModelState.AddModelError("OutreachEntityDetail_Mission_Required", Resources.WebResources.OutreachEntityDetail_Mission_Required);
-                    validModel = false;
-                }
-                else
-                {
-                    string pattern = @"^[a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""''-'\s]+$";
-                    Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                    MatchCollection matches = rgx.Matches(userViewModel.outreachEntity.Mission);
-                    if (matches.Count == 0)
-                    {
-                        ModelState.AddModelError("OutreachEntityDetail_Mission_Invalid", Resources.WebResources.OutreachEntityDetail_Mission_Invalid);
-                        validModel = false;
-                    }
-
-                }
-
-                if (userViewModel.outreachEntity.Vision == null || userViewModel.outreachEntity.Vision == "")
-                {
-                    ModelState.AddModelError("OutreachEntityDetail_Vision_Required", Resources.WebResources.OutreachEntityDetail_Vision_Required);
-                    validModel = false;
-                }
-                else
-                {
-                    string pattern = @"^[a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""''-'\s]+$";
-                    Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                    MatchCollection matches = rgx.Matches(userViewModel.outreachEntity.Vision);
-                    if (matches.Count == 0)
-                    {
-                        ModelState.AddModelError("OutreachEntityDetail_Vision_Invalid", Resources.WebResources.OutreachEntityDetail_Vision_Invalid);
-                        validModel = false;
-                    }
-
-                }
-
-                if (userViewModel.outreachEntity.Objectives == null || userViewModel.outreachEntity.Objectives == "")
-                {
-                    ModelState.AddModelError("OutreachEntityDetail_Objectives_Required", Resources.WebResources.OutreachEntityDetail_Objectives_Required);
-                    validModel = false;
-                }
-                else
-                {
-                    string pattern = @"^[a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""''-'\s]+$";
-                    Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                    MatchCollection matches = rgx.Matches(userViewModel.outreachEntity.Objectives);
-                    if (matches.Count == 0)
-                    {
-                        ModelState.AddModelError("OutreachEntityDetail_Objectives_Invalid", Resources.WebResources.OutreachEntityDetail_Objectives_Invalid);
-                        validModel = false;
-                    }
-
-                }
-
-                if (validModel) { 
-
-                    userViewModel.user.CreateDate = DateTime.Now;
-                    userViewModel.user.UpdateDate = DateTime.Now;
-                    userViewModel.user.UserStatus = true;              
-                    userViewModel.outreachEntity.CreateDate = DateTime.Now;
-                    userViewModel.outreachEntity.UpdateDate = DateTime.Now;
-                    userViewModel.user.OutreachEntityDetails = new List<OutreachEntityDetail>();
-                    userViewModel.user.OutreachEntityDetails.Add(userViewModel.outreachEntity);
-                    db.Users.Add(userViewModel.user);                
-                    db.SaveChanges();
-
-                    return RedirectToAction("Administracion", "Home");
-                }
-
-
             }
 
-                userViewModel.outreachTypes = getOutreachTypes();
-                return View(userViewModel);
+            return RedirectToAction("AccesoDenegado", "Home");
         }
 
 
-        public ActionResult Editar(int id = 0)
+        public ActionResult Editar(string source, int id = 0)
         {
-            var user = db.Users.Find(id);
-            var outreachEntity = db.OutreachEntityDetails.First(outreach => outreach.UserID == id);
-
-            UserViewModel outreachViewModel = new UserViewModel
+            if (User.Identity.IsAuthenticated)
             {
-                user = user,
-                outreachEntity = outreachEntity,
-                outreachTypes = getOutreachTypes()
-            };
+                if ((Int32.Parse(User.Identity.Name.Split(',')[0]) == id && Boolean.Parse(User.Identity.Name.Split(',')[2])) || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
+                    var user = db.Users.Find(id);
+                    var outreachEntity = db.OutreachEntityDetails.First(outreach => outreach.UserID == id);
 
-            if (outreachViewModel.outreachEntity == null)
-            {
-                return HttpNotFound();
+                    UserViewModel outreachViewModel = new UserViewModel
+                    {
+                        User = user,
+                        OutreachEntity = outreachEntity,
+                        OutreachTypes = getOutreachTypes(),
+                        Source = source
+                    };
+
+                    if (outreachViewModel.OutreachEntity == null)
+                    {
+                        return HttpNotFound();
+                    }
+
+                    return View(outreachViewModel);
+                }
             }
 
-            return View(outreachViewModel);
+            return RedirectToAction("AccesoDenegado", "Home");
         }
 
         //
@@ -221,102 +258,116 @@ namespace OPDB.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Editar(UserViewModel userViewModel)
         {
-            if (ModelState.IsValid)
+            if (User.Identity.IsAuthenticated)
             {
-                userViewModel.user.UpdateDate = DateTime.Now;
-                userViewModel.outreachEntity.UpdateDate = DateTime.Now;            
-                bool validModel = true;
+                if ((Int32.Parse(User.Identity.Name.Split(',')[0]) == userViewModel.User.UserID && Boolean.Parse(User.Identity.Name.Split(',')[2])) || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
 
-                    if (userViewModel.outreachEntity.OutreachEntityName == null || userViewModel.outreachEntity.OutreachEntityName == "")
+                    if (ModelState.IsValid)
                     {
-                        ModelState.AddModelError("OutreachEntityDetail_OutreachEntityName_Required", Resources.WebResources.OutreachEntityDetail_OutreachEntityName_Required);
-                        validModel = false;
-                    }
-                    else
-                    {
-                        string pattern = @"^([a-zA-Z\u00c0-\u017e'\s]+[^\s-][-]?){1,100}$";
-                        Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                        MatchCollection matches = rgx.Matches(userViewModel.outreachEntity.OutreachEntityName);
-                        if (matches.Count == 0)
+                        userViewModel.User.UpdateDate = DateTime.Now;
+                        userViewModel.OutreachEntity.UpdateDate = DateTime.Now;
+                        bool validModel = true;
+
+                        if (userViewModel.OutreachEntity.OutreachEntityName == null || userViewModel.OutreachEntity.OutreachEntityName == "")
                         {
-                            ModelState.AddModelError("OutreachEntity_OutreachEntityName_Invalid", Resources.WebResources.OutreachEntityDetail_OutreachEntityName_Invalid);
+                            ModelState.AddModelError("OutreachEntityDetail_OutreachEntityName_Required", Resources.WebResources.OutreachEntityDetail_OutreachEntityName_Required);
                             validModel = false;
+                        }
+                        else
+                        {
+                            string pattern = @"^([a-zA-Z\u00c0-\u017e'\s]+[^\s-][-]?){1,100}$";
+                            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                            MatchCollection matches = rgx.Matches(userViewModel.OutreachEntity.OutreachEntityName);
+                            if (matches.Count == 0)
+                            {
+                                ModelState.AddModelError("OutreachEntity_OutreachEntityName_Invalid", Resources.WebResources.OutreachEntityDetail_OutreachEntityName_Invalid);
+                                validModel = false;
+                            }
+
+                        }
+
+                        if (userViewModel.OutreachEntity.Mission == null || userViewModel.OutreachEntity.Mission == "")
+                        {
+                            ModelState.AddModelError("OutreachEntityDetail_Mission_Required", Resources.WebResources.OutreachEntityDetail_Mission_Required);
+                            validModel = false;
+                        }
+                        else
+                        {
+                            string pattern = @"^([a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""'\s]+[^\s-][-]?)+$";
+                            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                            MatchCollection matches = rgx.Matches(userViewModel.OutreachEntity.Mission);
+                            if (matches.Count == 0)
+                            {
+                                ModelState.AddModelError("OutreachEntityDetail_Mission_Invalid", Resources.WebResources.OutreachEntityDetail_Mission_Invalid);
+                                validModel = false;
+                            }
+
+                        }
+
+                        if (userViewModel.OutreachEntity.Vision == null || userViewModel.OutreachEntity.Vision == "")
+                        {
+                            ModelState.AddModelError("OutreachEntityDetail_Vision_Required", Resources.WebResources.OutreachEntityDetail_Vision_Required);
+                            validModel = false;
+                        }
+                        else
+                        {
+                            string pattern = @"^([a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""'\s]+[^\s-][-]?)+$";
+                            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                            MatchCollection matches = rgx.Matches(userViewModel.OutreachEntity.Vision);
+                            if (matches.Count == 0)
+                            {
+                                ModelState.AddModelError("OutreachEntityDetail_Vision_Invalid", Resources.WebResources.OutreachEntityDetail_Vision_Invalid);
+                                validModel = false;
+                            }
+
+                        }
+
+                        if (userViewModel.OutreachEntity.Objectives == null || userViewModel.OutreachEntity.Objectives == "")
+                        {
+                            ModelState.AddModelError("OutreachEntityDetail_Objectives_Required", Resources.WebResources.OutreachEntityDetail_Objectives_Required);
+                            validModel = false;
+                        }
+                        else
+                        {
+                            string pattern = @"^([a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""'\s]+[^\s-][-]?)+$";
+                            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                            MatchCollection matches = rgx.Matches(userViewModel.OutreachEntity.Objectives);
+                            if (matches.Count == 0)
+                            {
+                                ModelState.AddModelError("OutreachEntityDetail_Objectives_Invalid", Resources.WebResources.OutreachEntityDetail_Objectives_Invalid);
+                                validModel = false;
+                            }
+
+                        }
+
+                        if (validModel)
+                        {
+                            db.Entry(userViewModel.User).State = EntityState.Modified;
+                            db.Entry(userViewModel.OutreachEntity).State = EntityState.Modified;
+                            db.SaveChanges();
+
+                            if (userViewModel.Source == "Detalles")
+                                return RedirectToAction("Detalles", "Alcance", new { id = userViewModel.User.UserID });
+
+                            else if(userViewModel.Source == "Administracion")
+                                return RedirectToAction("Administracion", "Home");
+                        }
+
+                        else
+                        {
+                            userViewModel.OutreachTypes = getOutreachTypes();
+                            return View(userViewModel);
                         }
 
                     }
 
-                    if (userViewModel.outreachEntity.Mission == null || userViewModel.outreachEntity.Mission == "")
-                    {
-                        ModelState.AddModelError("OutreachEntityDetail_Mission_Required", Resources.WebResources.OutreachEntityDetail_Mission_Required);
-                        validModel = false;
-                    }
-                    else
-                    {
-                        string pattern = @"^([a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""'\s]+[^\s-][-]?)+$";
-                        Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                        MatchCollection matches = rgx.Matches(userViewModel.outreachEntity.Mission);
-                        if (matches.Count == 0)
-                        {
-                            ModelState.AddModelError("OutreachEntityDetail_Mission_Invalid", Resources.WebResources.OutreachEntityDetail_Mission_Invalid);
-                            validModel = false;
-                        }
-
-                    }
-
-                    if (userViewModel.outreachEntity.Vision == null || userViewModel.outreachEntity.Vision == "")
-                    {
-                        ModelState.AddModelError("OutreachEntityDetail_Vision_Required", Resources.WebResources.OutreachEntityDetail_Vision_Required);
-                        validModel = false;
-                    }
-                    else
-                    {
-                        string pattern = @"^([a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""'\s]+[^\s-][-]?)+$";
-                        Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                        MatchCollection matches = rgx.Matches(userViewModel.outreachEntity.Vision);
-                        if (matches.Count == 0)
-                        {
-                            ModelState.AddModelError("OutreachEntityDetail_Vision_Invalid", Resources.WebResources.OutreachEntityDetail_Vision_Invalid);
-                            validModel = false;
-                        }
-
-                    }
-
-                    if (userViewModel.outreachEntity.Objectives == null || userViewModel.outreachEntity.Objectives == "")
-                    {
-                        ModelState.AddModelError("OutreachEntityDetail_Objectives_Required", Resources.WebResources.OutreachEntityDetail_Objectives_Required);
-                        validModel = false;
-                    }
-                    else
-                    {
-                        string pattern = @"^([a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""'\s]+[^\s-][-]?)+$";
-                        Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                        MatchCollection matches = rgx.Matches(userViewModel.outreachEntity.Objectives);
-                        if (matches.Count == 0)
-                        {
-                            ModelState.AddModelError("OutreachEntityDetail_Objectives_Invalid", Resources.WebResources.OutreachEntityDetail_Objectives_Invalid);
-                            validModel = false;
-                        }
-
-                    }
-
-                    if (validModel)
-                    {
-                        db.Entry(userViewModel.user).State = EntityState.Modified;
-                        db.Entry(userViewModel.outreachEntity).State = EntityState.Modified;
-                        db.SaveChanges();
-                        return RedirectToAction("Administracion", "Home");
-                    }
-
-                    else
-                    {
-                        userViewModel.outreachTypes = getOutreachTypes();
-                        return View(userViewModel);
-                    }
-                        
+                    userViewModel.OutreachTypes = getOutreachTypes();
+                    return View(userViewModel);
+                }
             }
 
-            userViewModel.outreachTypes = getOutreachTypes();
-            return View(userViewModel);
+            return RedirectToAction("AccesoDenegado", "Home");
         }
 
         //
@@ -324,142 +375,202 @@ namespace OPDB.Controllers
 
         public ActionResult Remover(int id = 0)
         {
-            User user = db.Users.Find(id);
-            OutreachEntityDetail outreachDetail = db.OutreachEntityDetails.First(outreach => outreach.UserID == id);
-           
-
-            if (outreachDetail == null)
+            if (User.Identity.IsAuthenticated)
             {
-                return HttpNotFound();
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
+                    User user = db.Users.Find(id);
+                    OutreachEntityDetail outreachDetail = db.OutreachEntityDetails.First(outreach => outreach.UserID == id);
+
+
+                    if (outreachDetail == null)
+                    {
+                        return HttpNotFound();
+                    }
+
+                    else
+                    {
+                        user.DeletionDate = DateTime.Now;
+                        outreachDetail.DeletionDate = DateTime.Now;
+                        db.Entry(user).State = EntityState.Modified;
+                        db.Entry(outreachDetail).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+
+                    return RedirectToAction("Administracion", "Home");
+                }
             }
 
-            else
-            {
-                user.DeletionDate = DateTime.Now;
-                outreachDetail.DeletionDate = DateTime.Now;
-                db.Entry(user).State = EntityState.Modified;
-                db.Entry(outreachDetail).State = EntityState.Modified;
-                db.SaveChanges();
-            }
-
-            return RedirectToAction("Administracion", "Home");
+            return RedirectToAction("AccesoDenegado", "Home");
         }
 
         public ActionResult Restaurar(int id = 0)
         {
-            User user = db.Users.Find(id);
-            OutreachEntityDetail outreachDetail = db.OutreachEntityDetails.First(outreach => outreach.UserID == id);
-            
-
-            if (outreachDetail == null)
+            if (User.Identity.IsAuthenticated)
             {
-                return HttpNotFound();
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
+                    User user = db.Users.Find(id);
+                    OutreachEntityDetail outreachDetail = db.OutreachEntityDetails.First(outreach => outreach.UserID == id);
+
+
+                    if (outreachDetail == null)
+                    {
+                        return HttpNotFound();
+                    }
+
+                    else
+                    {
+                        user.DeletionDate = null;
+                        outreachDetail.DeletionDate = null;
+                        db.Entry(user).State = EntityState.Modified;
+                        db.Entry(outreachDetail).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+
+                    return RedirectToAction("Administracion", "Home");
+                }
             }
 
-            else
-            {
-                user.DeletionDate = null;
-                outreachDetail.DeletionDate = null;
-                db.Entry(user).State = EntityState.Modified;
-                db.Entry(outreachDetail).State = EntityState.Modified;
-                db.SaveChanges();
-            }
-
-            return RedirectToAction("Administracion", "Home");
+            return RedirectToAction("AccesoDenegado", "Home");
         }
 
         public ActionResult RemoverNota(int id)
         {
-            var note = db.UserNotes.Find(id);
-            note.DeletionDate = DateTime.Now;
-            db.Entry(note).State = EntityState.Modified;
-            db.SaveChanges();
-            return RedirectToAction("Detalles", "Alcance", new { id = note.SubjectID });
+            if (User.Identity.IsAuthenticated)
+            {
+                var note = db.UserNotes.Find(id);
+
+                if ((Int32.Parse(User.Identity.Name.Split(',')[0]) == note.UserID && Boolean.Parse(User.Identity.Name.Split(',')[2])) || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
+                    note.DeletionDate = DateTime.Now;
+                    db.Entry(note).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Detalles", "Alcance", new { id = note.SubjectID });
+                }
+            }
+
+            return RedirectToAction("AccesoDenegado", "Home");
         }
 
         [HttpPost]
         public ActionResult CrearNota(int id)
         {
-            EscuelasController controller = new EscuelasController();
+            if (User.Identity.IsAuthenticated)
+            {
+                if ((Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.Split(',')[2])) || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
+                    EscuelasController controller = new EscuelasController();
 
-            UserViewModel outreachViewModel = new UserViewModel
-             {
+                    UserViewModel outreachViewModel = new UserViewModel
+                     {
 
-                 NoteTypes = controller.getNoteTypes(),
-                 note = new UserNote
-                 {
+                         NoteTypes = controller.getNoteTypes(),
+                         Note = new UserNote
+                         {
 
-                    SubjectID = id
-                 }
-             };
+                             SubjectID = id
+                         }
+                     };
 
-             return PartialView("CrearNota", outreachViewModel);
+                    return PartialView("CrearNota", outreachViewModel);
+                }
+            }
+
+            return RedirectToAction("AccesoDenegado", "Home");
         }
 
         [HttpPost]
         public ActionResult GuardarNota(UserViewModel userViewModel)
         {
-                userViewModel.note.UpdateUser = 2;
-                userViewModel.note.UpdateDate = DateTime.Now;
-
-                if (userViewModel.note.UserNoteID == 0)
+            if (User.Identity.IsAuthenticated)
+            {
+                if ((Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.Split(',')[2])) || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
                 {
-                    if (ModelState.IsValid)
+                    int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
+
+                    userViewModel.Note.UpdateUser = userID;
+                    userViewModel.Note.UpdateDate = DateTime.Now;
+
+                    if (userViewModel.Note.UserNoteID == 0)
                     {
-                        userViewModel.note.CreateDate = DateTime.Now;
+                        if (ModelState.IsValid)
+                        {
+                            userViewModel.Note.CreateDate = DateTime.Now;
 
-                        userViewModel.note.UserID = 2;
-                        userViewModel.note.CreateUser = 2;
+                            userViewModel.Note.UserID = userID;
+                            userViewModel.Note.CreateUser = userID;
 
-                        db.UserNotes.Add(userViewModel.note);
+                            db.UserNotes.Add(userViewModel.Note);
+                            db.SaveChanges();
+
+                            return View("_Hack");
+                        }
+
+                        return Content(GetErrorsFromModelState(userViewModel));
+                    }
+                    else if (ModelState.IsValid)
+                    {
+
+                        db.Entry(userViewModel.Note).State = EntityState.Modified;
                         db.SaveChanges();
-
                         return View("_Hack");
+
                     }
 
                     return Content(GetErrorsFromModelState(userViewModel));
                 }
-                else if (ModelState.IsValid)
-                {
+            }
 
-                    db.Entry(userViewModel.note).State = EntityState.Modified;
-                    db.SaveChanges();
-                    return View("_Hack");
-
-                }
-            
-            return Content(GetErrorsFromModelState(userViewModel));
+            return RedirectToAction("AccesoDenegado", "Home");
         }
 
         public ActionResult EditarNota(int id)
         {
-            EscuelasController controller = new EscuelasController();
-
-            UserViewModel outreachViewModel = new UserViewModel
+            if (User.Identity.IsAuthenticated)
             {
+                var outreachNote = db.UserNotes.Find(id);
 
-                NoteTypes = controller.getNoteTypes(),
-                note = db.UserNotes.Find(id)
-            };
+                if ((Int32.Parse(User.Identity.Name.Split(',')[0]) == outreachNote.UserID && Boolean.Parse(User.Identity.Name.Split(',')[2])) || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
+                    EscuelasController controller = new EscuelasController();
 
-            return PartialView("EditarNota", outreachViewModel);
+                    UserViewModel outreachViewModel = new UserViewModel
+                    {
+
+                        NoteTypes = controller.getNoteTypes(),
+                        Note = outreachNote
+                    };
+
+                    return PartialView("EditarNota", outreachViewModel);
+                }
+            }
+
+            return RedirectToAction("AccesoDenegado", "Home");
         }
 
         [HttpPost]
         public ActionResult VerNota(int id)
         {
-            UserNote userNote = db.UserNotes.Find(id);
-            userNote.NoteType = db.NoteTypes.Find(userNote.NoteTypeID);
-
-
-            UserViewModel userViewModel = new UserViewModel
+            if (User.Identity.IsAuthenticated)
             {
-                note = userNote,
-                outreachEntity = db.OutreachEntityDetails.First(user => user.UserID == userNote.SubjectID)
-            };
+                UserNote userNote = db.UserNotes.Find(id);
+                userNote.NoteType = db.NoteTypes.Find(userNote.NoteTypeID);
+
+                if ((Int32.Parse(User.Identity.Name.Split(',')[0]) == userNote.UserID && Boolean.Parse(User.Identity.Name.Split(',')[2])) || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {           
+                    UserViewModel userViewModel = new UserViewModel
+                    {
+                        Note = userNote,
+                        OutreachEntity = db.OutreachEntityDetails.First(user => user.UserID == userNote.SubjectID)
+                    };
 
 
-            return PartialView("VerNota", userViewModel);
+                    return PartialView("VerNota", userViewModel);
+                }
+            }
+
+            return RedirectToAction("AccesoDenegado", "Home");
         }
 
         public ActionResult Lista()
@@ -483,18 +594,34 @@ namespace OPDB.Controllers
             return View(userViewModel);
         }
 
-        public ActionResult Removidos()
+        public ActionResult Removidos(string requested)
         {
-            var users = from outreach in db.Users.Include(outreach => outreach.OutreachEntityDetails) where outreach.UserTypeID == 3 && outreach.DeletionDate != null select outreach;
+            if (User.Identity.IsAuthenticated)
+            {
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1 && Boolean.Parse(requested))
+                {
+                    var users = from outreach in db.Users.Include(outreach => outreach.OutreachEntityDetails) where outreach.UserTypeID == 3 && outreach.DeletionDate != null select outreach;
 
-            return PartialView("Removidos", users.ToList());
+                    return PartialView("Removidos", users.ToList());
+                }
+            }
+
+            return RedirectToAction("AccesoDenegado", "Home");
 
         }
 
-        public ActionResult Pendientes()
+        public ActionResult Pendientes(string requested)
         {
-            var users = from u in db.Users.Include(u => u.UserDetails) where u.UserTypeID == 3 && u.DeletionDate == null && u.UserStatus != true select u;
-            return PartialView("Pendientes", users.ToList());
+            if (User.Identity.IsAuthenticated)
+            {
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1 && Boolean.Parse(requested))
+                {
+                    var users = from u in db.Users.Include(u => u.UserDetails) where u.UserTypeID == 3 && u.DeletionDate == null && u.UserStatus != true select u;
+                    return PartialView("Pendientes", users.ToList());
+                }
+            }
+
+            return RedirectToAction("AccesoDenegado", "Home");
         }
 
         public String GetErrorsFromModelState(UserViewModel userViewModel)
@@ -577,16 +704,24 @@ namespace OPDB.Controllers
         [HttpPost]
         public ActionResult Aprobar(int id)
         {
-            var user = db.Users.Find(id);
+            if (User.Identity.IsAuthenticated)
+            {
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
+                    var user = db.Users.Find(id);
 
-            user.UserStatus = true;
-            user.UpdateDate = DateTime.Now;
+                    user.UserStatus = true;
+                    user.UpdateDate = DateTime.Now;
 
-            db.Entry(user).State = EntityState.Modified;
-            db.SaveChanges();
+                    db.Entry(user).State = EntityState.Modified;
+                    db.SaveChanges();
 
-            return RedirectToAction("Administracion", "Home");
+                    return RedirectToAction("Administracion", "Home");
+                }
+            }
 
+            return RedirectToAction("AccesoDenegado", "Home");
+            
         }
 
         protected override void Dispose(bool disposing)

@@ -8,14 +8,14 @@ namespace OPDB.Models
 {
     public class UserViewModel
     {
-        public User user { get; set; }
-        public UserType userType { get; set; }
-        public UserDetail userDetail { get; set; }
-        public OutreachEntityDetail outreachEntity { get; set; }
-        public List<SelectListItem> userTypes { get; set; }
-        public List<SelectListItem> outreachTypes { get; set; }
+        public User User { get; set; }
+        public UserType UserType { get; set; }
+        public UserDetail UserDetail { get; set; }
+        public OutreachEntityDetail OutreachEntity { get; set; }
+        public List<SelectListItem> UserTypes { get; set; }
+        public List<SelectListItem> OutreachTypes { get; set; }
 
-        public UserNote note { get; set; }
+        public UserNote Note { get; set; }
         public List<SelectListItem> NoteTypes { get; set; }
         public IEnumerable<UserNote> Notes { get; set; }
 
@@ -59,6 +59,8 @@ namespace OPDB.Models
         public string UnitID { get; set; }
 
         public List<Activity> Activities { get; set; }
+
+        public string Source { get; set; }
         
     }
 }

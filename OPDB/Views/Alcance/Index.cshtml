@@ -60,8 +60,8 @@
                     @Html.DisplayFor(modelItem => item.UpdateDate)
                 </td>
                 <td>
-                    <a href="@Url.Action("Editar", "Alcance", new { id = item.UserID })"><i class="fa fa-pencil" title="Editar"></i></a>
-                    <i title="Remover" style="cursor: pointer !important;" class="fa fa-remove" onclick="removeRecord(this, 'outreach')" data-url="@Url.Action("Remover", "Alcance", new { id = item.UserID })"></i>
+                    <a href="@Url.Action("Editar", "Alcance", new { source = "Administracion", id = item.UserID })"><i class="fa fa-pencil" title="Editar"></i></a>
+                    <i title="Remover" class="fa fa-remove" onclick="removeRecord(this, 'outreach')" data-url="@Url.Action("Remover", "Alcance", new { id = item.UserID })"></i>
                 </td>
             </tr>
         }

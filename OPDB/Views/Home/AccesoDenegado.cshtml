@@ -1,7 +1,13 @@
 ﻿@{
-    ViewBag.Title = "AccesoDenegado";
+    ViewBag.Title = "Acceso Denegado";
 }
 
-<h2>You shall not paaaassss! (You are not an admin/mod)</h2>
-
-<li class="name">@Html.ActionLink("Return Home", "Index", "Home")</li>
+<center>
+    <div class="large-12 columns panel">
+        <img src="@Url.Content("~/Images/warning.ico")" /><br />
+        <h1><b>Acceso Inválido</b></h1><br />
+        <h3>Ha intentado accesar una acción del sistema para la cuál no tiene permiso.</h3>
+        <h3>Si necesita acceso, hable con algún administrador del sistema.</h3><br />
+        <a href="@Url.Action("Index", "Home")" class="btn">Regresar</a>
+    </div>
+</center>

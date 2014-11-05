@@ -19,82 +19,82 @@
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
-    @Html.HiddenFor(model => model.user.UserTypeID)
+    @Html.HiddenFor(model => model.User.UserTypeID)
     <fieldset style="width: 500px;">
         <legend>OutreachEntityDetail</legend>
         <label>Todos los campos con (*) son requeridos</label><br />
         <div class="editor-label">
-            @Html.LabelFor(model => model.user.Email, "Correo Electrónico *")
+            @Html.LabelFor(model => model.User.Email, "Correo Electrónico *")
         </div>
         <div>
             @Html.ValidationMessage("User_Email_Exists", new { @style = "float:left !important;" })
-            @Html.ValidationMessageFor(model => model.user.Email, null, new { @style = "float:left !important;" })
-            @Html.EditorFor(model => model.user.Email, new { @style = "width: 500px !important;" })
+            @Html.ValidationMessageFor(model => model.User.Email, null, new { @style = "float:left !important;" })
+            @Html.EditorFor(model => model.User.Email, new { @style = "width: 500px !important;" })
         </div>
 
         <div class="editor-label">
-            <i style="float:right; cursor:pointer;" class="fa fa-question-circle" title="Su contraseña debe contener: de 8 a 20 caracteres, al menos un digito, al menos un caracter alfabetico y no debe contener caracteres especiales."></i> @Html.LabelFor(model => model.user.UserPassword, "Contraseña *")
+            <i style="float:right; cursor:pointer;" class="fa fa-question-circle" title="Su contraseña debe contener: de 8 a 20 caracteres, al menos un digito, al menos un caracter alfabetico y no debe contener caracteres especiales."></i> @Html.LabelFor(model => model.User.UserPassword, "Contraseña *")
         </div>
         <div class="editor-field">
-            @Html.ValidationMessageFor(model => model.user.UserPassword, null, new { @style = "float:left !important;" })
-            @Html.PasswordFor(model => model.user.UserPassword, new { @style = "width: 500px !important;" })
+            @Html.ValidationMessageFor(model => model.User.UserPassword, null, new { @style = "float:left !important;" })
+            @Html.PasswordFor(model => model.User.UserPassword, new { @style = "width: 500px !important;" })
         </div>
         <div class="editor-label">
-            @Html.LabelFor(model => model.user.PhoneNumber, "Número Telefónico")
+            @Html.LabelFor(model => model.User.PhoneNumber, "Número Telefónico")
         </div>
         <div class="editor-field">
-            @Html.ValidationMessageFor(model => model.user.PhoneNumber, null, new { @style = "float:left !important;" })
-            @Html.EditorFor(model => model.user.PhoneNumber, new { @style = "width: 500px !important;" })
+            @Html.ValidationMessageFor(model => model.User.PhoneNumber, null, new { @style = "float:left !important;" })
+            @Html.EditorFor(model => model.User.PhoneNumber, new { @style = "width: 500px !important;" })
         </div>
         <div class="editor-label">
-            @Html.LabelFor(model => model.outreachEntity.OutreachEntityTypeID, "Tipo de Organización")
+            @Html.LabelFor(model => model.OutreachEntity.OutreachEntityTypeID, "Tipo de Organización")
         </div>
 
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.outreachEntity.OutreachEntityTypeID, Model.outreachTypes, new { @style = "margin: 0 0 1rem 0 !important; padding: 0.5rem !important; height: 2.3125rem !important; width: 100% !important;" })
+            @Html.DropDownListFor(model => model.OutreachEntity.OutreachEntityTypeID, Model.OutreachTypes, new { @style = "margin: 0 0 1rem 0 !important; padding: 0.5rem !important; height: 2.3125rem !important; width: 100% !important;" })
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.outreachEntity.OutreachEntityName, "Nombre de Organización *")
+            @Html.LabelFor(model => model.OutreachEntity.OutreachEntityName, "Nombre de Organización *")
         </div>
         <div class="editor-field">
             @Html.ValidationMessage("OutreachEntityDetail_OutreachEntityName_Invalid", new { @style = "float:left !important;" })
             @Html.ValidationMessage("OutreachEntityDetail_OutreachEntityName_Required", new { @style = "float:left !important;" })
-            @Html.EditorFor(model => model.outreachEntity.OutreachEntityName, new { @style = "width: 500px !important;" })
+            @Html.EditorFor(model => model.OutreachEntity.OutreachEntityName, new { @style = "width: 500px !important;" })
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.outreachEntity.Mission, "Misión *")
+            @Html.LabelFor(model => model.OutreachEntity.Mission, "Misión *")
         </div>
         <div class="editor-field">
             @Html.ValidationMessage("OutreachEntityDetail_Mission_Invalid", new { @style = "float:left !important;" })
             @Html.ValidationMessage("OutreachEntityDetail_Mission_Required", new { @style = "float:left !important;" })
-            @Html.TextAreaFor(model => model.outreachEntity.Mission, new { @style = "resize:none; width: 500px !important; height: 100px !important;" })
+            @Html.TextAreaFor(model => model.OutreachEntity.Mission, new { @style = "resize:none; width: 500px !important; height: 100px !important;" })
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.outreachEntity.Vision, "Visión *")
+            @Html.LabelFor(model => model.OutreachEntity.Vision, "Visión *")
         </div>
         <div class="editor-field">
             @Html.ValidationMessage("OutreachEntityDetail_Vision_Invalid", new { @style = "float:left !important;" })
             @Html.ValidationMessage("OutreachEntityDetail_Vision_Required", new { @style = "float:left !important;" })
-            @Html.TextAreaFor(model => model.outreachEntity.Vision, new { @style = "resize:none; width: 500px !important; height: 100px !important;" })
+            @Html.TextAreaFor(model => model.OutreachEntity.Vision, new { @style = "resize:none; width: 500px !important; height: 100px !important;" })
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.outreachEntity.Objectives, "Objetivos *")
+            @Html.LabelFor(model => model.OutreachEntity.Objectives, "Objetivos *")
         </div>
         <div class="editor-field">
             @Html.ValidationMessage("OutreachEntityDetail_Objectives_Invalid", new { @style = "float:left !important;" })
             @Html.ValidationMessage("OutreachEntityDetail_Objectives_Required", new { @style = "float:left !important;" })
-            @Html.TextAreaFor(model => model.outreachEntity.Objectives, new { @style = "resize:none; width: 500px !important; height: 100px !important;" })
+            @Html.TextAreaFor(model => model.OutreachEntity.Objectives, new { @style = "resize:none; width: 500px !important; height: 100px !important;" })
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.outreachEntity.Location, "Localización")
+            @Html.LabelFor(model => model.OutreachEntity.Location, "Localización")
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.outreachEntity.Location, new { @style = "width: 500px !important;" })
+            @Html.EditorFor(model => model.OutreachEntity.Location, new { @style = "width: 500px !important;" })
         </div>
 
         <p>

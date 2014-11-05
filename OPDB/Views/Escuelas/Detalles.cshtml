@@ -27,8 +27,17 @@
         display: none !important;
     }
 
-      .panel.callout a:not(.button) {
-      color: #222222; }
+    a span i:hover{
+           color: #008cba;
+      }
+
+      .link:hover{
+          color: #008cba !important;
+      }
+
+      .fa-remove:hover{
+          color: #008cba !important;
+      }
 
 </style>
 
@@ -67,11 +76,19 @@
         <br />
 
             <p>
-                <a href="#" title="Editar Escuela" data-title="Editar Escuela" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("PopUpEditar", "Escuelas", new { id = Model.School.SchoolID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-pencil fa-stack-1x fa-inverse"></i></span></a>
                 <a title="Regresar" onclick="window.history.back()"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-arrow-left fa-stack-1x fa-inverse"></i></span></a>
+            @if (User.Identity.IsAuthenticated) {
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                { 
+                <a href="#" title="Editar Escuela" data-title="Editar Escuela" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("PopUpEditar", "Escuelas", new { id = Model.School.SchoolID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-pencil fa-stack-1x fa-inverse"></i></span></a>   }
+                }             
             </p>       
     </div>
 
+@if (Request.IsAuthenticated)
+{
+    if ((Int32.Parse(User.Identity.Name.ToString().Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.ToString().Split(',')[2])) || Int32.Parse(User.Identity.Name.ToString().Split(',')[1]) == 1)
+    {
     <div class="large-7 columns">
         <h3>Notas</h3>
         <table id="schoolNotes">
@@ -87,9 +104,9 @@
                 {
                     <tr>
                         <td>@note.NoteType.NoteType1</td>
-                        <td><a href="#" title="Ver Nota" data-validation="false" data-title="Detalles" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("VerNota", "Escuelas", new { id = note.SchoolNoteID })" class="modal_ajax_btn">@String.Concat(note.Note.Substring(0, note.Note.Length > 100 ? 100 : note.Note.Length), "...")</a></td>
+                        <td><a href="#" title="Ver Nota" data-validation="false" data-title="Detalles" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("VerNota", "Escuelas", new { id = note.SchoolNoteID })" class="modal_ajax_btn link">@String.Concat(note.Note.Substring(0, note.Note.Length > 100 ? 100 : note.Note.Length), " ...")</a></td>
                         <td>
-                            <a href="#" title="Editar" data-title="Editar Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarNota", "Escuelas", new { id = note.SchoolNoteID })" class="modal_ajax_btn"><i class="fa fa-pencil"></i></a> 
+                            <a href="#" title="Editar" data-title="Editar Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarNota", "Escuelas", new { id = note.SchoolNoteID })" class="modal_ajax_btn link"><i class="fa fa-pencil"></i></a> 
                             <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this, 'schoolNotes')" data-url="@Url.Action("RemoverNota", "Escuelas", new { id = note.SchoolNoteID })"></i>
   
                         </td>
@@ -97,13 +114,12 @@
                 }
             </tbody>          
         </table>
-        <a href="#" title="Añadir Nota" class="modal_ajax_btn" data-title="Nueva Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Escuelas", new { id = Model.School.SchoolID })"><input type="button" class="btn" value="Añadir Nota" /></a>
-    </div>
+@if (Int32.Parse(User.Identity.Name.ToString().Split(',')[0]) == 3 && Boolean.Parse(User.Identity.Name.ToString().Split(',')[2])) {
+        <a href="#" title="Añadir Nota" class="modal_ajax_btn" data-title="Nueva Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Escuelas", new { id = Model.School.SchoolID })"><input type="button" class="btn" value="Añadir Nota" /></a>}
+    </div>}
+}
 </div>
-
-    @*<a href="#" title="Editar" data-title="Editar Escuela" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("PopUpEditar", "Escuelas", new { id = Model.School.SchoolID })" class="modal_ajax_btn"><input type="button" value="Editar" class="btn"></a>*@
-    @*<a href="#" title="Añadir Nota" class="modal_ajax_btn" data-title="Nueva Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Escuelas", new { id = Model.School.SchoolID })"><input type="button" class="btn" value="Añadir Nota" /></a>*@
-    @*<input type="button" class="btn" value="Devuelta" onclick="window.history.back()" />*@
+   
                     
 <script src="~/Scripts/myScripts.js"></script>
 <script>

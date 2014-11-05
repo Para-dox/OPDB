@@ -29,10 +29,7 @@
      .last, .first, .previous, .next{
         display: none !important;
     }
-
-      /*.panel.callout a:not(.button) {
-      color: #222222; }*/
-
+     
       a span i:hover{
            color: #008cba;
       }
@@ -46,46 +43,47 @@
       }
 </style>
 
-<h2>@Html.DisplayFor(model => model.userDetail.FirstName)&nbsp;@if (Model.userDetail.MiddleInitial != null){@Html.DisplayFor(model => model.userDetail.MiddleInitial)<r>&nbsp;</r>}@Html.DisplayFor(model => model.userDetail.LastName)</h2>
+<h2>@Html.DisplayFor(model => model.UserDetail.FirstName)&nbsp;@if (Model.UserDetail.MiddleInitial != null)
+                                                               {@Html.DisplayFor(model => model.UserDetail.MiddleInitial)<r>&nbsp;</r>}@Html.DisplayFor(model => model.UserDetail.LastName)</h2>
 <div class="panel large-12 columns callout">
     <div class="large-5 columns">
         <div class="display-label">
-            @Html.LabelFor(model => model.user.UserType.UserType1, "Tipo de Usuario")
+            @Html.LabelFor(model => model.User.UserType.UserType1, "Tipo de Usuario")
         </div>
         <div class="display-field">
-            @Html.DisplayFor(model => model.user.UserType.UserType1)
+            @Html.DisplayFor(model => model.User.UserType.UserType1)
         </div>
         <br />
         <div class="display-label">
-            @Html.LabelFor(model => model.user.Email, "Correo Electrónico")
+            @Html.LabelFor(model => model.User.Email, "Correo Electrónico")
         </div>
         <div class="display-field">
-            @Html.DisplayFor(model => model.user.Email)
+            @Html.DisplayFor(model => model.User.Email)
         </div>
         <br />
         <div class="display-label">
-            @Html.LabelFor(model => model.user.PhoneNumber, "Número Telefónico")
+            @Html.LabelFor(model => model.User.PhoneNumber, "Número Telefónico")
         </div>
         <div class="display-field">
-            @Html.DisplayFor(model => model.user.PhoneNumber)
+            @Html.DisplayFor(model => model.User.PhoneNumber)
         </div>
-        @if (Model.userDetail.Major != null)
+        @if (Model.UserDetail.Major != null)
         {
             <div class="display-label">
-                @Html.LabelFor(model => model.userDetail.Major, "Concentración")
+                @Html.LabelFor(model => model.UserDetail.Major, "Concentración")
             </div>
             <div class="display-field">
-                @Html.DisplayFor(model => model.userDetail.Major)
+                @Html.DisplayFor(model => model.UserDetail.Major)
             </div>
             <br />
         }
-        else if (Model.userDetail.Role != null)
+        else if (Model.UserDetail.Role != null)
         {
             <div class="display-label">
-                @Html.LabelFor(model => model.userDetail.Role, "Rol")
+                @Html.LabelFor(model => model.UserDetail.Role, "Rol")
             </div>
             <div class="display-field">
-                @Html.DisplayFor(model => model.userDetail.Role)
+                @Html.DisplayFor(model => model.UserDetail.Role)
             </div>
             <br />
         }
@@ -94,12 +92,17 @@
 
         @if (User.Identity.IsAuthenticated)
         {
-            if (Int32.Parse(User.Identity.Name.Split(',')[0]) == Model.user.UserID)
+            if (Int32.Parse(User.Identity.Name.Split(',')[0]) == Model.User.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
             {
-                <a title="Editar Usuario" href="@Url.Action("Editar", "Usuarios", new { id = Model.user.UserID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-pencil fa-stack-1x fa-inverse"></i></span></a>
+                <a title="Editar Usuario" href="@Url.Action("Editar", "Usuarios", new { source = "Detalles", id = Model.User.UserID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-pencil fa-stack-1x fa-inverse"></i></span></a>
             }
         }
     </div>
+
+@if (User.Identity.IsAuthenticated)
+{
+    if ((Int32.Parse(User.Identity.Name.ToString().Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.ToString().Split(',')[2])) || Int32.Parse(User.Identity.Name.ToString().Split(',')[1]) == 1)
+    {
     <div class="large-7 columns">
         <h3>Notas</h3>
         <table id="userNotes">
@@ -115,7 +118,7 @@
                 {
                     <tr>
                         <td>@note.NoteType.NoteType1</td>
-                        <td><a href="#" title="Ver Nota" data-validation="false" style="color:#222222;" data-title="Detalles" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("VerNota", "Usuarios", new { id = note.UserNoteID })" class="modal_ajax_btn link">@String.Concat(note.Note.Substring(0, note.Note.Length > 100 ? 100 : note.Note.Length), "...")</a></td>
+                        <td><a href="#" title="Ver Nota" data-validation="false" style="color:#222222;" data-title="Detalles" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("VerNota", "Usuarios", new { id = note.UserNoteID })" class="modal_ajax_btn link">@String.Concat(note.Note.Substring(0, note.Note.Length > 100 ? 100 : note.Note.Length), " ...")</a></td>
                         <td>
                             <a href="#" title="Editar" style="color:#222222;" data-title="Editar Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarNota", "Usuarios", new { id = note.UserNoteID })" class="modal_ajax_btn link"><i class="fa fa-pencil"></i></a> 
                             <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this, 'userNotes')" data-url="@Url.Action("RemoverNota", "Usuarios", new { id = note.UserNoteID })"></i>
@@ -126,8 +129,11 @@
             </tbody>
 
         </table><br />
-        <a href="#" title="Añadir Nota" class="modal_ajax_btn" data-title="Nueva Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Usuarios", new { id = Model.user.UserID })"><input type="button" class="btn" value="Añadir Nota" /></a>
-    </div>
+@if (Int32.Parse(User.Identity.Name.ToString().Split(',')[0]) == 3 && Boolean.Parse(User.Identity.Name.ToString().Split(',')[2]))
+{
+        <a href="#" title="Añadir Nota" class="modal_ajax_btn" data-title="Nueva Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Usuarios", new { id = Model.User.UserID })"><input type="button" class="btn" value="Añadir Nota" /></a>}
+    </div>}
+}
 </div>
 
 <script src="~/Scripts/myScripts.js"></script>
