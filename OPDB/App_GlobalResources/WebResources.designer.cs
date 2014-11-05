@@ -196,6 +196,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No ha ingresado un título para este medio.
+        /// </summary>
+        internal static string Media_MediaTitle_Required {
+            get {
+                return ResourceManager.GetString("Media_MediaTitle_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to El contenido de la misión de la entidad de alcance es inválido.
         /// </summary>
         internal static string OutreachEntityDetail_Mission_Invalid {
