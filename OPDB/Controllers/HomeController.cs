@@ -22,7 +22,6 @@ namespace OPDB.Controllers
         public ActionResult Index()
         {
             User currentUser = null;
-            DateTime date = DateTime.Now.AddDays(7);
 
             if (User.Identity.IsAuthenticated)
             {
@@ -39,7 +38,11 @@ namespace OPDB.Controllers
                 Information = new List<UserInfoViewModel>()
             };
 
-            var activities = (from activity in db.Activities.Include(a => a.ActivityType) where activity.ActivityDate > date && activity.DeletionDate == null orderby activity.UpdateDate descending select activity).Take(6).ToList();
+            DateTime start = DateTime.Now;
+            DateTime end = DateTime.Now.AddDays(7);
+
+            var activities = (from activity in db.Activities.Include(a => a.ActivityType) where ((activity.ActivityDate >= start) && (activity.ActivityDate <= end)) && activity.DeletionDate == null orderby activity.UpdateDate descending select activity).Take(6).ToList();
+           
 
             foreach (var activity in activities)
             {
@@ -568,6 +571,20 @@ namespace OPDB.Controllers
         public ActionResult AccesoDenegado()
         {
             return View("AccesoDenegado");
+        }
+    }
+
+    public static class DateTimeExtensions
+    {
+        public static DateTime StartOfWeek(this DateTime dt, DayOfWeek startOfWeek)
+        {
+            int diff = dt.DayOfWeek - startOfWeek;
+            if (diff < 0)
+            {
+                diff += 7;
+            }
+
+            return dt.AddDays(-1 * diff).Date;
         }
     }
 }
