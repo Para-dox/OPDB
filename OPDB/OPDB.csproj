@@ -324,6 +324,7 @@
     <Content Include="Content\multi-select\chosen-sprite.png" />
     <Content Include="Content\multi-select\chosen.css" />
     <Content Include="Content\multi-select\multi-select.css" />
+    <Content Include="Content\orderedList.css" />
     <Content Include="Content\sceditor\default.min.css" />
     <Content Include="Content\sceditor\famfamfam.png" />
     <Content Include="Content\sceditor\jquery.sceditor.default.min.css" />
@@ -407,6 +408,8 @@
     <Content Include="Content\images\sort_both.png" />
     <Content Include="Content\images\sort_desc.png" />
     <Content Include="Content\images\sort_desc_disabled.png" />
+    <Content Include="Images\search.svg" />
+    <Content Include="Images\warning.ico" />
     <Content Include="Scripts\jquery-ui-1.10.4.js" />
     <Content Include="Scripts\jquery-ui-1.10.4.min.js" />
     <Content Include="Scripts\jquery-ui.unobtrusive-2.2.0.js" />

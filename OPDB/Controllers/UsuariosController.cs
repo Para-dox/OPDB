@@ -20,20 +20,37 @@ namespace OPDB.Controllers
         //
         // GET: /Usuarios/
 
-        public ActionResult Index()
+        public ActionResult Index(string requested)
         {
-            if (!Request.IsAuthenticated || (Int32.Parse(User.Identity.Name.Split(',')[1]) != 1))
+            if (requested != null)
             {
-                return RedirectToAction("AccesoDenegado", "Home", null);
-            }
-
+                if (User.Identity.IsAuthenticated)
+                {
+                    if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1 && Boolean.Parse(requested))
+                    {
             var users = from u in db.Users.Include(u => u.UserType).Include(u => u.UserDetails) where u.UserTypeID != 3 && u.DeletionDate == null select u;
             return PartialView("Index", users.ToList());
         }
+                }
+            }
 
-        public ActionResult MenuUsuarios()
+            return RedirectToAction("AccesoDenegado", "Home");
+        }
+
+        public ActionResult MenuUsuarios(string requested)
         {
+            if (requested != null)
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1 && Boolean.Parse(requested))
+                    {
             return PartialView("Usuarios");
+        }
+                }
+            }
+
+            return RedirectToAction("AccesoDenegado", "Home");
         }
 
         //
@@ -41,20 +58,28 @@ namespace OPDB.Controllers
 
         public ActionResult Detalles(int id = 0)
         {
-            UserViewModel user = new UserViewModel
+            UserViewModel userViewModel = new UserViewModel
             {
-                user = db.Users.Find(id),
-                userDetail = (from ud in db.UserDetails where ud.UserID == id select ud).SingleOrDefault(),
-                Notes = from note in db.UserNotes.Include(note => note.NoteType) where note.SubjectID == id && note.DeletionDate == null select note
-
+                User = db.Users.Find(id),
+                UserDetail = (from ud in db.UserDetails where ud.UserID == id select ud).SingleOrDefault()
             };
             
-            if (user == null)
+            if (userViewModel == null)
             {
                 return HttpNotFound();
             }
 
-            return View(user);
+            if(Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.Split(',')[2]))
+            {
+                int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
+                userViewModel.Notes = from note in db.UserNotes.Include(note => note.NoteType) where note.SubjectID == id && note.UserID == userID && note.DeletionDate == null select note;
+        }
+            else if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+            {
+                userViewModel.Notes = from note in db.UserNotes.Include(note => note.NoteType) where note.SubjectID == id && note.DeletionDate == null select note;
+            }
+
+            return View(userViewModel);
         }
 
         //
@@ -65,8 +90,8 @@ namespace OPDB.Controllers
            
             UserViewModel user = new UserViewModel{
 
-                userTypes = getTypes(),
-                outreachTypes = getOutreachTypes()
+                UserTypes = getTypes(),
+                OutreachTypes = getOutreachTypes()
                         
             };            
 
@@ -81,12 +106,12 @@ namespace OPDB.Controllers
         {
             if (ModelState.IsValid)
             {
-                userViewModel.user.CreateDate = DateTime.Now;
-                userViewModel.user.UpdateDate = DateTime.Now;
-                userViewModel.user.UserStatus = false;
+                userViewModel.User.CreateDate = DateTime.Now;
+                userViewModel.User.UpdateDate = DateTime.Now;
+                userViewModel.User.UserStatus = false;
                 bool validModel = true;
 
-                User matchingUser = db.Users.FirstOrDefault(u => u.Email == userViewModel.user.Email);
+                User matchingUser = db.Users.FirstOrDefault(u => u.Email == userViewModel.User.Email);
 
                 if (matchingUser != null)
                 {
@@ -94,10 +119,10 @@ namespace OPDB.Controllers
                     validModel = false;
                 }
 
-                if (userViewModel.user.UserTypeID == 3)
+                if (userViewModel.User.UserTypeID == 3)
                 {
 
-                    if (userViewModel.outreachEntity.OutreachEntityName == null || userViewModel.outreachEntity.OutreachEntityName == "")
+                    if (userViewModel.OutreachEntity.OutreachEntityName == null || userViewModel.OutreachEntity.OutreachEntityName == "")
                     {
                         ModelState.AddModelError("OutreachEntityDetail_OutreachEntityName_Required", Resources.WebResources.OutreachEntityDetail_OutreachEntityName_Required);
                         validModel = false;
@@ -106,7 +131,7 @@ namespace OPDB.Controllers
                     {
                         string pattern = @"^([a-zA-Z\u00c0-\u017e'\s]+[^\s-][-]?){1,100}$";
                         Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                        MatchCollection matches = rgx.Matches(userViewModel.outreachEntity.OutreachEntityName);
+                        MatchCollection matches = rgx.Matches(userViewModel.OutreachEntity.OutreachEntityName);
                         if (matches.Count == 0)
                         {
                             ModelState.AddModelError("OutreachEntity_OutreachEntityName_Invalid", Resources.WebResources.OutreachEntityDetail_OutreachEntityName_Invalid);
@@ -115,7 +140,7 @@ namespace OPDB.Controllers
 
                     }
 
-                    if (userViewModel.outreachEntity.Mission == null || userViewModel.outreachEntity.Mission == "")
+                    if (userViewModel.OutreachEntity.Mission == null || userViewModel.OutreachEntity.Mission == "")
                     {
                         ModelState.AddModelError("OutreachEntityDetail_Mission_Required", Resources.WebResources.OutreachEntityDetail_Mission_Required);
                         validModel = false;
@@ -124,7 +149,7 @@ namespace OPDB.Controllers
                     {
                         string pattern = @"^([a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""'\s]+[^\s-][-]?)+$";
                         Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                        MatchCollection matches = rgx.Matches(userViewModel.outreachEntity.Mission);
+                        MatchCollection matches = rgx.Matches(userViewModel.OutreachEntity.Mission);
                         if (matches.Count == 0)
                         {
                             ModelState.AddModelError("OutreachEntityDetail_Mission_Invalid", Resources.WebResources.OutreachEntityDetail_Mission_Invalid);
@@ -133,7 +158,7 @@ namespace OPDB.Controllers
 
                     }
 
-                    if (userViewModel.outreachEntity.Vision == null || userViewModel.outreachEntity.Vision == "")
+                    if (userViewModel.OutreachEntity.Vision == null || userViewModel.OutreachEntity.Vision == "")
                     {
                         ModelState.AddModelError("OutreachEntityDetail_Vision_Required", Resources.WebResources.OutreachEntityDetail_Vision_Required);
                         validModel = false;
@@ -142,7 +167,7 @@ namespace OPDB.Controllers
                     {
                         string pattern = @"^([a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""'\s]+[^\s-][-]?)+$";
                         Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                        MatchCollection matches = rgx.Matches(userViewModel.outreachEntity.Vision);
+                        MatchCollection matches = rgx.Matches(userViewModel.OutreachEntity.Vision);
                         if (matches.Count == 0)
                         {
                             ModelState.AddModelError("OutreachEntityDetail_Vision_Invalid", Resources.WebResources.OutreachEntityDetail_Vision_Invalid);
@@ -151,7 +176,7 @@ namespace OPDB.Controllers
 
                     }
 
-                    if (userViewModel.outreachEntity.Objectives == null || userViewModel.outreachEntity.Objectives == "")
+                    if (userViewModel.OutreachEntity.Objectives == null || userViewModel.OutreachEntity.Objectives == "")
                     {
                         ModelState.AddModelError("OutreachEntityDetail_Objectives_Required", Resources.WebResources.OutreachEntityDetail_Objectives_Required);
                         validModel = false;
@@ -160,7 +185,7 @@ namespace OPDB.Controllers
                     {
                         string pattern = @"^([a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""'\s]+[^\s-][-]?)+$";
                         Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                        MatchCollection matches = rgx.Matches(userViewModel.outreachEntity.Objectives);
+                        MatchCollection matches = rgx.Matches(userViewModel.OutreachEntity.Objectives);
                         if (matches.Count == 0)
                         {
                             ModelState.AddModelError("OutreachEntityDetail_Objectives_Invalid", Resources.WebResources.OutreachEntityDetail_Objectives_Invalid);
@@ -171,17 +196,17 @@ namespace OPDB.Controllers
 
                     if (validModel)
                     {
-                        userViewModel.outreachEntity.CreateDate = DateTime.Now;
-                        userViewModel.outreachEntity.UpdateDate = DateTime.Now;
-                        userViewModel.user.OutreachEntityDetails = new List<OutreachEntityDetail>();
-                        userViewModel.user.OutreachEntityDetails.Add(userViewModel.outreachEntity);
-                        db.Users.Add(userViewModel.user);
+                        userViewModel.OutreachEntity.CreateDate = DateTime.Now;
+                        userViewModel.OutreachEntity.UpdateDate = DateTime.Now;
+                        userViewModel.User.OutreachEntityDetails = new List<OutreachEntityDetail>();
+                        userViewModel.User.OutreachEntityDetails.Add(userViewModel.OutreachEntity);
+                        db.Users.Add(userViewModel.User);
                     }
 
                     else
                     {
-                        userViewModel.userTypes = getTypes();
-                        userViewModel.outreachTypes = getOutreachTypes();
+                        userViewModel.UserTypes = getTypes();
+                        userViewModel.OutreachTypes = getOutreachTypes();
                         return View(userViewModel);
                     }
                 }
@@ -189,7 +214,7 @@ namespace OPDB.Controllers
                 else
                 {
 
-                    if (userViewModel.userDetail.FirstName == null || userViewModel.userDetail.FirstName == "")
+                    if (userViewModel.UserDetail.FirstName == null || userViewModel.UserDetail.FirstName == "")
                     {
                         ModelState.AddModelError("UserDetail_FirstName_Required", Resources.WebResources.UserDetail_FirstName_Required);
                         validModel = false;
@@ -198,7 +223,7 @@ namespace OPDB.Controllers
                     {
                         string pattern = @"^[a-zA-Z\u00c0-\u017e''-'\s]{1,50}$";
                         Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                        MatchCollection matches = rgx.Matches(userViewModel.userDetail.FirstName);
+                        MatchCollection matches = rgx.Matches(userViewModel.UserDetail.FirstName);
                         if (matches.Count == 0)
                         {
                             ModelState.AddModelError("UserDetail_FirstName_Invalid", Resources.WebResources.UserDetail_FirstName_Invalid);
@@ -207,7 +232,7 @@ namespace OPDB.Controllers
 
                     }
 
-                    if (userViewModel.userDetail.LastName == null || userViewModel.userDetail.LastName == "")
+                    if (userViewModel.UserDetail.LastName == null || userViewModel.UserDetail.LastName == "")
                     {
                         ModelState.AddModelError("UserDetail_LastName_Required", Resources.WebResources.UserDetail_LastName_Required);
                         validModel = false;
@@ -216,7 +241,7 @@ namespace OPDB.Controllers
                     {
                         string pattern = @"^[a-zA-Z\u00c0-\u017e''-'\s]{1,50}$";
                         Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                        MatchCollection matches = rgx.Matches(userViewModel.userDetail.LastName);
+                        MatchCollection matches = rgx.Matches(userViewModel.UserDetail.LastName);
                         if (matches.Count == 0)
                         {
                             ModelState.AddModelError("UserDetail_LastName_Invalid", Resources.WebResources.UserDetail_LastName_Invalid);
@@ -225,17 +250,17 @@ namespace OPDB.Controllers
 
                     }
 
-                    if (userViewModel.userDetail.Gender == null || userViewModel.userDetail.Gender == "")
+                    if (userViewModel.UserDetail.Gender == null || userViewModel.UserDetail.Gender == "")
                     {
                         ModelState.AddModelError("UserDetail_Gender_Required", Resources.WebResources.UserDetail_Gender_Required);
                         validModel = false;
                     }
 
-                    if (userViewModel.userDetail.MiddleInitial != null)
+                    if (userViewModel.UserDetail.MiddleInitial != null)
                     {
                         string pattern = @"^[A-Z]$";
                         Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                        MatchCollection matches = rgx.Matches(userViewModel.userDetail.MiddleInitial);
+                        MatchCollection matches = rgx.Matches(userViewModel.UserDetail.MiddleInitial);
                         if (matches.Count == 0)
                         {
                             ModelState.AddModelError("UserDetail_MiddleInitial_Invalid", Resources.WebResources.UserDetail_MiddleInitial_Invalid);
@@ -246,29 +271,29 @@ namespace OPDB.Controllers
 
                     if (validModel)
                     {
-                        userViewModel.userDetail.CreateDate = DateTime.Now;
-                        userViewModel.userDetail.UpdateDate = DateTime.Now;
-                        userViewModel.user.UserDetails = new List<UserDetail>();
-                        userViewModel.user.UserDetails.Add(userViewModel.userDetail);
-                        db.Users.Add(userViewModel.user);
+                        userViewModel.UserDetail.CreateDate = DateTime.Now;
+                        userViewModel.UserDetail.UpdateDate = DateTime.Now;
+                        userViewModel.User.UserDetails = new List<UserDetail>();
+                        userViewModel.User.UserDetails.Add(userViewModel.UserDetail);
+                        db.Users.Add(userViewModel.User);
                     }
 
                     else
                     {
-                        userViewModel.userTypes = getTypes();
-                        userViewModel.outreachTypes = getOutreachTypes();
+                        userViewModel.UserTypes = getTypes();
+                        userViewModel.OutreachTypes = getOutreachTypes();
                         return View(userViewModel);
                     }
                 }
 
                 db.SaveChanges();
 
-                return RedirectToAction("Index", "Home", null); // changed to redirect to Index instead of Administracion, for now
+                return RedirectToAction("Index", "Home");
 
             }
 
-            userViewModel.userTypes = getTypes();
-            userViewModel.outreachTypes = getOutreachTypes();
+            userViewModel.UserTypes = getTypes();
+            userViewModel.OutreachTypes = getOutreachTypes();
 
             return View(userViewModel);
         }
@@ -285,20 +310,20 @@ namespace OPDB.Controllers
 
                     UserViewModel userViewModel = new UserViewModel
                     {
-                        user = db.Users.Find(id),
-                        userDetail = db.UserDetails.FirstOrDefault(i => i.UserID == id),
+                        User = db.Users.Find(id),
+                        UserDetail = db.UserDetails.FirstOrDefault(i => i.UserID == id),
                         Schools = getSchools(),
                         OutreachEntities = getOutreachEntities(),
                         Units = getUnits()
                     };
 
                     if (Int32.Parse(User.Identity.Name.Split(',')[0]) == id)
-                        userViewModel.userTypes = getUserTypes();
+                        userViewModel.UserTypes = getUserTypes();
 
                     if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
-                        userViewModel.userTypes = getAllUserTypes();
+                        userViewModel.UserTypes = getAllUserTypes();
 
-                    if (userViewModel.user == null)
+                    if (userViewModel.User == null)
                     {
                         return HttpNotFound();
                     }
@@ -317,6 +342,10 @@ namespace OPDB.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Editar(UserViewModel userViewModel)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (Int32.Parse(User.Identity.Name.Split(',')[0]) == userViewModel.User.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
             if (ModelState.IsValid)
             {
                 //if(userViewModel.SchoolID != "")
@@ -330,7 +359,7 @@ namespace OPDB.Controllers
 
                 bool validModel = true;
 
-                if (userViewModel.userDetail.FirstName == null || userViewModel.userDetail.FirstName == "")
+                        if (userViewModel.UserDetail.FirstName == null || userViewModel.UserDetail.FirstName == "")
                 {
                     ModelState.AddModelError("UserDetail_FirstName_Required", Resources.WebResources.UserDetail_FirstName_Required);
                     validModel = false;
@@ -339,7 +368,7 @@ namespace OPDB.Controllers
                 {
                     string pattern = @"^[a-zA-Z\u00c0-\u017e''-'\s]{1,50}$";
                     Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                    MatchCollection matches = rgx.Matches(userViewModel.userDetail.FirstName);
+                            MatchCollection matches = rgx.Matches(userViewModel.UserDetail.FirstName);
                     if (matches.Count == 0)
                     {
                         ModelState.AddModelError("UserDetail_FirstName_Invalid", Resources.WebResources.UserDetail_FirstName_Invalid);
@@ -348,7 +377,7 @@ namespace OPDB.Controllers
 
                 }
 
-                if (userViewModel.userDetail.LastName == null || userViewModel.userDetail.LastName == "")
+                        if (userViewModel.UserDetail.LastName == null || userViewModel.UserDetail.LastName == "")
                 {
                     ModelState.AddModelError("UserDetail_LastName_Required", Resources.WebResources.UserDetail_LastName_Required);
                     validModel = false;
@@ -357,7 +386,7 @@ namespace OPDB.Controllers
                 {
                     string pattern = @"^[a-zA-Z\u00c0-\u017e''-'\s]{1,50}$";
                     Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                    MatchCollection matches = rgx.Matches(userViewModel.userDetail.LastName);
+                            MatchCollection matches = rgx.Matches(userViewModel.UserDetail.LastName);
                     if (matches.Count == 0)
                     {
                         ModelState.AddModelError("UserDetail_LastName_Invalid", Resources.WebResources.UserDetail_LastName_Invalid);
@@ -366,17 +395,17 @@ namespace OPDB.Controllers
 
                 }
 
-                if (userViewModel.userDetail.Gender == null || userViewModel.userDetail.Gender == "")
+                        if (userViewModel.UserDetail.Gender == null || userViewModel.UserDetail.Gender == "")
                 {
                     ModelState.AddModelError("UserDetail_Gender_Required", Resources.WebResources.UserDetail_Gender_Required);
                     validModel = false;
                 }
 
-                if (userViewModel.userDetail.MiddleInitial != null)
+                        if (userViewModel.UserDetail.MiddleInitial != null)
                 {
                     string pattern = @"^[A-Z]$";
                     Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                    MatchCollection matches = rgx.Matches(userViewModel.userDetail.MiddleInitial);
+                            MatchCollection matches = rgx.Matches(userViewModel.UserDetail.MiddleInitial);
                     if (matches.Count == 0)
                     {
                         ModelState.AddModelError("UserDetail_MiddleInitial_Invalid", Resources.WebResources.UserDetail_MiddleInitial_Invalid);
@@ -385,11 +414,11 @@ namespace OPDB.Controllers
 
                 }
 
-                if (userViewModel.userDetail.Role != null)
+                        if (userViewModel.UserDetail.Role != null)
                 {
                     string pattern = @"^[a-zA-Z\u00c0-\u017e]{1,50}$";
                     Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                    MatchCollection matches = rgx.Matches(userViewModel.userDetail.Role);
+                            MatchCollection matches = rgx.Matches(userViewModel.UserDetail.Role);
                     if (matches.Count == 0)
                     {
                         ModelState.AddModelError("UserDetail_Role_Invalid", Resources.WebResources.UserDetail_Role_Invalid);
@@ -398,11 +427,11 @@ namespace OPDB.Controllers
 
                 }
 
-                if (userViewModel.userDetail.Major != null)
+                        if (userViewModel.UserDetail.Major != null)
                 {
                     string pattern = @"^[a-zA-Z\u00c0-\u017e]{1,50}$";
                     Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                    MatchCollection matches = rgx.Matches(userViewModel.userDetail.Major);
+                            MatchCollection matches = rgx.Matches(userViewModel.UserDetail.Major);
                     if (matches.Count == 0)
                     {
                         ModelState.AddModelError("UserDetail_Major_Invalid", Resources.WebResources.UserDetail_Major_Invalid);
@@ -413,25 +442,31 @@ namespace OPDB.Controllers
 
                 if (validModel)
                 {
-                    userViewModel.user.UpdateDate = DateTime.Now;
-                    userViewModel.userDetail.UpdateDate = DateTime.Now;
-                    db.Entry(userViewModel.user).State = EntityState.Modified;
-                    db.Entry(userViewModel.userDetail).State = EntityState.Modified;
+                            userViewModel.User.UpdateDate = DateTime.Now;
+                            userViewModel.UserDetail.UpdateDate = DateTime.Now;
+                            db.Entry(userViewModel.User).State = EntityState.Modified;
+                            db.Entry(userViewModel.UserDetail).State = EntityState.Modified;
                     db.SaveChanges();
-                    return RedirectToAction("Administracion", "Home", null);
+
+                            if (userViewModel.Source == "Administracion")
+                                return RedirectToAction("Administracion", "Home");
+
+                            else if (userViewModel.Source == "Detalles")
+                                return RedirectToAction("Detalles", "Usuarios", new { id = userViewModel.User.UserID });
                 }
 
+                    }
+
+                    if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                        userViewModel.UserTypes = getAllUserTypes();
                 else
-                {
-                    userViewModel.userTypes = getTypes();
+                        userViewModel.UserTypes = getUserTypes();
+
                     return View(userViewModel);
                 }
-
-               
             }
 
-            userViewModel.userTypes = getTypes();
-            return View(userViewModel);
+            return RedirectToAction("AccesoDenegado", "Home");
         }
 
         //
@@ -440,6 +475,10 @@ namespace OPDB.Controllers
         [HttpPost]
         public ActionResult Remover(int id = 0)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
             User user = db.Users.Find(id);
             UserDetail userDetail = db.UserDetails.FirstOrDefault(i => i.UserID == id);
             if (user == null)
@@ -452,7 +491,8 @@ namespace OPDB.Controllers
                 userDetail.DeletionDate = DateTime.Now;
                 db.Entry(user).State = EntityState.Modified;
                 db.Entry(userDetail).State = EntityState.Modified;
-                try { 
+                        try
+                        {
                         db.SaveChanges();
                 }
                 catch (DbEntityValidationException ex)
@@ -473,12 +513,20 @@ namespace OPDB.Controllers
                                
                 }
             }
-            return RedirectToAction("Administracion", "Home", null);
+                    return RedirectToAction("Administracion", "Home");
+                }
+            }
+
+            return RedirectToAction("AccesoDenegado", "Home");
         }
 
         [HttpPost]
         public ActionResult Restaurar(int id = 0)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
             User user = db.Users.Find(id);
             UserDetail userDetail = db.UserDetails.FirstOrDefault(i => i.UserID == id);
             if (user == null)
@@ -495,14 +543,27 @@ namespace OPDB.Controllers
             }
             return RedirectToAction("Administracion", "Home", null);
         }
+            }
+
+            return RedirectToAction("AccesoDenegado", "Home");
+        }
 
         public ActionResult RemoverNota(int id)
         {
+            if (User.Identity.IsAuthenticated)
+            {
             var note = db.UserNotes.Find(id);
+
+                if ((Int32.Parse(User.Identity.Name.Split(',')[0]) == note.UserID && Boolean.Parse(User.Identity.Name.Split(',')[2])) || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {                    
             note.DeletionDate = DateTime.Now;
             db.Entry(note).State = EntityState.Modified;
             db.SaveChanges();
             return RedirectToAction("Detalles", "Usuarios", new { id = note.SubjectID });
+        }
+            }
+
+            return RedirectToAction("AccesoDenegado", "Home");
         }
 
         
@@ -570,7 +631,6 @@ namespace OPDB.Controllers
             }
 
             return types;
-
         }
 
         public List<SelectListItem> getSchools()
@@ -645,13 +705,18 @@ namespace OPDB.Controllers
         [HttpPost]
         public ActionResult CrearNota(int id)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.Split(',')[2]))
+                {
             EscuelasController controller = new EscuelasController();
 
             UserViewModel userViewModel = new UserViewModel
             {
 
                 NoteTypes = controller.getNoteTypes(),
-                note = new UserNote
+                        Note = new UserNote
                 {
 
                     SubjectID = id
@@ -660,25 +725,35 @@ namespace OPDB.Controllers
 
             return PartialView("CrearNota", userViewModel);
         }
+            }
+
+            return RedirectToAction("AccesoDenegado", "Home");
+        }
 
 
         [HttpPost]
         public ActionResult GuardarNota(UserViewModel userViewModel)
         {
+            if (User.Identity.IsAuthenticated)
+            {
 
-            userViewModel.note.UpdateUser = 2;
-            userViewModel.note.UpdateDate = DateTime.Now;
+                if ((Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.Split(',')[2])) || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
+                    int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
 
-            if (userViewModel.note.UserNoteID == 0)
+                    userViewModel.Note.UpdateUser = userID;
+                    userViewModel.Note.UpdateDate = DateTime.Now;
+
+                    if (userViewModel.Note.UserNoteID == 0)
             {
                 if (ModelState.IsValid) 
                 { 
-                    userViewModel.note.CreateDate = DateTime.Now;
+                            userViewModel.Note.CreateDate = DateTime.Now;
 
-                    userViewModel.note.UserID = 2;
-                    userViewModel.note.CreateUser = 2;
+                            userViewModel.Note.UserID = userID;
+                            userViewModel.Note.CreateUser = userID;
 
-                    db.UserNotes.Add(userViewModel.note);
+                            db.UserNotes.Add(userViewModel.Note);
                     db.SaveChanges();
 
                     return View("_Hack");
@@ -686,10 +761,10 @@ namespace OPDB.Controllers
 
                 return Content(GetErrorsFromModelState(userViewModel));          
             }
-            else if(ModelState.IsValid)
+                    else if (ModelState.IsValid)
             {
 
-                db.Entry(userViewModel.note).State = EntityState.Modified;
+                        db.Entry(userViewModel.Note).State = EntityState.Modified;
                 db.SaveChanges();
                 return View("_Hack");                
                 
@@ -697,38 +772,61 @@ namespace OPDB.Controllers
 
             return Content(GetErrorsFromModelState(userViewModel));
         }
+            }
+
+            return RedirectToAction("AccesoDenegado", "Home");
+        }
 
         [HttpPost]
         public ActionResult EditarNota(int id)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+
+                if ((Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.Split(',')[2])) || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
             EscuelasController controller = new EscuelasController();
 
             UserViewModel userViewModel = new UserViewModel
             {
 
                 NoteTypes = controller.getNoteTypes(),
-                note = db.UserNotes.Find(id)
+                        Note = db.UserNotes.Find(id)
             };
 
             return PartialView("EditarNota", userViewModel);
+        }
+            }
+
+            return RedirectToAction("AccesoDenegado", "Home");
         }
 
 
         [HttpPost]
         public ActionResult VerNota(int id)
         {
+            if (User.Identity.IsAuthenticated)
+            {
             UserNote userNote = db.UserNotes.Find(id);
+
+                if ((Int32.Parse(User.Identity.Name.Split(',')[0]) == userNote.UserID && Boolean.Parse(User.Identity.Name.Split(',')[2])) || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
+                    
             userNote.NoteType = db.NoteTypes.Find(userNote.NoteTypeID);
             
 
             UserViewModel userViewModel = new UserViewModel
             {
-                note = userNote,
-                userDetail = db.UserDetails.First(user => user.UserID == userNote.SubjectID)
+                        Note = userNote,
+                        UserDetail = db.UserDetails.First(user => user.UserID == userNote.SubjectID)
             };
 
             
             return PartialView("VerNota", userViewModel);
+        }
+            }
+
+            return RedirectToAction("AccesoDenegado", "Home");
         }
 
         public ActionResult Lista()
@@ -753,11 +851,21 @@ namespace OPDB.Controllers
 
         }
 
-        public ActionResult Removidos()
+        public ActionResult Removidos(string requested)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1 && Boolean.Parse(requested))
         {
             var users = from u in db.Users.Include(u => u.UserType).Include(u => u.UserDetails) where (u.UserTypeID != 3) && u.DeletionDate != null select u;
 
             return PartialView("Removidos", users.ToList());
+                }
+            }
+
+            return RedirectToAction("AccesoDenegado", "Home");
+
         }
 
         public String GetErrorsFromModelState(UserViewModel userViewModel)
@@ -787,29 +895,36 @@ namespace OPDB.Controllers
         public ActionResult IniciarSesion(UserViewModel userViewModel)
         {
             // TODO: passwords have no encryption at all - fix later with SimpleCrypto NuGet Package
-            User user = db.Users.FirstOrDefault(u => u.Email == userViewModel.user.Email);   
+            User user = db.Users.FirstOrDefault(u => u.Email == userViewModel.User.Email);   
 
+            if (!user.UserStatus)
+            {
+                ModelState.AddModelError("", Resources.WebResources.User_Email_NotApproved);
+
+                return Content(GetErrorsFromModelState(userViewModel));
+            }
+            else
+            {
             if (user != null)
             {
-                if (userViewModel.user.UserPassword.ToString().Equals(user.UserPassword))
+                if (userViewModel.User.UserPassword.ToString().Equals(user.UserPassword))
                 {
-                    FormsAuthentication.SetAuthCookie(user.UserID+","+user.UserTypeID+","+user.UserStatus, false);
+                        FormsAuthentication.SetAuthCookie(user.UserID + "," + user.UserTypeID + "," + user.UserStatus, false);
 
                     return PartialView("_Hack");
                 }
                 else
                 {
-                    // TODO: needs a validation message here
                     ModelState.AddModelError("", Resources.WebResources.User_UserPassword_NoMatch);
                 }
             }
             else
             {
-                // TODO: needs a validation message here
                 ModelState.AddModelError("", Resources.WebResources.User_Email_NoMatch);
             }
 
             return Content(GetErrorsFromModelState(userViewModel));
+        }
         }
        
         public ActionResult CerrarSesion()
@@ -847,29 +962,42 @@ namespace OPDB.Controllers
         
         public ActionResult CrearUsuario()
         {
+            if (User.Identity.IsAuthenticated)
+            {
 
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
             UserViewModel userViewModel = new UserViewModel
             {
 
-                userTypes = getAllUserTypes()
+                        UserTypes = getAllUserTypes()
 
             };
 
             return View("CrearUsuario", userViewModel);
+        }
+            }
+
+            return RedirectToAction("AccesoDenegado", "Home");
         }
 
 
         [HttpPost]
         public ActionResult CrearUsuario(UserViewModel userViewModel)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
             if (ModelState.IsValid)
             {
-                userViewModel.user.CreateDate = DateTime.Now;
-                userViewModel.user.UpdateDate = DateTime.Now;
-                userViewModel.user.UserStatus = false;
+                        userViewModel.User.CreateDate = DateTime.Now;
+                        userViewModel.User.UpdateDate = DateTime.Now;
+                        userViewModel.User.UserStatus = true;
                 bool validModel = true;
 
-                User matchingUser = db.Users.FirstOrDefault(u => u.Email == userViewModel.user.Email);
+                        User matchingUser = db.Users.FirstOrDefault(u => u.Email == userViewModel.User.Email);
 
                 if (matchingUser != null)
                 {
@@ -877,7 +1005,7 @@ namespace OPDB.Controllers
                     validModel = false;
                 }
 
-                if (userViewModel.userDetail.FirstName == null || userViewModel.userDetail.FirstName == "")
+                        if (userViewModel.UserDetail.FirstName == null || userViewModel.UserDetail.FirstName == "")
                 {
                     ModelState.AddModelError("UserDetail_FirstName_Required", Resources.WebResources.UserDetail_FirstName_Required);
                     validModel = false;
@@ -886,7 +1014,7 @@ namespace OPDB.Controllers
                 {
                     string pattern = @"^[a-zA-Z\u00c0-\u017e''-'\s]{1,50}$";
                     Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                    MatchCollection matches = rgx.Matches(userViewModel.userDetail.FirstName);
+                            MatchCollection matches = rgx.Matches(userViewModel.UserDetail.FirstName);
                     if (matches.Count == 0)
                     {
                         ModelState.AddModelError("UserDetail_FirstName_Invalid", Resources.WebResources.UserDetail_FirstName_Invalid);
@@ -895,7 +1023,7 @@ namespace OPDB.Controllers
 
                 }
 
-                if (userViewModel.userDetail.LastName == null || userViewModel.userDetail.LastName == "")
+                        if (userViewModel.UserDetail.LastName == null || userViewModel.UserDetail.LastName == "")
                 {
                     ModelState.AddModelError("UserDetail_LastName_Required", Resources.WebResources.UserDetail_LastName_Required);
                     validModel = false;
@@ -904,7 +1032,7 @@ namespace OPDB.Controllers
                 {
                     string pattern = @"^[a-zA-Z\u00c0-\u017e''-'\s]{1,50}$";
                     Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                    MatchCollection matches = rgx.Matches(userViewModel.userDetail.LastName);
+                            MatchCollection matches = rgx.Matches(userViewModel.UserDetail.LastName);
                     if (matches.Count == 0)
                     {
                         ModelState.AddModelError("UserDetail_LastName_Invalid", Resources.WebResources.UserDetail_LastName_Invalid);
@@ -913,17 +1041,17 @@ namespace OPDB.Controllers
 
                 }
 
-                if (userViewModel.userDetail.Gender == null || userViewModel.userDetail.Gender == "")
+                        if (userViewModel.UserDetail.Gender == null || userViewModel.UserDetail.Gender == "")
                 {
                     ModelState.AddModelError("UserDetail_Gender_Required", Resources.WebResources.UserDetail_Gender_Required);
                     validModel = false;
                 }
 
-                if (userViewModel.userDetail.MiddleInitial != null)
+                        if (userViewModel.UserDetail.MiddleInitial != null)
                 {
                     string pattern = @"^[A-Z]$";
                     Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                    MatchCollection matches = rgx.Matches(userViewModel.userDetail.MiddleInitial);
+                            MatchCollection matches = rgx.Matches(userViewModel.UserDetail.MiddleInitial);
                     if (matches.Count == 0)
                     {
                         ModelState.AddModelError("UserDetail_MiddleInitial_Invalid", Resources.WebResources.UserDetail_MiddleInitial_Invalid);
@@ -934,27 +1062,24 @@ namespace OPDB.Controllers
 
                 if (validModel)
                 {
-                    userViewModel.userDetail.CreateDate = DateTime.Now;
-                    userViewModel.userDetail.UpdateDate = DateTime.Now;
-                    userViewModel.user.UserDetails = new List<UserDetail>();
-                    userViewModel.user.UserDetails.Add(userViewModel.userDetail);
-                    db.Users.Add(userViewModel.user);
+                            userViewModel.UserDetail.CreateDate = DateTime.Now;
+                            userViewModel.UserDetail.UpdateDate = DateTime.Now;
+                            userViewModel.User.UserDetails = new List<UserDetail>();
+                            userViewModel.User.UserDetails.Add(userViewModel.UserDetail);
+                            db.Users.Add(userViewModel.User);
+                            db.SaveChanges();
+                            return RedirectToAction("Administracion", "Home", null);
+                        }
+                        
                 }
 
-                else
-                {
-                    userViewModel.userTypes = getAllUserTypes();
+                    userViewModel.UserTypes = getAllUserTypes();
                     return View("CrearUsuario", userViewModel);
                 }
 
-                db.SaveChanges();
-                return RedirectToAction("Administracion", "Home", null);
             }
 
-
-                userViewModel.userTypes = getAllUserTypes();
-
-                return View("CrearUsuario", userViewModel);
+            return RedirectToAction("AccesoDenegado", "Home");
         }
     }
 }

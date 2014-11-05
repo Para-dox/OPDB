@@ -8,20 +8,20 @@
 @using (Ajax.BeginForm("GuardarNota", "Usuarios", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "validation" }))
 {
     @Html.ValidationSummary(false)
-    @Html.HiddenFor(model => model.note.SubjectID)
+    @Html.HiddenFor(model => model.Note.SubjectID)
     
         <div class="editor-label">
-            @Html.LabelFor(model => model.note.NoteTypeID, "Tipo de Nota")
+            @Html.LabelFor(model => model.Note.NoteTypeID, "Tipo de Nota")
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.note.NoteTypeID, Model.NoteTypes, new { @style = "margin: 0 0 1rem 0 !important; padding: 0.5rem !important; height: 2.55rem !important; width: 100% !important;" })
+            @Html.DropDownListFor(model => model.Note.NoteTypeID, Model.NoteTypes, new { @style = "margin: 0 0 1rem 0 !important; padding: 0.5rem !important; height: 2.55rem !important; width: 100% !important;" })
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.note.Note, "Nota *")
+            @Html.LabelFor(model => model.Note.Note, "Nota *")
         </div>
         <div class="editor-field">
-            @Html.TextAreaFor(model => model.note.Note, new { @style = "resize: none; height: 100px; width: 100% !important;" })
+            @Html.TextAreaFor(model => model.Note.Note, new { @style = "resize: none; height: 100px; width: 100% !important;" })
         </div>
 
         <p>

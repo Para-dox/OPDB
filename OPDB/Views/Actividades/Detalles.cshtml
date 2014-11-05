@@ -74,6 +74,11 @@
     .fa-remove:hover {
         color: #008cba !important;
     }
+
+    .disabled{
+        pointer-events:none;
+        cursor:default;
+    }
 </style>
 
 
@@ -196,18 +201,20 @@
 
         @if (Model.Videos.Count != 0)
         {
-            <div class="large-3 columns">
+            <div class="large-3 columns playlistScroll">
                 <h5>Lista de Reproducción</h5>
-                <ol id="playlist" class="rounded-list">
-                    @foreach (var video in Model.Videos)
-                    {
-                        <li data-url="@video.MediaPath"><a>@video.MediaTitle</a></li>
-                    }
-                </ol>
+                <div class="playlistScroll" style="height:450px; overflow-y:hidden;">
+                    <ol id="playlist" class="rounded-list">
+                        @foreach (var video in Model.Videos)
+                        {
+                            <li data-url="@video.MediaPath"><a>@video.MediaTitle</a></li>
+                        }
+                    </ol>
+                </div>
             </div>
-            <div id="mediaFrame" class="large-9 columns">
-                <iframe width="560" id="videoarea" height="315" src="//www.youtube.com/embed/" frameborder="0" allowfullscreen></iframe>
-            </div>
+    <div id="mediaFrame" class="large-9 columns disabled">
+        <iframe width="560" id="videoarea" height="315" src="//www.youtube.com/embed/" frameborder="0" allowfullscreen></iframe>
+    </div>
         }
         @if (Model.Photos.Count != 0)
         {
@@ -274,6 +281,7 @@
 
         $(function () {
             $("#playlist li").on("click", function () {
+                $('#mediaFrame').removeClass("disabled");
                 var currentUrl = $("#videoarea").attr("src");
                 var dataUrl = $(this).attr("data-url");
                 var newUrl = "";
@@ -291,8 +299,7 @@
         });
 
         $(document).foundation('clearing', 'reflow');
-
-
+        $(".playlistScroll").niceScroll();        
         loadRightDetailsView("<a id='verContactos' data-url='@Url.Action("ContactosyRecursos", "Actividades", new { id = Model.Activity.ActivityID })'></a>");
 
     });

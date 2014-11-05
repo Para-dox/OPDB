@@ -24,76 +24,76 @@
         <fieldset style="width:500px;">
             <legend>User</legend>
 
-            @Html.HiddenFor(model => model.user.UserID)
-            @Html.HiddenFor(model => model.user.CreateDate)
-            @Html.HiddenFor(model => model.user.UserStatus)
-            @Html.HiddenFor(model => model.userDetail.UserDetailID)
-            @Html.HiddenFor(model => model.userDetail.UserID)
-            @Html.HiddenFor(model => model.userDetail.CreateDate)
+            @Html.HiddenFor(model => model.User.UserID)
+            @Html.HiddenFor(model => model.User.CreateDate)
+            @Html.HiddenFor(model => model.User.UserStatus)
+            @Html.HiddenFor(model => model.UserDetail.UserDetailID)
+            @Html.HiddenFor(model => model.UserDetail.UserID)
+            @Html.HiddenFor(model => model.UserDetail.CreateDate)
 
             <div class="editor-label">
-                @Html.LabelFor(model => model.user.UserTypeID, "Tipo de Usuario")
+                @Html.LabelFor(model => model.User.UserTypeID, "Tipo de Usuario")
             </div>
             <div class="editor-field">
-                @Html.DropDownListFor(model => model.user.UserTypeID, Model.userTypes, new { @style = "width: 500px;", @id = "userTypes", @onchange = "getUserTypeValue()" })
+                @Html.DropDownListFor(model => model.User.UserTypeID, Model.UserTypes, new { @style = "width: 500px;", @id = "userTypes", @onchange = "getUserTypeValue()" })
             </div><br />
             <div class="editor-label">
-                @Html.LabelFor(model => model.user.Email, "Correo Electrónico")
+                @Html.LabelFor(model => model.User.Email, "Correo Electrónico")
             </div>
             <div class="editor-field">
-                @Html.EditorFor(model => model.user.Email)
-                @Html.ValidationMessageFor(model => model.user.Email)
+                @Html.EditorFor(model => model.User.Email)
+                @Html.ValidationMessageFor(model => model.User.Email)
             </div>
             <div class="editor-label">
-                @Html.LabelFor(model => model.user.UserPassword, "Contraseña")
+                @Html.LabelFor(model => model.User.UserPassword, "Contraseña")
             </div>
             <div class="editor-field">
-                @Html.EditorFor(model => model.user.UserPassword)
-                @Html.ValidationMessageFor(model => model.user.UserPassword)
+                @Html.EditorFor(model => model.User.UserPassword)
+                @Html.ValidationMessageFor(model => model.User.UserPassword)
             </div>
             <div class="editor-label">
-                @Html.LabelFor(model => model.user.PhoneNumber, "Teléfono")
+                @Html.LabelFor(model => model.User.PhoneNumber, "Teléfono")
             </div>
             <div class="editor-field">
-                @Html.EditorFor(model => model.user.PhoneNumber)
-                @Html.ValidationMessageFor(model => model.user.PhoneNumber)
+                @Html.EditorFor(model => model.User.PhoneNumber)
+                @Html.ValidationMessageFor(model => model.User.PhoneNumber)
             </div>
                 <div class="editor-label">
-                    @Html.LabelFor(model => model.userDetail.FirstName, "Nombre")
+                    @Html.LabelFor(model => model.UserDetail.FirstName, "Nombre")
                 </div>
                 <div class="editor-field">
-                    @Html.EditorFor(model => model.userDetail.FirstName)
-                    @Html.ValidationMessageFor(model => model.userDetail.FirstName)
+                    @Html.EditorFor(model => model.UserDetail.FirstName)
+                    @Html.ValidationMessageFor(model => model.UserDetail.FirstName)
                 </div>
                 <div class="editor-label">
-                    @Html.LabelFor(model => model.userDetail.MiddleInitial, "Inicial")
+                    @Html.LabelFor(model => model.UserDetail.MiddleInitial, "Inicial")
                 </div>
                 <div class="editor-field">
-                    @Html.EditorFor(model => model.userDetail.MiddleInitial)
-                    @Html.ValidationMessageFor(model => model.userDetail.MiddleInitial)
+                    @Html.EditorFor(model => model.UserDetail.MiddleInitial)
+                    @Html.ValidationMessageFor(model => model.UserDetail.MiddleInitial)
                 </div>
                 <div class="editor-label">
-                    @Html.LabelFor(model => model.userDetail.LastName, "Apellido")
+                    @Html.LabelFor(model => model.UserDetail.LastName, "Apellido")
                 </div>
                 <div class="editor-field">
-                    @Html.EditorFor(model => model.userDetail.LastName)
-                    @Html.ValidationMessageFor(model => model.userDetail.LastName)
+                    @Html.EditorFor(model => model.UserDetail.LastName)
+                    @Html.ValidationMessageFor(model => model.UserDetail.LastName)
                 </div>
 
 
                 <div class="editor-label">
-                    @Html.LabelFor(model => model.userDetail.Gender, "Género")
+                    @Html.LabelFor(model => model.UserDetail.Gender, "Género")
                 </div>
                 <div class="editor-field" style="text-align:left !important;">
-                    @Html.RadioButtonFor(model => model.userDetail.Gender, "M")<label>Masculino</label>&nbsp;&nbsp;@Html.RadioButtonFor(model => model.userDetail.Gender, "F")<label>Femenino</label>
-                    @Html.ValidationMessageFor(model => model.userDetail.Gender)
+                    @Html.RadioButtonFor(model => model.UserDetail.Gender, "M")<label>Masculino</label>&nbsp;&nbsp;@Html.RadioButtonFor(model => model.UserDetail.Gender, "F")<label>Femenino</label>
+                    @Html.ValidationMessageFor(model => model.UserDetail.Gender)
                 </div>
                 <div class="editor-label">
-                    @Html.LabelFor(model => model.userDetail.DateOfBirth, "Fecha de Nacimiento")
+                    @Html.LabelFor(model => model.UserDetail.DateOfBirth, "Fecha de Nacimiento")
                 </div>
                 <div class="editor-field">
-                    @Html.EditorFor(model => model.userDetail.DateOfBirth)
-                    @Html.ValidationMessageFor(model => model.userDetail.DateOfBirth)
+                    @Html.EditorFor(model => model.UserDetail.DateOfBirth)
+                    @Html.ValidationMessageFor(model => model.UserDetail.DateOfBirth)
                 </div>
             @*<div class="editor-label">
                 @Html.LabelFor(model => model.userDetail.AffiliateType, "Afiliación")
@@ -131,31 +131,31 @@
 
             <div id="faculty">
                 <div class="editor-label">
-                    @Html.LabelFor(model => model.userDetail.Role, "Rol")
+                    @Html.LabelFor(model => model.UserDetail.Role, "Rol")
                 </div>
                 <div class="editor-field">
-                    @Html.EditorFor(model => model.userDetail.Role)
-                    @Html.ValidationMessageFor(model => model.userDetail.Role)
+                    @Html.EditorFor(model => model.UserDetail.Role)
+                    @Html.ValidationMessageFor(model => model.UserDetail.Role)
                 </div>
             </div>
             
             <div id="collegeStudent">
                 <div class="editor-label">
-                    @Html.LabelFor(model => model.userDetail.Major, "Concentración")
+                    @Html.LabelFor(model => model.UserDetail.Major, "Concentración")
                 </div>
                 <div class="editor-field">
-                    @Html.EditorFor(model => model.userDetail.Major)
-                    @Html.ValidationMessageFor(model => model.userDetail.Major)
+                    @Html.EditorFor(model => model.UserDetail.Major)
+                    @Html.ValidationMessageFor(model => model.UserDetail.Major)
                 </div>
             </div>
 
             <div id="grade">
                 <div class="editor-label">
-                    @Html.LabelFor(model => model.userDetail.Grade, "Grado")
+                    @Html.LabelFor(model => model.UserDetail.Grade, "Grado")
                 </div>
                 <div class="editor-field">
-                    @Html.EditorFor(model => model.userDetail.Grade)
-                    @Html.ValidationMessageFor(model => model.userDetail.Grade)
+                    @Html.EditorFor(model => model.UserDetail.Grade)
+                    @Html.ValidationMessageFor(model => model.UserDetail.Grade)
                 </div>
             </div>
            

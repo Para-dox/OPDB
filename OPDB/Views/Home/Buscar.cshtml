@@ -4,111 +4,119 @@
     ViewBag.Title = "Resultados";
 }
 
-<h2>Resultados de Búsqueda</h2>
-<fieldset>
-    @if (Model.buscarUsuarios == true)
-    {
-        <h3>Usuarios</h3>
-        <ul>
-            @if (Model.users.Count() > 0) { 
-                foreach (var user in Model.users)
+<h2>Resultados de Búsqueda</h2><br />
+<div class="large-12 columns panel">
+    <div class="large-6 columns">
+        @if (Model.buscarUsuarios == true)
+        {
+            <h5><b>Usuarios</b></h5>
+            <ul style="list-style-type: none;">
+                @if (Model.users.Count() > 0)
+                {
+                    foreach (var user in Model.users)
+                    {
+                        <li>
+                            @Html.ActionLink(user.FirstName + " " + user.LastName, "Detalles", "Usuarios", new { id = user.UserID }, null)
+                        </li>
+                    }
+                }
+                else
                 {
                     <li>
-                        @Html.ActionLink(user.FirstName + " " + user.LastName, "Detalles", "Usuarios", new { id = user.UserID }, null)
+                        No hubo resultados.
                     </li>
                 }
-            }
-            else
-            {
-                <li>
-                   No hubo resultados.
-                </li>
-            }
-        </ul>
-        <br />
-    }
-    @if (Model.buscarAlcance == true)
-    {
-        <h3>Entidades de Alcance</h3>
-        <ul>
-            @if (Model.outreachEntities.Count() > 0) {
-                foreach (var outreach in Model.outreachEntities)
+            </ul>
+            <br />
+        }
+        @if (Model.buscarAlcance == true)
+        {
+            <h5><b>Entidades de Alcance</b></h5>
+            <ul style="list-style-type: none;">
+                @if (Model.outreachEntities.Count() > 0)
+                {
+                    foreach (var outreach in Model.outreachEntities)
+                    {
+                        <li>
+                            @Html.ActionLink(outreach.OutreachEntityName, "Detalles", "Alcance", new { id = outreach.OutreachEntityDetailID }, null)
+                        </li>
+                    }
+                }
+                else
                 {
                     <li>
-                        @Html.ActionLink(outreach.OutreachEntityName, "Detalles", "Alcance", new { id = outreach.OutreachEntityDetailID }, null)
+                        No hubo resultados.
                     </li>
                 }
-            }
-            else
-            {
-                <li>
-                    No hubo resultados.
-                </li>
-            }
-        </ul>
-        <br />
-    }
-    @if (Model.buscarActividades == true)
-    {
-        <h3>Actividades</h3>
-        <ul>
-            @if (Model.activities.Count() > 0) { 
-                foreach (var activity in Model.activities)
+            </ul>
+            <br />
+        }
+        @if (Model.buscarActividades == true)
+        {
+            <h5><b>Actividades</b></h5>
+            <ul style="list-style-type: none;">
+                @if (Model.activities.Count() > 0)
+                {
+                    foreach (var activity in Model.activities)
+                    {
+                        <li>
+                            @Html.ActionLink(activity.Title, "Detalles", "Actividades", new { id = activity.ActivityID }, null)
+                        </li>
+                    }
+                }
+                else
                 {
                     <li>
-                        @Html.ActionLink(activity.Title, "Detalles", "Actividades", new { id = activity.ActivityID }, null)
+                        No hubo resultados.
                     </li>
                 }
-            }
-            else
-            {
-                <li>
-                    No hubo resultados.
-                </li>
-            }
-        </ul>
-        <br />
-    }
-    @if (Model.buscarUnidades == true)
-    {
-        <h3>Unidades</h3>
-        <ul>
-            @if (Model.units.Count() > 0) { 
-                foreach (var unit in Model.units)
+            </ul>
+            <br />
+        }
+        @if (Model.buscarUnidades == true)
+        {
+            <h5><b>Unidades</b></h5>
+            <ul style="list-style-type: none;">
+                @if (Model.units.Count() > 0)
+                {
+                    foreach (var unit in Model.units)
+                    {
+                        <li>
+                            @Html.ActionLink(unit.UnitName, "Detalles", "Unidades", new { id = unit.UnitID }, null)
+                        </li>
+                    }
+                }
+                else
                 {
                     <li>
-                        @Html.ActionLink(unit.UnitName, "Detalles", "Unidades", new { id = unit.UnitID }, null)
+                        No hubo resultados.
                     </li>
                 }
-            }
-            else
-            {
-                <li>
-                    No hubo resultados.
-                </li>
-            }
-        </ul>
-        <br />
-    }
+            </ul>
+            <br />
+        }
 
-    @if (Model.buscarEscuelas == true)
-    {
-        <h3>Escuelas</h3>
-        <ul>
-            @if (Model.schools.Count() > 0) { 
-                foreach (var school in Model.schools)
+        @if (Model.buscarEscuelas == true)
+        {
+            <h5><b>Escuelas</b></h5>
+            <ul style="list-style-type: none;">
+                @if (Model.schools.Count() > 0)
+                {
+                    foreach (var school in Model.schools)
+                    {
+                        <li>
+                            @Html.ActionLink(school.SchoolName, "Detalles", "Escuelas", new { id = school.SchoolID }, null)
+                        </li>
+                    }
+                }
+                else
                 {
                     <li>
-                        @Html.ActionLink(school.SchoolName, "Detalles", "Escuelas", new { id = school.SchoolID }, null)
+                        No hubo resultados.
                     </li>
                 }
-            }
-            else
-            {
-                <li>
-                    No hubo resultados.
-                </li>
-            }
-        </ul>
-    }
-</fieldset>
+            </ul>
+        }
+    </div>
+    <div class="large-6 columns"><center><img src="@Url.Content("~/Images/search.svg")" height="297" width="297" style="margin-top:100px;"/></center></div>
+</div>

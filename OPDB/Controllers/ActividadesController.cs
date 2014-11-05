@@ -188,8 +188,10 @@ namespace OPDB.Controllers
 
         public ActionResult DeInteres()
         {
-            var interested = (from interest in db.Interests join activity in db.Activities on interest.ActivityID equals activity.ActivityID where interest.DeletionDate == null orderby activity.UpdateDate descending select interest).ToList();
+            int currentUserID = Int32.Parse(User.Identity.Name.Split(',')[0]);
 
+            var interested = (from interest in db.Interests join activity in db.Activities on interest.ActivityID equals activity.ActivityID where interest.DeletionDate == null && interest.UserID == currentUserID orderby activity.UpdateDate descending select interest).ToList();
+            //var interested = (from interest in db.Interests where interest.UserID == currentUserID orderby interest.UpdateDate descending select interest).ToList();
 
             ActivityViewModel activityViewModel = new ActivityViewModel
             {
@@ -212,7 +214,6 @@ namespace OPDB.Controllers
 
         //
         // GET: /Actividades/Details/5
-
         public ActionResult Detalles(int id = 0)
         {
             Activity foundActivity = db.Activities.Find(id);
@@ -1196,83 +1197,81 @@ namespace OPDB.Controllers
        [HttpPost]
        public ActionResult Upload(ActivityViewModel activityViewModel)
        {
-               if (User.Identity.IsAuthenticated)
-               {
-
-                   if (Int32.Parse(User.Identity.Name.Split(',')[0]) == activityViewModel.Activity.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
-                   {
-                       int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
-
-           activityViewModel.Media.UpdateDate = DateTime.Now;
-
-           //To be changed with login implementation.
-                       activityViewModel.Media.UpdateUser = userID;
-
-           if (activityViewModel.Media.MediaID == 0)
+           if (User.Identity.IsAuthenticated)
            {
-               if (ModelState.IsValid) 
-               { 
-                   //To be changed with login implementation.
-                               activityViewModel.Media.CreateUser = userID;
-                                             
-                   activityViewModel.Media.CreateDate = DateTime.Now;
+               var activity = db.Activities.Find(activityViewModel.Media.ActivityID);
 
-                   db.Media.Add(activityViewModel.Media);
-                   db.SaveChanges();
-
-                   return View("_Hack");
-               }
-               else
-               {
-                   return Content(GetErrorsFromModelState(activityViewModel));
-               }
-           }
-           else
-           {
-                if (ModelState.IsValid) 
-                   { 
-                       db.Entry(activityViewModel.Media).State = EntityState.Modified;
-                       db.SaveChanges();
-                       return View("_Hack");
-                   }
-                   else
-                   {
-                       return Content(GetErrorsFromModelState(activityViewModel));
-                   }
-               }
-           }
-               }
-               return RedirectToAction("AccesoDenegado", "Home");
-           }
-
-           [HttpPost]
-           public ActionResult Interes(int id)
-           {
-               if (User.Identity.IsAuthenticated) 
+               if (Int32.Parse(User.Identity.Name.Split(',')[0]) == activity.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
                {
                    int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
 
-                   Interest Interest = new Interest
-                   {
-                       ActivityID = id,
-                       UserID = userID,
-                       CreateUser = userID,
-                       CreateDate = DateTime.Now,
-                       UpdateUser = userID,
-                       UpdateDate = DateTime.Now
-                   
-                   };
+                   activityViewModel.Media.UpdateDate = DateTime.Now;
+                   activityViewModel.Media.UpdateUser = userID;
 
-                   db.Interests.Add(Interest);
-                   db.SaveChanges();
-                   return Content("");
+                   if (activityViewModel.Media.MediaID == 0)
+                   {
+                       if (ModelState.IsValid)
+                       {
+                           activityViewModel.Media.CreateUser = userID;
+
+                           activityViewModel.Media.CreateDate = DateTime.Now;
+
+                           db.Media.Add(activityViewModel.Media);
+                           db.SaveChanges();
+
+                           return View("_Hack");
+                       }
+                       else
+                       {
+                           return Content(GetErrorsFromModelState(activityViewModel));
+                       }
+                   }
+                   else
+                   {
+                       if (ModelState.IsValid)
+                       {
+                           db.Entry(activityViewModel.Media).State = EntityState.Modified;
+                           db.SaveChanges();
+                           return View("_Hack");
+                       }
+                       else
+                       {
+                           return Content(GetErrorsFromModelState(activityViewModel));
+                       }
+                   }
                }
-               else
-               {
-                   return RedirectToAction("AccesoDenegado", "Home");
-               }
-                            
            }
+           return RedirectToAction("AccesoDenegado", "Home");
+       }
+
+       [HttpPost]
+       public ActionResult Interes(int id)
+       {
+           if (User.Identity.IsAuthenticated)
+           {
+               int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
+
+               Interest Interest = new Interest
+               {
+                   ActivityID = id,
+                   UserID = userID,
+                   CreateUser = userID,
+                   CreateDate = DateTime.Now,
+                   UpdateUser = userID,
+                   UpdateDate = DateTime.Now
+
+               };
+
+               db.Interests.Add(Interest);
+               db.SaveChanges();
+               return Content("");
+           }
+           else
+           {
+               return RedirectToAction("AccesoDenegado", "Home");
+           }
+
+       }
 
            public List<SelectListItem> getContacts()
            {

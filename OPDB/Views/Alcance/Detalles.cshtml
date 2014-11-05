@@ -29,9 +29,6 @@
         display: none !important;
     }
 
-    /*.panel.callout a:not(.button) {
-      color: #222222; }*/
-
     a span i:hover {
         color: #008cba;
     }
@@ -45,74 +42,74 @@
     }
 </style>
 
-<h2> @Html.DisplayFor(model => model.outreachEntity.OutreachEntityName)</h2>
+<h2> @Html.DisplayFor(model => model.OutreachEntity.OutreachEntityName)</h2>
 <div class="panel callout columns" >
     <div class="large-5 columns">
     <div class="display-label">
-            @Html.LabelFor(model => model.outreachEntity.OutreachEntityType.OutreachEntityType1, "Tipo de Organización")
+            @Html.LabelFor(model => model.OutreachEntity.OutreachEntityType.OutreachEntityType1, "Tipo de Organización")
     </div>
     <div class="display-field">
-            @Html.DisplayFor(model => model.outreachEntity.OutreachEntityType.OutreachEntityType1)
+            @Html.DisplayFor(model => model.OutreachEntity.OutreachEntityType.OutreachEntityType1)
     </div>
         <br />
 
     <div class="display-label">
-            @Html.LabelFor(model => model.outreachEntity.OutreachEntityName, "Nombre de la Organización")
+            @Html.LabelFor(model => model.OutreachEntity.OutreachEntityName, "Nombre de la Organización")
     </div>
 
     <div class="display-field">
-            @Html.DisplayFor(model => model.outreachEntity.OutreachEntityName)
+            @Html.DisplayFor(model => model.OutreachEntity.OutreachEntityName)
     </div>
         <br />
         <div class="display-label">
-            @Html.LabelFor(model => model.user.Email, "Correo Eléctronico")
+            @Html.LabelFor(model => model.User.Email, "Correo Eléctronico")
         </div>
 
         <div class="display-field">
-            @Html.DisplayFor(model => model.user.Email)
+            @Html.DisplayFor(model => model.User.Email)
         </div>
         <br />
-    @if (Model.user.PhoneNumber != null && Model.user.PhoneNumber != "") 
+    @if (Model.User.PhoneNumber != null && Model.User.PhoneNumber != "") 
     { 
         <div class="display-label">
-                @Html.LabelFor(model => model.user.PhoneNumber, "Número Telefónico")
+                @Html.LabelFor(model => model.User.PhoneNumber, "Número Telefónico")
         </div>
 
         <div class="display-field">
-                @Html.DisplayFor(model => model.user.PhoneNumber)
+                @Html.DisplayFor(model => model.User.PhoneNumber)
         </div>  
             <br />
     }
     <div class="display-label">
-            @Html.LabelFor(model => model.outreachEntity.Mission, "Misión")
+            @Html.LabelFor(model => model.OutreachEntity.Mission, "Misión")
     </div>
     <div class="display-field">
-            @Html.DisplayFor(model => model.outreachEntity.Mission)
+            @Html.DisplayFor(model => model.OutreachEntity.Mission)
     </div>
         <br />
 
     <div class="display-label">
-            @Html.LabelFor(model => model.outreachEntity.Vision, "Visión")
+            @Html.LabelFor(model => model.OutreachEntity.Vision, "Visión")
     </div>
     <div class="display-field">
-            @Html.DisplayFor(model => model.outreachEntity.Vision)
+            @Html.DisplayFor(model => model.OutreachEntity.Vision)
     </div>
         <br />
 
     <div class="display-label">
-            @Html.LabelFor(model => model.outreachEntity.Objectives, "Objetivos")
+            @Html.LabelFor(model => model.OutreachEntity.Objectives, "Objetivos")
     </div>
     <div class="display-field">
-            @Html.DisplayFor(model => model.outreachEntity.Objectives)
+            @Html.DisplayFor(model => model.OutreachEntity.Objectives)
     </div>
         <br />
-    @if (Model.outreachEntity.Location != null && Model.outreachEntity.Location != "") 
+    @if (Model.OutreachEntity.Location != null && Model.OutreachEntity.Location != "") 
     { 
         <div class="display-label">
-                @Html.LabelFor(model => model.outreachEntity.Location, "Localización")
+                @Html.LabelFor(model => model.OutreachEntity.Location, "Localización")
         </div>
         <div class="display-field">
-                @Html.DisplayFor(model => model.outreachEntity.Location)
+                @Html.DisplayFor(model => model.OutreachEntity.Location)
         </div>
     }
         <p>
@@ -121,18 +118,18 @@
 
         @if (Request.IsAuthenticated)
         {
-            if (Int32.Parse(User.Identity.Name.ToString().Split(',')[0]) == Model.outreachEntity.UserID)
+            if ((Int32.Parse(User.Identity.Name.ToString().Split(',')[0]) == Model.OutreachEntity.UserID && Boolean.Parse(User.Identity.Name.ToString().Split(',')[2])) || Int32.Parse(User.Identity.Name.ToString().Split(',')[1]) == 1)
             {
-            <a title="Editar Entidad de Alcance" href="@Url.Action("Editar", "Alcance", new { id = Model.outreachEntity.UserID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-pencil fa-stack-1x fa-inverse"></i></span></a>
-            <a title="Añadir Actividad" href="@Url.Action("Crear", "Actividades", new { id = Model.outreachEntity.UserID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-plus fa-stack-1x fa-inverse"></i></span></a>
+            <a title="Editar Entidad de Alcance" href="@Url.Action("Editar", "Alcance", new { source = "Detalles", id = Model.OutreachEntity.UserID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-pencil fa-stack-1x fa-inverse"></i></span></a>
+            <a title="Añadir Actividad" href="@Url.Action("Crear", "Actividades", new { id = Model.OutreachEntity.UserID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-plus fa-stack-1x fa-inverse"></i></span></a>
             }
         }
         </p>
     </div>
 
-    @if (Request.IsAuthenticated)
+    @if (Request.IsAuthenticated) // only logged users can see notes
     {
-        if (Int32.Parse(User.Identity.Name.Split(',')[0]) == Model.outreachEntity.UserID)
+        if (Int32.Parse(User.Identity.Name.Split(',')[1]) <= 3) //only admins, mods, and outreach entities can view notes
         {
     <div class="large-7 columns">
         <h3>Notas</h3>
@@ -149,9 +146,9 @@
                 {
                     <tr>
                         <td>@note.NoteType.NoteType1</td>
-                        <td><a href="#" title="Ver Nota" data-validation="false" data-title="Detalles" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("VerNota", "Alcance", new { id = note.UserNoteID })" class="modal_ajax_btn">@String.Concat(note.Note.Substring(0, note.Note.Length > 100 ? 100 : note.Note.Length), "...")</a></td>
+                        <td><a href="#" title="Ver Nota" data-validation="false" data-title="Detalles" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("VerNota", "Alcance", new { id = note.UserNoteID })" class="modal_ajax_btn link">@String.Concat(note.Note.Substring(0, note.Note.Length > 100 ? 100 : note.Note.Length), " ...")</a></td>
                         <td>
-                                <a href="#" title="Editar" data-title="Editar Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarNota", "Alcance", new { id = note.UserNoteID })" class="modal_ajax_btn"><i class="fa fa-pencil"></i></a>
+                                <a href="#" title="Editar" data-title="Editar Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarNota", "Alcance", new { id = note.UserNoteID })" class="modal_ajax_btn link"><i class="fa fa-pencil"></i></a>
                                 <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this, 'outreachNotes')" data-url="@Url.Action("RemoverNota", "Alcance", new { id = note.UserNoteID })"></i>                               
 
                         </td>
@@ -160,8 +157,10 @@
             </tbody>
 
         </table><br />
-        <a href="#" title="Añadir Nota" class="modal_ajax_btn" data-title="Nueva Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Alcance", new { id = Model.outreachEntity.UserID })"><input type="button" value="Añadir Nota" class="btn" /></a>
+        @if (Int32.Parse(User.Identity.Name.ToString().Split(',')[0]) == 3 && Boolean.Parse(User.Identity.Name.ToString().Split(',')[2])) { 
+        <a href="#" title="Añadir Nota" class="modal_ajax_btn" data-title="Nueva Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Alcance", new { id = Model.OutreachEntity.UserID })"><input type="button" value="Añadir Nota" class="btn" /></a>}
     </div>
+    }
     }
     }
 

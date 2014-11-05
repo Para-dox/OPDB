@@ -30,7 +30,7 @@
             <span>Propósito: </span><r>@String.Concat(item.Activity.Purpose.Substring(0, item.Activity.Purpose.Length > 100 ? 100 : item.Activity.Purpose.Length), "")</r><br />
             <span>Tipo: </span><r>@item.Activity.ActivityType.ActivityType1</r><br />
             @if (item.Activity.Location != null && item.Activity.Location != "")
-            {<span>Lugar: </span><r>@item.Activity.Location</r><br /> }
+            {<span>Localización: </span><r>@item.Activity.Location</r><br /> }
             @if (item.Activity.ActivityDate != null && item.Activity.ActivityDate != new DateTime())
             { <span>Fecha: </span><r>@item.Activity.ActivityDate.Value.ToString("dd/MM/yyyy")</r><br />}
             @if (item.Activity.ActivityTime != null && item.Activity.ActivityTime != "")
@@ -39,13 +39,16 @@
 
 @if (Request.IsAuthenticated)
 {
-    if (item.Interested != true)
+    if (Int32.Parse(User.Identity.Name.Split(',')[1]) != 3)
     {
-        <a style="float:right;" class="btn btn-sm" onclick="showInterest(this)" data-url="@Url.Action("Interes", "Actividades", new { id = item.Activity.ActivityID })" title="Mostrar Interes"><i class="fa fa-thumbs-up"></i> Me Interesa</a>
-    }
-    else
-    {
-        <i style="float:right; font-size:0.875rem;">Te interesa esta actividad.</i>
+        if (item.Interested != true)
+        {
+            <a style="float:right;" class="btn btn-sm" onclick="showInterest(this)" data-url="@Url.Action("Interes", "Actividades", new { id = item.Activity.ActivityID })" title="Mostrar Interes"><i class="fa fa-thumbs-up"></i> Me Interesa</a>
+        }
+        else
+        {
+            <i style="float:right; font-size:0.875rem;">Te interesa esta actividad.</i>
+        }
     }
 }
     </div>
@@ -59,7 +62,5 @@
     $(document).ready(function () {
 
         $(".activity").niceScroll();
-               
-
     });
 </script>

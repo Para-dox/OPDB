@@ -16,11 +16,11 @@ namespace OPDB.Controllers
         //
         // GET: /Unidades/
 
-        public ActionResult Index()
+        public ActionResult Index(string requested)
         {
             if (User.Identity.IsAuthenticated)
             {
-                if (Int32.Parse((User.Identity.Name.Split(',')[1])) == 1)
+                if (Int32.Parse((User.Identity.Name.Split(',')[1])) == 1 && Boolean.Parse(requested))
                 {
                     List<Unit> units = (from unit in db.Units where unit.DeletionDate == null select unit).ToList();
 
@@ -57,17 +57,25 @@ namespace OPDB.Controllers
         [HttpPost]
         public ActionResult Detalles(int id = 0)
         {
-            UnitViewModel unitViewModel = new UnitViewModel
+            if (User.Identity.IsAuthenticated)
             {
-                Unit = db.Units.Find(id)
-            };
+                if (Int32.Parse((User.Identity.Name.Split(',')[1])) == 1)
+                {
+                    UnitViewModel unitViewModel = new UnitViewModel
+                    {
+                        Unit = db.Units.Find(id)
+                    };
 
-            if (unitViewModel.Unit == null)
-            {
-                return HttpNotFound();
+                    if (unitViewModel.Unit == null)
+                    {
+                        return HttpNotFound();
+                    }
+
+                    return PartialView("Detalles", unitViewModel);
+                }
             }
 
-            return PartialView("Detalles", unitViewModel);
+            return RedirectToAction("AccesoDenegado", "Home");
         }
 
         //
@@ -76,7 +84,15 @@ namespace OPDB.Controllers
         [HttpPost]
         public ActionResult PopUpCrear()
         {
-            return PartialView("Crear");
+            if (User.Identity.IsAuthenticated)
+            {
+                if (Int32.Parse((User.Identity.Name.Split(',')[1])) == 1)
+                {
+                    return PartialView("Crear");
+                }
+            }
+
+            return RedirectToAction("AccesoDenegado", "Home");
         }
 
         //
@@ -85,46 +101,55 @@ namespace OPDB.Controllers
         [HttpPost]
         public ActionResult Crear(UnitViewModel unitViewModel)
         {
-            try
-            {
-                if (ModelState.IsValid)
+              if (ModelState.IsValid)
                 {
-                    unitViewModel.Unit.CreateDate = DateTime.Now;
-                    unitViewModel.Unit.UpdateDate = DateTime.Now;
 
-                    // Change after login implementation.
-                    unitViewModel.Unit.CreateUser = 1;
-                    unitViewModel.Unit.UpdateUser = 1;
+                    if (Request.IsAuthenticated)
+                    {
+                        if (Int32.Parse((User.Identity.Name.Split(',')[1])) == 1)
+                        {
+                            unitViewModel.Unit.CreateDate = DateTime.Now;
+                            unitViewModel.Unit.UpdateDate = DateTime.Now;
 
-                    db.Units.Add(unitViewModel.Unit);
-                    db.SaveChanges();
+                            unitViewModel.Unit.CreateUser = Int32.Parse(User.Identity.Name.Split(',')[0]);
+                            unitViewModel.Unit.UpdateUser = Int32.Parse(User.Identity.Name.Split(',')[0]);
 
-                    return View("_Hack");
+                            db.Units.Add(unitViewModel.Unit);
+                            db.SaveChanges();
+
+                            return View("_Hack");
+                        }
+                    }
+                    
                 }
 
                 return Content(GetErrorsFromModelState(unitViewModel));
-            }
+            
 
-            catch (Exception)
-            {
-                return Content(GetErrorsFromModelState(unitViewModel));
-            }
         }
 
         [HttpPost]
         public ActionResult PopUpEditar(int id = 0)
         {
-            UnitViewModel unitViewModel = new UnitViewModel
+            if (User.Identity.IsAuthenticated)
             {
-                Unit = db.Units.Find(id)
-            };
+                if (Int32.Parse((User.Identity.Name.Split(',')[1])) == 1)
+                {
+                    UnitViewModel unitViewModel = new UnitViewModel
+                    {
+                        Unit = db.Units.Find(id)
+                    };
 
-            if (unitViewModel.Unit == null)
-            {
-                return HttpNotFound();
+                    if (unitViewModel.Unit == null)
+                    {
+                        return HttpNotFound();
+                    }
+
+                    return PartialView("Editar", unitViewModel);
+                }
             }
 
-            return PartialView("Editar", unitViewModel);
+            return RedirectToAction("AccesoDenegado", "Home");
         }
 
         //
@@ -133,18 +158,25 @@ namespace OPDB.Controllers
         [HttpPost]
         public ActionResult Editar(UnitViewModel unitViewModel)
         {
-            if (ModelState.IsValid)
+            if (User.Identity.IsAuthenticated)
             {
-                //To be changed with login.
-                unitViewModel.Unit.UpdateUser = 1;
+                if (Int32.Parse((User.Identity.Name.Split(',')[1])) == 1)
+                {
+                    if (ModelState.IsValid)
+                    {
+                        unitViewModel.Unit.UpdateUser = Int32.Parse(User.Identity.Name.Split(',')[0]);
 
-                unitViewModel.Unit.UpdateDate = DateTime.Now;
-                db.Entry(unitViewModel.Unit).State = EntityState.Modified;
-                db.SaveChanges();
-                return View("_Hack");
+                        unitViewModel.Unit.UpdateDate = DateTime.Now;
+                        db.Entry(unitViewModel.Unit).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return View("_Hack");
+                    }
+
+                    return Content(GetErrorsFromModelState(unitViewModel));
+                }
             }
 
-            return Content(GetErrorsFromModelState(unitViewModel));   
+            return RedirectToAction("AccesoDenegado", "Home");
         }
 
         //
@@ -152,20 +184,28 @@ namespace OPDB.Controllers
 
         public ActionResult Remover(int id = 0)
         {
-            Unit unit = db.Units.Find(id);
-
-            if (unit == null)
+            if (User.Identity.IsAuthenticated)
             {
-                return HttpNotFound();
-            }
-            else
-            {
-                unit.DeletionDate = DateTime.Now;
-                db.Entry(unit).State = EntityState.Modified;
-                db.SaveChanges();
+                if (Int32.Parse((User.Identity.Name.Split(',')[1])) == 1)
+                {
+                    Unit unit = db.Units.Find(id);
+
+                    if (unit == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    else
+                    {
+                        unit.DeletionDate = DateTime.Now;
+                        db.Entry(unit).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+
+                    return RedirectToAction("Index");
+                }
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("AccesoDenegado", "Home");
         }
 
         protected override void Dispose(bool disposing)
