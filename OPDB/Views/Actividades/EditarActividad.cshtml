@@ -43,14 +43,14 @@
                 @Html.LabelFor(model => model.Activity.UserID, "Entidad de Alcance")
             </div>
             <div class="editor-field">
-                @Html.DropDownListFor(model => model.Activity.UserID, Model.OutreachEntities, new { @style = "width: 500px !important;" })
+                @Html.DropDownListFor(model => model.Activity.UserID, Model.OutreachEntities, new { @style = "width: 500px !important; height: 2.55rem !important;" })
             </div><br />
             <div class="editor-label">
                 @Html.LabelFor(model => model.Activity.ActivityTypeID, "Tipo de Actividad")
             </div>
             <div class="editor-field">
-                @Html.DropDownListFor(model => model.Activity.ActivityTypeID, Model.ActivityTypes, new { @style = "width: 500px !important;" })
-            </div>
+                @Html.DropDownListFor(model => model.Activity.ActivityTypeID, Model.ActivityTypes, new { @style = "width: 500px !important; height: 2.55rem !important;" })
+            </div><br />
             <div class="editor-label">
                 @Html.LabelFor(model => model.Activity.Title, "Título de Actividad *")
             </div>
@@ -90,15 +90,15 @@
                     <span>Hora </span><br />
                     @Html.TextBoxFor(model => model.Activity.ActivityTime, new { id = "timepicker" }) &nbsp;<i class="fa fa-clock-o"></i>
                 </div>
-                @Html.ValidationMessageFor(model => model.Activity.ActivityDate, null, new { @style = "float:left !important;" })
-                @Html.ValidationMessage("Activity_ActivityDate_EarlierThanCurrentDate", new { @style = "float:left !important;" })
-                @Html.ValidationMessageFor(model => model.Activity.ActivityTime, null, new { @style = "float:left !important;" })
+                @Html.ValidationMessageFor(model => model.Activity.ActivityDate, null)
+                @Html.ValidationMessage("Activity_ActivityDate_EarlierThanCurrentDate")
+                @Html.ValidationMessageFor(model => model.Activity.ActivityTime, null)
             </div><br />
             <div class="editor-label">
                 @Html.LabelFor(model => model.Activity.SchoolID, "Escuela")
             </div>
             <div class="editor-field">
-                @Html.DropDownListFor(model => model.Activity.SchoolID, Model.SchoolList, new { @style = "width: 500px !important;" })
+                @Html.DropDownListFor(model => model.Activity.SchoolID, Model.SchoolList, new { @style = "width: 500px !important; height: 2.55rem !important;" })
             </div><br />
             <div class="editor-label">
                 @Html.LabelFor(model => model.ContactIDs, "Contactos de la Actividad")

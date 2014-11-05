@@ -22,7 +22,7 @@ namespace OPDB.Models
         public int ActivityID { get; set; }
         public int UserID { get; set; }
 
-        [RegularExpression(@"^[a-zA-Z\u00c0-\u017e0-9¿\?.,;:¡!()+@$""'\-\s]+$", ErrorMessageResourceName = "ActivityNote_Note_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
+        [RegularExpression(@"^([a-zA-Z\u00c0-\u017e0-9¿\?.,;:¡!()+@$""'\s]+[^\s-][-]?)+$", ErrorMessageResourceName = "ActivityNote_Note_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
         [Required(ErrorMessageResourceName = "ActivityNote_Note_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Note { get; set; }
 

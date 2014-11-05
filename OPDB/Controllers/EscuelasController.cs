@@ -133,7 +133,6 @@ namespace OPDB.Controllers
                         schoolViewModel.School.UpdateDate = DateTime.Now;
                         schoolViewModel.School.CreateDate = DateTime.Now;
 
-                        //Change after login implementation.
                         schoolViewModel.School.CreateUser = Int32.Parse(User.Identity.Name.Split(',')[0]);
                         schoolViewModel.School.UpdateUser = Int32.Parse(User.Identity.Name.Split(',')[0]);
 
@@ -167,10 +166,10 @@ namespace OPDB.Controllers
                         return HttpNotFound();
                     }
 
-                    return View(schoolViewModel);
+                    return PartialView("Editar", schoolViewModel);
                 }
             }
-            return PartialView("AccesoDenegado", "Home");
+            return RedirectToAction("AccesoDenegado", "Home");
         }      
 
         [HttpPost]
@@ -189,7 +188,7 @@ namespace OPDB.Controllers
 
                     if (ModelState.IsValid)
                     {
-                        schoolViewModel.School.UpdateUser = 2;
+                        schoolViewModel.School.UpdateUser = Int32.Parse(User.Identity.Name.Split(',')[0]);
                         schoolViewModel.School.UpdateDate = DateTime.Now;
 
                         db.Entry(currentSchool).CurrentValues.SetValues(schoolViewModel.School);
@@ -250,7 +249,7 @@ namespace OPDB.Controllers
                         db.Entry(school).State = EntityState.Modified;
                         db.SaveChanges();
                     }
-                    return RedirectToAction("Administracion", "Home", null);
+                    return RedirectToAction("Administracion", "Home");
                 }
             }
 
