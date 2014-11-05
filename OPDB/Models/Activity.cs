@@ -46,7 +46,7 @@ namespace OPDB.Models
         
         public Nullable<System.DateTime> ActivityDate { get; set; }
 
-        [RegularExpression(@"^(([1][0-2])|([0][0-9])):[0-5][0-9](AM|PM)$", ErrorMessageResourceName = "Activity_ActivityTime_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
+        [RegularExpression(@"^(([1][0-2])|([0]?[0-9])):[0-5][0-9](AM|PM)$", ErrorMessageResourceName = "Activity_ActivityTime_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string ActivityTime { get; set; }
         
         public Nullable<int> SchoolID { get; set; }

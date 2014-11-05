@@ -9,6 +9,7 @@ using OPDB.Models;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Validation;
 
 namespace OPDB.Controllers
 {
@@ -798,23 +799,42 @@ namespace OPDB.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                Activity activity = db.Activities.Find(id);
-                if (activity == null)
+                try
                 {
-                    return HttpNotFound();
+                    Activity activity = db.Activities.Find(id);
+                    if (activity == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    else if (Int32.Parse(User.Identity.Name.Split(',')[0]) == activity.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                    {
+                        int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
+
+                        activity.DeletionDate = DateTime.Now;
+                        db.Entry(activity).State = EntityState.Modified;
+                        db.SaveChanges();
+
+                        if (userID == activity.UserID)
+                            return RedirectToAction("Detalles", "Alcance", new { id = activity.UserID });
+                        else
+                            return RedirectToAction("Administracion", "Home");
+                    }
                 }
-                else if (Int32.Parse(User.Identity.Name.Split(',')[0]) == activity.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                catch (DbEntityValidationException ex)
                 {
-                    int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
+                    // Retrieve the error messages as a list of strings.
+                    var errorMessages = ex.EntityValidationErrors
+                            .SelectMany(x => x.ValidationErrors)
+                            .Select(x => x.ErrorMessage);
 
-                    activity.DeletionDate = DateTime.Now;
-                    db.Entry(activity).State = EntityState.Modified;
-                    db.SaveChanges();
+                    // Join the list to a single string.
+                    var fullErrorMessage = string.Join("; ", errorMessages);
 
-                    if (userID == activity.UserID)
-                        return RedirectToAction("Detalles", "Alcance", new { id = activity.UserID });
-                    else
-                        return RedirectToAction("Administracion", "Home");
+                    // Combine the original exception message with the new one.
+                    var exceptionMessage = string.Concat(ex.Message, " The validation errors are: ", fullErrorMessage);
+
+                    // Throw a new DbEntityValidationException with the improved exception message.
+                    throw new DbEntityValidationException(exceptionMessage, ex.EntityValidationErrors);
                 }
 
 
