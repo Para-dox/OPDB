@@ -24,7 +24,8 @@ namespace OPDB.Models
     
         public int ResourceID { get; set; }
 
-        [RegularExpression(@"^[a-zA-Z\u00c0-\u017e'\s]{1,100}$", ErrorMessageResourceName = "Resource_ResourceName_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
+        [StringLength(100, ErrorMessageResourceName = "Resource_ResourceName_LengthExceeded", ErrorMessageResourceType = typeof(Resources.WebResources))]
+        [RegularExpression(@"^([a-zA-Z\u00c0-\u017e0-9.,/\s]+[-]?[a-zA-Z\u00c0-\u017e0-9.,/\s]+)+$", ErrorMessageResourceName = "Resource_ResourceName_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
         [Required(ErrorMessageResourceName = "Resource_ResourceName_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Resource1 { get; set; }
 

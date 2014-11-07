@@ -43,14 +43,15 @@
         {
             <tr>
                 <td class="panel callout large-12 columns">
-                    @Html.ActionLink(item.OutreachEntity.OutreachEntityName, "Detalles", "Alcance", new { id = item.User.UserID }, null)<br />
-                    <span>Misión: </span> @item.OutreachEntity.Mission<br />
-                    <span>Objetivos: </span> @item.OutreachEntity.Objectives<br />
+                    @Html.ActionLink(item.OutreachEntity.OutreachEntityName, "Detalles", "Alcance", new { id = item.User.UserID }, null)<br /><br />
+                    <span>Misión: </span> @item.OutreachEntity.Mission<br /><br />
+                    <span>Visión: </span> @item.OutreachEntity.Vision<br /><br />
+                    <span>Objetivos: </span> @item.OutreachEntity.Objectives<br /><br />                    
                     @if (item.OutreachEntity.Location != null && item.OutreachEntity.Location != "") { 
-                    <span>Localización:</span> @item.OutreachEntity.Location<br />}
+                    <span>Localización:</span> @item.OutreachEntity.Location<br /><br />}
                     @if (item.User.PhoneNumber != null)
                     {
-                        <span>Telefono: </span> @item.User.PhoneNumber
+                        <span>Teléfono: </span> @item.User.PhoneNumber
                     }
                 </td>
             </tr>

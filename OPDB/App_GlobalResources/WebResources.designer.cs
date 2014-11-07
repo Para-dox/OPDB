@@ -115,6 +115,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to El contenido de su localización excede el límite de 100 caracteres.
+        /// </summary>
+        internal static string Activity_Location_LengthExceeded {
+            get {
+                return ResourceManager.GetString("Activity_Location_LengthExceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to El propósito de la actividad es inválido.
         /// </summary>
         internal static string Activity_Purpose_Invalid {
@@ -196,11 +205,38 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to El título del medio no puede exceder de 40 caracteres.
+        /// </summary>
+        internal static string Media_MediaTitle_LengthExceeded {
+            get {
+                return ResourceManager.GetString("Media_MediaTitle_LengthExceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No ha ingresado un título para este medio.
         /// </summary>
         internal static string Media_MediaTitle_Required {
             get {
                 return ResourceManager.GetString("Media_MediaTitle_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to La localización que ha entrado es inválida.
+        /// </summary>
+        internal static string OutreachEntityDetail_Location_Invalid {
+            get {
+                return ResourceManager.GetString("OutreachEntityDetail_Location_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to La localización que ha entrado excede el limite de 100 caracteres.
+        /// </summary>
+        internal static string OutreachEntityDetail_Location_LengthExceeded {
+            get {
+                return ResourceManager.GetString("OutreachEntityDetail_Location_LengthExceeded", resourceCulture);
             }
         }
         
@@ -250,6 +286,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to El nombre de la entidad excede el límite de 100 caracteres.
+        /// </summary>
+        internal static string OutreachEntityDetail_OutreachEntityName_LengthExceeded {
+            get {
+                return ResourceManager.GetString("OutreachEntityDetail_OutreachEntityName_LengthExceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No ha ingresado el nombre de la organización.
         /// </summary>
         internal static string OutreachEntityDetail_OutreachEntityName_Required {
@@ -282,6 +327,15 @@ namespace Resources {
         internal static string Resource_ResourceName_Invalid {
             get {
                 return ResourceManager.GetString("Resource_ResourceName_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El nombre del recurso excede el límite de 100 caracteres.
+        /// </summary>
+        internal static string Resource_ResourceName_LengthExceeded {
+            get {
+                return ResourceManager.GetString("Resource_ResourceName_LengthExceeded", resourceCulture);
             }
         }
         
@@ -475,11 +529,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to La fecha de nacimiento entrada es inválida.
+        /// </summary>
+        internal static string UserDetail_DateOfBirth_Invalid {
+            get {
+                return ResourceManager.GetString("UserDetail_DateOfBirth_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Su nombre es inválido.
         /// </summary>
         internal static string UserDetail_FirstName_Invalid {
             get {
                 return ResourceManager.GetString("UserDetail_FirstName_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Su nombre excede el límite de 50 caracteres.
+        /// </summary>
+        internal static string UserDetail_FirstName_LengthExceeded {
+            get {
+                return ResourceManager.GetString("UserDetail_FirstName_LengthExceeded", resourceCulture);
             }
         }
         
@@ -502,11 +574,38 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to El contenido de su grado es inválido.
+        /// </summary>
+        internal static string UserDetail_Grade_Invalid {
+            get {
+                return ResourceManager.GetString("UserDetail_Grade_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El contenido de su grado excede el límite de 2 caracteres.
+        /// </summary>
+        internal static string UserDetail_Grade_LengthExceeded {
+            get {
+                return ResourceManager.GetString("UserDetail_Grade_LengthExceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Su apellido es inválido.
         /// </summary>
         internal static string UserDetail_LastName_Invalid {
             get {
                 return ResourceManager.GetString("UserDetail_LastName_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Su apellido excede el límite de 50 caracteres.
+        /// </summary>
+        internal static string UserDetail_LastName_LengthExceeded {
+            get {
+                return ResourceManager.GetString("UserDetail_LastName_LengthExceeded", resourceCulture);
             }
         }
         
@@ -529,6 +628,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Su concentración excede el límite de 100 caracteres.
+        /// </summary>
+        internal static string UserDetail_Major_LengthExceeded {
+            get {
+                return ResourceManager.GetString("UserDetail_Major_LengthExceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Su inicial es inválida.
         /// </summary>
         internal static string UserDetail_MiddleInitial_Invalid {
@@ -543,6 +651,15 @@ namespace Resources {
         internal static string UserDetail_Role_Invalid {
             get {
                 return ResourceManager.GetString("UserDetail_Role_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Su rol excede el límite de 100 caracteres.
+        /// </summary>
+        internal static string UserDetail_Role_LengthExceeded {
+            get {
+                return ResourceManager.GetString("UserDetail_Role_LengthExceeded", resourceCulture);
             }
         }
         

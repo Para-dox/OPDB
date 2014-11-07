@@ -5,9 +5,31 @@ function getValue() {
         document.getElementById('outreachEntity').removeAttribute("hidden", "hidden");
         document.getElementById('user').setAttribute("hidden", "hidden");
     }
+
     else {
         document.getElementById('user').removeAttribute("hidden", "hidden");
         document.getElementById('outreachEntity').setAttribute("hidden", "hidden");
+    }
+
+    if (document.getElementById('userType').value == 4) {
+        document.getElementById('faculty').removeAttribute("hidden", "hidden");
+        document.getElementById('collegeStudent').setAttribute("hidden", "hidden");
+        document.getElementById('grade').setAttribute("hidden", "hidden");
+    }
+    else if (document.getElementById('userType').value == 5) {
+        document.getElementById('collegeStudent').removeAttribute("hidden", "hidden");
+        document.getElementById('faculty').setAttribute("hidden", "hidden");
+        document.getElementById('grade').setAttribute("hidden", "hidden");
+    }
+    else if (document.getElementById('userType').value == 6 || document.getElementById('userType').value == 7) {
+        document.getElementById('grade').removeAttribute("hidden", "hidden");
+        document.getElementById('faculty').setAttribute("hidden", "hidden");
+        document.getElementById('collegeStudent').setAttribute("hidden", "hidden");
+    }
+    else {
+        document.getElementById('collegeStudent').setAttribute("hidden", "hidden");
+        document.getElementById('faculty').setAttribute("hidden", "hidden");
+        document.getElementById('grade').setAttribute("hidden", "hidden");
     }
 }
 

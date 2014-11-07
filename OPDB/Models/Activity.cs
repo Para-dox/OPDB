@@ -33,15 +33,17 @@ namespace OPDB.Models
         public int ActivityTypeID { get; set; }
         public int UserID { get; set; }
 
-        [RegularExpression(@"^[a-zA-Z\u00c0-\u017e0-9¿\?.,;:¡!()+@$""'\s]+$", ErrorMessageResourceName = "Activity_Title_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
+        [RegularExpression(@"^([a-zA-Z\u00c0-\u017e0-9¿?.,;:!¡()$""'/\s]+[-]?[a-zA-Z\u00c0-\u017e0-9?.,;:!)@$""'/\s]+)+$", ErrorMessageResourceName = "Activity_Title_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
         [Required(ErrorMessageResourceName = "Activity_Title_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Title { get; set; }
 
-        [RegularExpression(@"^[a-zA-Z\u00c0-\u017e0-9¿\?.,;:¡!()+@$""'\s]+$", ErrorMessageResourceName = "Activity_Purpose_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
+        //[a-zA-Z\u00c0-\u017e0-9¿\?.,;:¡!()+@$""'\s]+
+        [RegularExpression(@"^([a-zA-Z\u00c0-\u017e0-9¿?.,;:!¡()$""'/\s]+[-]?[a-zA-Z\u00c0-\u017e0-9?.,;:!)@$""'/\s]+)+$", ErrorMessageResourceName = "Activity_Purpose_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
         [Required(ErrorMessageResourceName = "Activity_Purpose_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Purpose { get; set; }
 
-        [RegularExpression(@"^[a-zA-Z\u00c0-\u017e0-9,.\s]{1,100}$", ErrorMessageResourceName = "Activity_Location_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
+        [StringLength(100, ErrorMessageResourceName = "Activity_Location_LengthExceeded", ErrorMessageResourceType = typeof(Resources.WebResources))]
+        [RegularExpression(@"^([a-zA-Z\u00c0-\u017e0-9.,\s]+[-]?[a-zA-Z\u00c0-\u017e0-9.,\s]+)+$", ErrorMessageResourceName = "Activity_Location_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Location { get; set; }
         
         public Nullable<System.DateTime> ActivityDate { get; set; }

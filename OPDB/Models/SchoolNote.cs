@@ -22,7 +22,7 @@ namespace OPDB.Models
         public int SchoolID { get; set; }
         public int UserID { get; set; }
 
-        [RegularExpression(@"^[a-zA-Z\u00c0-\u017e0-9¿\?.,;:¡!()+@$""'/\s]+$", ErrorMessageResourceName = "SchoolNote_Note_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
+        [RegularExpression(@"^([a-zA-Z\u00c0-\u017e0-9¿?.,;:!¡()$""'/\s]+[-]?[a-zA-Z\u00c0-\u017e0-9?.,;:!)@$""'/\s]+)+$", ErrorMessageResourceName = "SchoolNote_Note_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
         [Required(ErrorMessageResourceName = "SchoolNote_Note_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Note { get; set; }
 

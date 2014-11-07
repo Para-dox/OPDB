@@ -43,7 +43,10 @@
 
 <table id="activityList">
     <thead hidden>
-        <tr><th></th></tr>
+        <tr>
+            <th></th>
+            <th></th>
+        </tr>
     </thead>
     <tbody>
         @foreach (var item in Model.Information)
@@ -67,6 +70,7 @@
                 }
                 }
                 </td>
+                <td>@item.Activity.UpdateDate</td>
             </tr>
 
         }
@@ -81,11 +85,18 @@
             "sDom": '<"top">t<"bottom"pr><"clear">',
             "sPaginationType": "full_numbers",
             "bProcessing": false,
-            "oLanguage": { "sSearch": "Filter:" },
             "oLanguage": {
                 "sEmptyTable": "No se ha añadido ninguna actividad",
-                "sZeroRecords": "No se ha encontrado ningún registro"
-            },
+                "sZeroRecords": "No se ha encontrado ningún registro",
+                "sSearch": "Filter:"
+            }, "columnDefs": [
+            {
+                "targets": [ 1 ],
+                "visible": false,
+                "searchable": false
+            }
+            ],
+            "aaSorting": [[ 1, "desc" ]] ,
             "fnDrawCallback": function() {
                 $("html").getNiceScroll().resize();
             }
