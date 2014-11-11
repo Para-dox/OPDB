@@ -17,6 +17,12 @@ namespace OPDB.Models
         public int MediaID { get; set; }
         public int ActivityID { get; set; }
         public string MediaType { get; set; }
+<<<<<<< HEAD
+=======
+
+        [RegularExpression(@"^[a-zA-Z\u00c0-\u017e0-9'""/\s]{1,40}$", ErrorMessageResourceName = "Media_MediaTitle_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
+        [Required(ErrorMessageResourceName = "Media_MediaTitle_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
+>>>>>>> parent of 63bff4f... a lot of stuff
         public string MediaTitle { get; set; }
         public string MediaPath { get; set; }
         public int CreateUser { get; set; }

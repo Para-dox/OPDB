@@ -17,6 +17,12 @@ namespace OPDB.Models
         public int FeedbackID { get; set; }
         public int ActivityID { get; set; }
         public int UserID { get; set; }
+<<<<<<< HEAD
+=======
+
+        [RegularExpression(@"^[a-zA-Z\u00c0-\u017e0-9¿\?.,;:¡!()+@$""'/\s]+$", ErrorMessageResourceName = "Feedback_Feedback_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
+        [Required(ErrorMessageResourceName = "Feedback_Feedback_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
+>>>>>>> parent of 63bff4f... a lot of stuff
         public string Feedback1 { get; set; }
         public int CreateUser { get; set; }
 

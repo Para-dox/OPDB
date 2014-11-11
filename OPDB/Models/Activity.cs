@@ -28,8 +28,21 @@ namespace OPDB.Models
         public int ActivityID { get; set; }
         public int ActivityTypeID { get; set; }
         public int UserID { get; set; }
+<<<<<<< HEAD
         public string Title { get; set; }
         public string Purpose { get; set; }
+=======
+
+        [RegularExpression(@"^[a-zA-Z\u00c0-\u017e0-9¿\?.,;:¡!()+@$""'\s]+$", ErrorMessageResourceName = "Activity_Title_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
+        [Required(ErrorMessageResourceName = "Activity_Title_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
+        public string Title { get; set; }
+
+        [RegularExpression(@"^[a-zA-Z\u00c0-\u017e0-9¿\?.,;:¡!()+@$""'\s]+$", ErrorMessageResourceName = "Activity_Purpose_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
+        [Required(ErrorMessageResourceName = "Activity_Purpose_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
+        public string Purpose { get; set; }
+
+        [RegularExpression(@"^[a-zA-Z\u00c0-\u017e0-9,.\s]{1,100}$", ErrorMessageResourceName = "Activity_Location_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
+>>>>>>> parent of 63bff4f... a lot of stuff
         public string Location { get; set; }
         public Nullable<System.DateTime> ActivityDate { get; set; }
         public string ActivityTime { get; set; }

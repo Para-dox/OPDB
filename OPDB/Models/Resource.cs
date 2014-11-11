@@ -20,6 +20,12 @@ namespace OPDB.Models
         }
     
         public int ResourceID { get; set; }
+<<<<<<< HEAD
+=======
+
+        [RegularExpression(@"^[a-zA-Z\u00c0-\u017e'\s]{1,100}$", ErrorMessageResourceName = "Resource_ResourceName_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
+        [Required(ErrorMessageResourceName = "Resource_ResourceName_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
+>>>>>>> parent of 63bff4f... a lot of stuff
         public string Resource1 { get; set; }
         public int UnitID { get; set; }
         public int CreateUser { get; set; }

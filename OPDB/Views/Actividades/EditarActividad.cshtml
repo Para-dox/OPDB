@@ -78,7 +78,7 @@
                 @Html.LabelFor(model => model.Activity.Details, "Detalles")
             </div>
             <div class="editor-field">
-                @Html.ValidationMessage("Activity_Details_Invalid")
+                @Html.ValidationMessage("Activity_Details_Invalid", new { @style = "float:left !important;" })
                 @Html.TextAreaFor(model => model.Activity.Details, new { @style = "width: 500px !important; height: 300px !important;", @id = "bbcodeEditor" })
             </div><br />
             <div class="editor-field">
@@ -90,9 +90,9 @@
                     <span>Hora </span><br />
                     @Html.TextBoxFor(model => model.Activity.ActivityTime, new { id = "timepicker" }) &nbsp;<i class="fa fa-clock-o"></i>
                 </div>
-                @Html.ValidationMessageFor(model => model.Activity.ActivityDate)
+                @Html.ValidationMessageFor(model => model.Activity.ActivityDate, null)
                 @Html.ValidationMessage("Activity_ActivityDate_EarlierThanCurrentDate")
-                @Html.ValidationMessageFor(model => model.Activity.ActivityTime)
+                @Html.ValidationMessageFor(model => model.Activity.ActivityTime, null)
             </div><br />
             <div class="editor-label">
                 @Html.LabelFor(model => model.Activity.SchoolID, "Escuela")

@@ -24,15 +24,5 @@ namespace OPDB
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
         }
-
-        protected void Application_Error(object sender, EventArgs e)
-        {
-            Exception lastError = Server.GetLastError();
-            if (lastError is HttpRequestValidationException)
-            {
-                Response.Redirect("~/Error.aspx");
-            }
-        }
-       
     }
 }

@@ -38,7 +38,7 @@
                     foreach (var outreach in Model.outreachEntities)
                     {
                         <li>
-                            @Html.ActionLink(outreach.OutreachEntityName, "Detalles", "Alcance", new { id = outreach.UserID }, null)
+                            @Html.ActionLink(outreach.OutreachEntityName, "Detalles", "Alcance", new { id = outreach.OutreachEntityDetailID }, null)
                         </li>
                     }
                 }

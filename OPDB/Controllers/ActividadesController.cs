@@ -313,8 +313,6 @@ namespace OPDB.Controllers
 
                         if (DateTime.Compare(activityDate, DateTime.Now.Date) <= 0)
                             ModelState.AddModelError("Activity_ActivityDate_EarlierThanCurrentDate", Resources.WebResources.Activity_ActivityDate_EarlierThanCurrentDate);
-                        else
-                            activityViewModel.Activity.ActivityDate = activityDate;
                     }
 
                     if (activityViewModel.Activity.Details != null && activityViewModel.Activity.Details != "")
@@ -502,10 +500,12 @@ namespace OPDB.Controllers
                         return HttpNotFound();
                     }
 
+                    string date = "";
 
                     if (activityViewModel.Activity.ActivityDate != null)
-                        activityViewModel.ActivityDate = activityViewModel.Activity.ActivityDate.Value.ToString("dd/MM/yyyy");
+                        activityViewModel.Activity.ActivityDate.Value.ToString("dd/MM/yyyy");
 
+                    activityViewModel.ActivityDate = date;
                     activityViewModel.ActivityTypes = getActivityTypes();
                     activityViewModel.SchoolList = getSchools();
 
@@ -1447,9 +1447,6 @@ namespace OPDB.Controllers
 
                         if (DateTime.Compare(activityDate, DateTime.Now.Date) <= 0)
                             ModelState.AddModelError("Activity_ActivityDate_EarlierThanCurrentDate", Resources.WebResources.Activity_ActivityDate_EarlierThanCurrentDate);
-
-                        else
-                            activityViewModel.Activity.ActivityDate = activityDate;
                     }
 
                     if (activityViewModel.Activity.Details != null && activityViewModel.Activity.Details != "")

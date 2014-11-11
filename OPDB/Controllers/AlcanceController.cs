@@ -129,17 +129,12 @@ namespace OPDB.Controllers
                         }
                         else
                         {
-                            string pattern = @"^[a-zA-Z\u00c0-\u017e'\s]+[-]?[a-zA-Z\u00c0-\u017e'\s]+$";
+                            string pattern = @"^[a-zA-Z\u00c0-\u017e'\s]{1,100}$";
                             Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
                             MatchCollection matches = rgx.Matches(userViewModel.OutreachEntity.OutreachEntityName);
                             if (matches.Count == 0)
                             {
-                                ModelState.AddModelError("OutreachEntityDetail_OutreachEntityName_Invalid", Resources.WebResources.OutreachEntityDetail_OutreachEntityName_Invalid);
-                                validModel = false;
-                            }
-                            else if (userViewModel.OutreachEntity.OutreachEntityName.Length > 100)
-                            {
-                                ModelState.AddModelError("OutreachEntityDetail_OutreachEntityName_LengthExceeded", Resources.WebResources.OutreachEntityDetail_OutreachEntityName_LengthExceeded);
+                                ModelState.AddModelError("OutreachEntity_OutreachEntityName_Invalid", Resources.WebResources.OutreachEntityDetail_OutreachEntityName_Invalid);
                                 validModel = false;
                             }
 
@@ -152,7 +147,7 @@ namespace OPDB.Controllers
                         }
                         else
                         {
-                            string pattern = @"^([a-zA-Z\u00c0-\u017e0-9¿?.,;:!¡()$""'/\s]+[-]?[a-zA-Z\u00c0-\u017e0-9?.,;:!)@$""'/\s]+)+$";
+                            string pattern = @"^[a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""'/\s]+$";
                             Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
                             MatchCollection matches = rgx.Matches(userViewModel.OutreachEntity.Mission);
                             if (matches.Count == 0)
@@ -170,7 +165,7 @@ namespace OPDB.Controllers
                         }
                         else
                         {
-                            string pattern = @"^([a-zA-Z\u00c0-\u017e0-9¿?.,;:!¡()$""'/\s]+[-]?[a-zA-Z\u00c0-\u017e0-9?.,;:!)@$""'/\s]+)+$";
+                            string pattern = @"^[a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""'/\s]+$";
                             Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
                             MatchCollection matches = rgx.Matches(userViewModel.OutreachEntity.Vision);
                             if (matches.Count == 0)
@@ -188,29 +183,12 @@ namespace OPDB.Controllers
                         }
                         else
                         {
-                            string pattern = @"^([a-zA-Z\u00c0-\u017e0-9¿?.,;:!¡()$""'/\s]+[-]?[a-zA-Z\u00c0-\u017e0-9?.,;:!)@$""'/\s]+)+$";
+                            string pattern = @"^[a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""'/\s]+$";
                             Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
                             MatchCollection matches = rgx.Matches(userViewModel.OutreachEntity.Objectives);
                             if (matches.Count == 0)
                             {
                                 ModelState.AddModelError("OutreachEntityDetail_Objectives_Invalid", Resources.WebResources.OutreachEntityDetail_Objectives_Invalid);
-                                validModel = false;
-                            }
-
-                        }
-                        if(userViewModel.OutreachEntity.Location != null && userViewModel.OutreachEntity.Location != "")
-                        {
-                            string pattern = @"^([a-zA-Z\u00c0-\u017e0-9.,\s]+[-]?[a-zA-Z\u00c0-\u017e0-9.,\s]+)+$";
-                            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                            MatchCollection matches = rgx.Matches(userViewModel.OutreachEntity.Location);
-                            if (matches.Count == 0)
-                            {
-                                ModelState.AddModelError("OutreachEntityDetail_Location_Invalid", Resources.WebResources.OutreachEntityDetail_Location_Invalid);
-                                validModel = false;
-                            }
-                            else if (userViewModel.OutreachEntity.Location.Length > 100)
-                            {
-                                ModelState.AddModelError("OutreachEntityDetail_Location_LengthExceeded", Resources.WebResources.OutreachEntityDetail_Location_LengthExceeded);
                                 validModel = false;
                             }
 
@@ -234,7 +212,7 @@ namespace OPDB.Controllers
 
 
                     }
-                    GetErrorsFromModelState(userViewModel);
+
                     userViewModel.OutreachTypes = getOutreachTypes();
                     return View(userViewModel);
                 }
@@ -298,17 +276,12 @@ namespace OPDB.Controllers
                         }
                         else
                         {
-                            string pattern = @"^[a-zA-Z\u00c0-\u017e'\s]+[-]?[a-zA-Z\u00c0-\u017e'\s]+$";
+                            string pattern = @"^[a-zA-Z\u00c0-\u017e'\s]{1,100}$";
                             Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
                             MatchCollection matches = rgx.Matches(userViewModel.OutreachEntity.OutreachEntityName);
                             if (matches.Count == 0)
                             {
-                                ModelState.AddModelError("OutreachEntityDetail_OutreachEntityName_Invalid", Resources.WebResources.OutreachEntityDetail_OutreachEntityName_Invalid);
-                                validModel = false;
-                            }
-                            else if (userViewModel.OutreachEntity.OutreachEntityName.Length > 100)
-                            {
-                                ModelState.AddModelError("OutreachEntityDetail_OutreachEntityName_LengthExceeded", Resources.WebResources.OutreachEntityDetail_OutreachEntityName_LengthExceeded);
+                                ModelState.AddModelError("OutreachEntity_OutreachEntityName_Invalid", Resources.WebResources.OutreachEntityDetail_OutreachEntityName_Invalid);
                                 validModel = false;
                             }
 
@@ -321,7 +294,7 @@ namespace OPDB.Controllers
                         }
                         else
                         {
-                            string pattern = @"^([a-zA-Z\u00c0-\u017e0-9¿?.,;:!¡()$""'/\s]+[-]?[a-zA-Z\u00c0-\u017e0-9?.,;:!)@$""'/\s]+)+$";
+                            string pattern = @"^[a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""'/\s]+$";
                             Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
                             MatchCollection matches = rgx.Matches(userViewModel.OutreachEntity.Mission);
                             if (matches.Count == 0)
@@ -339,7 +312,7 @@ namespace OPDB.Controllers
                         }
                         else
                         {
-                            string pattern = @"^([a-zA-Z\u00c0-\u017e0-9¿?.,;:!¡()$""'/\s]+[-]?[a-zA-Z\u00c0-\u017e0-9?.,;:!)@$""'/\s]+)+$";
+                            string pattern = @"^[a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""'/\s]+$";
                             Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
                             MatchCollection matches = rgx.Matches(userViewModel.OutreachEntity.Vision);
                             if (matches.Count == 0)
@@ -357,30 +330,12 @@ namespace OPDB.Controllers
                         }
                         else
                         {
-                            string pattern = @"^([a-zA-Z\u00c0-\u017e0-9¿?.,;:!¡()$""'/\s]+[-]?[a-zA-Z\u00c0-\u017e0-9?.,;:!)@$""'/\s]+)+$";
+                            string pattern = @"^[a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""'/\s]+$";
                             Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
                             MatchCollection matches = rgx.Matches(userViewModel.OutreachEntity.Objectives);
                             if (matches.Count == 0)
                             {
                                 ModelState.AddModelError("OutreachEntityDetail_Objectives_Invalid", Resources.WebResources.OutreachEntityDetail_Objectives_Invalid);
-                                validModel = false;
-                            }
-
-                        }
-
-                        if (userViewModel.OutreachEntity.Location != null && userViewModel.OutreachEntity.Location != "")
-                        {
-                            string pattern = @"^([a-zA-Z\u00c0-\u017e0-9.,\s]+[-]?[a-zA-Z\u00c0-\u017e0-9.,\s]+)+$";
-                            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                            MatchCollection matches = rgx.Matches(userViewModel.OutreachEntity.Location);
-                            if (matches.Count == 0)
-                            {
-                                ModelState.AddModelError("OutreachEntityDetail_Location_Invalid", Resources.WebResources.OutreachEntityDetail_Location_Invalid);
-                                validModel = false;
-                            }
-                            else if (userViewModel.OutreachEntity.Location.Length > 100)
-                            {
-                                ModelState.AddModelError("OutreachEntityDetail_Location_LengthExceeded", Resources.WebResources.OutreachEntityDetail_Location_LengthExceeded);
                                 validModel = false;
                             }
 

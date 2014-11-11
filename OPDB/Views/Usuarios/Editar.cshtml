@@ -16,8 +16,7 @@
 
 <h2>Editar</h2>
 
-@using (Html.BeginForm())
-{
+@using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
@@ -39,14 +38,14 @@
                 @Html.DropDownListFor(model => model.User.UserTypeID, Model.UserTypes, new { @style = "width: 500px;", @id = "userTypes", @onchange = "getUserTypeValue()" })
             </div><br />
             <div class="editor-label">
-                @Html.LabelFor(model => model.User.Email, "Correo Electrónico *")
+                @Html.LabelFor(model => model.User.Email, "Correo Electrónico")
             </div>
             <div class="editor-field">
-                @Html.ValidationMessageFor(model => model.User.Email)
                 @Html.EditorFor(model => model.User.Email)
+                @Html.ValidationMessageFor(model => model.User.Email)
             </div>
             <div class="editor-label">
-                @Html.LabelFor(model => model.User.UserPassword, "Contraseña *")
+                @Html.LabelFor(model => model.User.UserPassword, "Contraseña")
             </div>
             <div class="editor-field">
                 @Html.EditorFor(model => model.User.UserPassword)
@@ -59,98 +58,94 @@
                 @Html.EditorFor(model => model.User.PhoneNumber)
                 @Html.ValidationMessageFor(model => model.User.PhoneNumber)
             </div>
-            <div class="editor-label">
-                @Html.LabelFor(model => model.UserDetail.FirstName, "Nombre *")
-            </div>
-            <div class="editor-field">
-                @Html.ValidationMessage("UserDetail_FirstName_Required")
-                @Html.ValidationMessage("UserDetail_FirstName_Invalid")
-                @Html.ValidationMessage("UserDetail_FirstName_LengthExceeded")
-                @Html.EditorFor(model => model.UserDetail.FirstName)
-            </div>
-            <div class="editor-label">
-                @Html.LabelFor(model => model.UserDetail.LastName, "Apellido *")
-            </div>
-            <div class="editor-field">
-                @Html.ValidationMessage("UserDetail_LastName_Required")
-                @Html.ValidationMessage("UserDetail_LastName_Invalid")
-                @Html.ValidationMessage("UserDetail_LastName_LengthExceeded")
-                @Html.EditorFor(model => model.UserDetail.LastName)
-            </div>
-            <div class="editor-label">
-                @Html.LabelFor(model => model.UserDetail.MiddleInitial, "Inicial")
-            </div>
-            <div class="editor-field">
-                @Html.ValidationMessage("UserDetail_MiddleInitial_Invalid")
-                @Html.EditorFor(model => model.UserDetail.MiddleInitial)
-            </div>
-            <div class="editor-label">
-                @Html.LabelFor(model => model.UserDetail.Gender, "Género")
-            </div>
-            <div class="editor-field" style="text-align:left !important;">
-                @Html.ValidationMessage("UserDetail_Gender_Required")
-                @Html.RadioButtonFor(model => model.UserDetail.Gender, "M")<label>Masculino</label>&nbsp;&nbsp;@Html.RadioButtonFor(model => model.UserDetail.Gender, "F")<label>Femenino</label>
-            </div>
-            <div class="editor-label">
-                @Html.LabelFor(model => model.BirthDate, "Fecha de Nacimiento")
-            </div>
-            <div class="editor-field">
-                @Html.ValidationMessage("UserDetail_DateOfBirth_Invalid")
-                @Html.TextBoxFor(model => model.BirthDate, new { @placeholder = "dd/MM/yyyy", @style="width:500px;"})
-            </div>
-            @*<div class="editor-label">
-                    @Html.LabelFor(model => model.userDetail.AffiliateType, "Afiliación")
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.UserDetail.FirstName, "Nombre")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.UserDetail.FirstName)
+                    @Html.ValidationMessageFor(model => model.UserDetail.FirstName)
+                </div>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.UserDetail.MiddleInitial, "Inicial")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.UserDetail.MiddleInitial)
+                    @Html.ValidationMessageFor(model => model.UserDetail.MiddleInitial)
+                </div>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.UserDetail.LastName, "Apellido")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.UserDetail.LastName)
+                    @Html.ValidationMessageFor(model => model.UserDetail.LastName)
+                </div>
+
+
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.UserDetail.Gender, "Género")
                 </div>
                 <div class="editor-field" style="text-align:left !important;">
-                    @Html.DropDownListFor(model => model.userDetail.AffiliateType, Model.AffiliateTypes, new { @style = "width: 500px;", @id = "affiliateTypes", @onchange = "getAffiliateValue()" })
+                    @Html.RadioButtonFor(model => model.UserDetail.Gender, "M")<label>Masculino</label>&nbsp;&nbsp;@Html.RadioButtonFor(model => model.UserDetail.Gender, "F")<label>Femenino</label>
+                    @Html.ValidationMessageFor(model => model.UserDetail.Gender)
+                </div>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.UserDetail.DateOfBirth, "Fecha de Nacimiento")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.UserDetail.DateOfBirth)
+                    @Html.ValidationMessageFor(model => model.UserDetail.DateOfBirth)
+                </div>
+            @*<div class="editor-label">
+                @Html.LabelFor(model => model.userDetail.AffiliateType, "Afiliación")
+            </div>
+            <div class="editor-field" style="text-align:left !important;">
+                @Html.DropDownListFor(model => model.userDetail.AffiliateType, Model.AffiliateTypes, new { @style = "width: 500px;", @id = "affiliateTypes", @onchange = "getAffiliateValue()" })
+            </div><br />
+
+            <div id="schools">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.SchoolID, "Escuela")
+                </div>
+                <div class="editor-field" style="text-align:left !important;">
+                    @Html.DropDownListFor(model => model.SchoolID, Model.Schools, new { @style = "width: 500px;", @id = "school" })
                 </div><br />
+            </div>
 
-                <div id="schools">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.SchoolID, "Escuela")
-                    </div>
-                    <div class="editor-field" style="text-align:left !important;">
-                        @Html.DropDownListFor(model => model.SchoolID, Model.Schools, new { @style = "width: 500px;", @id = "school" })
-                    </div><br />
+            <div id="outreachEntities">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.OutreachEntityDetailID, "Entidad de Alcance")
                 </div>
+                <div class="editor-field" style="text-align:left !important;">
+                    @Html.DropDownListFor(model => model.OutreachEntityDetailID, Model.OutreachEntities, new { @style = "width: 500px;", @id = "outreachEntity" })
+                </div><br />
+            </div>
 
-                <div id="outreachEntities">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.OutreachEntityDetailID, "Entidad de Alcance")
-                    </div>
-                    <div class="editor-field" style="text-align:left !important;">
-                        @Html.DropDownListFor(model => model.OutreachEntityDetailID, Model.OutreachEntities, new { @style = "width: 500px;", @id = "outreachEntity" })
-                    </div><br />
+            <div id="units">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.UnitID, "Unidad")
                 </div>
-
-                <div id="units">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.UnitID, "Unidad")
-                    </div>
-                    <div class="editor-field" style="text-align:left !important;">
-                        @Html.DropDownListFor(model => model.UnitID, Model.Units, new { @style = "width: 500px;", @id = "unit" })
-                    </div><br />
-                </div>*@
+                <div class="editor-field" style="text-align:left !important;">
+                    @Html.DropDownListFor(model => model.UnitID, Model.Units, new { @style = "width: 500px;", @id = "unit" })
+                </div><br />
+            </div>*@
 
             <div id="faculty">
                 <div class="editor-label">
                     @Html.LabelFor(model => model.UserDetail.Role, "Rol")
                 </div>
                 <div class="editor-field">
-                    @Html.ValidationMessage("UserDetail_Role_Invalid")
-                    @Html.ValidationMessage("UserDetail_Role_LengthExceeded")
                     @Html.EditorFor(model => model.UserDetail.Role)
+                    @Html.ValidationMessageFor(model => model.UserDetail.Role)
                 </div>
             </div>
-
+            
             <div id="collegeStudent">
                 <div class="editor-label">
                     @Html.LabelFor(model => model.UserDetail.Major, "Concentración")
                 </div>
                 <div class="editor-field">
-                    @Html.ValidationMessage("UserDetail_Major_Invalid")
-                    @Html.ValidationMessage("UserDetail_Major_LengthExceeded")
                     @Html.EditorFor(model => model.UserDetail.Major)
+                    @Html.ValidationMessageFor(model => model.UserDetail.Major)
                 </div>
             </div>
 
@@ -159,12 +154,11 @@
                     @Html.LabelFor(model => model.UserDetail.Grade, "Grado")
                 </div>
                 <div class="editor-field">
-                    @Html.ValidationMessage("UserDetail_Grade_Invalid")
-                    @Html.ValidationMessage("UserDetail_Grade_LengthExceeded")
                     @Html.EditorFor(model => model.UserDetail.Grade)
+                    @Html.ValidationMessageFor(model => model.UserDetail.Grade)
                 </div>
             </div>
-
+           
             <p style="text-align:left;">
                 <input type="submit" class="btn" style="float:left !important; width:40% !important; margin-left: 30px !important;" value="Guardar" /> <input type="button" value="Cancelar" class="btn" style="float:right !important; width:40% !important; margin-bottom: 20px !important; margin-right: 30px !important;" onclick="window.history.back()" />
             </p>
