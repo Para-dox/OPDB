@@ -46,5 +46,7 @@ namespace OPDB.Models
         public DbSet<OutreachEntityType> OutreachEntityTypes { get; set; }
         public DbSet<School> Schools { get; set; }
         public DbSet<Medium> Media { get; set; }
+        public DbSet<ActivityDynamic> ActivityDynamics { get; set; }
+        public DbSet<SchoolRegion> SchoolRegions { get; set; }
     }
 }

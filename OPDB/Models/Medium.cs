@@ -11,25 +11,14 @@ namespace OPDB.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.Data;
-    using System.ComponentModel.DataAnnotations;
-    using System.Runtime.Serialization;
-
+    
     public partial class Medium
     {
         public int MediaID { get; set; }
         public int ActivityID { get; set; }
         public string MediaType { get; set; }
-
-        [StringLength(40, ErrorMessageResourceName = "Media_MediaTitle_LengthExceeded", ErrorMessageResourceType = typeof(Resources.WebResources))]
-        [RegularExpression(@"^([a-zA-Z\u00c0-\u017e0-9.,/\s]+[-]?[a-zA-Z\u00c0-\u017e0-9.,/\s]+)+$", ErrorMessageResourceName = "Media_MediaTitle_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
-        [Required(ErrorMessageResourceName = "Media_MediaTitle_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string MediaTitle { get; set; }
-
-        [RegularExpression(@"^(ht|f)tp(s?)\:\/\/[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*(:(0-9)*)*(\/?)([a-zA-Z0-9=\-\.\?\,\'\/\\\+&amp;%\$#_]*)?$", ErrorMessageResourceName = "Media_MediaPath_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
-        [Required(ErrorMessageResourceName = "Media_MediaPath_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string MediaPath { get; set; }
-
         public int CreateUser { get; set; }
         public System.DateTime CreateDate { get; set; }
         public int UpdateUser { get; set; }

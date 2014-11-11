@@ -4,13 +4,14 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="OPDBModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.5" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="OPDBModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.5" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Activity">
           <Key>
             <PropertyRef Name="ActivityID" />
           </Key>
           <Property Name="ActivityID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ActivityTypeID" Type="int" Nullable="false" />
+          <Property Name="ActivityDynamicID" Type="int" />
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="Title" Type="text" Nullable="false" />
           <Property Name="Purpose" Type="text" Nullable="false" />
@@ -19,6 +20,19 @@
           <Property Name="ActivityDate" Type="date" />
           <Property Name="ActivityTime" Type="varchar" MaxLength="7" />
           <Property Name="SchoolID" Type="int" />
+          <Property Name="SchoolRegionID" Type="int" />
+          <Property Name="CreateUser" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="UpdateUser" Type="int" Nullable="false" />
+          <Property Name="UpdateDate" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="DeletionDate" Type="datetime" Precision="0" />
+        </EntityType>
+        <EntityType Name="ActivityDynamic">
+          <Key>
+            <PropertyRef Name="ActivityDynamicID" />
+          </Key>
+          <Property Name="ActivityDynamicID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ActivityDynamic" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="CreateUser" Type="int" Nullable="false" />
           <Property Name="CreateDate" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="UpdateUser" Type="int" Nullable="false" />
@@ -207,6 +221,7 @@
           </Key>
           <Property Name="SchoolID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="SchoolSequenceNumber" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Region" Type="int" Nullable="false" />
           <Property Name="SchoolName" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Address" Type="text" Nullable="false" />
           <Property Name="Town" Type="varchar" MaxLength="50" Nullable="false" />
@@ -231,6 +246,18 @@
           <Property Name="UpdateUser" Type="int" Nullable="false" />
           <Property Name="UpdateDate" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="DeletionDate" Type="datetime" Precision="0" />
+        </EntityType>
+        <EntityType Name="SchoolRegion">
+          <Key>
+            <PropertyRef Name="SchoolRegionID" />
+          </Key>
+          <Property Name="SchoolRegionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SchoolRegion" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="CreateUser" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="UpdateUser" Type="int" Nullable="false" />
+          <Property Name="UpdateDate" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="DeletionDate" Type="int" />
         </EntityType>
         <EntityType Name="Unit">
           <Key>
@@ -364,6 +391,30 @@
             </Principal>
             <Dependent Role="Activity">
               <PropertyRef Name="UpdateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Activity_ibfk_6">
+          <End Role="SchoolRegion" Type="Self.SchoolRegion" Multiplicity="0..1" />
+          <End Role="Activity" Type="Self.Activity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SchoolRegion">
+              <PropertyRef Name="SchoolRegionID" />
+            </Principal>
+            <Dependent Role="Activity">
+              <PropertyRef Name="SchoolRegionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Activity_ibfk_7">
+          <End Role="ActivityDynamic" Type="Self.ActivityDynamic" Multiplicity="0..1" />
+          <End Role="Activity" Type="Self.Activity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ActivityDynamic">
+              <PropertyRef Name="ActivityDynamicID" />
+            </Principal>
+            <Dependent Role="Activity">
+              <PropertyRef Name="ActivityDynamicID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1821,6 +1872,7 @@
         </Function>
         <EntityContainer Name="OPDBModelStoreContainer">
           <EntitySet Name="Activity" EntityType="Self.Activity" Schema="OPDB" store:Type="Tables" />
+          <EntitySet Name="ActivityDynamic" EntityType="Self.ActivityDynamic" Schema="OPDB" store:Type="Tables" />
           <EntitySet Name="ActivityNote" EntityType="Self.ActivityNote" Schema="OPDB" store:Type="Tables" />
           <EntitySet Name="ActivityResource" EntityType="Self.ActivityResource" Schema="OPDB" store:Type="Tables" />
           <EntitySet Name="ActivityType" EntityType="Self.ActivityType" Schema="OPDB" store:Type="Tables" />
@@ -1836,6 +1888,7 @@
           <EntitySet Name="Resource" EntityType="Self.Resource" Schema="OPDB" store:Type="Tables" />
           <EntitySet Name="School" EntityType="Self.School" Schema="OPDB" store:Type="Tables" />
           <EntitySet Name="SchoolNote" EntityType="Self.SchoolNote" Schema="OPDB" store:Type="Tables" />
+          <EntitySet Name="SchoolRegion" EntityType="Self.SchoolRegion" Schema="OPDB" store:Type="Tables" />
           <EntitySet Name="Unit" EntityType="Self.Unit" Schema="OPDB" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="OPDB" store:Type="Tables" />
           <EntitySet Name="UserDetail" EntityType="Self.UserDetail" Schema="OPDB" store:Type="Tables" />
@@ -1859,6 +1912,14 @@
           </AssociationSet>
           <AssociationSet Name="Activity_ibfk_5" Association="Self.Activity_ibfk_5">
             <End Role="User" EntitySet="User" />
+            <End Role="Activity" EntitySet="Activity" />
+          </AssociationSet>
+          <AssociationSet Name="Activity_ibfk_6" Association="Self.Activity_ibfk_6">
+            <End Role="SchoolRegion" EntitySet="SchoolRegion" />
+            <End Role="Activity" EntitySet="Activity" />
+          </AssociationSet>
+          <AssociationSet Name="Activity_ibfk_7" Association="Self.Activity_ibfk_7">
+            <End Role="ActivityDynamic" EntitySet="ActivityDynamic" />
             <End Role="Activity" EntitySet="Activity" />
           </AssociationSet>
           <AssociationSet Name="ActivityNote_ibfk_1" Association="Self.ActivityNote_ibfk_1">
@@ -2121,6 +2182,10 @@
           <NavigationProperty Name="School" Relationship="OPDBModel.Activity_ibfk_3" FromRole="Activity" ToRole="School" />
           <NavigationProperty Name="Media" Relationship="OPDBModel.Media_ibfk_1" FromRole="Activity" ToRole="Medium" />
           <Property Name="Details" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="ActivityDynamicID" Type="Int32" />
+          <Property Name="SchoolRegionID" Type="Int32" />
+          <NavigationProperty Name="SchoolRegion" Relationship="OPDBModel.Activity_ibfk_6" FromRole="Activity" ToRole="SchoolRegion" />
+          <NavigationProperty Name="ActivityDynamic" Relationship="OPDBModel.Activity_ibfk_7" FromRole="Activity" ToRole="ActivityDynamic" />
         </EntityType>
         <EntityType Name="ActivityNote">
           <Key>
@@ -2813,6 +2878,16 @@
             <End Role="User" EntitySet="Users" />
             <End Role="Medium" EntitySet="Media" />
           </AssociationSet>
+          <EntitySet Name="ActivityDynamics" EntityType="OPDBModel.ActivityDynamic" />
+          <EntitySet Name="SchoolRegions" EntityType="OPDBModel.SchoolRegion" />
+          <AssociationSet Name="Activity_ibfk_6" Association="OPDBModel.Activity_ibfk_6">
+            <End Role="SchoolRegion" EntitySet="SchoolRegions" />
+            <End Role="Activity" EntitySet="Activities" />
+          </AssociationSet>
+          <AssociationSet Name="Activity_ibfk_7" Association="OPDBModel.Activity_ibfk_7">
+            <End Role="ActivityDynamic" EntitySet="ActivityDynamics" />
+            <End Role="Activity" EntitySet="Activities" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="User">
           <Key>
@@ -3410,6 +3485,7 @@
           <NavigationProperty Name="User" Relationship="OPDBModel.School_ibfk_1" FromRole="School" ToRole="User" />
           <NavigationProperty Name="User1" Relationship="OPDBModel.School_ibfk_2" FromRole="School" ToRole="User" />
           <NavigationProperty Name="SchoolNotes" Relationship="OPDBModel.SchoolNote_ibfk_2" FromRole="School" ToRole="SchoolNote" />
+          <Property Name="Region" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="Activity_ibfk_3">
           <End Type="OPDBModel.School" Role="School" Multiplicity="0..1" />
@@ -3513,6 +3589,56 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ActivityDynamic">
+          <Key>
+            <PropertyRef Name="ActivityDynamicID" />
+          </Key>
+          <Property Name="ActivityDynamicID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ActivityDynamic1" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="CreateUser" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" />
+          <Property Name="UpdateUser" Type="Int32" Nullable="false" />
+          <Property Name="UpdateDate" Type="DateTime" Nullable="false" />
+          <Property Name="DeletionDate" Type="DateTime" />
+          <NavigationProperty Name="Activities" Relationship="OPDBModel.Activity_ibfk_7" FromRole="ActivityDynamic" ToRole="Activity" />
+        </EntityType>
+        <EntityType Name="SchoolRegion">
+          <Key>
+            <PropertyRef Name="SchoolRegionID" />
+          </Key>
+          <Property Name="SchoolRegionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SchoolRegion1" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="CreateUser" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" />
+          <Property Name="UpdateUser" Type="Int32" Nullable="false" />
+          <Property Name="UpdateDate" Type="DateTime" Nullable="false" />
+          <Property Name="DeletionDate" Type="Int32" />
+          <NavigationProperty Name="Activities" Relationship="OPDBModel.Activity_ibfk_6" FromRole="SchoolRegion" ToRole="Activity" />
+        </EntityType>
+        <Association Name="Activity_ibfk_6">
+          <End Type="OPDBModel.SchoolRegion" Role="SchoolRegion" Multiplicity="0..1" />
+          <End Type="OPDBModel.Activity" Role="Activity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SchoolRegion">
+              <PropertyRef Name="SchoolRegionID" />
+            </Principal>
+            <Dependent Role="Activity">
+              <PropertyRef Name="SchoolRegionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Activity_ibfk_7">
+          <End Type="OPDBModel.ActivityDynamic" Role="ActivityDynamic" Multiplicity="0..1" />
+          <End Type="OPDBModel.Activity" Role="Activity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ActivityDynamic">
+              <PropertyRef Name="ActivityDynamicID" />
+            </Principal>
+            <Dependent Role="Activity">
+              <PropertyRef Name="ActivityDynamicID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3522,6 +3648,8 @@
           <EntitySetMapping Name="Activities">
             <EntityTypeMapping TypeName="OPDBModel.Activity">
               <MappingFragment StoreEntitySet="Activity">
+                <ScalarProperty Name="SchoolRegionID" ColumnName="SchoolRegionID" />
+                <ScalarProperty Name="ActivityDynamicID" ColumnName="ActivityDynamicID" />
                 <ScalarProperty Name="Details" ColumnName="Details" />
                 <ScalarProperty Name="ActivityID" ColumnName="ActivityID" />
                 <ScalarProperty Name="ActivityTypeID" ColumnName="ActivityTypeID" />
@@ -3812,6 +3940,7 @@
           <EntitySetMapping Name="Schools">
             <EntityTypeMapping TypeName="OPDBModel.School">
               <MappingFragment StoreEntitySet="School">
+                <ScalarProperty Name="Region" ColumnName="Region" />
                 <ScalarProperty Name="DeletionDate" ColumnName="DeletionDate" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="UpdateUser" ColumnName="UpdateUser" />
@@ -3839,6 +3968,32 @@
                 <ScalarProperty Name="MediaType" ColumnName="MediaType" />
                 <ScalarProperty Name="ActivityID" ColumnName="ActivityID" />
                 <ScalarProperty Name="MediaID" ColumnName="MediaID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ActivityDynamics">
+            <EntityTypeMapping TypeName="OPDBModel.ActivityDynamic">
+              <MappingFragment StoreEntitySet="ActivityDynamic">
+                <ScalarProperty Name="DeletionDate" ColumnName="DeletionDate" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="UpdateUser" ColumnName="UpdateUser" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
+                <ScalarProperty Name="ActivityDynamic1" ColumnName="ActivityDynamic" />
+                <ScalarProperty Name="ActivityDynamicID" ColumnName="ActivityDynamicID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SchoolRegions">
+            <EntityTypeMapping TypeName="OPDBModel.SchoolRegion">
+              <MappingFragment StoreEntitySet="SchoolRegion">
+                <ScalarProperty Name="DeletionDate" ColumnName="DeletionDate" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="UpdateUser" ColumnName="UpdateUser" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
+                <ScalarProperty Name="SchoolRegion1" ColumnName="SchoolRegion" />
+                <ScalarProperty Name="SchoolRegionID" ColumnName="SchoolRegionID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

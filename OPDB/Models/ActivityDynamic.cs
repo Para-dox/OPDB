@@ -12,30 +12,21 @@ namespace OPDB.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class School
+    public partial class ActivityDynamic
     {
-        public School()
+        public ActivityDynamic()
         {
             this.Activities = new HashSet<Activity>();
-            this.SchoolNotes = new HashSet<SchoolNote>();
         }
     
-        public int SchoolID { get; set; }
-        public string SchoolSequenceNumber { get; set; }
-        public string SchoolName { get; set; }
-        public string Address { get; set; }
-        public string Town { get; set; }
-        public string PhoneNumber { get; set; }
+        public int ActivityDynamicID { get; set; }
+        public string ActivityDynamic1 { get; set; }
         public int CreateUser { get; set; }
         public System.DateTime CreateDate { get; set; }
         public int UpdateUser { get; set; }
         public System.DateTime UpdateDate { get; set; }
         public Nullable<System.DateTime> DeletionDate { get; set; }
-        public int Region { get; set; }
     
         public virtual ICollection<Activity> Activities { get; set; }
-        public virtual User User { get; set; }
-        public virtual User User1 { get; set; }
-        public virtual ICollection<SchoolNote> SchoolNotes { get; set; }
     }
 }

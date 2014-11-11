@@ -11,20 +11,13 @@ namespace OPDB.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.Data;
-    using System.ComponentModel.DataAnnotations;
-    using System.Runtime.Serialization;
     
     public partial class UserNote
     {
         public int UserNoteID { get; set; }
         public int SubjectID { get; set; }
         public int UserID { get; set; }
-
-        [RegularExpression(@"([a-zA-Z\u00c0-\u017e0-9¿?.,;:!¡()$""'/\s]+[-]?[a-zA-Z\u00c0-\u017e0-9?.,;:!)@$""'/\s]+)+$", ErrorMessageResourceName = "UserNote_Note_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
-        [Required(ErrorMessageResourceName = "UserNote_Note_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Note { get; set; }
-
         public int CreateUser { get; set; }
         public System.DateTime CreateDate { get; set; }
         public int UpdateUser { get; set; }

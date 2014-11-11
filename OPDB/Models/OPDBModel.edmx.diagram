@@ -87,6 +87,10 @@
         <AssociationConnector Association="OPDBModel.Media_ibfk_1" />
         <AssociationConnector Association="OPDBModel.Media_ibfk_2" />
         <AssociationConnector Association="OPDBModel.Media_ibfk_3" />
+        <EntityTypeShape EntityType="OPDBModel.ActivityDynamic" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="OPDBModel.SchoolRegion" Width="1.5" PointX="2.75" PointY="0.75" />
+        <AssociationConnector Association="OPDBModel.Activity_ibfk_6" />
+        <AssociationConnector Association="OPDBModel.Activity_ibfk_7" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

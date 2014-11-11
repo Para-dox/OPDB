@@ -17,15 +17,10 @@ namespace OPDB.Models
         public int OutreachEntityDetailID { get; set; }
         public int UserID { get; set; }
         public int OutreachEntityTypeID { get; set; }
-
         public string OutreachEntityName { get; set; }
-
         public string Mission { get; set; }
-
         public string Vision { get; set; }
-
         public string Objectives { get; set; }
-
         public string Location { get; set; }
         public System.DateTime CreateDate { get; set; }
         public System.DateTime UpdateDate { get; set; }

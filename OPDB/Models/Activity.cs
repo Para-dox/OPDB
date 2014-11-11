@@ -11,10 +11,6 @@ namespace OPDB.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.Data;
-    using System.ComponentModel.DataAnnotations;
-    using System.Runtime.Serialization;
-    using System.Web.Mvc;
     
     public partial class Activity
     {
@@ -32,35 +28,21 @@ namespace OPDB.Models
         public int ActivityID { get; set; }
         public int ActivityTypeID { get; set; }
         public int UserID { get; set; }
-
-        [RegularExpression(@"^([a-zA-Z\u00c0-\u017e0-9¿?.,;:!¡()$""'/\s]+[-]?[a-zA-Z\u00c0-\u017e0-9?.,;:!)@$""'/\s]+)+$", ErrorMessageResourceName = "Activity_Title_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
-        [Required(ErrorMessageResourceName = "Activity_Title_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Title { get; set; }
-
-        //[a-zA-Z\u00c0-\u017e0-9¿\?.,;:¡!()+@$""'\s]+
-        [RegularExpression(@"^([a-zA-Z\u00c0-\u017e0-9¿?.,;:!¡()$""'/\s]+[-]?[a-zA-Z\u00c0-\u017e0-9?.,;:!)@$""'/\s]+)+$", ErrorMessageResourceName = "Activity_Purpose_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
-        [Required(ErrorMessageResourceName = "Activity_Purpose_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Purpose { get; set; }
-
-        [StringLength(100, ErrorMessageResourceName = "Activity_Location_LengthExceeded", ErrorMessageResourceType = typeof(Resources.WebResources))]
-        [RegularExpression(@"^([a-zA-Z\u00c0-\u017e0-9.,\s]+[-]?[a-zA-Z\u00c0-\u017e0-9.,\s]+)+$", ErrorMessageResourceName = "Activity_Location_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Location { get; set; }
-        
         public Nullable<System.DateTime> ActivityDate { get; set; }
-
-        [RegularExpression(@"^(([1][0-2])|([0]?[0-9])):[0-5][0-9](AM|PM)$", ErrorMessageResourceName = "Activity_ActivityTime_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string ActivityTime { get; set; }
-        
         public Nullable<int> SchoolID { get; set; }
         public int CreateUser { get; set; }
         public System.DateTime CreateDate { get; set; }
         public int UpdateUser { get; set; }
         public System.DateTime UpdateDate { get; set; }
         public Nullable<System.DateTime> DeletionDate { get; set; }
-
-        [AllowHtml]
         public string Details { get; set; }
-
+        public Nullable<int> ActivityDynamicID { get; set; }
+        public Nullable<int> SchoolRegionID { get; set; }
+    
         public virtual ActivityType ActivityType { get; set; }
         public virtual ICollection<ActivityNote> ActivityNotes { get; set; }
         public virtual ICollection<ActivityResource> ActivityResources { get; set; }
@@ -68,10 +50,12 @@ namespace OPDB.Models
         public virtual ICollection<Document> Documents { get; set; }
         public virtual ICollection<Feedback> Feedbacks { get; set; }
         public virtual ICollection<Interest> Interests { get; set; }
-        public virtual ICollection<Medium> Media { get; set; }
         public virtual User User { get; set; }
         public virtual User User1 { get; set; }
         public virtual User User2 { get; set; }
         public virtual School School { get; set; }
+        public virtual ICollection<Medium> Media { get; set; }
+        public virtual SchoolRegion SchoolRegion { get; set; }
+        public virtual ActivityDynamic ActivityDynamic { get; set; }
     }
 }
