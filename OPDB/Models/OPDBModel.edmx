@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="OPDBModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.5" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="OPDBModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.5" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Activity">
           <Key>
             <PropertyRef Name="ActivityID" />
@@ -996,6 +996,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="School_ibfk_3">
+          <End Role="SchoolRegion" Type="Self.SchoolRegion" Multiplicity="1" />
+          <End Role="School" Type="Self.School" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SchoolRegion">
+              <PropertyRef Name="SchoolRegionID" />
+            </Principal>
+            <Dependent Role="School">
+              <PropertyRef Name="SchoolRegionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="SchoolNote_ibfk_1">
           <End Role="NoteType" Type="Self.NoteType" Multiplicity="1" />
           <End Role="SchoolNote" Type="Self.SchoolNote" Multiplicity="*" />
@@ -1029,6 +1041,30 @@
             </Principal>
             <Dependent Role="SchoolNote">
               <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SchoolRegion_ibfk_1">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="SchoolRegion" Type="Self.SchoolRegion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="SchoolRegion">
+              <PropertyRef Name="CreateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SchoolRegion_ibfk_2">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="SchoolRegion" Type="Self.SchoolRegion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="SchoolRegion">
+              <PropertyRef Name="UpdateUser" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2173,6 +2209,10 @@
             <End Role="User" EntitySet="User" />
             <End Role="School" EntitySet="School" />
           </AssociationSet>
+          <AssociationSet Name="School_ibfk_3" Association="Self.School_ibfk_3">
+            <End Role="SchoolRegion" EntitySet="SchoolRegion" />
+            <End Role="School" EntitySet="School" />
+          </AssociationSet>
           <AssociationSet Name="SchoolNote_ibfk_1" Association="Self.SchoolNote_ibfk_1">
             <End Role="NoteType" EntitySet="NoteType" />
             <End Role="SchoolNote" EntitySet="SchoolNote" />
@@ -2184,6 +2224,14 @@
           <AssociationSet Name="SchoolNote_ibfk_3" Association="Self.SchoolNote_ibfk_3">
             <End Role="User" EntitySet="User" />
             <End Role="SchoolNote" EntitySet="SchoolNote" />
+          </AssociationSet>
+          <AssociationSet Name="SchoolRegion_ibfk_1" Association="Self.SchoolRegion_ibfk_1">
+            <End Role="User" EntitySet="User" />
+            <End Role="SchoolRegion" EntitySet="SchoolRegion" />
+          </AssociationSet>
+          <AssociationSet Name="SchoolRegion_ibfk_2" Association="Self.SchoolRegion_ibfk_2">
+            <End Role="User" EntitySet="User" />
+            <End Role="SchoolRegion" EntitySet="SchoolRegion" />
           </AssociationSet>
           <AssociationSet Name="Unit_ibfk_1" Association="Self.Unit_ibfk_1">
             <End Role="User" EntitySet="User" />
@@ -2970,6 +3018,14 @@
             <End Role="ActivityMajor" EntitySet="ActivityMajors" />
             <End Role="Activity" EntitySet="Activities" />
           </AssociationSet>
+          <AssociationSet Name="ActivityDynamic_ibfk_1" Association="OPDBModel.ActivityDynamic_ibfk_1">
+            <End Role="User" EntitySet="Users" />
+            <End Role="ActivityDynamic" EntitySet="ActivityDynamics" />
+          </AssociationSet>
+          <AssociationSet Name="ActivityDynamic_ibfk_2" Association="OPDBModel.ActivityDynamic_ibfk_2">
+            <End Role="User" EntitySet="Users" />
+            <End Role="ActivityDynamic" EntitySet="ActivityDynamics" />
+          </AssociationSet>
           <AssociationSet Name="ActivityMajor_ibfk_1" Association="OPDBModel.ActivityMajor_ibfk_1">
             <End Role="User" EntitySet="Users" />
             <End Role="ActivityMajor" EntitySet="ActivityMajors" />
@@ -2978,13 +3034,17 @@
             <End Role="User" EntitySet="Users" />
             <End Role="ActivityMajor" EntitySet="ActivityMajors" />
           </AssociationSet>
-          <AssociationSet Name="ActivityDynamic_ibfk_1" Association="OPDBModel.ActivityDynamic_ibfk_1">
-            <End Role="User" EntitySet="Users" />
-            <End Role="ActivityDynamic" EntitySet="ActivityDynamics" />
+          <AssociationSet Name="School_ibfk_3" Association="OPDBModel.School_ibfk_3">
+            <End Role="SchoolRegion" EntitySet="SchoolRegions" />
+            <End Role="School" EntitySet="Schools" />
           </AssociationSet>
-          <AssociationSet Name="ActivityDynamic_ibfk_2" Association="OPDBModel.ActivityDynamic_ibfk_2">
+          <AssociationSet Name="SchoolRegion_ibfk_1" Association="OPDBModel.SchoolRegion_ibfk_1">
             <End Role="User" EntitySet="Users" />
-            <End Role="ActivityDynamic" EntitySet="ActivityDynamics" />
+            <End Role="SchoolRegion" EntitySet="SchoolRegions" />
+          </AssociationSet>
+          <AssociationSet Name="SchoolRegion_ibfk_2" Association="OPDBModel.SchoolRegion_ibfk_2">
+            <End Role="User" EntitySet="Users" />
+            <End Role="SchoolRegion" EntitySet="SchoolRegions" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="User">
@@ -3044,10 +3104,12 @@
           <NavigationProperty Name="Schools1" Relationship="OPDBModel.School_ibfk_2" FromRole="User" ToRole="School" />
           <NavigationProperty Name="Media" Relationship="OPDBModel.Media_ibfk_2" FromRole="User" ToRole="Medium" />
           <NavigationProperty Name="Media1" Relationship="OPDBModel.Media_ibfk_3" FromRole="User" ToRole="Medium" />
-          <NavigationProperty Name="ActivityMajors" Relationship="OPDBModel.ActivityMajor_ibfk_1" FromRole="User" ToRole="ActivityMajor" />
-          <NavigationProperty Name="ActivityMajors1" Relationship="OPDBModel.ActivityMajor_ibfk_2" FromRole="User" ToRole="ActivityMajor" />
           <NavigationProperty Name="ActivityDynamics" Relationship="OPDBModel.ActivityDynamic_ibfk_1" FromRole="User" ToRole="ActivityDynamic" />
           <NavigationProperty Name="ActivityDynamics1" Relationship="OPDBModel.ActivityDynamic_ibfk_2" FromRole="User" ToRole="ActivityDynamic" />
+          <NavigationProperty Name="ActivityMajors" Relationship="OPDBModel.ActivityMajor_ibfk_1" FromRole="User" ToRole="ActivityMajor" />
+          <NavigationProperty Name="ActivityMajors1" Relationship="OPDBModel.ActivityMajor_ibfk_2" FromRole="User" ToRole="ActivityMajor" />
+          <NavigationProperty Name="SchoolRegions" Relationship="OPDBModel.SchoolRegion_ibfk_1" FromRole="User" ToRole="SchoolRegion" />
+          <NavigationProperty Name="SchoolRegions1" Relationship="OPDBModel.SchoolRegion_ibfk_2" FromRole="User" ToRole="SchoolRegion" />
           </EntityType>
         <Association Name="Activity_ibfk_21">
           <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
@@ -3588,6 +3650,7 @@
           <NavigationProperty Name="User1" Relationship="OPDBModel.School_ibfk_2" FromRole="School" ToRole="User" />
           <NavigationProperty Name="SchoolNotes" Relationship="OPDBModel.SchoolNote_ibfk_2" FromRole="School" ToRole="SchoolNote" />
           <Property Name="SchoolRegionID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="SchoolRegion" Relationship="OPDBModel.School_ibfk_3" FromRole="School" ToRole="SchoolRegion" />
         </EntityType>
         <Association Name="Activity_ibfk_3">
           <End Type="OPDBModel.School" Role="School" Multiplicity="0..1" />
@@ -3732,6 +3795,9 @@
           <Property Name="UpdateUser" Type="Int32" Nullable="false" />
           <Property Name="UpdateDate" Type="DateTime" Nullable="false" />
           <Property Name="DeletionDate" Type="Int32" />
+          <NavigationProperty Name="Schools" Relationship="OPDBModel.School_ibfk_3" FromRole="SchoolRegion" ToRole="School" />
+          <NavigationProperty Name="User" Relationship="OPDBModel.SchoolRegion_ibfk_1" FromRole="SchoolRegion" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="OPDBModel.SchoolRegion_ibfk_2" FromRole="SchoolRegion" ToRole="User" />
         </EntityType>
         <Association Name="Activity_ibfk_7">
           <End Type="OPDBModel.ActivityDynamic" Role="ActivityDynamic" Multiplicity="0..1" />
@@ -3754,6 +3820,30 @@
             </Principal>
             <Dependent Role="Activity">
               <PropertyRef Name="ActivityMajorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ActivityDynamic_ibfk_1">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.ActivityDynamic" Role="ActivityDynamic" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ActivityDynamic">
+              <PropertyRef Name="CreateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ActivityDynamic_ibfk_2">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.ActivityDynamic" Role="ActivityDynamic" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ActivityDynamic">
+              <PropertyRef Name="UpdateUser" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3781,26 +3871,38 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="ActivityDynamic_ibfk_1">
+        <Association Name="School_ibfk_3">
+          <End Type="OPDBModel.SchoolRegion" Role="SchoolRegion" Multiplicity="1" />
+          <End Type="OPDBModel.School" Role="School" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SchoolRegion">
+              <PropertyRef Name="SchoolRegionID" />
+            </Principal>
+            <Dependent Role="School">
+              <PropertyRef Name="SchoolRegionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SchoolRegion_ibfk_1">
           <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
-          <End Type="OPDBModel.ActivityDynamic" Role="ActivityDynamic" Multiplicity="*" />
+          <End Type="OPDBModel.SchoolRegion" Role="SchoolRegion" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="UserID" />
             </Principal>
-            <Dependent Role="ActivityDynamic">
+            <Dependent Role="SchoolRegion">
               <PropertyRef Name="CreateUser" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="ActivityDynamic_ibfk_2">
+        <Association Name="SchoolRegion_ibfk_2">
           <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
-          <End Type="OPDBModel.ActivityDynamic" Role="ActivityDynamic" Multiplicity="*" />
+          <End Type="OPDBModel.SchoolRegion" Role="SchoolRegion" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="UserID" />
             </Principal>
-            <Dependent Role="ActivityDynamic">
+            <Dependent Role="SchoolRegion">
               <PropertyRef Name="UpdateUser" />
             </Dependent>
           </ReferentialConstraint>

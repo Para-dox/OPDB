@@ -10,6 +10,7 @@ using OPDB.Models;
 using System.Data.Entity.Validation;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using System.Globalization;
 
 namespace OPDB.Controllers
 {
@@ -63,6 +64,9 @@ namespace OPDB.Controllers
                 User = db.Users.Find(id),
                 UserDetail = (from ud in db.UserDetails where ud.UserID == id select ud).SingleOrDefault()
             };
+
+            if (userViewModel.UserDetail.DateOfBirth == null)
+                userViewModel.UserDetail.DateOfBirth = new DateTime();
 
             if (userViewModel == null)
             {
@@ -130,12 +134,17 @@ namespace OPDB.Controllers
                     }
                     else
                     {
-                        string pattern = @"^[a-zA-Z\u00c0-\u017e'\s]{1,100}$";
+                        string pattern = @"^[a-zA-Z\u00c0-\u017e'\s]+[-]?[a-zA-Z\u00c0-\u017e'\s]+$";
                         Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
                         MatchCollection matches = rgx.Matches(userViewModel.OutreachEntity.OutreachEntityName);
                         if (matches.Count == 0)
                         {
-                            ModelState.AddModelError("OutreachEntity_OutreachEntityName_Invalid", Resources.WebResources.OutreachEntityDetail_OutreachEntityName_Invalid);
+                            ModelState.AddModelError("OutreachEntityDetail_OutreachEntityName_Invalid", Resources.WebResources.OutreachEntityDetail_OutreachEntityName_Invalid);
+                            validModel = false;
+                        }
+                        else if (userViewModel.OutreachEntity.OutreachEntityName.Length > 100)
+                        {
+                            ModelState.AddModelError("OutreachEntityDetail_OutreachEntityName_LengthExceeded", Resources.WebResources.OutreachEntityDetail_OutreachEntityName_LengthExceeded);
                             validModel = false;
                         }
 
@@ -148,7 +157,7 @@ namespace OPDB.Controllers
                     }
                     else
                     {
-                        string pattern = @"^[a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""'/\s]+$";
+                        string pattern = @"^([a-zA-Z\u00c0-\u017e0-9¿?.,;:!¡()$""'/\s]+[-]?[a-zA-Z\u00c0-\u017e0-9?.,;:!)@$""'/\s]+)+$";
                         Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
                         MatchCollection matches = rgx.Matches(userViewModel.OutreachEntity.Mission);
                         if (matches.Count == 0)
@@ -166,7 +175,7 @@ namespace OPDB.Controllers
                     }
                     else
                     {
-                        string pattern = @"^[a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""'/\s]+$";
+                        string pattern = @"^([a-zA-Z\u00c0-\u017e0-9¿?.,;:!¡()$""'/\s]+[-]?[a-zA-Z\u00c0-\u017e0-9?.,;:!)@$""'/\s]+)+$";
                         Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
                         MatchCollection matches = rgx.Matches(userViewModel.OutreachEntity.Vision);
                         if (matches.Count == 0)
@@ -184,12 +193,30 @@ namespace OPDB.Controllers
                     }
                     else
                     {
-                        string pattern = @"^[a-zA-Z\u00c0-\u017e¿\?.,;:¡!()""'/\s]+$";
+                        string pattern = @"^([a-zA-Z\u00c0-\u017e0-9¿?.,;:!¡()$""'/\s]+[-]?[a-zA-Z\u00c0-\u017e0-9?.,;:!)@$""'/\s]+)+$";
                         Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
                         MatchCollection matches = rgx.Matches(userViewModel.OutreachEntity.Objectives);
                         if (matches.Count == 0)
                         {
                             ModelState.AddModelError("OutreachEntityDetail_Objectives_Invalid", Resources.WebResources.OutreachEntityDetail_Objectives_Invalid);
+                            validModel = false;
+                        }
+
+                    }
+
+                    if (userViewModel.OutreachEntity.Location != null && userViewModel.OutreachEntity.Location != "")
+                    {
+                        string pattern = @"^([a-zA-Z\u00c0-\u017e0-9.,\s]+[-]?[a-zA-Z\u00c0-\u017e0-9.,\s]+)+$";
+                        Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                        MatchCollection matches = rgx.Matches(userViewModel.OutreachEntity.Location);
+                        if (matches.Count == 0)
+                        {
+                            ModelState.AddModelError("OutreachEntityDetail_Location_Invalid", Resources.WebResources.OutreachEntityDetail_Location_Invalid);
+                            validModel = false;
+                        }
+                        else if (userViewModel.OutreachEntity.Location.Length > 100)
+                        {
+                            ModelState.AddModelError("OutreachEntityDetail_Location_LengthExceeded", Resources.WebResources.OutreachEntityDetail_Location_LengthExceeded);
                             validModel = false;
                         }
 
@@ -222,12 +249,17 @@ namespace OPDB.Controllers
                     }
                     else
                     {
-                        string pattern = @"^[a-zA-Z\u00c0-\u017e'\s]{1,50}$";
+                        string pattern = @"^[a-zA-Z\u00c0-\u017e']+[-]?[a-zA-Z\u00c0-\u017e']+$";
                         Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
                         MatchCollection matches = rgx.Matches(userViewModel.UserDetail.FirstName);
                         if (matches.Count == 0)
                         {
                             ModelState.AddModelError("UserDetail_FirstName_Invalid", Resources.WebResources.UserDetail_FirstName_Invalid);
+                            validModel = false;
+                        }
+                        else if (userViewModel.UserDetail.FirstName.Length > 50)
+                        {
+                            ModelState.AddModelError("UserDetail_FirstName_LengthExceeded", Resources.WebResources.UserDetail_FirstName_LengthExceeded);
                             validModel = false;
                         }
 
@@ -240,12 +272,17 @@ namespace OPDB.Controllers
                     }
                     else
                     {
-                        string pattern = @"^[a-zA-Z\u00c0-\u017e'\s]{1,50}$";
+                        string pattern = @"^[a-zA-Z\u00c0-\u017e']+[-]?[a-zA-Z\u00c0-\u017e']+$";
                         Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
                         MatchCollection matches = rgx.Matches(userViewModel.UserDetail.LastName);
                         if (matches.Count == 0)
                         {
                             ModelState.AddModelError("UserDetail_LastName_Invalid", Resources.WebResources.UserDetail_LastName_Invalid);
+                            validModel = false;
+                        }
+                        else if (userViewModel.UserDetail.LastName.Length > 50)
+                        {
+                            ModelState.AddModelError("UserDetail_LastName_LengthExceeded", Resources.WebResources.UserDetail_LastName_LengthExceeded);
                             validModel = false;
                         }
 
@@ -257,7 +294,7 @@ namespace OPDB.Controllers
                         validModel = false;
                     }
 
-                    if (userViewModel.UserDetail.MiddleInitial != null)
+                    if (userViewModel.UserDetail.MiddleInitial != null && userViewModel.UserDetail.MiddleInitial != "")
                     {
                         string pattern = @"^[A-Z]$";
                         Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
@@ -269,6 +306,75 @@ namespace OPDB.Controllers
                         }
 
                     }
+
+                    if (userViewModel.BirthDate != null && userViewModel.BirthDate != "")
+                    {
+                        string pattern = @"^(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((19|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((19|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((19|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))))$";
+                        Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                        MatchCollection matches = rgx.Matches(userViewModel.BirthDate);
+                        if (matches.Count == 0)
+                        {
+                            ModelState.AddModelError("UserDetail_DateOfBirth_Invalid", Resources.WebResources.UserDetail_DateOfBirth_Invalid);
+                            validModel = false;
+                        }
+                        else
+                        {
+                            userViewModel.UserDetail.DateOfBirth = DateTime.ParseExact(userViewModel.BirthDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                        }
+
+                    }
+
+                    if (userViewModel.UserDetail.Role != null && userViewModel.UserDetail.Role != "")
+                        {
+                            string pattern = @"^[a-zA-Z\u00c0-\u017e\s]+[-]?[a-zA-Z\u00c0-\u017e\s]+$";
+                            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                            MatchCollection matches = rgx.Matches(userViewModel.UserDetail.Role);
+                            if (matches.Count == 0)
+                            {
+                                ModelState.AddModelError("UserDetail_Role_Invalid", Resources.WebResources.UserDetail_Role_Invalid);
+                                validModel = false;
+                            }
+                            else if (userViewModel.UserDetail.Role.Length > 100)
+                            {
+                                ModelState.AddModelError("UserDetail_Role_LengthExceeded", Resources.WebResources.UserDetail_Role_LengthExceeded);
+                                validModel = false;
+                            }
+
+                        }
+
+                    if (userViewModel.UserDetail.Major != null && userViewModel.UserDetail.Major != "")
+                     {
+                         string pattern = @"^[a-zA-Z\u00c0-\u017e\s]+[-]?[a-zA-Z\u00c0-\u017e\s]+$";
+                         Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                         MatchCollection matches = rgx.Matches(userViewModel.UserDetail.Major);
+                         if (matches.Count == 0)
+                         {
+                             ModelState.AddModelError("UserDetail_Major_Invalid", Resources.WebResources.UserDetail_Major_Invalid);
+                             validModel = false;
+                         }
+                         else if (userViewModel.UserDetail.Major.Length > 100)
+                         {
+                             ModelState.AddModelError("UserDetail_Major_LengthExceeded", Resources.WebResources.UserDetail_Major_LengthExceeded);
+                             validModel = false;
+                         }
+                     }
+
+                     if (userViewModel.UserDetail.Grade != null && userViewModel.UserDetail.Grade != "")
+                     {
+                         string pattern = @"^(([1]?[0-2])|[1-9]|[K])$";
+                         Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                         MatchCollection matches = rgx.Matches(userViewModel.UserDetail.Grade);
+                         if (matches.Count == 0)
+                         {
+                             ModelState.AddModelError("UserDetail_Grade_Invalid", Resources.WebResources.UserDetail_Grade_Invalid);
+                             validModel = false;
+                         }
+                         else if (userViewModel.UserDetail.Grade.Length > 2)
+                         {
+                             ModelState.AddModelError("UserDetail_Grade_LengthExceeded", Resources.WebResources.UserDetail_Grade_LengthExceeded);
+                             validModel = false;
+                         }
+                     }
 
                     if (validModel)
                     {
@@ -367,12 +473,17 @@ namespace OPDB.Controllers
                         }
                         else
                         {
-                            string pattern = @"^[a-zA-Z\u00c0-\u017e'\s]{1,50}$";
+                            string pattern = @"^[a-zA-Z\u00c0-\u017e']+[-]?[a-zA-Z\u00c0-\u017e']+$";
                             Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
                             MatchCollection matches = rgx.Matches(userViewModel.UserDetail.FirstName);
                             if (matches.Count == 0)
                             {
                                 ModelState.AddModelError("UserDetail_FirstName_Invalid", Resources.WebResources.UserDetail_FirstName_Invalid);
+                                validModel = false;
+                            }
+                            else if (userViewModel.UserDetail.FirstName.Length > 50)
+                            {
+                                ModelState.AddModelError("UserDetail_FirstName_LengthExceeded", Resources.WebResources.UserDetail_FirstName_LengthExceeded);
                                 validModel = false;
                             }
 
@@ -385,12 +496,17 @@ namespace OPDB.Controllers
                         }
                         else
                         {
-                            string pattern = @"^[a-zA-Z\u00c0-\u017e'/\s]{1,50}$";
+                            string pattern = @"^[a-zA-Z\u00c0-\u017e']+[-]?[a-zA-Z\u00c0-\u017e']+$";
                             Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
                             MatchCollection matches = rgx.Matches(userViewModel.UserDetail.LastName);
                             if (matches.Count == 0)
                             {
                                 ModelState.AddModelError("UserDetail_LastName_Invalid", Resources.WebResources.UserDetail_LastName_Invalid);
+                                validModel = false;
+                            }
+                            else if (userViewModel.UserDetail.LastName.Length > 50)
+                            {
+                                ModelState.AddModelError("UserDetail_LastName_LengthExceeded", Resources.WebResources.UserDetail_LastName_LengthExceeded);
                                 validModel = false;
                             }
 
@@ -402,7 +518,7 @@ namespace OPDB.Controllers
                             validModel = false;
                         }
 
-                        if (userViewModel.UserDetail.MiddleInitial != null)
+                        if (userViewModel.UserDetail.MiddleInitial != null && userViewModel.UserDetail.MiddleInitial != "")
                         {
                             string pattern = @"^[A-Z]$";
                             Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
@@ -415,9 +531,26 @@ namespace OPDB.Controllers
 
                         }
 
-                        if (userViewModel.UserDetail.Role != null)
+                        if (userViewModel.BirthDate != null && userViewModel.BirthDate != "")
                         {
-                            string pattern = @"^[a-zA-Z\u00c0-\u017e]{1,50}$";
+                            string pattern = @"^(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((19|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((19|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((19|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))))$";
+                            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                            MatchCollection matches = rgx.Matches(userViewModel.BirthDate);
+                            if (matches.Count == 0)
+                            {
+                                ModelState.AddModelError("UserDetail_DateOfBirth_Invalid", Resources.WebResources.UserDetail_DateOfBirth_Invalid);
+                                validModel = false;
+                            }
+                            else
+                            {
+                                userViewModel.UserDetail.DateOfBirth = DateTime.ParseExact(userViewModel.BirthDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                            }
+
+                        }
+
+                        if (userViewModel.UserDetail.Role != null && userViewModel.UserDetail.Role != "")
+                        {
+                            string pattern = @"^[a-zA-Z\u00c0-\u017e\s]+[-]?[a-zA-Z\u00c0-\u017e\s]+$";
                             Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
                             MatchCollection matches = rgx.Matches(userViewModel.UserDetail.Role);
                             if (matches.Count == 0)
@@ -425,12 +558,17 @@ namespace OPDB.Controllers
                                 ModelState.AddModelError("UserDetail_Role_Invalid", Resources.WebResources.UserDetail_Role_Invalid);
                                 validModel = false;
                             }
+                            else if (userViewModel.UserDetail.Role.Length > 100)
+                            {
+                                ModelState.AddModelError("UserDetail_Role_LengthExceeded", Resources.WebResources.UserDetail_Role_LengthExceeded);
+                                validModel = false;
+                            }
 
                         }
 
-                        if (userViewModel.UserDetail.Major != null)
+                        if (userViewModel.UserDetail.Major != null && userViewModel.UserDetail.Major != "")
                         {
-                            string pattern = @"^[a-zA-Z\u00c0-\u017e]{1,50}$";
+                            string pattern = @"^[a-zA-Z\u00c0-\u017e\s]+[-]?[a-zA-Z\u00c0-\u017e\s]+$";
                             Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
                             MatchCollection matches = rgx.Matches(userViewModel.UserDetail.Major);
                             if (matches.Count == 0)
@@ -438,7 +576,29 @@ namespace OPDB.Controllers
                                 ModelState.AddModelError("UserDetail_Major_Invalid", Resources.WebResources.UserDetail_Major_Invalid);
                                 validModel = false;
                             }
+                            else if (userViewModel.UserDetail.Major.Length > 100)
+                            {
+                                ModelState.AddModelError("UserDetail_Major_LengthExceeded", Resources.WebResources.UserDetail_Major_LengthExceeded);
+                                validModel = false;
+                            }
 
+                        }
+
+                        if (userViewModel.UserDetail.Grade != null && userViewModel.UserDetail.Grade != "")
+                        {
+                            string pattern = @"^(([1]?[0-2])|[1-9]|[K])$";
+                            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                            MatchCollection matches = rgx.Matches(userViewModel.UserDetail.Grade);
+                            if (matches.Count == 0)
+                            {
+                                ModelState.AddModelError("UserDetail_Grade_Invalid", Resources.WebResources.UserDetail_Grade_Invalid);
+                                validModel = false;
+                            }
+                            else if (userViewModel.UserDetail.Grade.Length > 2)
+                            {
+                                ModelState.AddModelError("UserDetail_Grade_LengthExceeded", Resources.WebResources.UserDetail_Grade_LengthExceeded);
+                                validModel = false;
+                            }
                         }
 
                         if (validModel)
@@ -897,17 +1057,15 @@ namespace OPDB.Controllers
         {
             // TODO: passwords have no encryption at all - fix later with SimpleCrypto NuGet Package
             User user = db.Users.FirstOrDefault(u => u.Email == userViewModel.User.Email);
-
-            if (!user.UserStatus)
-            {
-                ModelState.AddModelError("", Resources.WebResources.User_Email_NotApproved);
-
-                return Content(GetErrorsFromModelState(userViewModel));
-            }
-            else
-            {
-                if (user != null)
+            
+            if (user != null)
                 {
+                    if (!user.UserStatus)
+                    {
+                        ModelState.AddModelError("", Resources.WebResources.User_Email_NotApproved);
+
+                        return Content(GetErrorsFromModelState(userViewModel));
+                    }
                     if (userViewModel.User.UserPassword.ToString().Equals(user.UserPassword))
                     {
                         FormsAuthentication.SetAuthCookie(user.UserID + "," + user.UserTypeID + "," + user.UserStatus, false);
@@ -925,7 +1083,7 @@ namespace OPDB.Controllers
                 }
 
                 return Content(GetErrorsFromModelState(userViewModel));
-            }
+            
         }
 
         public ActionResult CerrarSesion()
@@ -1013,12 +1171,17 @@ namespace OPDB.Controllers
                         }
                         else
                         {
-                            string pattern = @"^[a-zA-Z\u00c0-\u017e'\s]{1,50}$";
+                            string pattern = @"^[a-zA-Z\u00c0-\u017e']+[-]?[a-zA-Z\u00c0-\u017e]+$";
                             Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
                             MatchCollection matches = rgx.Matches(userViewModel.UserDetail.FirstName);
                             if (matches.Count == 0)
                             {
                                 ModelState.AddModelError("UserDetail_FirstName_Invalid", Resources.WebResources.UserDetail_FirstName_Invalid);
+                                validModel = false;
+                            }
+                            else if (userViewModel.UserDetail.FirstName.Length > 50)
+                            {
+                                ModelState.AddModelError("UserDetail_FirstName_LengthExceeded", Resources.WebResources.UserDetail_FirstName_LengthExceeded);
                                 validModel = false;
                             }
 
@@ -1031,12 +1194,17 @@ namespace OPDB.Controllers
                         }
                         else
                         {
-                            string pattern = @"^[a-zA-Z\u00c0-\u017e'\s]{1,50}$";
+                            string pattern = @"^[a-zA-Z\u00c0-\u017e']+[-]?[a-zA-Z\u00c0-\u017e]+$";
                             Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
                             MatchCollection matches = rgx.Matches(userViewModel.UserDetail.LastName);
                             if (matches.Count == 0)
                             {
                                 ModelState.AddModelError("UserDetail_LastName_Invalid", Resources.WebResources.UserDetail_LastName_Invalid);
+                                validModel = false;
+                            }
+                            else if (userViewModel.UserDetail.LastName.Length > 50)
+                            {
+                                ModelState.AddModelError("UserDetail_LastName_LengthExceeded", Resources.WebResources.UserDetail_LastName_LengthExceeded);
                                 validModel = false;
                             }
 
@@ -1048,7 +1216,7 @@ namespace OPDB.Controllers
                             validModel = false;
                         }
 
-                        if (userViewModel.UserDetail.MiddleInitial != null)
+                        if (userViewModel.UserDetail.MiddleInitial != null && userViewModel.UserDetail.MiddleInitial != "")
                         {
                             string pattern = @"^[A-Z]$";
                             Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
@@ -1060,6 +1228,75 @@ namespace OPDB.Controllers
                             }
 
                         }
+
+                        if (userViewModel.UserDetail.Role != null && userViewModel.UserDetail.Role != "")
+                        {
+                            string pattern = @"^[a-zA-Z\u00c0-\u017e\s]+[-]?[a-zA-Z\u00c0-\u017e\s]+$";
+                            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                            MatchCollection matches = rgx.Matches(userViewModel.UserDetail.Role);
+                            if (matches.Count == 0)
+                            {
+                                ModelState.AddModelError("UserDetail_Role_Invalid", Resources.WebResources.UserDetail_Role_Invalid);
+                                validModel = false;
+                            }
+                            else if (userViewModel.UserDetail.Role.Length > 100)
+                            {
+                                ModelState.AddModelError("UserDetail_Role_LengthExceeded", Resources.WebResources.UserDetail_Role_LengthExceeded);
+                                validModel = false;
+                            }
+
+                        }
+
+                        if (userViewModel.BirthDate != null && userViewModel.BirthDate != "")
+                        {
+                            string pattern = @"^(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((19|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((19|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((19|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))))$";
+                            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                            MatchCollection matches = rgx.Matches(userViewModel.BirthDate);
+                            if (matches.Count == 0)
+                            {
+                                ModelState.AddModelError("UserDetail_DateOfBirth_Invalid", Resources.WebResources.UserDetail_DateOfBirth_Invalid);
+                                validModel = false;
+                            }
+                            else
+                            {
+                                userViewModel.UserDetail.DateOfBirth = DateTime.ParseExact(userViewModel.BirthDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                            }
+
+                        }
+
+                        if (userViewModel.UserDetail.Major != null && userViewModel.UserDetail.Major != "")
+                         {
+                             string pattern = @"^[a-zA-Z\u00c0-\u017e\s]+[-]?[a-zA-Z\u00c0-\u017e\s]+$";
+                             Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                             MatchCollection matches = rgx.Matches(userViewModel.UserDetail.Major);
+                             if (matches.Count == 0)
+                             {
+                                 ModelState.AddModelError("UserDetail_Major_Invalid", Resources.WebResources.UserDetail_Major_Invalid);
+                                 validModel = false;
+                             }
+                             else if (userViewModel.UserDetail.Major.Length > 100)
+                             {
+                                 ModelState.AddModelError("UserDetail_Major_LengthExceeded", Resources.WebResources.UserDetail_Major_LengthExceeded);
+                                 validModel = false;
+                             }
+                         }
+
+                        if (userViewModel.UserDetail.Grade != null && userViewModel.UserDetail.Grade != "")
+                         {
+                             string pattern = @"^(([1]?[0-2])|[1-9]|[K])$";
+                             Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                             MatchCollection matches = rgx.Matches(userViewModel.UserDetail.Grade);
+                             if (matches.Count == 0)
+                             {
+                                 ModelState.AddModelError("UserDetail_Grade_Invalid", Resources.WebResources.UserDetail_Grade_Invalid);
+                                 validModel = false;
+                             }
+                             else if (userViewModel.UserDetail.Grade.Length > 2)
+                             {
+                                 ModelState.AddModelError("UserDetail_Grade_LengthExceeded", Resources.WebResources.UserDetail_Grade_LengthExceeded);
+                                 validModel = false;
+                             }
+                         }
 
                         if (validModel)
                         {

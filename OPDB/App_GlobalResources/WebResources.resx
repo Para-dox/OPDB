@@ -135,6 +135,9 @@
   <data name="Activity_Location_Invalid" xml:space="preserve">
     <value>La localización que ha entrado es inválida</value>
   </data>
+  <data name="Activity_Location_LengthExceeded" xml:space="preserve">
+    <value>El contenido de su localización excede el límite de 100 caracteres</value>
+  </data>
   <data name="Activity_Purpose_Invalid" xml:space="preserve">
     <value>El propósito de la actividad es inválido</value>
   </data>
@@ -162,8 +165,17 @@
   <data name="Media_MediaTitle_Invalid" xml:space="preserve">
     <value>El título del documento es inválido</value>
   </data>
+  <data name="Media_MediaTitle_LengthExceeded" xml:space="preserve">
+    <value>El título del medio no puede exceder de 40 caracteres</value>
+  </data>
   <data name="Media_MediaTitle_Required" xml:space="preserve">
     <value>No ha ingresado un título para este medio</value>
+  </data>
+  <data name="OutreachEntityDetail_Location_Invalid" xml:space="preserve">
+    <value>La localización que ha entrado es inválida</value>
+  </data>
+  <data name="OutreachEntityDetail_Location_LengthExceeded" xml:space="preserve">
+    <value>La localización que ha entrado excede el limite de 100 caracteres</value>
   </data>
   <data name="OutreachEntityDetail_Mission_Invalid" xml:space="preserve">
     <value>El contenido de la misión de la entidad de alcance es inválido</value>
@@ -180,6 +192,9 @@
   <data name="OutreachEntityDetail_OutreachEntityName_Invalid" xml:space="preserve">
     <value>El nombre de la entidad de alcance es inválido</value>
   </data>
+  <data name="OutreachEntityDetail_OutreachEntityName_LengthExceeded" xml:space="preserve">
+    <value>El nombre de la entidad excede el límite de 100 caracteres</value>
+  </data>
   <data name="OutreachEntityDetail_OutreachEntityName_Required" xml:space="preserve">
     <value>No ha ingresado el nombre de la organización</value>
   </data>
@@ -191,6 +206,9 @@
   </data>
   <data name="Resource_ResourceName_Invalid" xml:space="preserve">
     <value>El nombre del recurso es inválido</value>
+  </data>
+  <data name="Resource_ResourceName_LengthExceeded" xml:space="preserve">
+    <value>El nombre del recurso excede el límite de 100 caracteres</value>
   </data>
   <data name="Resource_ResourceName_Required" xml:space="preserve">
     <value>No ha ingresado un nombre para este recurso</value>
@@ -255,8 +273,14 @@
   <data name="Unit_UnitName_Required" xml:space="preserve">
     <value>No ha ingresado un nombre para esta unidad</value>
   </data>
+  <data name="UserDetail_DateOfBirth_Invalid" xml:space="preserve">
+    <value>La fecha de nacimiento entrada es inválida</value>
+  </data>
   <data name="UserDetail_FirstName_Invalid" xml:space="preserve">
     <value>Su nombre es inválido</value>
+  </data>
+  <data name="UserDetail_FirstName_LengthExceeded" xml:space="preserve">
+    <value>Su nombre excede el límite de 50 caracteres</value>
   </data>
   <data name="UserDetail_FirstName_Required" xml:space="preserve">
     <value>No ha ingresado su nombre</value>
@@ -264,8 +288,17 @@
   <data name="UserDetail_Gender_Required" xml:space="preserve">
     <value>No ha ingresado su género</value>
   </data>
+  <data name="UserDetail_Grade_Invalid" xml:space="preserve">
+    <value>El contenido de su grado es inválido</value>
+  </data>
+  <data name="UserDetail_Grade_LengthExceeded" xml:space="preserve">
+    <value>El contenido de su grado excede el límite de 2 caracteres</value>
+  </data>
   <data name="UserDetail_LastName_Invalid" xml:space="preserve">
     <value>Su apellido es inválido</value>
+  </data>
+  <data name="UserDetail_LastName_LengthExceeded" xml:space="preserve">
+    <value>Su apellido excede el límite de 50 caracteres</value>
   </data>
   <data name="UserDetail_LastName_Required" xml:space="preserve">
     <value>No ha ingresado su apellido</value>
@@ -273,11 +306,17 @@
   <data name="UserDetail_Major_Invalid" xml:space="preserve">
     <value>La concentración entrada es inválida</value>
   </data>
+  <data name="UserDetail_Major_LengthExceeded" xml:space="preserve">
+    <value>Su concentración excede el límite de 100 caracteres</value>
+  </data>
   <data name="UserDetail_MiddleInitial_Invalid" xml:space="preserve">
     <value>Su inicial es inválida</value>
   </data>
   <data name="UserDetail_Role_Invalid" xml:space="preserve">
     <value>El rol entrado es inválido</value>
+  </data>
+  <data name="UserDetail_Role_LengthExceeded" xml:space="preserve">
+    <value>Su rol excede el límite de 100 caracteres</value>
   </data>
   <data name="UserNote_Note_Invalid" xml:space="preserve">
     <value>El contenido de la nota es inválido</value>

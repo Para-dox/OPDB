@@ -11,34 +11,30 @@ namespace OPDB.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Data;
+    using System.ComponentModel.DataAnnotations;
+    using System.Runtime.Serialization;
+
     public partial class ActivityNote
     {
         public int ActivityNoteID { get; set; }
         public int NoteTypeID { get; set; }
         public int ActivityID { get; set; }
         public int UserID { get; set; }
-<<<<<<< HEAD
-=======
 
-        [RegularExpression(@"^([a-zA-Z\u00c0-\u017e0-9¿\?.,;:¡!()+@$""'/\s]+[^\s-][-]?)+$", ErrorMessageResourceName = "ActivityNote_Note_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
+        [RegularExpression(@"^([a-zA-Z\u00c0-\u017e0-9¿?.,;:!¡()$""'/\s]+[-]?[a-zA-Z\u00c0-\u017e0-9?.,;:!)@$""'/\s]+)+$", ErrorMessageResourceName = "ActivityNote_Note_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
         [Required(ErrorMessageResourceName = "ActivityNote_Note_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
->>>>>>> parent of 63bff4f... a lot of stuff
         public string Note { get; set; }
         public int CreateUser { get; set; }
         public System.DateTime CreateDate { get; set; }
         public int UpdateUser { get; set; }
         public System.DateTime UpdateDate { get; set; }
         public Nullable<System.DateTime> DeletionDate { get; set; }
-    
+
         public virtual Activity Activity { get; set; }
-
         public virtual NoteType NoteType { get; set; }
-
         public virtual User User { get; set; }
-
         public virtual User User1 { get; set; }
-
         public virtual User User2 { get; set; }
     }
 }

@@ -11,35 +11,34 @@ namespace OPDB.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Data;
+    using System.ComponentModel.DataAnnotations;
+    using System.Runtime.Serialization;
+
     public partial class Resource
     {
         public Resource()
         {
             this.ActivityResources = new HashSet<ActivityResource>();
         }
-    
-        public int ResourceID { get; set; }
-<<<<<<< HEAD
-=======
 
-        [RegularExpression(@"^[a-zA-Z\u00c0-\u017e'\s]{1,100}$", ErrorMessageResourceName = "Resource_ResourceName_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
+        public int ResourceID { get; set; }
+
+        [StringLength(100, ErrorMessageResourceName = "Resource_ResourceName_LengthExceeded", ErrorMessageResourceType = typeof(Resources.WebResources))]
+        [RegularExpression(@"^([a-zA-Z\u00c0-\u017e0-9.,/\s]+[-]?[a-zA-Z\u00c0-\u017e0-9.,/\s]+)+$", ErrorMessageResourceName = "Resource_ResourceName_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
         [Required(ErrorMessageResourceName = "Resource_ResourceName_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
->>>>>>> parent of 63bff4f... a lot of stuff
         public string Resource1 { get; set; }
+
         public int UnitID { get; set; }
         public int CreateUser { get; set; }
         public System.DateTime CreateDate { get; set; }
         public int UpdateUser { get; set; }
         public System.DateTime UpdateDate { get; set; }
         public Nullable<System.DateTime> DeletionDate { get; set; }
-    
+
         public virtual ICollection<ActivityResource> ActivityResources { get; set; }
-
         public virtual Unit Unit { get; set; }
-
         public virtual User User { get; set; }
-
         public virtual User User1 { get; set; }
     }
 }

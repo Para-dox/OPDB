@@ -31,7 +31,6 @@ namespace OPDB.Models
         public Nullable<int> AffiliateTypeID { get; set; }
     
         public virtual AffiliateType AffiliateType { get; set; }
-
         public virtual User User { get; set; }
     }
 }

@@ -66,7 +66,17 @@
         </div>
         <div class="display-field">
             @Html.DisplayFor(model => model.User.PhoneNumber)
-        </div>
+        </div><br />
+        @if (Model.UserDetail.DateOfBirth != null && Model.UserDetail.DateOfBirth != new DateTime())
+        {
+            <div class="display-label">
+                @Html.LabelFor(model => model.UserDetail.DateOfBirth, "Fecha de Nacimiento")
+            </div>
+            <div class="display-field">
+                @Model.UserDetail.DateOfBirth.Value.ToString("dd/MM/yyyy")
+            </div>
+            <br />
+        }
         @if (Model.UserDetail.Major != null)
         {
             <div class="display-label">
@@ -84,6 +94,16 @@
             </div>
             <div class="display-field">
                 @Html.DisplayFor(model => model.UserDetail.Role)
+            </div>
+            <br />
+        }
+        else if (Model.UserDetail.Grade != null)
+        {
+            <div class="display-label">
+                @Html.LabelFor(model => model.UserDetail.Grade, "Grado")
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.UserDetail.Grade)
             </div>
             <br />
         }

@@ -61,6 +61,8 @@ namespace OPDB.Models
         public List<Activity> Activities { get; set; }
 
         public string Source { get; set; }
+
+        public string BirthDate { get; set; }
         
     }
 }
