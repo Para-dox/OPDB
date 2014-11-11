@@ -11,6 +11,8 @@
           </Key>
           <Property Name="ActivityID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ActivityTypeID" Type="int" Nullable="false" />
+          <Property Name="ActivityMajorID" Type="int" Nullable="false" />
+          <Property Name="ActivityDynamicID" Type="int" />
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="Title" Type="text" Nullable="false" />
           <Property Name="Purpose" Type="text" Nullable="false" />
@@ -19,6 +21,31 @@
           <Property Name="ActivityDate" Type="date" />
           <Property Name="ActivityTime" Type="varchar" MaxLength="7" />
           <Property Name="SchoolID" Type="int" />
+          <Property Name="Attendees" Type="int" Nullable="false" />
+          <Property Name="CreateUser" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="UpdateUser" Type="int" Nullable="false" />
+          <Property Name="UpdateDate" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="DeletionDate" Type="datetime" Precision="0" />
+        </EntityType>
+        <EntityType Name="ActivityDynamic">
+          <Key>
+            <PropertyRef Name="ActivityDynamicID" />
+          </Key>
+          <Property Name="ActivityDynamicID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ActivityDynamic" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="CreateUser" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="UpdateUser" Type="int" Nullable="false" />
+          <Property Name="UpdateDate" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="DeletionDate" Type="datetime" Precision="0" />
+        </EntityType>
+        <EntityType Name="ActivityMajor">
+          <Key>
+            <PropertyRef Name="ActivityMajorID" />
+          </Key>
+          <Property Name="ActivityMajorID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ActivityMajor" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="CreateUser" Type="int" Nullable="false" />
           <Property Name="CreateDate" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="UpdateUser" Type="int" Nullable="false" />
@@ -59,7 +86,7 @@
             <PropertyRef Name="ActivityTypeID" />
           </Key>
           <Property Name="ActivityTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ActivityType" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="ActivityType" Type="varchar" MaxLength="11" Nullable="false" />
           <Property Name="CreateUser" Type="int" Nullable="false" />
           <Property Name="CreateDate" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="UpdateUser" Type="int" Nullable="false" />
@@ -172,6 +199,7 @@
           <Property Name="Vision" Type="text" />
           <Property Name="Objectives" Type="text" />
           <Property Name="Location" Type="varchar" MaxLength="100" />
+          <Property Name="RemovalReason" Type="varchar" MaxLength="200" />
           <Property Name="CreateDate" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="UpdateDate" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="DeletionDate" Type="datetime" Precision="0" />
@@ -207,6 +235,7 @@
           </Key>
           <Property Name="SchoolID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="SchoolSequenceNumber" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="SchoolRegionID" Type="int" Nullable="false" />
           <Property Name="SchoolName" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Address" Type="text" Nullable="false" />
           <Property Name="Town" Type="varchar" MaxLength="50" Nullable="false" />
@@ -231,6 +260,18 @@
           <Property Name="UpdateUser" Type="int" Nullable="false" />
           <Property Name="UpdateDate" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="DeletionDate" Type="datetime" Precision="0" />
+        </EntityType>
+        <EntityType Name="SchoolRegion">
+          <Key>
+            <PropertyRef Name="SchoolRegionID" />
+          </Key>
+          <Property Name="SchoolRegionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SchoolRegion" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="CreateUser" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="UpdateUser" Type="int" Nullable="false" />
+          <Property Name="UpdateDate" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="DeletionDate" Type="int" />
         </EntityType>
         <EntityType Name="Unit">
           <Key>
@@ -307,18 +348,6 @@
           <Property Name="UpdateDate" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="DeletionDate" Type="datetime" Precision="0" />
         </EntityType>
-        <Association Name="Activity_ibfk_1">
-          <End Role="ActivityType" Type="Self.ActivityType" Multiplicity="1" />
-          <End Role="Activity" Type="Self.Activity" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ActivityType">
-              <PropertyRef Name="ActivityTypeID" />
-            </Principal>
-            <Dependent Role="Activity">
-              <PropertyRef Name="ActivityTypeID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="Activity_ibfk_2">
           <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="Activity" Type="Self.Activity" Multiplicity="*" />
@@ -363,6 +392,90 @@
               <PropertyRef Name="UserID" />
             </Principal>
             <Dependent Role="Activity">
+              <PropertyRef Name="UpdateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Activity_ibfk_7">
+          <End Role="ActivityDynamic" Type="Self.ActivityDynamic" Multiplicity="0..1" />
+          <End Role="Activity" Type="Self.Activity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ActivityDynamic">
+              <PropertyRef Name="ActivityDynamicID" />
+            </Principal>
+            <Dependent Role="Activity">
+              <PropertyRef Name="ActivityDynamicID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Activity_ibfk_8">
+          <End Role="ActivityMajor" Type="Self.ActivityMajor" Multiplicity="1" />
+          <End Role="Activity" Type="Self.Activity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ActivityMajor">
+              <PropertyRef Name="ActivityMajorID" />
+            </Principal>
+            <Dependent Role="Activity">
+              <PropertyRef Name="ActivityMajorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Activity_ibfk_9">
+          <End Role="ActivityType" Type="Self.ActivityType" Multiplicity="1" />
+          <End Role="Activity" Type="Self.Activity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ActivityType">
+              <PropertyRef Name="ActivityTypeID" />
+            </Principal>
+            <Dependent Role="Activity">
+              <PropertyRef Name="ActivityTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ActivityDynamic_ibfk_1">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="ActivityDynamic" Type="Self.ActivityDynamic" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ActivityDynamic">
+              <PropertyRef Name="CreateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ActivityDynamic_ibfk_2">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="ActivityDynamic" Type="Self.ActivityDynamic" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ActivityDynamic">
+              <PropertyRef Name="UpdateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ActivityMajor_ibfk_1">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="ActivityMajor" Type="Self.ActivityMajor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ActivityMajor">
+              <PropertyRef Name="CreateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ActivityMajor_ibfk_2">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="ActivityMajor" Type="Self.ActivityMajor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ActivityMajor">
               <PropertyRef Name="UpdateUser" />
             </Dependent>
           </ReferentialConstraint>
@@ -1821,6 +1934,8 @@
         </Function>
         <EntityContainer Name="OPDBModelStoreContainer">
           <EntitySet Name="Activity" EntityType="Self.Activity" Schema="OPDB" store:Type="Tables" />
+          <EntitySet Name="ActivityDynamic" EntityType="Self.ActivityDynamic" Schema="OPDB" store:Type="Tables" />
+          <EntitySet Name="ActivityMajor" EntityType="Self.ActivityMajor" Schema="OPDB" store:Type="Tables" />
           <EntitySet Name="ActivityNote" EntityType="Self.ActivityNote" Schema="OPDB" store:Type="Tables" />
           <EntitySet Name="ActivityResource" EntityType="Self.ActivityResource" Schema="OPDB" store:Type="Tables" />
           <EntitySet Name="ActivityType" EntityType="Self.ActivityType" Schema="OPDB" store:Type="Tables" />
@@ -1836,15 +1951,12 @@
           <EntitySet Name="Resource" EntityType="Self.Resource" Schema="OPDB" store:Type="Tables" />
           <EntitySet Name="School" EntityType="Self.School" Schema="OPDB" store:Type="Tables" />
           <EntitySet Name="SchoolNote" EntityType="Self.SchoolNote" Schema="OPDB" store:Type="Tables" />
+          <EntitySet Name="SchoolRegion" EntityType="Self.SchoolRegion" Schema="OPDB" store:Type="Tables" />
           <EntitySet Name="Unit" EntityType="Self.Unit" Schema="OPDB" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="OPDB" store:Type="Tables" />
           <EntitySet Name="UserDetail" EntityType="Self.UserDetail" Schema="OPDB" store:Type="Tables" />
           <EntitySet Name="UserNote" EntityType="Self.UserNote" Schema="OPDB" store:Type="Tables" />
           <EntitySet Name="UserType" EntityType="Self.UserType" Schema="OPDB" store:Type="Tables" />
-          <AssociationSet Name="Activity_ibfk_1" Association="Self.Activity_ibfk_1">
-            <End Role="ActivityType" EntitySet="ActivityType" />
-            <End Role="Activity" EntitySet="Activity" />
-          </AssociationSet>
           <AssociationSet Name="Activity_ibfk_2" Association="Self.Activity_ibfk_2">
             <End Role="User" EntitySet="User" />
             <End Role="Activity" EntitySet="Activity" />
@@ -1860,6 +1972,34 @@
           <AssociationSet Name="Activity_ibfk_5" Association="Self.Activity_ibfk_5">
             <End Role="User" EntitySet="User" />
             <End Role="Activity" EntitySet="Activity" />
+          </AssociationSet>
+          <AssociationSet Name="Activity_ibfk_7" Association="Self.Activity_ibfk_7">
+            <End Role="ActivityDynamic" EntitySet="ActivityDynamic" />
+            <End Role="Activity" EntitySet="Activity" />
+          </AssociationSet>
+          <AssociationSet Name="Activity_ibfk_8" Association="Self.Activity_ibfk_8">
+            <End Role="ActivityMajor" EntitySet="ActivityMajor" />
+            <End Role="Activity" EntitySet="Activity" />
+          </AssociationSet>
+          <AssociationSet Name="Activity_ibfk_9" Association="Self.Activity_ibfk_9">
+            <End Role="ActivityType" EntitySet="ActivityType" />
+            <End Role="Activity" EntitySet="Activity" />
+          </AssociationSet>
+          <AssociationSet Name="ActivityDynamic_ibfk_1" Association="Self.ActivityDynamic_ibfk_1">
+            <End Role="User" EntitySet="User" />
+            <End Role="ActivityDynamic" EntitySet="ActivityDynamic" />
+          </AssociationSet>
+          <AssociationSet Name="ActivityDynamic_ibfk_2" Association="Self.ActivityDynamic_ibfk_2">
+            <End Role="User" EntitySet="User" />
+            <End Role="ActivityDynamic" EntitySet="ActivityDynamic" />
+          </AssociationSet>
+          <AssociationSet Name="ActivityMajor_ibfk_1" Association="Self.ActivityMajor_ibfk_1">
+            <End Role="User" EntitySet="User" />
+            <End Role="ActivityMajor" EntitySet="ActivityMajor" />
+          </AssociationSet>
+          <AssociationSet Name="ActivityMajor_ibfk_2" Association="Self.ActivityMajor_ibfk_2">
+            <End Role="User" EntitySet="User" />
+            <End Role="ActivityMajor" EntitySet="ActivityMajor" />
           </AssociationSet>
           <AssociationSet Name="ActivityNote_ibfk_1" Association="Self.ActivityNote_ibfk_1">
             <End Role="NoteType" EntitySet="NoteType" />
@@ -2121,6 +2261,11 @@
           <NavigationProperty Name="School" Relationship="OPDBModel.Activity_ibfk_3" FromRole="Activity" ToRole="School" />
           <NavigationProperty Name="Media" Relationship="OPDBModel.Media_ibfk_1" FromRole="Activity" ToRole="Medium" />
           <Property Name="Details" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="ActivityMajorID" Type="Int32" Nullable="false" />
+          <Property Name="ActivityDynamicID" Type="Int32" />
+          <Property Name="Attendees" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ActivityDynamic" Relationship="OPDBModel.Activity_ibfk_7" FromRole="Activity" ToRole="ActivityDynamic" />
+          <NavigationProperty Name="ActivityMajor" Relationship="OPDBModel.Activity_ibfk_8" FromRole="Activity" ToRole="ActivityMajor" />
         </EntityType>
         <EntityType Name="ActivityNote">
           <Key>
@@ -2295,6 +2440,7 @@
           <Property Name="DeletionDate" Type="DateTime" />
           <NavigationProperty Name="User" Relationship="OPDBModel.OutreachEntityDetail_ibfk_2" FromRole="OutreachEntityDetail" ToRole="User" />
           <NavigationProperty Name="OutreachEntityType" Relationship="OPDBModel.OutreachEntityDetail_ibfk_1" FromRole="OutreachEntityDetail" ToRole="OutreachEntityType" />
+          <Property Name="RemovalReason" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Resource">
           <Key>
@@ -2813,6 +2959,33 @@
             <End Role="User" EntitySet="Users" />
             <End Role="Medium" EntitySet="Media" />
           </AssociationSet>
+          <EntitySet Name="ActivityDynamics" EntityType="OPDBModel.ActivityDynamic" />
+          <EntitySet Name="ActivityMajors" EntityType="OPDBModel.ActivityMajor" />
+          <EntitySet Name="SchoolRegions" EntityType="OPDBModel.SchoolRegion" />
+          <AssociationSet Name="Activity_ibfk_7" Association="OPDBModel.Activity_ibfk_7">
+            <End Role="ActivityDynamic" EntitySet="ActivityDynamics" />
+            <End Role="Activity" EntitySet="Activities" />
+          </AssociationSet>
+          <AssociationSet Name="Activity_ibfk_8" Association="OPDBModel.Activity_ibfk_8">
+            <End Role="ActivityMajor" EntitySet="ActivityMajors" />
+            <End Role="Activity" EntitySet="Activities" />
+          </AssociationSet>
+          <AssociationSet Name="ActivityMajor_ibfk_1" Association="OPDBModel.ActivityMajor_ibfk_1">
+            <End Role="User" EntitySet="Users" />
+            <End Role="ActivityMajor" EntitySet="ActivityMajors" />
+          </AssociationSet>
+          <AssociationSet Name="ActivityMajor_ibfk_2" Association="OPDBModel.ActivityMajor_ibfk_2">
+            <End Role="User" EntitySet="Users" />
+            <End Role="ActivityMajor" EntitySet="ActivityMajors" />
+          </AssociationSet>
+          <AssociationSet Name="ActivityDynamic_ibfk_1" Association="OPDBModel.ActivityDynamic_ibfk_1">
+            <End Role="User" EntitySet="Users" />
+            <End Role="ActivityDynamic" EntitySet="ActivityDynamics" />
+          </AssociationSet>
+          <AssociationSet Name="ActivityDynamic_ibfk_2" Association="OPDBModel.ActivityDynamic_ibfk_2">
+            <End Role="User" EntitySet="Users" />
+            <End Role="ActivityDynamic" EntitySet="ActivityDynamics" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="User">
           <Key>
@@ -2871,6 +3044,10 @@
           <NavigationProperty Name="Schools1" Relationship="OPDBModel.School_ibfk_2" FromRole="User" ToRole="School" />
           <NavigationProperty Name="Media" Relationship="OPDBModel.Media_ibfk_2" FromRole="User" ToRole="Medium" />
           <NavigationProperty Name="Media1" Relationship="OPDBModel.Media_ibfk_3" FromRole="User" ToRole="Medium" />
+          <NavigationProperty Name="ActivityMajors" Relationship="OPDBModel.ActivityMajor_ibfk_1" FromRole="User" ToRole="ActivityMajor" />
+          <NavigationProperty Name="ActivityMajors1" Relationship="OPDBModel.ActivityMajor_ibfk_2" FromRole="User" ToRole="ActivityMajor" />
+          <NavigationProperty Name="ActivityDynamics" Relationship="OPDBModel.ActivityDynamic_ibfk_1" FromRole="User" ToRole="ActivityDynamic" />
+          <NavigationProperty Name="ActivityDynamics1" Relationship="OPDBModel.ActivityDynamic_ibfk_2" FromRole="User" ToRole="ActivityDynamic" />
           </EntityType>
         <Association Name="Activity_ibfk_21">
           <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
@@ -3410,6 +3587,7 @@
           <NavigationProperty Name="User" Relationship="OPDBModel.School_ibfk_1" FromRole="School" ToRole="User" />
           <NavigationProperty Name="User1" Relationship="OPDBModel.School_ibfk_2" FromRole="School" ToRole="User" />
           <NavigationProperty Name="SchoolNotes" Relationship="OPDBModel.SchoolNote_ibfk_2" FromRole="School" ToRole="SchoolNote" />
+          <Property Name="SchoolRegionID" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="Activity_ibfk_3">
           <End Type="OPDBModel.School" Role="School" Multiplicity="0..1" />
@@ -3513,6 +3691,120 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ActivityDynamic">
+          <Key>
+            <PropertyRef Name="ActivityDynamicID" />
+          </Key>
+          <Property Name="ActivityDynamicID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ActivityDynamic1" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="CreateUser" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" />
+          <Property Name="UpdateUser" Type="Int32" Nullable="false" />
+          <Property Name="UpdateDate" Type="DateTime" Nullable="false" />
+          <Property Name="DeletionDate" Type="DateTime" />
+          <NavigationProperty Name="Activities" Relationship="OPDBModel.Activity_ibfk_7" FromRole="ActivityDynamic" ToRole="Activity" />
+          <NavigationProperty Name="User" Relationship="OPDBModel.ActivityDynamic_ibfk_1" FromRole="ActivityDynamic" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="OPDBModel.ActivityDynamic_ibfk_2" FromRole="ActivityDynamic" ToRole="User" />
+        </EntityType>
+        <EntityType Name="ActivityMajor">
+          <Key>
+            <PropertyRef Name="ActivityMajorID" />
+          </Key>
+          <Property Name="ActivityMajorID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ActivityMajor1" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CreateUser" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" />
+          <Property Name="UpdateUser" Type="Int32" Nullable="false" />
+          <Property Name="UpdateDate" Type="DateTime" Nullable="false" />
+          <Property Name="DeletionDate" Type="DateTime" />
+          <NavigationProperty Name="Activities" Relationship="OPDBModel.Activity_ibfk_8" FromRole="ActivityMajor" ToRole="Activity" />
+          <NavigationProperty Name="User" Relationship="OPDBModel.ActivityMajor_ibfk_1" FromRole="ActivityMajor" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="OPDBModel.ActivityMajor_ibfk_2" FromRole="ActivityMajor" ToRole="User" />
+        </EntityType>
+        <EntityType Name="SchoolRegion">
+          <Key>
+            <PropertyRef Name="SchoolRegionID" />
+          </Key>
+          <Property Name="SchoolRegionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SchoolRegion1" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="CreateUser" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" />
+          <Property Name="UpdateUser" Type="Int32" Nullable="false" />
+          <Property Name="UpdateDate" Type="DateTime" Nullable="false" />
+          <Property Name="DeletionDate" Type="Int32" />
+        </EntityType>
+        <Association Name="Activity_ibfk_7">
+          <End Type="OPDBModel.ActivityDynamic" Role="ActivityDynamic" Multiplicity="0..1" />
+          <End Type="OPDBModel.Activity" Role="Activity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ActivityDynamic">
+              <PropertyRef Name="ActivityDynamicID" />
+            </Principal>
+            <Dependent Role="Activity">
+              <PropertyRef Name="ActivityDynamicID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Activity_ibfk_8">
+          <End Type="OPDBModel.ActivityMajor" Role="ActivityMajor" Multiplicity="1" />
+          <End Type="OPDBModel.Activity" Role="Activity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ActivityMajor">
+              <PropertyRef Name="ActivityMajorID" />
+            </Principal>
+            <Dependent Role="Activity">
+              <PropertyRef Name="ActivityMajorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ActivityMajor_ibfk_1">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.ActivityMajor" Role="ActivityMajor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ActivityMajor">
+              <PropertyRef Name="CreateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ActivityMajor_ibfk_2">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.ActivityMajor" Role="ActivityMajor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ActivityMajor">
+              <PropertyRef Name="UpdateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ActivityDynamic_ibfk_1">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.ActivityDynamic" Role="ActivityDynamic" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ActivityDynamic">
+              <PropertyRef Name="CreateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ActivityDynamic_ibfk_2">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.ActivityDynamic" Role="ActivityDynamic" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ActivityDynamic">
+              <PropertyRef Name="UpdateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3522,6 +3814,9 @@
           <EntitySetMapping Name="Activities">
             <EntityTypeMapping TypeName="OPDBModel.Activity">
               <MappingFragment StoreEntitySet="Activity">
+                <ScalarProperty Name="Attendees" ColumnName="Attendees" />
+                <ScalarProperty Name="ActivityDynamicID" ColumnName="ActivityDynamicID" />
+                <ScalarProperty Name="ActivityMajorID" ColumnName="ActivityMajorID" />
                 <ScalarProperty Name="Details" ColumnName="Details" />
                 <ScalarProperty Name="ActivityID" ColumnName="ActivityID" />
                 <ScalarProperty Name="ActivityTypeID" ColumnName="ActivityTypeID" />
@@ -3672,6 +3967,7 @@
           <EntitySetMapping Name="OutreachEntityDetails">
             <EntityTypeMapping TypeName="OPDBModel.OutreachEntityDetail">
               <MappingFragment StoreEntitySet="OutreachEntityDetail">
+                <ScalarProperty Name="RemovalReason" ColumnName="RemovalReason" />
                 <ScalarProperty Name="OutreachEntityDetailID" ColumnName="OutreachEntityDetailID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="OutreachEntityTypeID" ColumnName="OutreachEntityTypeID" />
@@ -3812,6 +4108,7 @@
           <EntitySetMapping Name="Schools">
             <EntityTypeMapping TypeName="OPDBModel.School">
               <MappingFragment StoreEntitySet="School">
+                <ScalarProperty Name="SchoolRegionID" ColumnName="SchoolRegionID" />
                 <ScalarProperty Name="DeletionDate" ColumnName="DeletionDate" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="UpdateUser" ColumnName="UpdateUser" />
@@ -3839,6 +4136,45 @@
                 <ScalarProperty Name="MediaType" ColumnName="MediaType" />
                 <ScalarProperty Name="ActivityID" ColumnName="ActivityID" />
                 <ScalarProperty Name="MediaID" ColumnName="MediaID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ActivityDynamics">
+            <EntityTypeMapping TypeName="OPDBModel.ActivityDynamic">
+              <MappingFragment StoreEntitySet="ActivityDynamic">
+                <ScalarProperty Name="DeletionDate" ColumnName="DeletionDate" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="UpdateUser" ColumnName="UpdateUser" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
+                <ScalarProperty Name="ActivityDynamic1" ColumnName="ActivityDynamic" />
+                <ScalarProperty Name="ActivityDynamicID" ColumnName="ActivityDynamicID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ActivityMajors">
+            <EntityTypeMapping TypeName="OPDBModel.ActivityMajor">
+              <MappingFragment StoreEntitySet="ActivityMajor">
+                <ScalarProperty Name="DeletionDate" ColumnName="DeletionDate" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="UpdateUser" ColumnName="UpdateUser" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
+                <ScalarProperty Name="ActivityMajor1" ColumnName="ActivityMajor" />
+                <ScalarProperty Name="ActivityMajorID" ColumnName="ActivityMajorID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SchoolRegions">
+            <EntityTypeMapping TypeName="OPDBModel.SchoolRegion">
+              <MappingFragment StoreEntitySet="SchoolRegion">
+                <ScalarProperty Name="DeletionDate" ColumnName="DeletionDate" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="UpdateUser" ColumnName="UpdateUser" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
+                <ScalarProperty Name="SchoolRegion1" ColumnName="SchoolRegion" />
+                <ScalarProperty Name="SchoolRegionID" ColumnName="SchoolRegionID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

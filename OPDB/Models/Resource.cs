@@ -37,8 +37,11 @@ namespace OPDB.Models
         public Nullable<System.DateTime> DeletionDate { get; set; }
     
         public virtual ICollection<ActivityResource> ActivityResources { get; set; }
+
         public virtual Unit Unit { get; set; }
+
         public virtual User User { get; set; }
+
         public virtual User User1 { get; set; }
     }
 }

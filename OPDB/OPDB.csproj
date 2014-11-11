@@ -217,6 +217,12 @@
     <Compile Include="Models\Activity.cs">
       <DependentUpon>OPDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ActivityDynamic.cs">
+      <DependentUpon>OPDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ActivityMajor.cs">
+      <DependentUpon>OPDBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ActivityNote.cs">
       <DependentUpon>OPDBModel.tt</DependentUpon>
     </Compile>
@@ -279,6 +285,9 @@
       <DependentUpon>OPDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SchoolNote.cs">
+      <DependentUpon>OPDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SchoolRegion.cs">
       <DependentUpon>OPDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SchoolViewModel.cs" />

@@ -48,7 +48,8 @@ namespace OPDB.Models
         public int UpdateUser { get; set; }
         public System.DateTime UpdateDate { get; set; }
         public Nullable<System.DateTime> DeletionDate { get; set; }
-    
+        public int SchoolRegionID { get; set; }
+
         public virtual ICollection<Activity> Activities { get; set; }
         public virtual User User { get; set; }
         public virtual User User1 { get; set; }

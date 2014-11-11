@@ -62,6 +62,10 @@ namespace OPDB.Models
             this.OutreachEntityTypes1 = new HashSet<OutreachEntityType>();
             this.Schools = new HashSet<School>();
             this.Schools1 = new HashSet<School>();
+            this.ActivityMajors = new HashSet<ActivityMajor>();
+            this.ActivityMajors1 = new HashSet<ActivityMajor>();
+            this.ActivityDynamics = new HashSet<ActivityDynamic>();
+            this.ActivityDynamics1 = new HashSet<ActivityDynamic>();
         }
     
         public int UserID { get; set; }
@@ -127,5 +131,9 @@ namespace OPDB.Models
         public virtual ICollection<OutreachEntityType> OutreachEntityTypes1 { get; set; }
         public virtual ICollection<School> Schools { get; set; }
         public virtual ICollection<School> Schools1 { get; set; }
+        public virtual ICollection<ActivityMajor> ActivityMajors { get; set; }
+        public virtual ICollection<ActivityMajor> ActivityMajors1 { get; set; }
+        public virtual ICollection<ActivityDynamic> ActivityDynamics { get; set; } 
+        public virtual ICollection<ActivityDynamic> ActivityDynamics1 { get; set; }
     }
 }

@@ -33,7 +33,9 @@ namespace OPDB.Models
         public Nullable<System.DateTime> DeletionDate { get; set; }
     
         public virtual NoteType NoteType { get; set; }
+
         public virtual User User { get; set; }
+
         public virtual School School { get; set; }
     }
 }

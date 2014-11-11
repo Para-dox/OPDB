@@ -61,6 +61,12 @@ namespace OPDB.Models
         [AllowHtml]
         public string Details { get; set; }
 
+        public string Details { get; set; }
+        public int ActivityMajorID { get; set; }
+        public Nullable<int> ActivityDynamicID { get; set; }
+        public int Attendees { get; set; }
+
+
         public virtual ActivityType ActivityType { get; set; }
         public virtual ICollection<ActivityNote> ActivityNotes { get; set; }
         public virtual ICollection<ActivityResource> ActivityResources { get; set; }
@@ -73,5 +79,7 @@ namespace OPDB.Models
         public virtual User User1 { get; set; }
         public virtual User User2 { get; set; }
         public virtual School School { get; set; }
+        public virtual ActivityDynamic ActivityDynamic { get; set; }
+        public virtual ActivityMajor ActivityMajor { get; set; }
     }
 }
