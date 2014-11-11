@@ -16,15 +16,10 @@ namespace OPDB.Models
     {
         public int UserDetailID { get; set; }
         public int UserID { get; set; }
-
         public string FirstName { get; set; }
-
         public string LastName { get; set; }
-
         public string MiddleInitial { get; set; }
-
         public string Gender { get; set; }
-
         public Nullable<System.DateTime> DateOfBirth { get; set; }
         public string Role { get; set; }
         public string Major { get; set; }

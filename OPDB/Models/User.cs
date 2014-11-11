@@ -11,9 +11,6 @@ namespace OPDB.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.Data;
-    using System.ComponentModel.DataAnnotations;
-    using System.Runtime.Serialization;
     
     public partial class User
     {
@@ -43,8 +40,6 @@ namespace OPDB.Models
             this.Interests = new HashSet<Interest>();
             this.Interests1 = new HashSet<Interest>();
             this.Interests2 = new HashSet<Interest>();
-            this.Media = new HashSet<Medium>();
-            this.Media1 = new HashSet<Medium>();
             this.NoteTypes = new HashSet<NoteType>();
             this.NoteTypes1 = new HashSet<NoteType>();
             this.OutreachEntityDetails = new HashSet<OutreachEntityDetail>();
@@ -70,18 +65,9 @@ namespace OPDB.Models
     
         public int UserID { get; set; }
         public int UserTypeID { get; set; }
-
-        [RegularExpression(@"(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{8,20})$", ErrorMessageResourceName = "User_UserPassword_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
-        [Required(ErrorMessageResourceName = "User_UserPassword_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string UserPassword { get; set; }
-
-        [RegularExpression(@"^(?("")("".+?""@)|(([0-9a-zA-Z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-zA-Z])@))(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,6}))$", ErrorMessageResourceName = "User_Email_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
-        [Required(ErrorMessageResourceName = "User_Email_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Email { get; set; }
-
-        [RegularExpression(@"^([2-9]\d{2}|[2-9]\d{2})[- .]?\d{3}[- .]?\d{4}$", ErrorMessageResourceName = "User_PhoneNumber_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string PhoneNumber { get; set; }
-
         public bool UserStatus { get; set; }
         public System.DateTime CreateDate { get; set; }
         public System.DateTime UpdateDate { get; set; }
@@ -111,8 +97,6 @@ namespace OPDB.Models
         public virtual ICollection<Interest> Interests { get; set; }
         public virtual ICollection<Interest> Interests1 { get; set; }
         public virtual ICollection<Interest> Interests2 { get; set; }
-        public virtual ICollection<Medium> Media { get; set; }
-        public virtual ICollection<Medium> Media1 { get; set; }
         public virtual ICollection<NoteType> NoteTypes { get; set; }
         public virtual ICollection<NoteType> NoteTypes1 { get; set; }
         public virtual ICollection<OutreachEntityDetail> OutreachEntityDetails { get; set; }
@@ -135,5 +119,7 @@ namespace OPDB.Models
         public virtual ICollection<ActivityMajor> ActivityMajors1 { get; set; }
         public virtual ICollection<ActivityDynamic> ActivityDynamics { get; set; } 
         public virtual ICollection<ActivityDynamic> ActivityDynamics1 { get; set; }
+        public virtual ICollection<Medium> Media { get; set; }
+        public virtual ICollection<Medium> Media1 { get; set; }
     }
 }
