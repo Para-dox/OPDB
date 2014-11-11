@@ -1,35 +1,62 @@
 ﻿
 
 function getValue() {
+    var outreachEntity = document.getElementById('outreachEntity');
+    var user = document.getElementById('user');
+    var faculty = document.getElementById('faculty');
+    var collegeStudent = document.getElementById('collegeStudent');
+    var grade = document.getElementById('grade');
+
     if (document.getElementById('userType').value == 3) {
-        document.getElementById('outreachEntity').removeAttribute("hidden", "hidden");
-        document.getElementById('user').setAttribute("hidden", "hidden");
+
+        if(outreachEntity != null)
+            outreachEntity.removeAttribute("hidden", "hidden");
+
+        if(user != null)
+            user.setAttribute("hidden", "hidden");
     }
 
     else {
-        document.getElementById('user').removeAttribute("hidden", "hidden");
-        document.getElementById('outreachEntity').setAttribute("hidden", "hidden");
+        if (user != null)
+            user.removeAttribute("hidden", "hidden");
+
+        if (outreachEntity != null)
+            outreachEntity.setAttribute("hidden", "hidden");
     }
 
     if (document.getElementById('userType').value == 4) {
-        document.getElementById('faculty').removeAttribute("hidden", "hidden");
-        document.getElementById('collegeStudent').setAttribute("hidden", "hidden");
-        document.getElementById('grade').setAttribute("hidden", "hidden");
+        if(faculty != null)
+            faculty.removeAttribute("hidden", "hidden");
+
+        if(collegeStudent != null)
+            collegeStudent.setAttribute("hidden", "hidden");
+
+        if(grade != null)
+            grade.setAttribute("hidden", "hidden");
     }
     else if (document.getElementById('userType').value == 5) {
-        document.getElementById('collegeStudent').removeAttribute("hidden", "hidden");
-        document.getElementById('faculty').setAttribute("hidden", "hidden");
-        document.getElementById('grade').setAttribute("hidden", "hidden");
+        if(collegeStudent != null)
+            collegeStudent.removeAttribute("hidden", "hidden");
+        if(faculty != null)
+            faculty.setAttribute("hidden", "hidden");
+        if(grade != null)
+            grade.setAttribute("hidden", "hidden");
     }
     else if (document.getElementById('userType').value == 6 || document.getElementById('userType').value == 7) {
-        document.getElementById('grade').removeAttribute("hidden", "hidden");
-        document.getElementById('faculty').setAttribute("hidden", "hidden");
-        document.getElementById('collegeStudent').setAttribute("hidden", "hidden");
+        if(grade != null)
+            grade.removeAttribute("hidden", "hidden");
+        if(faculty != null)
+            faculty.setAttribute("hidden", "hidden");
+        if(collegeStudent != null)
+            collegeStudent.setAttribute("hidden", "hidden");
     }
     else {
-        document.getElementById('collegeStudent').setAttribute("hidden", "hidden");
-        document.getElementById('faculty').setAttribute("hidden", "hidden");
-        document.getElementById('grade').setAttribute("hidden", "hidden");
+        if(collegeStudent != null)
+            collegeStudent.setAttribute("hidden", "hidden");
+        if(faculty != null)
+            faculty.setAttribute("hidden", "hidden");
+        if(grade != null)
+            grade.setAttribute("hidden", "hidden");
     }
 }
 

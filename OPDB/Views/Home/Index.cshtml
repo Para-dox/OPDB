@@ -5,55 +5,63 @@
 }
 
 <style>
-    span{
+    span {
         font-size: 0.875rem;
         color: #4d4d4d;
     }
 
-    h4{
-         color: #4d4d4d;
+    h4 {
+        color: #4d4d4d;
     }
 
-    r{
-         font-size: 0.875rem;
+    r {
+        font-size: 0.875rem;
     }
 </style>
 
 <h3>Próximas Actividades</h3><br />
-
-@foreach (var item in Model.Information)
+@if (Model.Information.Count > 0)
 {
+    foreach (var item in Model.Information)
+    {
 
-    <div class="large-6 columns panel" style="height:250px;">
-        <div class="activity" style="height:175px; overflow:hidden;" title="Desplace hacia abajo para más información">
-            <h4>@Html.ActionLink(item.Activity.Title, "Detalles", "Actividades", new { id = item.Activity.ActivityID }, null)</h4>
-            <span>Propósito: </span><r>@String.Concat(item.Activity.Purpose.Substring(0, item.Activity.Purpose.Length > 100 ? 100 : item.Activity.Purpose.Length), "")</r><br />
-            <span>Tipo: </span><r>@item.Activity.ActivityType.ActivityType1</r><br />
-            @if (item.Activity.Location != null && item.Activity.Location != "")
-            {<span>Localización: </span><r>@item.Activity.Location</r><br /> }
-            @if (item.Activity.ActivityDate != null && item.Activity.ActivityDate != new DateTime())
-            { <span>Fecha: </span><r>@item.Activity.ActivityDate.Value.ToString("dd/MM/yyyy")</r><br />}
-            @if (item.Activity.ActivityTime != null && item.Activity.ActivityTime != "")
-            { <span>Hora: </span><r>@item.Activity.ActivityTime</r><br />}
+        <div class="large-6 columns panel" style="height:250px;">
+            <div class="activity" style="height:175px; overflow:hidden;" title="Desplace hacia abajo para más información">
+                <h4>@Html.ActionLink(item.Activity.Title, "Detalles", "Actividades", new { id = item.Activity.ActivityID }, null)</h4>
+                <span>Propósito: </span><r>@String.Concat(item.Activity.Purpose.Substring(0, item.Activity.Purpose.Length > 100 ? 100 : item.Activity.Purpose.Length), "")</r><br />
+                <span>Tipo: </span><r>@item.Activity.ActivityType.ActivityType1</r><br />
+                @if (item.Activity.Location != null && item.Activity.Location != "")
+                {<span>Localización: </span><r>@item.Activity.Location</r><br /> }
+                @if (item.Activity.ActivityDate != null && item.Activity.ActivityDate != new DateTime())
+                { <span>Fecha: </span><r>@item.Activity.ActivityDate.Value.ToString("dd/MM/yyyy")</r><br />}
+                @if (item.Activity.ActivityTime != null && item.Activity.ActivityTime != "")
+                { <span>Hora: </span><r>@item.Activity.ActivityTime</r><br />}
+            </div>
+
+            @if (Request.IsAuthenticated)
+            {
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) != 3)
+                {
+                    if (item.Interested != true)
+                    {
+                        <a style="float:right;" class="btn btn-sm" onclick="showInterest(this)" data-url="@Url.Action("Interes", "Actividades", new { id = item.Activity.ActivityID })" title="Mostrar Interes"><i class="fa fa-thumbs-up"></i> Me Interesa</a>
+                    }
+                    else
+                    {
+                        <i style="float:right; font-size:0.875rem;">Te interesa esta actividad.</i>
+                    }
+                }
+            }
         </div>
 
-@if (Request.IsAuthenticated)
-{
-    if (Int32.Parse(User.Identity.Name.Split(',')[1]) != 3)
-    {
-        if (item.Interested != true)
-        {
-            <a style="float:right;" class="btn btn-sm" onclick="showInterest(this)" data-url="@Url.Action("Interes", "Actividades", new { id = item.Activity.ActivityID })" title="Mostrar Interes"><i class="fa fa-thumbs-up"></i> Me Interesa</a>
-        }
-        else
-        {
-            <i style="float:right; font-size:0.875rem;">Te interesa esta actividad.</i>
-        }
+
     }
 }
+else
+{
+    <div class="large-12 columns panel" style="height:250px;">
+        No hay ninguna actividad esta semana.
     </div>
-
-
 }
 <br />
 

@@ -113,7 +113,6 @@ namespace OPDB.Controllers
             {
                 userViewModel.User.CreateDate = DateTime.Now;
                 userViewModel.User.UpdateDate = DateTime.Now;
-                userViewModel.User.UserStatus = false;
                 bool validModel = true;
 
                 User matchingUser = db.Users.FirstOrDefault(u => u.Email == userViewModel.User.Email);
@@ -228,6 +227,7 @@ namespace OPDB.Controllers
                         userViewModel.OutreachEntity.UpdateDate = DateTime.Now;
                         userViewModel.User.OutreachEntityDetails = new List<OutreachEntityDetail>();
                         userViewModel.User.OutreachEntityDetails.Add(userViewModel.OutreachEntity);
+                        userViewModel.User.UserStatus = false;
                         db.Users.Add(userViewModel.User);
                     }
 
@@ -382,6 +382,7 @@ namespace OPDB.Controllers
                         userViewModel.UserDetail.UpdateDate = DateTime.Now;
                         userViewModel.User.UserDetails = new List<UserDetail>();
                         userViewModel.User.UserDetails.Add(userViewModel.UserDetail);
+                        userViewModel.User.UserStatus = true;
                         db.Users.Add(userViewModel.User);
                     }
 
@@ -1153,7 +1154,6 @@ namespace OPDB.Controllers
                     {
                         userViewModel.User.CreateDate = DateTime.Now;
                         userViewModel.User.UpdateDate = DateTime.Now;
-                        userViewModel.User.UserStatus = true;
                         bool validModel = true;
 
                         User matchingUser = db.Users.FirstOrDefault(u => u.Email == userViewModel.User.Email);
@@ -1304,6 +1304,7 @@ namespace OPDB.Controllers
                             userViewModel.UserDetail.UpdateDate = DateTime.Now;
                             userViewModel.User.UserDetails = new List<UserDetail>();
                             userViewModel.User.UserDetails.Add(userViewModel.UserDetail);
+                            userViewModel.User.UserStatus = true;
                             db.Users.Add(userViewModel.User);
                             db.SaveChanges();
                             return RedirectToAction("Administracion", "Home", null);

@@ -25,7 +25,7 @@
                 @Html.LabelFor(model => model.User.UserTypeID, "Tipo de Usuario *")
             </div>
             <div class="editor-field">
-                @Html.DropDownListFor(model => model.User.UserTypeID, Model.UserTypes, new { @style = "width: 500px !important;", @id = "userType" })
+                @Html.DropDownListFor(model => model.User.UserTypeID, Model.UserTypes, new { @style = "width: 500px !important;", @id = "userType", @onchange = "getValue()" })
             </div><br />
             <div class="editor-label">
                 @Html.LabelFor(model => model.User.Email, "Correo Electrónico *")
@@ -131,3 +131,9 @@
 }
 
 <script src="~/Scripts/myScripts.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        getValue();
+    })
+  </script>
