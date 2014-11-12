@@ -32,6 +32,7 @@
             <th style="width:20%;">Tipo de Entidad</th>
             <th style="width:20%;">Correo Electrónico</th>
             <th>Removido En</th>
+            <th>Razón</th>
             <th style="width:6%;"></th>
         </tr>
     </thead>
@@ -48,7 +49,12 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Email)
                 </td>
-                <td>@Html.DisplayFor(modelItem => item.DeletionDate)</td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DeletionDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RemovalReason)
+                </td>
                 <td>
                     <i title="Restaurar" style="cursor: pointer !important;" class="fa fa-plus" onclick="restoreRecord(this, 'removedUsers')" data-url="@Url.Action("Restaurar", "Alcance", new { id = item.UserID })"></i>                
                 </td>

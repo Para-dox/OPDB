@@ -199,7 +199,6 @@
           <Property Name="Vision" Type="text" />
           <Property Name="Objectives" Type="text" />
           <Property Name="Location" Type="varchar" MaxLength="100" />
-          <Property Name="RemovalReason" Type="varchar" MaxLength="200" />
           <Property Name="CreateDate" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="UpdateDate" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="DeletionDate" Type="datetime" Precision="0" />
@@ -299,6 +298,7 @@
           <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="PhoneNumber" Type="varchar" MaxLength="12" />
           <Property Name="UserStatus" Type="bit" Nullable="false" />
+          <Property Name="RemovalReason" Type="varchar" MaxLength="200" />
           <Property Name="CreateDate" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="UpdateDate" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="DeletionDate" Type="datetime" Precision="0" />
@@ -2471,25 +2471,6 @@
           <NavigationProperty Name="User1" Relationship="OPDBModel.NoteType_ibfk_2" FromRole="NoteType" ToRole="User" />
           <NavigationProperty Name="UserNotes" Relationship="OPDBModel.UserNote_ibfk_5" FromRole="NoteType" ToRole="UserNote" />
         </EntityType>
-        <EntityType Name="OutreachEntityDetail">
-          <Key>
-            <PropertyRef Name="OutreachEntityDetailID" />
-          </Key>
-          <Property Name="OutreachEntityDetailID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserID" Type="Int32" Nullable="false" />
-          <Property Name="OutreachEntityTypeID" Type="Int32" Nullable="false" />
-          <Property Name="OutreachEntityName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Mission" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
-          <Property Name="Vision" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
-          <Property Name="Objectives" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
-          <Property Name="Location" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="CreateDate" Type="DateTime" Nullable="false" />
-          <Property Name="UpdateDate" Type="DateTime" Nullable="false" />
-          <Property Name="DeletionDate" Type="DateTime" />
-          <NavigationProperty Name="User" Relationship="OPDBModel.OutreachEntityDetail_ibfk_2" FromRole="OutreachEntityDetail" ToRole="User" />
-          <NavigationProperty Name="OutreachEntityType" Relationship="OPDBModel.OutreachEntityDetail_ibfk_1" FromRole="OutreachEntityDetail" ToRole="OutreachEntityType" />
-          <Property Name="RemovalReason" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="Resource">
           <Key>
             <PropertyRef Name="ResourceID" />
@@ -2752,7 +2733,6 @@
           <EntitySet Name="Feedbacks" EntityType="Self.Feedback" />
           <EntitySet Name="Interests" EntityType="Self.Interest" />
           <EntitySet Name="NoteTypes" EntityType="Self.NoteType" />
-          <EntitySet Name="OutreachEntityDetails" EntityType="Self.OutreachEntityDetail" />
           <EntitySet Name="Resources" EntityType="Self.Resource" />
           <EntitySet Name="SchoolNotes" EntityType="Self.SchoolNote" />
           <EntitySet Name="Units" EntityType="Self.Unit" />
@@ -2912,10 +2892,6 @@
             <End Role="User" EntitySet="Users" />
             <End Role="NoteType" EntitySet="NoteTypes" />
           </AssociationSet>
-          <AssociationSet Name="OutreachEntityDetail_ibfk_2" Association="OPDBModel.OutreachEntityDetail_ibfk_2">
-            <End Role="User" EntitySet="Users" />
-            <End Role="OutreachEntityDetail" EntitySet="OutreachEntityDetails" />
-          </AssociationSet>
           <AssociationSet Name="Resource_ibfk_2" Association="OPDBModel.Resource_ibfk_2">
             <End Role="User" EntitySet="Users" />
             <End Role="Resource" EntitySet="Resources" />
@@ -2965,10 +2941,6 @@
             <End Role="UserNote" EntitySet="UserNotes" />
           </AssociationSet>
           <EntitySet Name="OutreachEntityTypes" EntityType="OPDBModel.OutreachEntityType" />
-          <AssociationSet Name="OutreachEntityDetail_ibfk_1" Association="OPDBModel.OutreachEntityDetail_ibfk_1">
-            <End Role="OutreachEntityType" EntitySet="OutreachEntityTypes" />
-            <End Role="OutreachEntityDetail" EntitySet="OutreachEntityDetails" />
-          </AssociationSet>
           <AssociationSet Name="OutreachEntityType_ibfk_1" Association="OPDBModel.OutreachEntityType_ibfk_1">
             <End Role="User" EntitySet="Users" />
             <End Role="OutreachEntityType" EntitySet="OutreachEntityTypes" />
@@ -3046,6 +3018,15 @@
             <End Role="User" EntitySet="Users" />
             <End Role="SchoolRegion" EntitySet="SchoolRegions" />
           </AssociationSet>
+          <EntitySet Name="OutreachEntityDetails" EntityType="OPDBModel.OutreachEntityDetail" />
+          <AssociationSet Name="OutreachEntityDetail_ibfk_1" Association="OPDBModel.OutreachEntityDetail_ibfk_1">
+            <End Role="OutreachEntityType" EntitySet="OutreachEntityTypes" />
+            <End Role="OutreachEntityDetail" EntitySet="OutreachEntityDetails" />
+          </AssociationSet>
+          <AssociationSet Name="OutreachEntityDetail_ibfk_2" Association="OPDBModel.OutreachEntityDetail_ibfk_2">
+            <End Role="User" EntitySet="Users" />
+            <End Role="OutreachEntityDetail" EntitySet="OutreachEntityDetails" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="User">
           <Key>
@@ -3086,7 +3067,6 @@
           <NavigationProperty Name="Interests2" Relationship="OPDBModel.Interest_ibfk_4" FromRole="User" ToRole="Interest" />
           <NavigationProperty Name="NoteTypes" Relationship="OPDBModel.NoteType_ibfk_1" FromRole="User" ToRole="NoteType" />
           <NavigationProperty Name="NoteTypes1" Relationship="OPDBModel.NoteType_ibfk_2" FromRole="User" ToRole="NoteType" />
-          <NavigationProperty Name="OutreachEntityDetails" Relationship="OPDBModel.OutreachEntityDetail_ibfk_2" FromRole="User" ToRole="OutreachEntityDetail" />
           <NavigationProperty Name="Resources" Relationship="OPDBModel.Resource_ibfk_2" FromRole="User" ToRole="Resource" />
           <NavigationProperty Name="Resources1" Relationship="OPDBModel.Resource_ibfk_3" FromRole="User" ToRole="Resource" />
           <NavigationProperty Name="SchoolNotes" Relationship="OPDBModel.SchoolNote_ibfk_3" FromRole="User" ToRole="SchoolNote" />
@@ -3110,6 +3090,8 @@
           <NavigationProperty Name="ActivityMajors1" Relationship="OPDBModel.ActivityMajor_ibfk_2" FromRole="User" ToRole="ActivityMajor" />
           <NavigationProperty Name="SchoolRegions" Relationship="OPDBModel.SchoolRegion_ibfk_1" FromRole="User" ToRole="SchoolRegion" />
           <NavigationProperty Name="SchoolRegions1" Relationship="OPDBModel.SchoolRegion_ibfk_2" FromRole="User" ToRole="SchoolRegion" />
+          <Property Name="RemovalReason" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="OutreachEntityDetails" Relationship="OPDBModel.OutreachEntityDetail_ibfk_2" FromRole="User" ToRole="OutreachEntityDetail" />
           </EntityType>
         <Association Name="Activity_ibfk_21">
           <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
@@ -3423,18 +3405,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="OutreachEntityDetail_ibfk_2">
-          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
-          <End Type="OPDBModel.OutreachEntityDetail" Role="OutreachEntityDetail" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="OutreachEntityDetail">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="Resource_ibfk_2">
           <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
           <End Type="OPDBModel.Resource" Role="Resource" Multiplicity="*" />
@@ -3590,22 +3560,10 @@
           <Property Name="UpdateUser" Type="Int32" Nullable="false" />
           <Property Name="UpdateDate" Type="DateTime" Nullable="false" />
           <Property Name="DeletionDate" Type="DateTime" />
-          <NavigationProperty Name="OutreachEntityDetails" Relationship="OPDBModel.OutreachEntityDetail_ibfk_1" FromRole="OutreachEntityType" ToRole="OutreachEntityDetail" />
           <NavigationProperty Name="User" Relationship="OPDBModel.OutreachEntityType_ibfk_1" FromRole="OutreachEntityType" ToRole="User" />
           <NavigationProperty Name="User1" Relationship="OPDBModel.OutreachEntityType_ibfk_2" FromRole="OutreachEntityType" ToRole="User" />
+          <NavigationProperty Name="OutreachEntityDetails" Relationship="OPDBModel.OutreachEntityDetail_ibfk_1" FromRole="OutreachEntityType" ToRole="OutreachEntityDetail" />
         </EntityType>
-        <Association Name="OutreachEntityDetail_ibfk_1">
-          <End Type="OPDBModel.OutreachEntityType" Role="OutreachEntityType" Multiplicity="1" />
-          <End Type="OPDBModel.OutreachEntityDetail" Role="OutreachEntityDetail" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="OutreachEntityType">
-              <PropertyRef Name="OutreachEntityTypeID" />
-            </Principal>
-            <Dependent Role="OutreachEntityDetail">
-              <PropertyRef Name="OutreachEntityTypeID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="OutreachEntityType_ibfk_1">
           <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
           <End Type="OPDBModel.OutreachEntityType" Role="OutreachEntityType" Multiplicity="*" />
@@ -3907,6 +3865,48 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="OutreachEntityDetail">
+          <Key>
+            <PropertyRef Name="OutreachEntityDetailID" />
+          </Key>
+          <Property Name="OutreachEntityDetailID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="OutreachEntityTypeID" Type="Int32" Nullable="false" />
+          <Property Name="OutreachEntityName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Mission" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Vision" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Objectives" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Location" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" />
+          <Property Name="UpdateDate" Type="DateTime" Nullable="false" />
+          <Property Name="DeletionDate" Type="DateTime" />
+          <NavigationProperty Name="OutreachEntityType" Relationship="OPDBModel.OutreachEntityDetail_ibfk_1" FromRole="OutreachEntityDetail" ToRole="OutreachEntityType" />
+          <NavigationProperty Name="User" Relationship="OPDBModel.OutreachEntityDetail_ibfk_2" FromRole="OutreachEntityDetail" ToRole="User" />
+        </EntityType>
+        <Association Name="OutreachEntityDetail_ibfk_1">
+          <End Type="OPDBModel.OutreachEntityType" Role="OutreachEntityType" Multiplicity="1" />
+          <End Type="OPDBModel.OutreachEntityDetail" Role="OutreachEntityDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OutreachEntityType">
+              <PropertyRef Name="OutreachEntityTypeID" />
+            </Principal>
+            <Dependent Role="OutreachEntityDetail">
+              <PropertyRef Name="OutreachEntityTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="OutreachEntityDetail_ibfk_2">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.OutreachEntityDetail" Role="OutreachEntityDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="OutreachEntityDetail">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4066,24 +4066,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="OutreachEntityDetails">
-            <EntityTypeMapping TypeName="OPDBModel.OutreachEntityDetail">
-              <MappingFragment StoreEntitySet="OutreachEntityDetail">
-                <ScalarProperty Name="RemovalReason" ColumnName="RemovalReason" />
-                <ScalarProperty Name="OutreachEntityDetailID" ColumnName="OutreachEntityDetailID" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="OutreachEntityTypeID" ColumnName="OutreachEntityTypeID" />
-                <ScalarProperty Name="OutreachEntityName" ColumnName="OutreachEntityName" />
-                <ScalarProperty Name="Mission" ColumnName="Mission" />
-                <ScalarProperty Name="Vision" ColumnName="Vision" />
-                <ScalarProperty Name="Objectives" ColumnName="Objectives" />
-                <ScalarProperty Name="Location" ColumnName="Location" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-                <ScalarProperty Name="DeletionDate" ColumnName="DeletionDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Resources">
             <EntityTypeMapping TypeName="OPDBModel.Resource">
               <MappingFragment StoreEntitySet="Resource">
@@ -4182,6 +4164,7 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="OPDBModel.User">
               <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="RemovalReason" ColumnName="RemovalReason" />
                 <ScalarProperty Name="DeletionDate" ColumnName="DeletionDate" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
@@ -4277,6 +4260,23 @@
                 <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
                 <ScalarProperty Name="SchoolRegion1" ColumnName="SchoolRegion" />
                 <ScalarProperty Name="SchoolRegionID" ColumnName="SchoolRegionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OutreachEntityDetails">
+            <EntityTypeMapping TypeName="OPDBModel.OutreachEntityDetail">
+              <MappingFragment StoreEntitySet="OutreachEntityDetail">
+                <ScalarProperty Name="DeletionDate" ColumnName="DeletionDate" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Objectives" ColumnName="Objectives" />
+                <ScalarProperty Name="Vision" ColumnName="Vision" />
+                <ScalarProperty Name="Mission" ColumnName="Mission" />
+                <ScalarProperty Name="OutreachEntityName" ColumnName="OutreachEntityName" />
+                <ScalarProperty Name="OutreachEntityTypeID" ColumnName="OutreachEntityTypeID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="OutreachEntityDetailID" ColumnName="OutreachEntityDetailID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

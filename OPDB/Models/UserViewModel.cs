@@ -15,6 +15,10 @@ namespace OPDB.Models
         public List<SelectListItem> UserTypes { get; set; }
         public List<SelectListItem> OutreachTypes { get; set; }
 
+        public string NewPassword { get; set; }
+
+        public string ConfirmPassword { get; set; }
+
         public UserNote Note { get; set; }
         public List<SelectListItem> NoteTypes { get; set; }
         public IEnumerable<UserNote> Notes { get; set; }

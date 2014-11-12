@@ -123,6 +123,12 @@ namespace OPDB.Controllers
                     validModel = false;
                 }
 
+                if (String.Compare(userViewModel.User.UserPassword, userViewModel.ConfirmPassword) != 0)
+                {
+                    ModelState.AddModelError("User_Password_NoMatch", Resources.WebResources.User_Password_NoMatch);
+                    validModel = false;
+                }
+
                 if (userViewModel.User.UserTypeID == 3)
                 {
 
@@ -409,7 +415,7 @@ namespace OPDB.Controllers
         //
         // GET: /Usuarios/Edit/5
 
-        public ActionResult Editar(int id = 0)
+        public ActionResult Editar(string source, int id = 0)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -422,6 +428,7 @@ namespace OPDB.Controllers
                         UserDetail = db.UserDetails.FirstOrDefault(i => i.UserID == id),
                         Schools = getSchools(),
                         OutreachEntities = getOutreachEntities(),
+                        Source = source,
                         Units = getUnits()
                     };
 
@@ -1164,6 +1171,12 @@ namespace OPDB.Controllers
                             validModel = false;
                         }
 
+                        if (String.Compare(userViewModel.User.UserPassword, userViewModel.ConfirmPassword) != 0)
+                        {
+                            ModelState.AddModelError("User_Password_NoMatch", Resources.WebResources.User_Password_NoMatch);
+                            validModel = false;
+                        }
+
                         if (userViewModel.UserDetail.FirstName == null || userViewModel.UserDetail.FirstName == "")
                         {
                             ModelState.AddModelError("UserDetail_FirstName_Required", Resources.WebResources.UserDetail_FirstName_Required);
@@ -1319,6 +1332,67 @@ namespace OPDB.Controllers
             }
 
             return RedirectToAction("AccesoDenegado", "Home");
+        }
+
+        public ActionResult ChangePasswordView(string source, int id)
+        {
+            var user = db.Users.Find(id);
+
+            if (user == null)
+                return Content("");
+
+            UserViewModel userViewModel = new UserViewModel
+            {
+                User = user,
+                Source = source
+            };
+
+            return PartialView("ChangePassword", userViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult ChangePassword(UserViewModel userViewModel)
+        {
+            bool validModel = true;
+            var user = db.Users.Find(userViewModel.User.UserID);
+
+            if (user != null)
+            {
+                if (userViewModel.User.UserPassword != null && String.Compare(user.UserPassword, userViewModel.User.UserPassword) != 0)
+                {
+                    ModelState.AddModelError("User_Password_IncorrectPassword", Resources.WebResources.User_Password_IncorrectPassword);
+                    validModel = false;
+                }
+
+                if (userViewModel.NewPassword == null)
+                {
+                    ModelState.AddModelError("User_Password_MissingPassword", Resources.WebResources.User_Password_MissingPassword);
+                    validModel = false;
+                }
+
+                if (userViewModel.NewPassword != null && userViewModel.ConfirmPassword != null && String.Compare(userViewModel.NewPassword, userViewModel.ConfirmPassword) != 0)
+                {
+                    ModelState.AddModelError("User_Password_NoMatch", Resources.WebResources.User_Password_NoMatch);
+                    validModel = false;
+                }
+
+
+
+                if (validModel && ModelState.IsValid)
+                {
+                    
+                    userViewModel.User.UserPassword = userViewModel.NewPassword;
+                    userViewModel.User.UpdateDate = DateTime.Now;
+                    db.Entry(user).CurrentValues.SetValues(userViewModel.User);
+                    db.SaveChanges();
+                    return View("_Hack");                   
+
+                }
+            }
+                
+            return Content(GetErrorsFromModelState(userViewModel));
+            
+
         }
     }
 }

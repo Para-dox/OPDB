@@ -31,6 +31,7 @@
                 @Html.LabelFor(model => model.User.Email, "Correo Electrónico *")
             </div>
             <div>
+                @Html.ValidationMessage("User_Email_Exists")
                 @Html.ValidationMessageFor(model => model.User.Email)
                 @Html.EditorFor(model => model.User.Email, new { @style = "width: 500px !important;" })
             </div>
@@ -41,6 +42,13 @@
             <div class="editor-field">
                 @Html.ValidationMessageFor(model => model.User.UserPassword)
                 @Html.EditorFor(model => model.User.UserPassword, new { @style = "width: 500px !important;" })
+            </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.ConfirmPassword, "Confirmar Contraseña *")
+            </div>
+            <div class="editor-field">
+                @Html.ValidationMessage("User_Password_NoMatch")
+                @Html.PasswordFor(model => model.ConfirmPassword, new { @style = "width: 500px !important;" })
             </div>
             <div class="editor-label">
                 @Html.LabelFor(model => model.UserDetail.FirstName, "Nombre *")

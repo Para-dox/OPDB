@@ -36,21 +36,18 @@
                 @Html.LabelFor(model => model.User.UserTypeID, "Tipo de Usuario")
             </div>
             <div class="editor-field">
-                @Html.DropDownListFor(model => model.User.UserTypeID, Model.UserTypes, new { @style = "width: 500px;", @id = "userTypes", @onchange = "getUserTypeValue()" })
+                @Html.DropDownListFor(model => model.User.UserTypeID, Model.UserTypes, new { @style = "width: 500px;", @id = "userType", @onchange = "getValue()" })
             </div><br />
             <div class="editor-label">
                 @Html.LabelFor(model => model.User.Email, "Correo Electrónico *")
             </div>
             <div class="editor-field">
+                @Html.ValidationMessage("User_Email_Exists")
                 @Html.ValidationMessageFor(model => model.User.Email)
                 @Html.EditorFor(model => model.User.Email)
             </div>
-            <div class="editor-label">
-                @Html.LabelFor(model => model.User.UserPassword, "Contraseña *")
-            </div>
-            <div class="editor-field">
-                @Html.EditorFor(model => model.User.UserPassword)
-                @Html.ValidationMessageFor(model => model.User.UserPassword)
+            <div style="text-align:center;">
+                <a href="#" title="Cambiar Contraseña" class="modal_ajax_btn" data-title="Cambiar Contraseña" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("ChangePasswordView", "Usuarios", new { id = Model.User.UserID })">Cambiar Contraseña</a>
             </div>
             <div class="editor-label">
                 @Html.LabelFor(model => model.User.PhoneNumber, "Teléfono")
@@ -176,7 +173,7 @@
 
 <script>
     $(document).ready(function () {
-        getUserTypeValue();
+        getValue();
         //getAffiliateValue();
     })
 </script>

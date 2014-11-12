@@ -122,6 +122,20 @@ namespace OPDB.Controllers
                     {
                         bool validModel = true;
 
+                        User matchingUser = db.Users.FirstOrDefault(u => u.Email == userViewModel.User.Email);
+
+                        if (matchingUser != null)
+                        {
+                            ModelState.AddModelError("User_Email_Exists", Resources.WebResources.User_Email_Exists);
+                            validModel = false;
+                        }
+
+                        if (String.Compare(userViewModel.User.UserPassword, userViewModel.ConfirmPassword) != 0)
+                        {
+                            ModelState.AddModelError("User_Password_NoMatch", Resources.WebResources.User_Password_NoMatch);
+                            validModel = false;
+                        }
+
                         if (userViewModel.OutreachEntity.OutreachEntityName == null || userViewModel.OutreachEntity.OutreachEntityName == "")
                         {
                             ModelState.AddModelError("OutreachEntityDetail_OutreachEntityName_Required", Resources.WebResources.OutreachEntityDetail_OutreachEntityName_Required);
