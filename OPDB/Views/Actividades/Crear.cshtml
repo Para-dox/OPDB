@@ -56,6 +56,13 @@
                 </div><br />
             </div>
             <div class="editor-label">
+                @Html.LabelFor(model => model.Activity.ActivityDynamic, "Dinámica de Actividad")
+            </div>
+            <div class="editor-field">
+                @Html.DropDownListFor(model => model.Activity.ActivityDynamicID, Model.ActivityDynamics, new { @style = "width: 500px !important; height: 2.55rem !important;" })
+            </div><br />
+
+            <div class="editor-label">
                 @Html.LabelFor(model => model.Activity.Title, "Título de Actividad *")
             </div>
             <div class="editor-field">

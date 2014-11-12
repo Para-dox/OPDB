@@ -281,6 +281,7 @@ namespace OPDB.Controllers
             ActivityViewModel activityViewModel = new ActivityViewModel
             {
                 ActivityTypes = getActivityTypes(),
+                ActivityDynamics = getActivityDynamics(),
                 SchoolList = getSchools(),
                 Activity = new Activity
                 {
@@ -391,7 +392,7 @@ namespace OPDB.Controllers
                                 activityViewModel.Activity.ActivityDynamicID = null;
 
                             activityViewModel.Activity.CreateUser = id;
-                            activityViewModel.Activity.UpdateUser = id;                            
+                            activityViewModel.Activity.UpdateUser = id;
                             db.Activities.Add(activityViewModel.Activity);
                             db.SaveChanges();
 
