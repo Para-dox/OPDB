@@ -69,7 +69,7 @@ namespace OPDB.Models
             this.SchoolRegions = new HashSet<SchoolRegion>();
             this.SchoolRegions1 = new HashSet<SchoolRegion>();
         }
-
+        
         public int UserID { get; set; }
         public int UserTypeID { get; set; }
 

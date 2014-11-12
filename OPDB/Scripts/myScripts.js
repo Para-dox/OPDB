@@ -235,28 +235,28 @@ function restoreRecord(e, table) {
 
 }
 
-function getUserTypeValue() {
-    if (document.getElementById('userTypes').value == 4) {
-        document.getElementById('faculty').removeAttribute("hidden", "hidden");
-        document.getElementById('collegeStudent').setAttribute("hidden", "hidden");
-        document.getElementById('grade').setAttribute("hidden", "hidden");
-    }
-    else if (document.getElementById('userTypes').value == 5) {
-        document.getElementById('collegeStudent').removeAttribute("hidden", "hidden");
-        document.getElementById('faculty').setAttribute("hidden", "hidden");
-        document.getElementById('grade').setAttribute("hidden", "hidden");
-    }
-    else if (document.getElementById('userTypes').value == 7) {
-        document.getElementById('grade').removeAttribute("hidden", "hidden");
-        document.getElementById('faculty').setAttribute("hidden", "hidden");
-        document.getElementById('collegeStudent').setAttribute("hidden", "hidden");
-    }
-    else {
-        document.getElementById('collegeStudent').setAttribute("hidden", "hidden");
-        document.getElementById('faculty').setAttribute("hidden", "hidden");
-        document.getElementById('grade').setAttribute("hidden", "hidden");
-    }
-}
+//function getUserTypeValue() {
+//    if (document.getElementById('userTypes').value == 4) {
+//        document.getElementById('faculty').removeAttribute("hidden", "hidden");
+//        document.getElementById('collegeStudent').setAttribute("hidden", "hidden");
+//        document.getElementById('grade').setAttribute("hidden", "hidden");
+//    }
+//    else if (document.getElementById('userTypes').value == 5) {
+//        document.getElementById('collegeStudent').removeAttribute("hidden", "hidden");
+//        document.getElementById('faculty').setAttribute("hidden", "hidden");
+//        document.getElementById('grade').setAttribute("hidden", "hidden");
+//    }
+//    else if (document.getElementById('userTypes').value == 7) {
+//        document.getElementById('grade').removeAttribute("hidden", "hidden");
+//        document.getElementById('faculty').setAttribute("hidden", "hidden");
+//        document.getElementById('collegeStudent').setAttribute("hidden", "hidden");
+//    }
+//    else {
+//        document.getElementById('collegeStudent').setAttribute("hidden", "hidden");
+//        document.getElementById('faculty').setAttribute("hidden", "hidden");
+//        document.getElementById('grade').setAttribute("hidden", "hidden");
+//    }
+//}
 
 function approve(e) {
     var url = $(e).attr('data-url');
@@ -304,4 +304,20 @@ function approve(e) {
     sleep(1000);
 
     window.location.reload();
+}
+
+function changePassword(e) {
+    debugger;
+    var url = $(e).attr('data-url');
+    var tag = document.getElementById('password');
+    var action = $(e).attr('data-action');
+
+    if (action == "loadView")
+        $('#password').load(url);
+
+    if (action == "cancel")
+        tag.innerHTML = "<a data-action='loadView' data-url='" + url + "' onclick='changePassword(this)'>Cambiar Contraseña</a>";
+
+
+    
 }

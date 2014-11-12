@@ -376,6 +376,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to La direccion excede el límite de 100 caracteres.
+        /// </summary>
+        internal static string School_Address_LengthExceeded {
+            get {
+                return ResourceManager.GetString("School_Address_LengthExceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No ha ingresado una dirección para esta escuela.
         /// </summary>
         internal static string School_Address_Required {
@@ -412,6 +421,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to El nombre excede el límite de 100 caracteres.
+        /// </summary>
+        internal static string School_SchoolName_LengthExceeded {
+            get {
+                return ResourceManager.GetString("School_SchoolName_LengthExceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No ha ingresado el nombre de la escuela.
         /// </summary>
         internal static string School_SchoolName_Required {
@@ -426,6 +444,15 @@ namespace Resources {
         internal static string School_SchoolSequenceNumber_Invalid {
             get {
                 return ResourceManager.GetString("School_SchoolSequenceNumber_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El número de secuencia excede el límite de 50 caracteres.
+        /// </summary>
+        internal static string School_SchoolSequenceNumber_LengthExceeded {
+            get {
+                return ResourceManager.GetString("School_SchoolSequenceNumber_LengthExceeded", resourceCulture);
             }
         }
         
@@ -723,6 +750,33 @@ namespace Resources {
         internal static string User_Email_Required {
             get {
                 return ResourceManager.GetString("User_Email_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Su contraseña es incorrecta.
+        /// </summary>
+        internal static string User_Password_IncorrectPassword {
+            get {
+                return ResourceManager.GetString("User_Password_IncorrectPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No ha ingresado su nueva contraseña.
+        /// </summary>
+        internal static string User_Password_MissingPassword {
+            get {
+                return ResourceManager.GetString("User_Password_MissingPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Su contraseña no coincide.
+        /// </summary>
+        internal static string User_Password_NoMatch {
+            get {
+                return ResourceManager.GetString("User_Password_NoMatch", resourceCulture);
             }
         }
         
