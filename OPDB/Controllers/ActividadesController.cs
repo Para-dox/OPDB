@@ -281,6 +281,7 @@ namespace OPDB.Controllers
             ActivityViewModel activityViewModel = new ActivityViewModel
             {
                 ActivityTypes = getActivityTypes(),
+                ActivityDynamics = getActivityDynamics(),
                 SchoolList = getSchools(),
                 Activity = new Activity
                 {
@@ -402,6 +403,8 @@ namespace OPDB.Controllers
                     activityViewModel.SchoolList = getSchools();
                     activityViewModel.Contacts = getContacts();
                     activityViewModel.Resources = getResources();
+                    activityViewModel.ActivityDynamics = getActivityDynamics();
+
                     return View(activityViewModel);
                 }
             }
@@ -982,6 +985,21 @@ namespace OPDB.Controllers
             }
 
             return types;
+        }
+
+        public List<SelectListItem> getActivityDynamics()
+        {
+            List<SelectListItem> dynamics = new List<SelectListItem>();
+            foreach (var activityDynamic in db.ActivityDynamics)
+            {
+                dynamics.Add(new SelectListItem()
+                {
+                    Text = activityDynamic.ActivityDynamic1,
+                    Value = activityDynamic.ActivityDynamicID + ""
+                });
+            }
+
+            return dynamics;
         }
 
         public List<SelectListItem> getSchools()
