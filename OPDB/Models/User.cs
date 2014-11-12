@@ -87,6 +87,7 @@ namespace OPDB.Models
         public System.DateTime CreateDate { get; set; }
         public System.DateTime UpdateDate { get; set; }
         public Nullable<System.DateTime> DeletionDate { get; set; }
+        public string RemovalReason { get; set; }
 
         public virtual ICollection<Activity> Activities { get; set; }
         public virtual ICollection<Activity> Activities1 { get; set; }
