@@ -290,7 +290,9 @@ namespace OPDB.Controllers
                 Contacts = getContacts(),
                 Resources = getResources(),
                 ResourceIDs = new List<int>(),
-                Information = new List<UserInfoViewModel>()
+                Information = new List<UserInfoViewModel>(),
+                ActivityDynamics = getActivityDynamics(),
+                ActivityMajors = getActivityMajors()
             };
 
             return View(activityViewModel);
@@ -307,14 +309,15 @@ namespace OPDB.Controllers
                 {
                     int id = Int32.Parse(User.Identity.Name.Split(',')[0]);
 
+                    DateTime activityDate = new DateTime();
+
                     if (activityViewModel.Activity.ActivityDate != null)
                     {
-                        DateTime activityDate = DateTime.ParseExact(activityViewModel.Activity.ActivityDate.Value.ToShortDateString(), "d/MM/yyyy", CultureInfo.InvariantCulture);
+                        activityDate = DateTime.ParseExact(activityViewModel.Activity.ActivityDate.Value.ToShortDateString(), "d/MM/yyyy", CultureInfo.InvariantCulture);
 
                         if (DateTime.Compare(activityDate, DateTime.Now.Date) <= 0)
                             ModelState.AddModelError("Activity_ActivityDate_EarlierThanCurrentDate", Resources.WebResources.Activity_ActivityDate_EarlierThanCurrentDate);
-                        else
-                            activityViewModel.Activity.ActivityDate = activityDate;
+                            
                     }
 
                     if (activityViewModel.Activity.Details != null && activityViewModel.Activity.Details != "")
@@ -329,8 +332,6 @@ namespace OPDB.Controllers
 
                     if (ModelState.IsValid)
                     {
-                        activityViewModel.Activity.UserID = id;
-
                         activityViewModel.Activity.UpdateDate = DateTime.Now;
                         activityViewModel.Activity.CreateDate = DateTime.Now;
 
@@ -383,9 +384,14 @@ namespace OPDB.Controllers
                         activityViewModel.Information = CheckForConflicts(activityViewModel.Activity);
                         if (activityViewModel.Information.Count == 0 || activityViewModel.ForceCreate == true)
                         {
-                            activityViewModel.Activity.CreateUser = id;
-                            activityViewModel.Activity.UpdateUser = id;
+                            if (DateTime.Compare(activityDate, new DateTime()) != 0)
+                                activityViewModel.Activity.ActivityDate = activityDate;
 
+                            if (activityViewModel.Activity.ActivityTypeID == 3)
+                                activityViewModel.Activity.ActivityDynamicID = null;
+
+                            activityViewModel.Activity.CreateUser = id;
+                            activityViewModel.Activity.UpdateUser = id;                            
                             db.Activities.Add(activityViewModel.Activity);
                             db.SaveChanges();
 
@@ -402,6 +408,8 @@ namespace OPDB.Controllers
                     activityViewModel.SchoolList = getSchools();
                     activityViewModel.Contacts = getContacts();
                     activityViewModel.Resources = getResources();
+                    activityViewModel.ActivityDynamics = getActivityDynamics();
+                    activityViewModel.ActivityMajors = getActivityMajors();
                     return View(activityViewModel);
                 }
             }
@@ -504,7 +512,10 @@ namespace OPDB.Controllers
 
 
                     if (activityViewModel.Activity.ActivityDate != null)
+                    {
+                        activityViewModel.PreviousDate = ((DateTime)activityViewModel.Activity.ActivityDate);
                         activityViewModel.ActivityDate = activityViewModel.Activity.ActivityDate.Value.ToString("dd/MM/yyyy");
+                    }
 
                     activityViewModel.ActivityTypes = getActivityTypes();
                     activityViewModel.SchoolList = getSchools();
@@ -514,6 +525,8 @@ namespace OPDB.Controllers
 
                     activityViewModel.ResourceIDs = (from resource in db.ActivityResources where resource.ActivityID == id && resource.DeletionDate == null select resource.ResourceID).ToList();
                     activityViewModel.Resources = getResources();
+                    activityViewModel.ActivityDynamics = getActivityDynamics();
+                    activityViewModel.ActivityMajors = getActivityMajors();
 
                     return View(activityViewModel);
                 }
@@ -536,6 +549,7 @@ namespace OPDB.Controllers
                 if ((Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.Split(',')[2])))
                 {
                     int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
+                    //bool different = false;
 
                     if (activityViewModel.ActivityDate != "" && activityViewModel.ActivityDate != null)
                         activityViewModel.Activity.ActivityDate = DateTime.ParseExact(activityViewModel.ActivityDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
@@ -727,8 +741,12 @@ namespace OPDB.Controllers
                         }
 
                         activityViewModel.Information = CheckForConflicts(activityViewModel.Activity);
+
                         if (activityViewModel.Information.Count == 0 || activityViewModel.ForceCreate == true)
                         {
+                            if (activityViewModel.Activity.ActivityTypeID == 3)
+                                activityViewModel.Activity.ActivityDynamicID = null;
+
                             var attachedEntity = db.Activities.Local.First(activity => activity.ActivityID == activityViewModel.Activity.ActivityID);
 
                             if (attachedEntity != null)
@@ -761,6 +779,9 @@ namespace OPDB.Controllers
                     activityViewModel.SchoolList = getSchools();
                     activityViewModel.Contacts = getContacts();
                     activityViewModel.Resources = getResources();
+                    activityViewModel.ActivityDynamics = getActivityDynamics();
+                    activityViewModel.ActivityMajors = getActivityMajors();
+
                     return View(activityViewModel);
                 }
             }
@@ -982,6 +1003,48 @@ namespace OPDB.Controllers
             }
 
             return types;
+        }
+
+        public List<SelectListItem> getActivityDynamics()
+        {
+            List<SelectListItem> dynamics = new List<SelectListItem>();
+
+            dynamics.Add(new SelectListItem()
+            {
+                Text = "",
+                Value = ""
+
+            });
+
+            foreach (var activityDynamic in db.ActivityDynamics)
+            {
+                dynamics.Add(new SelectListItem()
+                {
+                    Text = activityDynamic.ActivityDynamic1,
+                    Value = activityDynamic.ActivityDynamicID + ""
+
+                });
+
+            }
+
+            return dynamics;
+        }
+
+        public List<SelectListItem> getActivityMajors()
+        {
+            List<SelectListItem> majors = new List<SelectListItem>();
+            foreach (var major in db.ActivityMajors)
+            {
+                majors.Add(new SelectListItem()
+                {
+                    Text = major.ActivityMajor1,
+                    Value = major.ActivityMajorID + ""
+
+                });
+
+            }
+
+            return majors;
         }
 
         public List<SelectListItem> getSchools()
@@ -1383,6 +1446,8 @@ namespace OPDB.Controllers
 
             var activities = (from activity in db.Activities where activity.DeletionDate == null select activity).ToList();
 
+            bool createdByForce = false;
+
             if (createdActivity.ActivityDate != null && createdActivity.ActivityTime != null && createdActivity.SchoolID != null)
             {
                 foreach (var activity in activities)
@@ -1396,10 +1461,16 @@ namespace OPDB.Controllers
                                 Activity = activity,
                                 OutreachEntity = db.OutreachEntityDetails.First(outreach => outreach.UserID == activity.UserID)
                             });
+
+                            if (activity.ActivityID == createdActivity.ActivityID)
+                                createdByForce = true;
                         }
                     }
                 }
             }
+
+            if (createdByForce)
+                conflictingActivities = new List<UserInfoViewModel>();
 
             return conflictingActivities;
         }
@@ -1422,7 +1493,9 @@ namespace OPDB.Controllers
                         Contacts = getContacts(),
                         ContactIDs = new List<int>(),
                         Resources = getResources(),
-                        ResourceIDs = new List<int>()
+                        ResourceIDs = new List<int>(),
+                        ActivityMajors = getActivityMajors(),
+                        ActivityDynamics = getActivityDynamics()
                     };
 
                     return View(activityViewModel);
@@ -1441,9 +1514,11 @@ namespace OPDB.Controllers
                 {
                     int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
 
+                    DateTime activityDate = new DateTime();
+
                     if (activityViewModel.Activity.ActivityDate != null)
                     {
-                        DateTime activityDate = DateTime.ParseExact(activityViewModel.Activity.ActivityDate.Value.ToShortDateString(), "d/MM/yyyy", CultureInfo.InvariantCulture);
+                        activityDate = DateTime.ParseExact(activityViewModel.Activity.ActivityDate.Value.ToShortDateString(), "d/MM/yyyy", CultureInfo.InvariantCulture);
 
                         if (DateTime.Compare(activityDate, DateTime.Now.Date) <= 0)
                             ModelState.AddModelError("Activity_ActivityDate_EarlierThanCurrentDate", Resources.WebResources.Activity_ActivityDate_EarlierThanCurrentDate);
@@ -1518,6 +1593,12 @@ namespace OPDB.Controllers
                         activityViewModel.Information = CheckForConflicts(activityViewModel.Activity);
                         if (activityViewModel.Information.Count == 0 || activityViewModel.ForceCreate == true)
                         {
+                            if (DateTime.Compare(activityDate, new DateTime()) != 0)
+                                activityViewModel.Activity.ActivityDate = activityDate;
+
+                            if (activityViewModel.Activity.ActivityTypeID == 3)
+                                activityViewModel.Activity.ActivityDynamicID = null;
+
                             activityViewModel.Activity.CreateUser = userID;
                             activityViewModel.Activity.UpdateUser = userID;
 
@@ -1538,6 +1619,8 @@ namespace OPDB.Controllers
                     activityViewModel.OutreachEntities = getOutreachEntities();
                     activityViewModel.Contacts = getContacts();
                     activityViewModel.Resources = getResources();
+                    activityViewModel.ActivityDynamics = getActivityDynamics();
+                    activityViewModel.ActivityMajors = getActivityMajors();
                     return View(activityViewModel);
                 }
             }
@@ -1564,7 +1647,10 @@ namespace OPDB.Controllers
                     }
 
                     if (activityViewModel.Activity.ActivityDate != null)
+                    {
+                        activityViewModel.PreviousDate = ((DateTime) activityViewModel.Activity.ActivityDate);
                         activityViewModel.ActivityDate = activityViewModel.Activity.ActivityDate.Value.ToString("dd/MM/yyyy");
+                    }
 
                     activityViewModel.ContactIDs = (from contact in db.Contacts where contact.ActivityID == id && contact.DeletionDate == null select contact.UserID).ToList();
                     activityViewModel.ResourceIDs = (from resource in db.ActivityResources where resource.ActivityID == id && resource.DeletionDate == null select resource.ResourceID).ToList();
@@ -1573,6 +1659,12 @@ namespace OPDB.Controllers
                     activityViewModel.OutreachEntities = getOutreachEntities();
                     activityViewModel.Contacts = getContacts();
                     activityViewModel.Resources = getResources();
+                    activityViewModel.ActivityDynamics = getActivityDynamics();
+                    activityViewModel.ActivityMajors = getActivityMajors();
+                    
+                    
+
+
                     return View(activityViewModel);
                 }
             }
@@ -1588,9 +1680,12 @@ namespace OPDB.Controllers
                 if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
                 {
                     int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
+                    //bool differentDate = false;
 
                     if (activityViewModel.ActivityDate != "" && activityViewModel.ActivityDate != null)
+                    {                        
                         activityViewModel.Activity.ActivityDate = DateTime.ParseExact(activityViewModel.ActivityDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    }
 
                     if (activityViewModel.Activity.ActivityDate != null)
                     {
@@ -1778,8 +1873,12 @@ namespace OPDB.Controllers
                         }
 
                         activityViewModel.Information = CheckForConflicts(activityViewModel.Activity);
+
                         if (activityViewModel.Information.Count == 0 || activityViewModel.ForceCreate == true)
                         {
+                            if (activityViewModel.Activity.ActivityTypeID == 3)
+                                activityViewModel.Activity.ActivityDynamicID = null;
+
                             var attachedEntity = db.Activities.Local.First(activity => activity.ActivityID == activityViewModel.Activity.ActivityID);
 
                             if (attachedEntity != null)
@@ -1815,6 +1914,9 @@ namespace OPDB.Controllers
                     activityViewModel.OutreachEntities = getOutreachEntities();
                     activityViewModel.Contacts = getContacts();
                     activityViewModel.Resources = getResources();
+                    activityViewModel.ActivityDynamics = getActivityDynamics();
+                    activityViewModel.ActivityMajors = getActivityMajors();
+
                     return View(activityViewModel);
                 }
             }

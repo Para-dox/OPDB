@@ -306,18 +306,11 @@ function approve(e) {
     window.location.reload();
 }
 
-function changePassword(e) {
-    debugger;
-    var url = $(e).attr('data-url');
-    var tag = document.getElementById('password');
-    var action = $(e).attr('data-action');
-
-    if (action == "loadView")
-        $('#password').load(url);
-
-    if (action == "cancel")
-        tag.innerHTML = "<a data-action='loadView' data-url='" + url + "' onclick='changePassword(this)'>Cambiar Contraseña</a>";
-
-
-    
+function getActivityType() {
+    if (document.getElementById('activityType').value == 3) {
+        document.getElementById('dynamic').setAttribute("hidden", "hidden");
+        $('#activityDynamic').val("");
+    } else {
+        document.getElementById('dynamic').removeAttribute("hidden", "hidden");
+    }
 }

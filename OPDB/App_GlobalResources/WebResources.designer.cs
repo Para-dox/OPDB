@@ -223,6 +223,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string ModelState_AddModelError__User_RemovalReason_Required__ {
+            get {
+                return ResourceManager.GetString("ModelState.AddModelError(\"User_RemovalReason_Required\",", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to La localización que ha entrado es inválida.
         /// </summary>
         internal static string OutreachEntityDetail_Location_Invalid {
@@ -786,6 +795,15 @@ namespace Resources {
         internal static string User_PhoneNumber_Invalid {
             get {
                 return ResourceManager.GetString("User_PhoneNumber_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Se requiere una razón para remover un usuario.
+        /// </summary>
+        internal static string User_RemovalReason_Required {
+            get {
+                return ResourceManager.GetString("User_RemovalReason_Required", resourceCulture);
             }
         }
         

@@ -61,7 +61,7 @@
                 </td>
                 <td>
                     <a href="@Url.Action("Editar", "Usuarios", new { source = "Administracion", id = item.UserID })"><i class="fa fa-pencil" title="Editar"></i></a>
-                   <i title="Remover" style="cursor: pointer !important;" class="fa fa-remove" onclick="removeRecord(this, 'users')" data-url="@Url.Action("Remover", "Usuarios", new { id = item.UserID })"></i>
+                    <a href="#" title="Remover" class="modal_ajax_btn" data-title="Remover Usuario" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("PopUpRemover", "Usuarios", new { id = item.UserID })"><i class="fa fa-remove"></i></a>  
                </td>
             </tr>
 

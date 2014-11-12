@@ -637,52 +637,64 @@ namespace OPDB.Controllers
 
             return RedirectToAction("AccesoDenegado", "Home");
         }
+        
+        [HttpPost]
+        public ActionResult PopUpRemover(int id)
+        {
+            UserViewModel userViewModel = new UserViewModel
+            {
+                User = db.Users.Find(id)
+            };
 
-        //
-        // GET: /Usuarios/Delete/5
+            return PartialView("RemovalReason", userViewModel);
+        }
 
         [HttpPost]
-        public ActionResult Remover(int id = 0)
+        public ActionResult Remover(UserViewModel userViewModel)
         {
             if (User.Identity.IsAuthenticated)
             {
                 if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
                 {
-                    User user = db.Users.Find(id);
-                    UserDetail userDetail = db.UserDetails.FirstOrDefault(i => i.UserID == id);
-                    if (user == null)
+
+                    if (userViewModel.User.UserTypeID != 3)
                     {
-                        return HttpNotFound();
-                    }
-                    else
-                    {
-                        user.DeletionDate = DateTime.Now;
-                        userDetail.DeletionDate = DateTime.Now;
-                        db.Entry(user).State = EntityState.Modified;
-                        db.Entry(userDetail).State = EntityState.Modified;
-                        try
+                        userViewModel.UserDetail = db.UserDetails.FirstOrDefault(i => i.UserID == userViewModel.User.UserID);
+
+                        if (userViewModel.User.RemovalReason != null)
                         {
+                            userViewModel.User.DeletionDate = DateTime.Now;
+                            userViewModel.UserDetail.DeletionDate = DateTime.Now;
+                            db.Entry(userViewModel.User).State = EntityState.Modified;
+                            db.Entry(userViewModel.UserDetail).State = EntityState.Modified;
                             db.SaveChanges();
+                            return View("_Hack");
                         }
-                        catch (DbEntityValidationException ex)
+                        else
                         {
-                            // Retrieve the error messages as a list of strings.
-                            var errorMessages = ex.EntityValidationErrors
-                                    .SelectMany(x => x.ValidationErrors)
-                                    .Select(x => x.ErrorMessage);
-
-                            // Join the list to a single string.
-                            var fullErrorMessage = string.Join("; ", errorMessages);
-
-                            // Combine the original exception message with the new one.
-                            var exceptionMessage = string.Concat(ex.Message, " The validation errors are: ", fullErrorMessage);
-
-                            // Throw a new DbEntityValidationException with the improved exception message.
-                            throw new DbEntityValidationException(exceptionMessage, ex.EntityValidationErrors);
-
+                            ModelState.AddModelError("User_RemovalReason_Required", Resources.WebResources.User_RemovalReason_Required);
                         }
                     }
-                    return RedirectToAction("Administracion", "Home");
+
+                    else if (userViewModel.User.UserTypeID == 3)
+                    {
+                        userViewModel.OutreachEntity = db.OutreachEntityDetails.FirstOrDefault(i => i.UserID == userViewModel.User.UserID);
+
+                        if (userViewModel.User.RemovalReason != null)
+                        {
+                            userViewModel.User.DeletionDate = DateTime.Now;
+                            userViewModel.OutreachEntity.DeletionDate = DateTime.Now;
+                            db.Entry(userViewModel.User).State = EntityState.Modified;
+                            db.Entry(userViewModel.OutreachEntity).State = EntityState.Modified;
+                            db.SaveChanges();
+                            return View("_Hack");
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("User_RemovalReason_Required", Resources.WebResources.User_RemovalReason_Required);
+                        }
+                    }
+                    return Content(GetErrorsFromModelState(userViewModel));
                 }
             }
 
@@ -705,6 +717,7 @@ namespace OPDB.Controllers
                     else
                     {
                         user.DeletionDate = null;
+                        user.RemovalReason = null;
                         userDetail.DeletionDate = null;
                         db.Entry(user).State = EntityState.Modified;
                         db.Entry(userDetail).State = EntityState.Modified;

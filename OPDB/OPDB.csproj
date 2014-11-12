@@ -627,6 +627,7 @@
     <Content Include="Views\Usuarios\Usuarios.cshtml" />
     <Content Include="Views\Usuarios\CrearUsuario.cshtml" />
     <Content Include="Views\Shared\ChangePassword.cshtml" />
+    <Content Include="Views\Shared\RemovalReason.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

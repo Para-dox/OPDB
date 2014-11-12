@@ -1,0 +1,26 @@
+﻿@model OPDB.Models.UserViewModel
+
+@using (Ajax.BeginForm("Remover", "Usuarios", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "validation" }))
+{
+    @Html.HiddenFor(model => model.User.UserID)
+    @Html.HiddenFor(model => model.User.UserPassword)
+    @Html.HiddenFor(model => model.User.UserStatus)
+    @Html.HiddenFor(model => model.User.UserTypeID)
+    @Html.HiddenFor(model => model.User.Email)
+    @Html.HiddenFor(model => model.User.PhoneNumber)
+    @Html.HiddenFor(model => model.User.CreateDate)
+    @Html.HiddenFor(model => model.User.UpdateDate)
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.User.RemovalReason, "Razón *")
+    </div>
+    <div class="editor-field">
+        @Html.TextAreaFor(model => model.User.RemovalReason, new { @style = "resize:none; height: 100px !important; width:100% !important;" })
+    </div>
+
+    <p style="text-align:left;">
+        <input type="submit" class="btn" style="float:left !important; width:40% !important; margin-left: 30px !important;" value="Crear" /> <input type="button" value="Cancelar" class="btn" style="float:right !important; width:40% !important; margin-bottom: 20px !important; margin-right: 30px !important;" onclick="modalClose()" />
+    </p>
+
+
+}

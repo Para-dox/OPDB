@@ -26,10 +26,16 @@ namespace OPDB.Models
         
         public List<SelectListItem> NoteTypes { get; set; }
         public List<SelectListItem> ActivityTypes { get; set; }
+        public List<SelectListItem> ActivityDynamics { get; set; }
+        public List<SelectListItem> ActivityMajors { get; set; }
         public List<SelectListItem> SchoolList { get; set; }
         public List<SelectListItem> OutreachEntities { get; set; }
 
         public string ActivityDate { get; set; }
+
+        public DateTime PreviousDate { get; set; }
+        public int PreviousSchool { get; set; }
+        public string PreviousTime { get; set; }
 
         public List<UserInfoViewModel> Information { get; set; }
 
@@ -54,5 +60,7 @@ namespace OPDB.Models
         public string Action { get; set; }
 
         public string Source { get; set; }
+
+        
     }
 }

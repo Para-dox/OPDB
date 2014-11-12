@@ -10,7 +10,7 @@
     @Html.HiddenFor(model => model.Note.ActivityID)
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Note.NoteTypeID, "Tipo de Nota")
+            @Html.LabelFor(model => model.Note.NoteTypeID, "Tipo de Nota *")
         </div>
         <div class="editor-field">
             @Html.DropDownListFor(model => model.Note.NoteTypeID, Model.NoteTypes, new { @style = "margin: 0 0 1rem 0 !important; padding: 0.5rem !important; height: 2.55rem !important; width: 100% !important;" })

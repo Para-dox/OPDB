@@ -14,34 +14,34 @@
     
 
     <div class="editor-label">
-        @Html.LabelFor(model => model.School.SchoolName, "Escuela")
+        @Html.LabelFor(model => model.School.SchoolName, "Escuela *")
     </div>
     <div class="editor-field">
         @Html.EditorFor(model => model.School.SchoolName)
     </div>
     <div class="editor-label">
-        @Html.LabelFor(model => model.School.SchoolSequenceNumber, "ID de la Escuela")
+        @Html.LabelFor(model => model.School.SchoolSequenceNumber, "ID de la Escuela *")
     </div>
     <div class="editor-field">
         @Html.TextBoxFor(model => model.School.SchoolSequenceNumber)
     </div>
 
     <div class="editor-label">
-        @Html.LabelFor(model => model.School.Address, "Dirección Física")
+        @Html.LabelFor(model => model.School.Address, "Dirección Física *")
     </div>
     <div class="editor-field">
         @Html.EditorFor(model => model.School.Address)
     </div>
 
     <div class="editor-label">
-        @Html.LabelFor(model => model.School.Town, "Pueblo")
+        @Html.LabelFor(model => model.School.Town, "Pueblo *")
     </div>
     <div class="editor-field">
         @Html.DropDownListFor(model => model.School.Town, Model.Towns, new { @style = "margin: 0 0 1rem 0 !important; padding: 0.5rem !important; height: 2.55rem !important; width: 100% !important;" })
     </div>
 
     <div class="editor-label">
-        @Html.LabelFor(model => model.School.PhoneNumber, "Número Telefónico")
+        @Html.LabelFor(model => model.School.PhoneNumber, "Número Telefónico *")
     </div>
     <div class="editor-field">
         @Html.EditorFor(model => model.School.PhoneNumber)

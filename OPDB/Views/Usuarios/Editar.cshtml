@@ -33,7 +33,7 @@
             @Html.HiddenFor(model => model.UserDetail.CreateDate)
 
             <div class="editor-label">
-                @Html.LabelFor(model => model.User.UserTypeID, "Tipo de Usuario")
+                @Html.LabelFor(model => model.User.UserTypeID, "Tipo de Usuario *")
             </div>
             <div class="editor-field">
                 @Html.DropDownListFor(model => model.User.UserTypeID, Model.UserTypes, new { @style = "width: 500px;", @id = "userType", @onchange = "getValue()" })

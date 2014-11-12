@@ -429,39 +429,59 @@ namespace OPDB.Controllers
             return RedirectToAction("AccesoDenegado", "Home");
         }
 
-        //
-        // GET: /Alcance/Delete/5
+        //[HttpPost]
+        //public ActionResult PopUpRemover(int id)
+        //{
+        //    UserViewModel userViewModel = new UserViewModel
+        //    {
+        //        User = db.Users.Find(id)
+        //    };
+            
+        //    return PartialView("RemovalReason", userViewModel);
+        //}
 
-        public ActionResult Remover(int id = 0)
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
-                {
-                    User user = db.Users.Find(id);
-                    OutreachEntityDetail outreachDetail = db.OutreachEntityDetails.First(outreach => outreach.UserID == id);
+       
+        //[HttpPost]
+        //public ActionResult Remover(UserViewModel userViewModel)
+        //{
+        //    if (User.Identity.IsAuthenticated)
+        //    {
+        //        if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+        //        {
+        //            User user = db.Users.Find(userViewModel.User.UserID);
+        //            OutreachEntityDetail outreachDetail = db.OutreachEntityDetails.First(outreach => outreach.UserID == user.UserID);
 
 
-                    if (outreachDetail == null)
-                    {
-                        return HttpNotFound();
-                    }
+        //            if (outreachDetail == null)
+        //            {
+        //                return HttpNotFound();
+        //            }
 
-                    else
-                    {
-                        user.DeletionDate = DateTime.Now;
-                        outreachDetail.DeletionDate = DateTime.Now;
-                        db.Entry(user).State = EntityState.Modified;
-                        db.Entry(outreachDetail).State = EntityState.Modified;
-                        db.SaveChanges();
-                    }
+        //            else
+        //            {
+        //                if (userViewModel.User.RemovalReason != null)
+        //                {
+        //                    user.RemovalReason = userViewModel.User.RemovalReason;
+        //                    user.DeletionDate = DateTime.Now;
+        //                    outreachDetail.DeletionDate = DateTime.Now;
+        //                    db.Entry(user).State = EntityState.Modified;
+        //                    db.Entry(outreachDetail).State = EntityState.Modified;
+        //                    db.SaveChanges();
+        //                }
+        //                else
+        //                {
+        //                    ModelState.AddModelError("User_RemovalReason_Required", Resources.WebResources.User_RemovalReason_Required);
+        //                }
+        //            }
 
-                    return RedirectToAction("Administracion", "Home");
-                }
-            }
+        //            UsuariosController controller = new UsuariosController();
 
-            return RedirectToAction("AccesoDenegado", "Home");
-        }
+        //            return Content(controller.GetErrorsFromModelState(userViewModel));
+        //        }
+        //    }
+
+        //    return RedirectToAction("AccesoDenegado", "Home");
+        //}
 
         public ActionResult Restaurar(int id = 0)
         {
@@ -481,6 +501,7 @@ namespace OPDB.Controllers
                     else
                     {
                         user.DeletionDate = null;
+                        user.RemovalReason = null;
                         outreachDetail.DeletionDate = null;
                         db.Entry(user).State = EntityState.Modified;
                         db.Entry(outreachDetail).State = EntityState.Modified;

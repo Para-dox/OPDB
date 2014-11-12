@@ -36,12 +36,25 @@
             @Html.HiddenFor(model => model.Activity.UserID)
 
             <div class="editor-label">
-                @Html.LabelFor(model => model.Activity.ActivityTypeID, "Tipo de Actividad")
+                @Html.LabelFor(model => model.Activity.ActivityTypeID, "Tipo de Actividad *")
             </div>
             <div class="editor-field">
-                @Html.DropDownListFor(model => model.Activity.ActivityTypeID, Model.ActivityTypes, new { @style = "width: 500px !important; height: 2.55rem !important;" })
+                @Html.DropDownListFor(model => model.Activity.ActivityTypeID, Model.ActivityTypes, new { @style = "width: 500px !important; height: 2.55rem !important;", @id = "activityType", @onchange = "getActivityType()" })
+            </div><br />            
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Activity.ActivityMajorID, "Área de Especialidad de la Actividad *")
+            </div>
+            <div class="editor-field">
+                @Html.DropDownListFor(model => model.Activity.ActivityMajorID, Model.ActivityMajors, new { @style = "width: 500px !important; height: 2.55rem !important;" })
             </div><br />
-
+            <div id="dynamic">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Activity.ActivityDynamicID, "Dinámica de la Actividad")
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(model => model.Activity.ActivityDynamicID, Model.ActivityDynamics, new { @style = "width: 500px !important; height: 2.55rem !important;", @id = "activityDynamic" })
+                </div><br />
+            </div>
             <div class="editor-label">
                 @Html.LabelFor(model => model.Activity.Title, "Título de Actividad *")
             </div>
@@ -59,7 +72,7 @@
             </div>
 
             <div class="editor-label">
-                @Html.LabelFor(model => model.Activity.Location, "Localización *")
+                @Html.LabelFor(model => model.Activity.Location, "Localización")
             </div>
             <div class="editor-field">
                 @Html.ValidationMessageFor(model => model.Activity.Location)
@@ -115,6 +128,7 @@
 
 <link href="~/Content/sceditor/default.min.css" rel="stylesheet" />
 <script src="~/Scripts/sceditor/jquery.sceditor.xhtml.min.js"></script>
+<script src="~/Scripts/myScripts.js"></script>
 <script>
 
     $(document).ready(function () {
@@ -133,6 +147,8 @@
             style: "~/Content/sceditor/jquery.sceditor.default.min.css",
             resizeEnabled: false
         });
+
+        getActivityType();
 
     });
 

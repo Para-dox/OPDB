@@ -22,7 +22,7 @@
             <label>Todos los campos con (*) son requeridos</label><br />
             @Html.ValidationSummary(true)
             <div class="editor-label">
-                @Html.LabelFor(model => model.User.UserTypeID, "Tipo de Usuario")
+                @Html.LabelFor(model => model.User.UserTypeID, "Tipo de Usuario *")
             </div>
             <div class="editor-field">
                 @Html.DropDownListFor(model => model.User.UserTypeID, Model.UserTypes, new { @style = "width: 500px !important;", @id = "userType", @onchange = "getValue()" })
