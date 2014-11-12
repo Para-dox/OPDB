@@ -104,7 +104,8 @@ namespace OPDB.Controllers
                 {
                     SchoolViewModel schoolViewModel = new SchoolViewModel
                     {
-                        Towns = getTowns()
+                        Towns = getTowns(),
+                        SchoolRegions = getSchoolRegions()
                     };
 
                     return PartialView("Crear", schoolViewModel);
@@ -159,7 +160,8 @@ namespace OPDB.Controllers
                     SchoolViewModel schoolViewModel = new SchoolViewModel
                     {
                         School = db.Schools.Find(id),
-                        Towns = getTowns()
+                        Towns = getTowns(),
+                        SchoolRegions = getSchoolRegions()
                     };
 
                     if (schoolViewModel.School == null)
@@ -490,6 +492,22 @@ namespace OPDB.Controllers
             }
 
            return PartialView("AccesoDenegado", "Home");
+        }
+
+        public List<SelectListItem> getSchoolRegions()
+        {
+            List<SelectListItem> regions = new List<SelectListItem>();
+
+            foreach (var schoolRegion in db.SchoolRegions)
+            {
+                regions.Add(new SelectListItem()
+                {
+                    Text = schoolRegion.SchoolRegion1,
+                    Value = schoolRegion.SchoolRegionID + ""
+                });
+            }
+
+            return regions;
         }
 
 
