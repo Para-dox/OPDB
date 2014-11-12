@@ -292,7 +292,6 @@ namespace OPDB.Controllers
                 Resources = getResources(),
                 ResourceIDs = new List<int>(),
                 Information = new List<UserInfoViewModel>(),
-                ActivityDynamics = getActivityDynamics(),
                 ActivityMajors = getActivityMajors()
             };
 
