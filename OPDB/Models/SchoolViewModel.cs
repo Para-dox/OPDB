@@ -14,6 +14,8 @@ namespace OPDB.Models
         public IEnumerable<SchoolNote> Notes { get; set; }
         public List<SelectListItem> NoteTypes { get; set; }
 
+        public List<SelectListItem> SchoolRegions { get; set; }
+
         public List<SelectListItem> Towns { get; set; }
 
         public List<UserInfoViewModel> Information { get; set; }
