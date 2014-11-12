@@ -26,10 +26,11 @@ namespace OPDB.Models
         
         public List<SelectListItem> NoteTypes { get; set; }
         public List<SelectListItem> ActivityTypes { get; set; }
-        public List<SelectListItem> ActivityDynamics { get; set; }
-        public List<SelectListItem> ActivityMajors { get; set; }
         public List<SelectListItem> SchoolList { get; set; }
         public List<SelectListItem> OutreachEntities { get; set; }
+
+        public List<SelectListItem> ActivityMajors { get; set; }
+        public List<SelectListItem> ActivityDynamics { get; set; }
 
         public string ActivityDate { get; set; }
 
