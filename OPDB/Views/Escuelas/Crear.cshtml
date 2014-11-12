@@ -14,12 +14,14 @@
         <div class="editor-field">
             @Html.EditorFor(model => model.School.SchoolName)
         </div>
+    
         <div class="editor-label">
             @Html.LabelFor(model => model.School.SchoolSequenceNumber, "ID de la Escuela*")
         </div>
         <div class="editor-field">
             @Html.TextBoxFor(model => model.School.SchoolSequenceNumber)
         </div>
+        
         <div class="editor-label">
             @Html.LabelFor(model => model.School.Address, "Dirección Física*")
         </div>
@@ -32,6 +34,13 @@
         </div>
         <div class="editor-field">
             @Html.DropDownListFor(model => model.School.Town, Model.Towns, new { @style = "margin: 0 0 1rem 0 !important; padding: 0.5rem !important; height: 2.55rem !important; width: 100% !important;" })
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.School.SchoolRegion, "Región de Escuela*")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.School.SchoolRegionID, Model.SchoolRegions, new { @style = "margin: 0 0 1rem 0 !important; padding: 0.5rem !important; height: 2.55rem !important; width: 100% !important;" })
         </div>
 
         <div class="editor-label">
