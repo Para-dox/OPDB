@@ -46,6 +46,7 @@
                     @Html.ActionLink(school.SchoolName, "Detalles", "Escuelas", new { id = school.SchoolID }, null)<br />
                     <span>Dirección: </span> @school.Address<br />
                     <span>Pueblo: </span> @school.Town<br />
+                    <span>Región: </span>@school.SchoolRegion.SchoolRegion1<br />
                     @if (school.PhoneNumber != null)
                     {
                         <span>Telefono: </span> @school.PhoneNumber
