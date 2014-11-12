@@ -53,6 +53,7 @@
             @Html.DisplayFor(model => model.School.SchoolSequenceNumber)
         </div>
         <br />
+
         <div class="display-label">
             @Html.LabelFor(model => model.School.Address, "Dirección")
         </div>
@@ -60,6 +61,7 @@
             @Html.DisplayFor(model => model.School.Address)
         </div>
         <br />
+
         <div class="display-label">
             @Html.LabelFor(model => model.School.Town, "Pueblo")
         </div>
@@ -67,6 +69,15 @@
             @Html.DisplayFor(model => model.School.Town)
         </div>
         <br />
+
+        <div class="display-label">
+            @Html.LabelFor(model => model.School.SchoolRegion.SchoolRegion1, "Región Escolar")
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.School.SchoolRegion.SchoolRegion1)
+        </div>
+        <br />
+
         <div class="display-label">
             @Html.LabelFor(model => model.School.PhoneNumber, "Número Telefónico")
         </div>
