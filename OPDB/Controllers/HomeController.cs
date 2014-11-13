@@ -7,6 +7,8 @@ using System.Web;
 using System.Web.Mvc;
 using OPDB.Models;
 using System.Data.Linq.SqlClient;
+using System.Text;
+using System.Globalization;
 
 namespace OPDB.Controllers
 {
@@ -102,31 +104,39 @@ namespace OPDB.Controllers
         {
             SearchViewModel searchViewModel = new SearchViewModel();
 
-            searchViewModel.buscarActividades = true;
-            searchViewModel.buscarAlcance = true;
-            searchViewModel.buscarEscuelas = true;
-            searchViewModel.buscarUnidades = true;
-            searchViewModel.buscarUsuarios = true;
+            searchViewModel.BuscarActividades = true;
+            searchViewModel.BuscarAlcance = true;
+            searchViewModel.BuscarEscuelas = true;
+            searchViewModel.BuscarUnidades = true;
+            searchViewModel.BuscarUsuarios = true;
 
-            searchViewModel.users = from user in db.UserDetails
-                                    where (user.FirstName.Contains(searchText)
-                                        || user.LastName.Contains(searchText)) && user.DeletionDate == null
-                                    select user;
+            searchViewModel.Users = from userDetail in db.UserDetails join user in db.Users on userDetail.UserID equals user.UserID 
+                                    join userType in db.UserTypes on user.UserTypeID equals userType.UserTypeID
+                                    where (userDetail.FirstName.Contains(searchText)
+                                        || userDetail.LastName.Contains(searchText) || 
+                                        userType.UserType1.Contains(searchText)) && 
+                                        userDetail.DeletionDate == null
+                                    select userDetail;
 
-            searchViewModel.outreachEntities = from outreachEntity in db.OutreachEntityDetails
+            searchViewModel.OutreachEntities = from outreachEntity in db.OutreachEntityDetails join outreachType in db.OutreachEntityTypes on outreachEntity.OutreachEntityTypeID equals outreachType.OutreachEntityTypeID
                                                where (outreachEntity.OutreachEntityName.Contains(searchText)
                                                    || outreachEntity.Mission.Contains(searchText) || outreachEntity.Vision.Contains(searchText)
-                                                   || outreachEntity.Objectives.Contains(searchText)) && outreachEntity.DeletionDate == null
+                                                   || outreachEntity.Objectives.Contains(searchText) || outreachType.OutreachEntityType1.Contains(searchText)) && outreachEntity.DeletionDate == null
                                                select outreachEntity;
 
-            searchViewModel.activities = from activity in db.Activities
-                                         where (activity.Title.Contains(searchText) || activity.Purpose.Contains(searchText))
+            searchViewModel.Activities = from activity in db.Activities
+                                         where (activity.Title.Contains(searchText) || activity.Purpose.Contains(searchText) ||
+                                         activity.ActivityMajor.ActivityMajor1.Contains(searchText) || (activity.ActivityDynamic.ActivityDynamic1 ?? "").Contains(searchText))
                                          && activity.DeletionDate == null
                                          select activity;
 
-            searchViewModel.schools = from school in db.Schools where school.SchoolName.Contains(searchText) && school.DeletionDate == null select school;
+            searchViewModel.Schools = from school in db.Schools
+                                      where (school.SchoolName.Contains(searchText)
+                                          || school.Address.Contains(searchText)
+                                          || school.SchoolRegion.SchoolRegion1.Contains(searchText)) 
+                                          && school.DeletionDate == null select school;
 
-            searchViewModel.units = from unit in db.Units where unit.UnitName.Contains(searchText) && unit.DeletionDate == null select unit;
+            searchViewModel.Units = from unit in db.Units where unit.UnitName.Contains(searchText) && unit.DeletionDate == null select unit;
 
             return View(searchViewModel);
 
@@ -154,17 +164,24 @@ namespace OPDB.Controllers
 
             if (view == "_Alcance")
             {
-                searchViewModel.types = getOutreachTypes();
+                searchViewModel.Types = getOutreachTypes();
             }
 
             if (view == "_Usuarios")
             {
-               searchViewModel.types = getUserTypes();
+               searchViewModel.Types = getUserTypes();
             }
 
             if (view == "_Actividades")
             {
-                searchViewModel.types = getActivityTypes();
+                searchViewModel.Types = getActivityTypes();
+                searchViewModel.Majors = getActivityMajors();
+                searchViewModel.Dynamics = getActivityDynamics();
+            }
+
+            if (view == "_Escuelas")
+            {
+                searchViewModel.Towns = getTowns();
             }
 
             return PartialView(view, searchViewModel);
@@ -190,60 +207,60 @@ namespace OPDB.Controllers
         [HttpPost]
         public ActionResult BuscarUsuarios(SearchViewModel searchViewModel)
         {
-            searchViewModel.buscarUsuarios = true;
+            searchViewModel.BuscarUsuarios = true;
             
             
             var result = from user in db.UserDetails
                          where user.DeletionDate == null
                          select user;
 
-            searchViewModel.users = result;
+            searchViewModel.Users = result;
 
-            if (searchViewModel.user.UserDetailID != 0)
+            if (searchViewModel.User.User.UserTypeID != 0)
             {
 
                 result = from user in result
-                         where user.UserDetailID == searchViewModel.user.UserDetailID
+                         where user.User.UserTypeID == searchViewModel.User.User.UserTypeID
                          select user;
 
-                searchViewModel.users = result;
+                searchViewModel.Users = result;
             }
 
-            if (searchViewModel.user.FirstName != null)
+            if (searchViewModel.User.FirstName != null)
             {
 
                 result = from user in result
-                         where user.FirstName.Contains(searchViewModel.user.FirstName) && user.DeletionDate == null
+                         where user.FirstName.Contains(searchViewModel.User.FirstName) && user.DeletionDate == null
                          select user;
 
-                searchViewModel.users = result;
+                searchViewModel.Users = result;
             }
 
-            if (searchViewModel.user.LastName != null)
+            if (searchViewModel.User.LastName != null)
             {
                 result = from user in result
-                         where user.LastName.Contains(searchViewModel.user.LastName) && user.DeletionDate == null
+                         where user.LastName.Contains(searchViewModel.User.LastName) && user.DeletionDate == null
                          select user;
 
-                searchViewModel.users = result;
+                searchViewModel.Users = result;
             }
 
-            if (searchViewModel.user.Role != null)
+            if (searchViewModel.User.Role != null)
             {
                 result = from user in result
-                         where user.Role.Contains(searchViewModel.user.Role) && user.DeletionDate == null
+                         where user.Role.Contains(searchViewModel.User.Role) && user.DeletionDate == null
                          select user;
 
-                searchViewModel.users = result;
+                searchViewModel.Users = result;
             }
 
-            if (searchViewModel.user.Major != null)
+            if (searchViewModel.User.Major != null)
             {
                 result = from user in result
-                         where user.Major.Contains(searchViewModel.user.Major) && user.DeletionDate == null
+                         where user.Major.Contains(searchViewModel.User.Major) && user.DeletionDate == null
                          select user;
 
-                searchViewModel.users = result;
+                searchViewModel.Users = result;
             }
 
 
@@ -261,42 +278,62 @@ namespace OPDB.Controllers
         [HttpPost]
         public ActionResult BuscarActividades(SearchViewModel searchViewModel)
         {
-            searchViewModel.buscarActividades = true;
+            searchViewModel.BuscarActividades = true;
 
             var result = from activity in db.Activities
                          where activity.DeletionDate == null 
                          select activity;
 
-            searchViewModel.activities = result;
+            searchViewModel.Activities = result;
 
-            if (searchViewModel.activity.ActivityTypeID != 0)
+            if (searchViewModel.Activity.ActivityTypeID != 0)
             {
                 result = from activity in result
-                         where activity.ActivityTypeID == searchViewModel.activity.ActivityTypeID
+                         where activity.ActivityTypeID == searchViewModel.Activity.ActivityTypeID
                          && activity.DeletionDate == null
                          select activity;
 
-                searchViewModel.activities = result;
+                searchViewModel.Activities = result;
             }
 
-            if (searchViewModel.activity.Title != null)
+            if (searchViewModel.Activity.ActivityMajorID != 0)
             {
                 result = from activity in result
-                         where activity.Title.Contains(searchViewModel.activity.Title)
+                         where activity.ActivityMajorID == searchViewModel.Activity.ActivityMajorID
                          && activity.DeletionDate == null
                          select activity;
 
-                searchViewModel.activities = result;
+                searchViewModel.Activities = result;
             }
 
-            if(searchViewModel.activity.Purpose != null){
-
+            if (searchViewModel.Activity.ActivityDynamicID != null && searchViewModel.Activity.ActivityDynamicID != 0)
+            {
                 result = from activity in result
-                         where activity.Purpose.Contains(searchViewModel.activity.Purpose)
+                         where activity.ActivityDynamicID == searchViewModel.Activity.ActivityDynamicID
                          && activity.DeletionDate == null
                          select activity;
 
-                searchViewModel.activities = result;
+                searchViewModel.Activities = result;
+            }
+
+            if (searchViewModel.Activity.Title != null)
+            {
+                result = from activity in result
+                         where activity.Title.Contains(searchViewModel.Activity.Title)
+                         && activity.DeletionDate == null
+                         select activity;
+
+                searchViewModel.Activities = result;
+            }
+
+            if(searchViewModel.Activity.Purpose != null){
+
+                result = from activity in result
+                         where activity.Purpose.Contains(searchViewModel.Activity.Purpose)
+                         && activity.DeletionDate == null
+                         select activity;
+
+                searchViewModel.Activities = result;
             }
 
 
@@ -311,66 +348,68 @@ namespace OPDB.Controllers
         [HttpPost]
         public ActionResult BuscarAlcance(SearchViewModel searchViewModel)
         {
-            searchViewModel.buscarAlcance = true;
+            searchViewModel.BuscarAlcance = true;
 
             var result = from outreachEntity in db.OutreachEntityDetails
                          where outreachEntity.DeletionDate == null
                          select outreachEntity;
 
-            searchViewModel.outreachEntities = result;
+            searchViewModel.OutreachEntities = result;
 
-            if (searchViewModel.outreachEntity.OutreachEntityTypeID != 0)
+            if (searchViewModel.OutreachEntity.OutreachEntityTypeID != 0)
             {
 
                 result = from outreachEntity in result
-                         where outreachEntity.OutreachEntityTypeID == searchViewModel.outreachEntity.OutreachEntityTypeID
+                         where outreachEntity.OutreachEntityTypeID == searchViewModel.OutreachEntity.OutreachEntityTypeID
                          && outreachEntity.DeletionDate == null
                          select outreachEntity;
 
-                searchViewModel.outreachEntities = result;
+                searchViewModel.OutreachEntities = result;
             }
 
-            if(searchViewModel.outreachEntity.OutreachEntityName != null){
-
-                result = from outreachEntity in result
-                         where outreachEntity.OutreachEntityName.Contains(searchViewModel.outreachEntity.OutreachEntityName)
-                         && outreachEntity.DeletionDate == null
-                         select outreachEntity;
-
-                searchViewModel.outreachEntities = result;
-            }
-
-            if(searchViewModel.outreachEntity.Mission != null){
-
-                result = from outreachEntity in result
-                         where outreachEntity.Mission.Contains(searchViewModel.outreachEntity.Mission)
-                         && outreachEntity.DeletionDate == null
-                         select outreachEntity;
-
-                searchViewModel.outreachEntities = result;
-
-            }
-
-            if (searchViewModel.outreachEntity.Vision != null)
+            if (searchViewModel.OutreachEntity.OutreachEntityName != null)
             {
 
                 result = from outreachEntity in result
-                         where outreachEntity.Vision.Contains(searchViewModel.outreachEntity.Vision)
+                         where outreachEntity.OutreachEntityName.Contains(searchViewModel.OutreachEntity.OutreachEntityName)
                          && outreachEntity.DeletionDate == null
                          select outreachEntity;
 
-                searchViewModel.outreachEntities = result;
+                searchViewModel.OutreachEntities = result;
             }
 
-            if (searchViewModel.outreachEntity.Objectives != null)
+            if (searchViewModel.OutreachEntity.Mission != null)
             {
 
                 result = from outreachEntity in result
-                         where outreachEntity.Objectives.Contains(searchViewModel.outreachEntity.Objectives)
+                         where outreachEntity.Mission.Contains(searchViewModel.OutreachEntity.Mission)
                          && outreachEntity.DeletionDate == null
                          select outreachEntity;
 
-                searchViewModel.outreachEntities = result;
+                searchViewModel.OutreachEntities = result;
+
+            }
+
+            if (searchViewModel.OutreachEntity.Vision != null)
+            {
+
+                result = from outreachEntity in result
+                         where outreachEntity.Vision.Contains(searchViewModel.OutreachEntity.Vision)
+                         && outreachEntity.DeletionDate == null
+                         select outreachEntity;
+
+                searchViewModel.OutreachEntities = result;
+            }
+
+            if (searchViewModel.OutreachEntity.Objectives != null)
+            {
+
+                result = from outreachEntity in result
+                         where outreachEntity.Objectives.Contains(searchViewModel.OutreachEntity.Objectives)
+                         && outreachEntity.DeletionDate == null
+                         select outreachEntity;
+
+                searchViewModel.OutreachEntities = result;
 
             }
 
@@ -386,32 +425,42 @@ namespace OPDB.Controllers
         [HttpPost]
         public ActionResult BuscarEscuelas(SearchViewModel searchViewModel)
         {
-            searchViewModel.buscarEscuelas = true;
+            searchViewModel.BuscarEscuelas = true;
 
             var result = from school in db.Schools
                          where school.DeletionDate == null
                          select school;
 
-            searchViewModel.schools = result;
+            searchViewModel.Schools = result;
 
-            if (searchViewModel.school.SchoolName != null)
+            if (searchViewModel.School.SchoolName != null)
             {
                 result = from school in result
-                         where school.SchoolName.Contains(searchViewModel.school.SchoolName)
+                         where school.SchoolName.Contains(searchViewModel.School.SchoolName)
                          && school.DeletionDate == null
                          select school;
 
-                searchViewModel.schools = result;
+                searchViewModel.Schools = result;
             }
 
-            if (searchViewModel.school.Town != null)
+            if (searchViewModel.School.Address != null)
             {
                 result = from school in result
-                         where school.Town.Contains(searchViewModel.school.Town) 
+                         where school.Address.Contains(searchViewModel.School.Address)
                          && school.DeletionDate == null
                          select school;
 
-                searchViewModel.schools = result;
+                searchViewModel.Schools = result;
+            }
+
+            if (searchViewModel.School.Town != null)
+            {
+                result = from school in result
+                         where school.Town.Contains(searchViewModel.School.Town) 
+                         && school.DeletionDate == null
+                         select school;
+
+                searchViewModel.Schools = result;
             }
 
 
@@ -426,9 +475,9 @@ namespace OPDB.Controllers
         [HttpPost]
         public ActionResult BuscarUnidades(SearchViewModel searchViewModel)
         {
-            searchViewModel.buscarUnidades = true;
+            searchViewModel.BuscarUnidades = true;
 
-            searchViewModel.units = from unit in db.Units where unit.UnitName.Contains(searchViewModel.unit.UnitName ?? "") select unit;
+            searchViewModel.Units = from unit in db.Units where unit.UnitName.Contains(searchViewModel.Unit.UnitName ?? "") select unit;
             
             return View("Buscar", searchViewModel);
         }
@@ -568,23 +617,115 @@ namespace OPDB.Controllers
             return types;
         }
 
+        public List<SelectListItem> getActivityMajors()
+        {
+            List<SelectListItem> types = new List<SelectListItem>();
+
+            types.Add(new SelectListItem()
+            {
+                Text = "",
+                Value = ""
+            });
+
+            foreach (var activityMajor in (from major in db.ActivityMajors orderby major.ActivityMajor1 ascending select major).ToList())
+            {
+                types.Add(new SelectListItem()
+                {
+                    Text = activityMajor.ActivityMajor1,
+                    Value = activityMajor.ActivityMajorID + ""
+
+                });
+
+            }
+
+            return types;
+        }
+
+        public List<SelectListItem> getActivityDynamics()
+        {
+            List<SelectListItem> types = new List<SelectListItem>();
+
+            types.Add(new SelectListItem()
+            {
+                Text = "",
+                Value = ""
+            });
+
+            foreach (var activityDynamic in db.ActivityDynamics)
+            {
+                types.Add(new SelectListItem()
+                {
+                    Text = activityDynamic.ActivityDynamic1,
+                    Value = activityDynamic.ActivityDynamicID + ""
+
+                });
+
+            }
+
+            return types;
+        }
+
+        public List<SelectListItem> getTowns()
+        {
+            List<SelectListItem> towns = new List<SelectListItem>();
+
+            String[] town = new String[] { "", "Adjuntas", "Aguada", "Aguadilla", "Aguas Buenas", "Aibonito", "Añasco",
+            "Arecibo", "Arroyo", "Barceloneta", "Barranquitas", "Bayamón", "Cabo Rojo", "Caguas", "Camuy", "Canóvanas",
+            "Carolina", "Cataño", "Cayey", "Ceiba", "Ciales", "Cidra", "Coamo", "Comerío", "Corozal", "Culebra", "Dorado",
+            "Fajardo", "Florida", "Guánica", "Guayama", "Guayanilla", "Guaynabo", "Gurabo", "Hatillo", "Hormigueros", "Humacao",
+            "Isabela", "Jayuya", "Juana Díaz", "Juncos", "Lajas", "Lares", "Las Marías", "Las Piedras", "Loíza", "Luquillo", "Manatí",
+            "Maricao", "Maunabo", "Mayagüez", "Moca", "Morovis", "Naguabo", "Naranjito", "Orocovis", "Patillas", "Peñuelas", "Ponce",
+            "Quebradillas", "Rincón", "Río Grande", "Sabana Grande", "Salinas", "San Germán", "San Juan", "San Lorenzo", "San Sebastián",
+            "Santa Isabel", "Toa Alta", "Toa Baja", "Trujillo Alto", "Utuado", "Vega Alta", "Vega Baja", "Vieques", "Villalba", "Yabucoa",
+            "Yauco"};
+
+            for (int i = 0; i < town.Length; i++)
+            {
+                towns.Add(new SelectListItem()
+                {
+                    Text = town[i],
+                    Value = town[i]
+                });
+            }
+
+            return towns;
+
+        }
+
         public ActionResult AccesoDenegado()
         {
             return View("AccesoDenegado");
         }
     }
 
-    public static class DateTimeExtensions
+    public static class StringExtensions
     {
-        public static DateTime StartOfWeek(this DateTime dt, DayOfWeek startOfWeek)
-        {
-            int diff = dt.DayOfWeek - startOfWeek;
-            if (diff < 0)
-            {
-                diff += 7;
-            }
+        /// <summary>
+        /// Remove accent from strings 
+        /// </summary>
+        /// <example>
+        /// input: "Příliš žluťoučký kůň úpěl ďábelské ódy."
+        /// result: "Prilis zlutoucky kun upel dabelske ody."
+        /// </example>
+        /// <param name="s"></param>
+        /// <remarks>founded at http://stackoverflow.com/questions/249087/
+        /// how-do-i-remove-diacritics-accents-from-a-string-in-net</remarks>
+        /// <returns>string without accents</returns>
 
-            return dt.AddDays(-1 * diff).Date;
+        public static string RemoveDiacritics(this string s)
+        {
+            string stFormD = s.Normalize(NormalizationForm.FormD);
+            StringBuilder sb = new StringBuilder();
+
+            for (int ich = 0; ich < stFormD.Length; ich++)
+            {
+                UnicodeCategory uc = CharUnicodeInfo.GetUnicodeCategory(stFormD[ich]);
+                if (uc != UnicodeCategory.NonSpacingMark)
+                {
+                    sb.Append(stFormD[ich]);
+                }
+            }
+            return (sb.ToString().Normalize(NormalizationForm.FormC));
         }
     }
 }

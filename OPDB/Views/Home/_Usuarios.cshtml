@@ -13,34 +13,34 @@
 
 @using (Html.BeginForm("BuscarUsuarios", "Home", FormMethod.Post)) {
         <div class="editor-label">
-            @Html.LabelFor(model => model.user.User.UserTypeID, "Tipo de Usuario")
+            @Html.LabelFor(model => model.User.User.UserTypeID, "Tipo de Usuario")
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.user.User.UserTypeID, Model.types)
+            @Html.DropDownListFor(model => model.User.User.UserTypeID, Model.Types)
         </div><br />
        <div class="editor-label">
-                @Html.LabelFor(model => model.user.FirstName, "Nombre")
+                @Html.LabelFor(model => model.User.FirstName, "Nombre")
             </div>
             <div class="editor-field">
-                @Html.EditorFor(model => model.user.FirstName, new { @style = "width: 500px !important;" })
+                @Html.EditorFor(model => model.User.FirstName, new { @style = "width: 500px !important;" })
             </div>
             <div class="editor-label">
-                @Html.LabelFor(model => model.user.LastName, "Apellido")
+                @Html.LabelFor(model => model.User.LastName, "Apellido")
             </div>
             <div class="editor-field">
-                @Html.EditorFor(model => model.user.LastName, new { @style = "width: 500px !important;" })
+                @Html.EditorFor(model => model.User.LastName, new { @style = "width: 500px !important;" })
             </div>
         <div class="editor-label">
-            @Html.LabelFor(model => model.user.Role, "Rol")
+            @Html.LabelFor(model => model.User.Role, "Rol")
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.user.Role, new { @style = "width: 500px !important;" })
+            @Html.EditorFor(model => model.User.Role, new { @style = "width: 500px !important;" })
         </div>
         <div class="editor-label">
-            @Html.LabelFor(model => model.user.Major, "Concentración")
+            @Html.LabelFor(model => model.User.Major, "Concentración")
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.user.Major, new { @style = "width: 500px !important;" })
+            @Html.EditorFor(model => model.User.Major, new { @style = "width: 500px !important;" })
         </div>
 
         <p style="text-align:right;">

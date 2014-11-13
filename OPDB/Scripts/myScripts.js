@@ -314,3 +314,16 @@ function getActivityType() {
         document.getElementById('dynamic').removeAttribute("hidden", "hidden");
     }
 }
+
+function compareDate(e) {
+    debugger;
+    var id = $(e).attr('id');
+    var dateParts = document.getElementById(id).value.split('/');
+    var selectedDate = dateParts[1] + '/' + dateParts[0] + '/' + dateParts[2];
+    selectedDate = new Date(selectedDate);    
+    var currentDate = new Date((new Date()).setHours(0, 0, 0, 0));
+
+    if(selectedDate <= currentDate)
+        alert("La fecha escogida es menor o igual que hoy.")
+
+}

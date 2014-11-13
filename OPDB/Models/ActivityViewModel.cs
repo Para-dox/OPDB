@@ -15,6 +15,7 @@ namespace OPDB.Models
         public Medium Media { get; set; }
         public User User { get; set; }
         public OutreachEntityDetail OutreachEntity { get; set; }
+        public ActivityDynamic ActivityDynamic { get; set; }
 
         public List<UserInfoViewModel> Feedbacks { get; set; }
 

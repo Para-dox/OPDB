@@ -56,9 +56,10 @@
                 </div><br />
             </div>
             <div class="editor-label">
-                @Html.LabelFor(model => model.Activity.ActivityDynamic, "Dinámica de Actividad")
+                @Html.LabelFor(model => model.Activity.ActivityDynamicID, "Dinámica de Actividad")
             </div>
             <div class="editor-field">
+                @Html.ValidationMessage("Activity_ActivityDynamicID_Required")
                 @Html.DropDownListFor(model => model.Activity.ActivityDynamicID, Model.ActivityDynamics, new { @style = "width: 500px !important; height: 2.55rem !important;" })
             </div><br />
 
@@ -95,13 +96,12 @@
             <div class="editor-field">
                 <div class="large-6 columns" style="text-align:left;">
                     <span>Fecha </span><br />
-                    @Html.TextBoxFor(model => model.Activity.ActivityDate, new { id = "datepicker", @readonly = true }) &nbsp;<i class="fa fa-calendar"></i> 
+                    @Html.TextBoxFor(model => model.Activity.ActivityDate, new { id = "datepicker", @readonly = true, @onchange = "compareDate(this)" }) &nbsp;<i class="fa fa-calendar"></i> 
                 </div>
                 <div class="large-6 columns" style="text-align:left;">
                     <span>Hora </span><br />
                     @Html.TextBoxFor(model => model.Activity.ActivityTime, new { id = "timepicker" }) &nbsp;<i class="fa fa-clock-o"></i>
                 </div>
-                @Html.ValidationMessageFor(model => model.Activity.ActivityDate)
                 @Html.ValidationMessage("Activity_ActivityDate_EarlierThanCurrentDate")
                 @Html.ValidationMessageFor(model => model.Activity.ActivityTime)
             </div><br />

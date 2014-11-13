@@ -88,11 +88,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Toda actividad que no sea tipo campamento require una dinámica.
+        /// </summary>
+        internal static string Activity_ActivityDynamicID_Required {
+            get {
+                return ResourceManager.GetString("Activity_ActivityDynamicID_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to El tiempo que ha entrado es inválido.
         /// </summary>
         internal static string Activity_ActivityTime_Invalid {
             get {
                 return ResourceManager.GetString("Activity_ActivityTime_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El número de asistencia que ha entrado es inválido.
+        /// </summary>
+        internal static string Activity_Attendees_Invalid {
+            get {
+                return ResourceManager.GetString("Activity_Attendees_Invalid", resourceCulture);
             }
         }
         

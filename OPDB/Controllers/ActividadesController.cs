@@ -252,13 +252,20 @@ namespace OPDB.Controllers
                 });
             }
 
+            var activityDynamic = new ActivityDynamic
+            {
+                ActivityDynamic1 = ""
+            };
 
+            if (foundActivity.ActivityDynamicID != null)
+                activityDynamic = db.ActivityDynamics.Find(foundActivity.ActivityDynamicID);
 
             ActivityViewModel activityViewModel = new ActivityViewModel
             {
                 User = db.Users.Find(foundActivity.UserID),
                 OutreachEntity = db.OutreachEntityDetails.First(outreach => outreach.UserID == foundActivity.UserID),
                 Activity = foundActivity,
+                ActivityDynamic = activityDynamic,
                 ActivityDate = date,
                 Feedbacks = feedbackList,
                 Interested = interested,
@@ -328,6 +335,11 @@ namespace OPDB.Controllers
 
                         if (matches.Count > 0)
                             ModelState.AddModelError("Activity_Details_Invalid", Resources.WebResources.Activity_Details_Invalid);
+                    }
+
+                    if (activityViewModel.Activity.ActivityTypeID != 3 && activityViewModel.Activity.ActivityDynamicID == null)
+                    {
+                        ModelState.AddModelError("Activity_ActivityDynamicID_Required", Resources.WebResources.Activity_ActivityDynamicID_Required);
                     }
 
                     if (ModelState.IsValid)
@@ -553,14 +565,7 @@ namespace OPDB.Controllers
 
                     if (activityViewModel.ActivityDate != "" && activityViewModel.ActivityDate != null)
                         activityViewModel.Activity.ActivityDate = DateTime.ParseExact(activityViewModel.ActivityDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-
-                    if (activityViewModel.Activity.ActivityDate != null)
-                    {
-
-                        if (DateTime.Compare(activityViewModel.Activity.ActivityDate.Value.Date, DateTime.Now.Date) <= 0)
-                            ModelState.AddModelError("Activity_ActivityDate_EarlierThanCurrentDate", Resources.WebResources.Activity_ActivityDate_EarlierThanCurrentDate);
-                    }
-
+                    
                     if (activityViewModel.Activity.Details != null && activityViewModel.Activity.Details != "")
                     {
                         string pattern = @"^<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>$";
@@ -570,6 +575,11 @@ namespace OPDB.Controllers
                         if (matches.Count > 0)
                             ModelState.AddModelError("Activity_Details_Invalid", Resources.WebResources.Activity_Details_Invalid);
 
+                    }
+
+                    if (activityViewModel.Activity.ActivityTypeID != 3 && activityViewModel.Activity.ActivityDynamicID == null)
+                    {
+                        ModelState.AddModelError("Activity_ActivityDynamicID_Required", Resources.WebResources.Activity_ActivityDynamicID_Required);
                     }
 
                     if (ModelState.IsValid)
@@ -1033,7 +1043,7 @@ namespace OPDB.Controllers
         public List<SelectListItem> getActivityMajors()
         {
             List<SelectListItem> majors = new List<SelectListItem>();
-            foreach (var major in db.ActivityMajors)
+            foreach (var major in (from major in db.ActivityMajors orderby major.ActivityMajor1 ascending select major).ToList())
             {
                 majors.Add(new SelectListItem()
                 {
@@ -1538,6 +1548,11 @@ namespace OPDB.Controllers
 
                     }
 
+                    if (activityViewModel.Activity.ActivityTypeID != 3 && activityViewModel.Activity.ActivityDynamicID == null)
+                    {
+                        ModelState.AddModelError("Activity_ActivityDynamicID_Required", Resources.WebResources.Activity_ActivityDynamicID_Required);
+                    }
+
                     if (ModelState.IsValid)
                     {
                         activityViewModel.Activity.UpdateDate = DateTime.Now;
@@ -1686,14 +1701,7 @@ namespace OPDB.Controllers
                     {                        
                         activityViewModel.Activity.ActivityDate = DateTime.ParseExact(activityViewModel.ActivityDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
                     }
-
-                    if (activityViewModel.Activity.ActivityDate != null)
-                    {
-
-                        if (DateTime.Compare(activityViewModel.Activity.ActivityDate.Value.Date, DateTime.Now.Date) <= 0)
-                            ModelState.AddModelError("Activity_ActivityDate_EarlierThanCurrentDate", Resources.WebResources.Activity_ActivityDate_EarlierThanCurrentDate);
-                    }
-
+                    
                     if (activityViewModel.Activity.Details != null && activityViewModel.Activity.Details != "")
                     {
                         string pattern = @"^(script\b[^<]*(?:(?!<\/script>)<[^<]*)*script)$";
@@ -1703,6 +1711,11 @@ namespace OPDB.Controllers
                         if (matches.Count > 0)
                             ModelState.AddModelError("Activity_Details_Invalid", Resources.WebResources.Activity_Details_Invalid);
 
+                    }
+
+                    if (activityViewModel.Activity.ActivityTypeID != 3 && activityViewModel.Activity.ActivityDynamicID == null)
+                    {
+                        ModelState.AddModelError("Activity_ActivityDynamicID_Required", Resources.WebResources.Activity_ActivityDynamicID_Required);
                     }
 
                     if (ModelState.IsValid)

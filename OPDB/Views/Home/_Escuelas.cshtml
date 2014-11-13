@@ -1,31 +1,38 @@
 ﻿@model OPDB.Models.SearchViewModel
 
 <style>
-     .text-box, .editor-field {
+    .text-box, .editor-field {
         width: 400px;
     }
 </style>
 
 @using (Html.BeginForm("BuscarEscuelas", "Home", FormMethod.Post))
 {
-        <div class="editor-label">
-            @Html.LabelFor(model => model.school.SchoolName, "Nombre")
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.school.SchoolName, new { @style = "width: 500px !important;" })
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.school.Town, "Pueblo")
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.school.Town, new { @style = "width: 500px !important;" })
-        </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.School.SchoolName, "Nombre")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.School.SchoolName, new { @style = "width: 500px !important;" })
+    </div>
 
-        
+    <div class="editor-label">
+        @Html.LabelFor(model => model.School.Address, "Dirección")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.School.Address, new { @style = "width: 500px !important;" })
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.School.Town, "Pueblo")
+    </div>
+    <div class="editor-field">
+        @Html.DropDownListFor(model => model.School.Town, Model.Towns, new { @style = "width: 500px !important;" })
+    </div>
 
-        <p style="float:right;">
-            <input type="submit" class="btn" value="Buscar" />
-        </p>
+
+
+    <p style="float:right;">
+        <input type="submit" class="btn" value="Buscar" />
+    </p>
 }
 
 <script>

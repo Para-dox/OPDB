@@ -1,23 +1,29 @@
 ﻿@model OPDB.Models.SearchViewModel
 
 <style>
-     .text-box, .editor-field {
+    .text-box, .editor-field {
         width: 400px;
     }
 </style>
 
 @using (Html.BeginForm("BuscarUnidades", "Home", FormMethod.Post))
 {
-        <div class="editor-label">
-            @Html.LabelFor(model => model.unit.UnitName, "Nombre de la Unidad")
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.unit.UnitName)
-        </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Unit.UnitName, "Nombre de la Unidad")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Unit.UnitName)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Unit.Building, "Edificio")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Unit.Building)
+    </div>
 
-        <p style="float:right;">
-            <input type="submit" class="btn" value="Buscar" />
-        </p>
+    <p style="float:right;">
+        <input type="submit" class="btn" value="Buscar" />
+    </p>
 }
 
 <script>

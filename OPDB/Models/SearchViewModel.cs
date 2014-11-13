@@ -8,25 +8,28 @@ namespace OPDB.Models
 {
     public class SearchViewModel
     {
-        public string searchText { get; set; }
-        public IEnumerable<UserDetail> users {get; set;}
-        public IEnumerable<OutreachEntityDetail> outreachEntities { get; set; }
-        public IEnumerable<Activity> activities { get; set; }
-        public IEnumerable<Unit> units { get; set; }
-        public IEnumerable<School> schools { get; set; }
+        public string SearchText { get; set; }
+        public IEnumerable<UserDetail> Users {get; set;}
+        public IEnumerable<OutreachEntityDetail> OutreachEntities { get; set; }
+        public IEnumerable<Activity> Activities { get; set; }
+        public IEnumerable<Unit> Units { get; set; }
+        public IEnumerable<School> Schools { get; set; }
 
-        public UserDetail user { get; set; }
-        public OutreachEntityDetail outreachEntity { get; set; }
-        public Activity activity { get; set; }
-        public School school { get; set; }
-        public Unit unit { get; set; }
+        public UserDetail User { get; set; }
+        public OutreachEntityDetail OutreachEntity { get; set; }
+        public Activity Activity { get; set; }
+        public School School { get; set; }
+        public Unit Unit { get; set; }
 
-        public List<SelectListItem> types { get; set; }
+        public List<SelectListItem> Types { get; set; }
+        public List<SelectListItem> Majors { get; set; }
+        public List<SelectListItem> Dynamics { get; set; }
+        public List<SelectListItem> Towns { get; set; }
 
-        public bool  buscarUsuarios {get; set;}
-        public bool  buscarAlcance {get; set;}
-        public bool  buscarEscuelas {get; set;}
-        public bool  buscarUnidades {get; set;}
-        public bool  buscarActividades { get; set;}
+        public bool  BuscarUsuarios {get; set;}
+        public bool  BuscarAlcance {get; set;}
+        public bool  BuscarEscuelas {get; set;}
+        public bool  BuscarUnidades {get; set;}
+        public bool  BuscarActividades { get; set;}
     }
 }

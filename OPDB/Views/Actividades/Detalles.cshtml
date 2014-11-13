@@ -96,6 +96,29 @@
     <div class="large-5 columns">
         <h3>Detalles de Actividad</h3><br />
         <div class="display-label">
+            @Html.LabelFor(model => model.Activity.ActivityType.ActivityType1, "Tipo de Actividad")
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Activity.ActivityType.ActivityType1)
+        </div>
+        <br />
+        <div class="display-label">
+            @Html.LabelFor(model => model.Activity.ActivityMajor.ActivityMajor1, "Área de Especialidad")
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Activity.ActivityMajor.ActivityMajor1)
+        </div>
+        <br />
+        @if (Model.ActivityDynamic.ActivityDynamic1 != null && Model.ActivityDynamic.ActivityDynamic1 != "")
+        {
+            <div class="display-label">
+                @Html.LabelFor(model => model.ActivityDynamic.ActivityDynamic1, "Dinámica de la Actividad")
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.ActivityDynamic.ActivityDynamic1)
+            </div><br />
+        }
+        <div class="display-label">
             @Html.LabelFor(model => model.OutreachEntity.OutreachEntityName, "Organizada Por")
         </div>
         <div class="display-field">

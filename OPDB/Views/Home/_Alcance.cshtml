@@ -13,38 +13,38 @@
 @using (Html.BeginForm("BuscarAlcance", "Home", FormMethod.Post))
 {
         <div class="editor-label">
-            @Html.LabelFor(model => model.outreachEntity.OutreachEntityTypeID, "Tipo de Entidad")
+            @Html.LabelFor(model => model.OutreachEntity.OutreachEntityTypeID, "Tipo de Entidad")
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.outreachEntity.OutreachEntityTypeID, Model.types)
+            @Html.DropDownListFor(model => model.OutreachEntity.OutreachEntityTypeID, Model.Types)
         </div><br />
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.outreachEntity.OutreachEntityName, "Nombre")
+            @Html.LabelFor(model => model.OutreachEntity.OutreachEntityName, "Nombre")
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.outreachEntity.OutreachEntityName)
+            @Html.EditorFor(model => model.OutreachEntity.OutreachEntityName)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.outreachEntity.Mission, "Misión")
+            @Html.LabelFor(model => model.OutreachEntity.Mission, "Misión")
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.outreachEntity.Mission)
+            @Html.EditorFor(model => model.OutreachEntity.Mission)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.outreachEntity.Vision, "Visión")
+            @Html.LabelFor(model => model.OutreachEntity.Vision, "Visión")
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.outreachEntity.Vision)
+            @Html.EditorFor(model => model.OutreachEntity.Vision)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.outreachEntity.Objectives, "Objetivos")
+            @Html.LabelFor(model => model.OutreachEntity.Objectives, "Objetivos")
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.outreachEntity.Objectives)
+            @Html.EditorFor(model => model.OutreachEntity.Objectives)
         </div>
         <p style="float:right;">
             <input type="submit" class="btn" value="Buscar" />

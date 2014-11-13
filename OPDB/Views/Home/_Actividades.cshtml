@@ -12,30 +12,41 @@
 
 @using (Html.BeginForm("BuscarActividades", "Home", FormMethod.Post))
 {
-        <div class="editor-label">
-            @Html.LabelFor(model => model.activity.ActivityTypeID, "Tipo de Actividad")
-        </div>
-        <div class="editor-field">
-            @Html.DropDownListFor(model => model.activity.ActivityTypeID, Model.types)
-        </div><br />
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Activity.ActivityTypeID, "Tipo de Actividad")
+    </div>
+    <div class="editor-field">
+        @Html.DropDownListFor(model => model.Activity.ActivityTypeID, Model.Types)
+    </div><br />
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Activity.ActivityMajorID, "Área de Especialidad")
+    </div>
+    <div class="editor-field">
+        @Html.DropDownListFor(model => model.Activity.ActivityMajorID, Model.Majors)
+    </div><br />
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Activity.ActivityDynamicID, "Dinámica de la Actividad")
+    </div>
+    <div class="editor-field">
+        @Html.DropDownListFor(model => model.Activity.ActivityDynamicID, Model.Dynamics)
+    </div><br />
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Activity.Title, "Título")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Activity.Title)
+    </div>
 
-       <div class="editor-label">
-            @Html.LabelFor(model => model.activity.Title, "Título")
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.activity.Title)
-        </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Activity.Purpose, "Propósito")
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Activity.Purpose)
+    </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.activity.Purpose, "Proposito")
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.activity.Purpose)
-        </div>
-                    
-        <p style="float:right;">
-            <input type="submit" class="btn" value="Buscar" />
-        </p>
+    <p style="float:right;">
+        <input type="submit" class="btn" value="Buscar" />
+    </p>
 }
 
 <script>

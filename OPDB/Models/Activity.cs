@@ -15,6 +15,7 @@ namespace OPDB.Models
     using System.ComponentModel.DataAnnotations;
     using System.Runtime.Serialization;
     using System.Web.Mvc;
+    using System.Globalization;
 
 
     public partial class Activity
@@ -62,6 +63,8 @@ namespace OPDB.Models
 
         public int ActivityMajorID { get; set; }
         public Nullable<int> ActivityDynamicID { get; set; }
+
+        [Range(0, Int32.MaxValue, ErrorMessageResourceName = "Activity_Attendees_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public int Attendees { get; set; }
 
         public virtual ActivityType ActivityType { get; set; }
