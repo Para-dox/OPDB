@@ -682,6 +682,31 @@ namespace OPDB.Controllers
             return types;
         }
 
+        public List<SelectListItem> getTargetPopulations()
+        {
+            List<SelectListItem> types = new List<SelectListItem>();
+
+            types.Add(new SelectListItem()
+            {
+                Text = "",
+                Value = ""
+
+            });
+
+            foreach (var populations in db.TargetPopulations)
+            {
+                types.Add(new SelectListItem()
+                {
+                    Text = populations.TargetPopulation1,
+                    Value = populations.TargetPopulationID + ""
+
+                });
+
+            }
+
+            return types;
+        }
+
         public List<SelectListItem> getTowns()
         {
             List<SelectListItem> towns = new List<SelectListItem>();
@@ -722,14 +747,146 @@ namespace OPDB.Controllers
                 {
                     ReportViewModel reportViewModel = new ReportViewModel
                     {
-
+                        Semesters = getSemesters(),
+                        ActivityTypes = getActivityTypes(),
+                        ActivityMajors = getActivityMajors(),
+                        ActivityDynamics = getActivityDynamics(),
+                        TargetPopulations = getTargetPopulations()
                     };
 
-                    return PartialView();
+                    return PartialView("FormularioReportes", reportViewModel);
                 }
             }
 
             return RedirectToAction("AccesoDenegado");
+        }
+
+        public ActionResult GenerarReporte(ReportViewModel reportViewModel)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
+                    var result = (IEnumerable<Activity>) null;
+
+                    if (reportViewModel.TargetMonths.Contains("All"))
+                    {
+                        var academicYear = Int32.Parse(reportViewModel.TargetMonths.Split('-')[1]);
+
+                        result = from activity in db.Activities
+                                     where activity.DeletionDate == null
+                                     && ((activity.ActivityDate.Value.Year == academicYear && (activity.ActivityDate.Value.Month >= 6 && activity.ActivityDate.Value.Month <= 12))
+                                     || (activity.ActivityDate.Value.Year == (academicYear + 1) && (activity.ActivityDate.Value.Month >= 1 && activity.ActivityDate.Value.Month <= 5)))
+                                     orderby activity.ActivityDate ascending select activity;
+
+                        reportViewModel.Results = result;
+                    }
+                    else
+                    {
+                        var minMonth = Int32.Parse(reportViewModel.TargetMonths.Split('-')[0]);
+                        var maxMonth = Int32.Parse(reportViewModel.TargetMonths.Split('-')[1]); 
+                        var academicYear = Int32.Parse(reportViewModel.TargetMonths.Split('-')[2]);
+
+                        result = from activity in db.Activities
+                                      where activity.DeletionDate == null
+                                      && activity.ActivityDate.Value.Year == academicYear && (activity.ActivityDate.Value.Month >= minMonth && activity.ActivityDate.Value.Month <= maxMonth)
+                                      orderby activity.ActivityDate ascending select activity;
+
+                        reportViewModel.Results = result;
+                    }
+                    
+                    if (reportViewModel.Activity.ActivityTypeID != 0)
+                    {
+                        
+
+                            result = from activity in result
+                                     where activity.ActivityTypeID == reportViewModel.Activity.ActivityTypeID
+                                     && activity.DeletionDate == null
+                                     select activity;
+
+                            reportViewModel.Results = result;
+                    }
+
+                    if (reportViewModel.Activity.ActivityMajorID != 0)
+                    {
+                        result = from activity in result
+                                 where activity.ActivityMajorID == reportViewModel.Activity.ActivityMajorID
+                                 && activity.DeletionDate == null
+                                 select activity;
+
+                        reportViewModel.Results = result;
+                    }
+
+                    if (reportViewModel.Activity.ActivityDynamicID != null && reportViewModel.Activity.ActivityDynamicID != 0)
+                    {
+                        result = from activity in result
+                                 where activity.ActivityDynamicID == reportViewModel.Activity.ActivityDynamicID
+                                 && activity.DeletionDate == null
+                                 select activity;
+
+                        reportViewModel.Results = result;
+                    }
+
+                    if (reportViewModel.Activity.TargetPopulationID != 0)
+                    {
+                        result = from activity in result
+                                 where activity.TargetPopulationID == reportViewModel.Activity.TargetPopulationID
+                                 && activity.DeletionDate == null
+                                 select activity;
+
+                        reportViewModel.Results = result;
+                    }
+
+                    return View("ResultadosReporte", reportViewModel);
+                }
+            }
+
+            return RedirectToAction("AccesoDenegado");
+        }
+
+        public List<SelectListItem> getSemesters()
+        {
+            List<SelectListItem> semesters = new List<SelectListItem>();
+
+            semesters.Add(new SelectListItem
+            {
+                Text = "",
+                Value = ""
+            });
+            
+            var minYear = (from activity in db.Activities where activity.DeletionDate == null && activity.ActivityDate != null select activity.ActivityDate.Value.Year).ToList().Min();
+
+            var maxYear = (from activity in db.Activities where activity.DeletionDate == null && activity.ActivityDate != null select activity.ActivityDate.Value.Year).ToList().Max();
+
+            for (int i = minYear; i <= maxYear; i++)
+            {
+                semesters.Add(new SelectListItem
+                {
+                    Text = "Verano " + i,
+                    Value = "6-7-"+i,
+                });
+
+                semesters.Add(new SelectListItem
+                {
+                    Text = "Primer Semestre " + i,
+                    Value = "8-12-"+i
+                });
+
+                semesters.Add(new SelectListItem
+                {
+                    Text = "Segundo Semestre " + i,
+                    Value = "1-5-"+(i+1)
+                });
+
+                semesters.Add(new SelectListItem
+                {
+                    Text = "Año Académico " + i,
+                    Value = "All-"+i
+                });
+            }
+
+            return semesters;
+
         }
     }
 

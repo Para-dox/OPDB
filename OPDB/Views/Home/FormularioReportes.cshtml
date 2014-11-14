@@ -1,1 +1,58 @@
 ﻿@model OPDB.Models.ReportViewModel
+
+<style>
+    .text-box, .editor-field {
+        width: 400px;
+    }
+
+    .editor-label {
+        text-align: left;
+    }
+</style>
+
+@using (Html.BeginForm("GenerarReporte", "Home", FormMethod.Post))
+{
+    <div class="editor-label">
+        @Html.LabelFor(model => model.TargetMonths, "Semestre Académico")
+    </div>
+    <div class="editor-field">
+        @Html.DropDownListFor(model => model.TargetMonths, Model.Semesters)
+    </div><br />
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Activity.ActivityTypeID, "Tipo de Actividad")
+    </div>
+    <div class="editor-field">
+        @Html.DropDownListFor(model => model.Activity.ActivityTypeID, Model.ActivityTypes)
+    </div><br />
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Activity.ActivityMajorID, "Área de Especialidad")
+    </div>
+    <div class="editor-field">
+        @Html.DropDownListFor(model => model.Activity.ActivityMajorID, Model.ActivityMajors)
+    </div><br />
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Activity.ActivityDynamicID, "Dinámica de la Actividad")
+    </div>
+    <div class="editor-field">
+        @Html.DropDownListFor(model => model.Activity.ActivityDynamicID, Model.ActivityDynamics)
+    </div><br />
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Activity.TargetPopulationID, "Audiencia")
+    </div>
+    <div class="editor-field">
+        @Html.DropDownListFor(model => model.Activity.TargetPopulationID, Model.TargetPopulations)
+    </div><br />
+
+    <p>
+        <input type="submit" class="btn" value="Generar Reporte" />
+    </p>
+}
+
+<script>
+    $(document).ready(function () {
+        $("html").getNiceScroll().resize();
+
+        document.getElementsByTagName("loading")[0].innerHTML = "";
+        document.getElementsByTagName("loadinginner")[0].innerHTML = "";
+    });
+</script>

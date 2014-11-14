@@ -23,6 +23,8 @@ namespace OPDB.Models
 
         public List<UserInfoViewModel> ActivityResources { get; set; }
 
+        public List<UserInfoViewModel> Semesters { get; set; }
+
         public IEnumerable<ActivityNote> Notes { get; set; }
         
         public List<SelectListItem> NoteTypes { get; set; }

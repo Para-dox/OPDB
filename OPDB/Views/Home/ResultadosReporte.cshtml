@@ -1,0 +1,29 @@
+﻿@model OPDB.Models.ReportViewModel
+
+@{
+    ViewBag.Title = "Resultados Reporte";
+}
+
+<h2>Resultados Reporte</h2>
+
+<div class="large-12 columns panel callout">
+    <ul style="list-style-type: none;">
+        @if (Model.Results.Count() > 0)
+        {
+            foreach (var result in Model.Results)
+            {
+
+                <li>
+                    @Html.ActionLink(result.Title, "Detalles", "Actividades", new { id = result.ActivityID }, null)
+                </li>
+            }
+        }
+        else
+        {
+            <li>
+                No hubo resultados.
+            </li>
+        }
+
+    </ul>
+</div>

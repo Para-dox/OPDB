@@ -49,7 +49,7 @@
                        <td>
                        @if (User.Identity.IsAuthenticated)
                        {
-                           if (Int32.Parse(User.Identity.Name.Split(',')[0]) == resource.User.UserID)
+                           if (Int32.Parse(User.Identity.Name.Split(',')[0]) == resource.User.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
                            {
                                if (resource.ActivityResource.ResourceStatus == false)
                                {
