@@ -68,6 +68,8 @@ namespace OPDB.Models
             this.ActivityDynamics1 = new HashSet<ActivityDynamic>();
             this.SchoolRegions = new HashSet<SchoolRegion>();
             this.SchoolRegions1 = new HashSet<SchoolRegion>();
+            this.TargetPopulations = new HashSet<TargetPopulation>();
+            this.TargetPopulations1 = new HashSet<TargetPopulation>();
         }
 
         public int UserID { get; set; }
@@ -138,5 +140,7 @@ namespace OPDB.Models
         public virtual ICollection<ActivityDynamic> ActivityDynamics1 { get; set; }
         public virtual ICollection<SchoolRegion> SchoolRegions { get; set; }
         public virtual ICollection<SchoolRegion> SchoolRegions1 { get; set; }
+        public virtual ICollection<TargetPopulation> TargetPopulations { get; set; }
+        public virtual ICollection<TargetPopulation> TargetPopulations1 { get; set; }
     }
 }

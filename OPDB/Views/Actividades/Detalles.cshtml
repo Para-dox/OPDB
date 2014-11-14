@@ -119,6 +119,13 @@
             </div><br />
         }
         <div class="display-label">
+            @Html.LabelFor(model => model.Activity.TargetPopulation.TargetPopulation1, "Audiencia")
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Activity.TargetPopulation.TargetPopulation1)
+        </div>
+        <br />
+        <div class="display-label">
             @Html.LabelFor(model => model.OutreachEntity.OutreachEntityName, "Organizada Por")
         </div>
         <div class="display-field">

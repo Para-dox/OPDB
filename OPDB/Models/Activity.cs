@@ -67,6 +67,8 @@ namespace OPDB.Models
         [Range(0, Int32.MaxValue, ErrorMessageResourceName = "Activity_Attendees_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public int Attendees { get; set; }
 
+        public int TargetPopulationID { get; set; }
+
         public virtual ActivityType ActivityType { get; set; }
         public virtual ICollection<ActivityNote> ActivityNotes { get; set; }
         public virtual ICollection<ActivityResource> ActivityResources { get; set; }
@@ -81,5 +83,6 @@ namespace OPDB.Models
         public virtual ICollection<Medium> Media { get; set; }
         public virtual ActivityDynamic ActivityDynamic { get; set; }
         public virtual ActivityMajor ActivityMajor { get; set; }
+        public virtual TargetPopulation TargetPopulation { get; set; }
     }
 }

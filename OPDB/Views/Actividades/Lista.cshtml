@@ -57,6 +57,11 @@
                         @Html.ActionLink(item.Activity.Title, "Detalles", "Actividades", new { id = item.Activity.ActivityID }, null)<br />
                         <span>Propósito: </span> @item.Activity.Purpose<br />
                         <div>@if (item.Activity.ActivityDate != new DateTime()){ <span>Fecha: </span> @item.Activity.ActivityDate.Value.ToString("dd/MM/yyyy") } @if(item.Activity.ActivityTime != ""){<span>Hora: </span> @item.Activity.ActivityTime}</div>
+                        <span>Tipo: </span>@item.Activity.ActivityType.ActivityType1
+                        <span>Área de Especialidad: </span>@item.Activity.ActivityMajor.ActivityMajor1
+                        @if (item.ActivityDynamic.ActivityDynamic1 != null && item.ActivityDynamic.ActivityDynamic1 != "")
+                        {<span>Dinámica de la Actividad: </span>@item.ActivityDynamic.ActivityDynamic1}
+                        <span>Audiencia: </span>@item.Activity.TargetPopulation.TargetPopulation1
                         <span>Organizada Por: </span>@item.OutreachEntity.OutreachEntityName
                     </div>
                 @if (Request.IsAuthenticated)

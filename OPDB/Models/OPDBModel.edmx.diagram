@@ -99,6 +99,10 @@
         <EntityTypeShape EntityType="OPDBModel.OutreachEntityDetail" Width="1.5" PointX="7.5" PointY="33" />
         <AssociationConnector Association="OPDBModel.OutreachEntityDetail_ibfk_1" />
         <AssociationConnector Association="OPDBModel.OutreachEntityDetail_ibfk_2" />
+        <EntityTypeShape EntityType="OPDBModel.TargetPopulation" Width="1.5" PointX="5.25" PointY="55.125" />
+        <AssociationConnector Association="OPDBModel.Activity_ibfk_10" />
+        <AssociationConnector Association="OPDBModel.TargetPopulation_ibfk_1" />
+        <AssociationConnector Association="OPDBModel.TargetPopulation_ibfk_2" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

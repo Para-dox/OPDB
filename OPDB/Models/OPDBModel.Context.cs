@@ -49,5 +49,6 @@ namespace OPDB.Models
         public DbSet<ActivityMajor> ActivityMajors { get; set; }
         public DbSet<SchoolRegion> SchoolRegions { get; set; }
         public DbSet<OutreachEntityDetail> OutreachEntityDetails { get; set; }
+        public DbSet<TargetPopulation> TargetPopulations { get; set; }
     }
 }

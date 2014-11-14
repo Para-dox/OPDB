@@ -158,6 +158,14 @@ namespace OPDB.Controllers
 
             foreach (var activity in activities)
             {
+                var activityDynamic = new ActivityDynamic
+                {
+                    ActivityDynamic1 = ""
+                };
+
+                if (activity.ActivityDynamicID != null)
+                    activityDynamic = db.ActivityDynamics.Find(activity.ActivityDynamicID);
+
                 if (activity.ActivityDate == null)
                     activity.ActivityDate = new DateTime();
 
@@ -180,7 +188,8 @@ namespace OPDB.Controllers
                 {
                     Activity = activity,
                     OutreachEntity = db.OutreachEntityDetails.First(outreach => outreach.UserID == activity.UserID),
-                    Interested = interested
+                    Interested = interested,
+                    ActivityDynamic = activityDynamic
                 });
             }
 
@@ -299,7 +308,8 @@ namespace OPDB.Controllers
                 Resources = getResources(),
                 ResourceIDs = new List<int>(),
                 Information = new List<UserInfoViewModel>(),
-                ActivityMajors = getActivityMajors()
+                ActivityMajors = getActivityMajors(),
+                TargetPopulations = getTargetPopulations()
             };
 
             return View(activityViewModel);
@@ -422,6 +432,7 @@ namespace OPDB.Controllers
                     activityViewModel.Resources = getResources();
                     activityViewModel.ActivityDynamics = getActivityDynamics();
                     activityViewModel.ActivityMajors = getActivityMajors();
+                    activityViewModel.TargetPopulations = getTargetPopulations();
                     return View(activityViewModel);
                 }
             }
@@ -539,6 +550,7 @@ namespace OPDB.Controllers
                     activityViewModel.Resources = getResources();
                     activityViewModel.ActivityDynamics = getActivityDynamics();
                     activityViewModel.ActivityMajors = getActivityMajors();
+                    activityViewModel.TargetPopulations = getTargetPopulations();
 
                     return View(activityViewModel);
                 }
@@ -791,6 +803,7 @@ namespace OPDB.Controllers
                     activityViewModel.Resources = getResources();
                     activityViewModel.ActivityDynamics = getActivityDynamics();
                     activityViewModel.ActivityMajors = getActivityMajors();
+                    activityViewModel.TargetPopulations = getTargetPopulations();
 
                     return View(activityViewModel);
                 }
@@ -1416,6 +1429,25 @@ namespace OPDB.Controllers
 
         }
 
+        public List<SelectListItem> getTargetPopulations()
+        {
+            List<SelectListItem> types = new List<SelectListItem>();
+            foreach (var populations in db.TargetPopulations)
+            {
+                types.Add(new SelectListItem()
+                {
+                    Text = populations.TargetPopulation1,
+                    Value = populations.TargetPopulationID + ""
+
+                });
+
+            }
+
+            return types;
+        }
+
+        
+
         [HttpPost]
         public ActionResult Aprobar(int id)
         {
@@ -1505,7 +1537,8 @@ namespace OPDB.Controllers
                         Resources = getResources(),
                         ResourceIDs = new List<int>(),
                         ActivityMajors = getActivityMajors(),
-                        ActivityDynamics = getActivityDynamics()
+                        ActivityDynamics = getActivityDynamics(),
+                        TargetPopulations = getTargetPopulations()
                     };
 
                     return View(activityViewModel);
@@ -1636,6 +1669,7 @@ namespace OPDB.Controllers
                     activityViewModel.Resources = getResources();
                     activityViewModel.ActivityDynamics = getActivityDynamics();
                     activityViewModel.ActivityMajors = getActivityMajors();
+                    activityViewModel.TargetPopulations = getTargetPopulations();
                     return View(activityViewModel);
                 }
             }
@@ -1676,6 +1710,7 @@ namespace OPDB.Controllers
                     activityViewModel.Resources = getResources();
                     activityViewModel.ActivityDynamics = getActivityDynamics();
                     activityViewModel.ActivityMajors = getActivityMajors();
+                    activityViewModel.TargetPopulations = getTargetPopulations();
                     
                     
 
@@ -1929,6 +1964,7 @@ namespace OPDB.Controllers
                     activityViewModel.Resources = getResources();
                     activityViewModel.ActivityDynamics = getActivityDynamics();
                     activityViewModel.ActivityMajors = getActivityMajors();
+                    activityViewModel.TargetPopulations = getTargetPopulations();
 
                     return View(activityViewModel);
                 }

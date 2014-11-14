@@ -277,6 +277,7 @@
     <Compile Include="Models\OutreachEntityType.cs">
       <DependentUpon>OPDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ReportViewModel.cs" />
     <Compile Include="Models\Resource.cs">
       <DependentUpon>OPDBModel.tt</DependentUpon>
     </Compile>
@@ -292,6 +293,9 @@
     </Compile>
     <Compile Include="Models\SchoolViewModel.cs" />
     <Compile Include="Models\SearchViewModel.cs" />
+    <Compile Include="Models\TargetPopulation.cs">
+      <DependentUpon>OPDBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Unit.cs">
       <DependentUpon>OPDBModel.tt</DependentUpon>
     </Compile>
@@ -628,6 +632,7 @@
     <Content Include="Views\Usuarios\CrearUsuario.cshtml" />
     <Content Include="Views\Shared\ChangePassword.cshtml" />
     <Content Include="Views\Shared\RemovalReason.cshtml" />
+    <Content Include="Views\Home\FormularioReportes.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -166,8 +166,8 @@ function loadAdminView(e) {
     }            
     
     
-    var urlIDs = ["outreachURL", "activeOutreachURL", "pendingOutreachURL", "removedOutreachURL", "activitiesURL", "schoolsURL", "activeSchoolsURL", "removedSchoolsURL", "resourcesURL", "unitsURL", "usersURL", "activeUsersURL", "removedUsersURL"];
-    var liIDs = ["outreachAdmin", "activeOutreach", "pendingOutreach", "removedOutreach", "activitiesAdmin", "schoolsAdmin", "activeSchools", "removedSchools", "resourcesAdmin", "unitsAdmin", "usersAdmin", "activeUsers", "removedUsers"];
+    var urlIDs = ["outreachURL", "activeOutreachURL", "pendingOutreachURL", "removedOutreachURL", "activitiesURL", "schoolsURL", "activeSchoolsURL", "removedSchoolsURL", "resourcesURL", "unitsURL", "usersURL", "activeUsersURL", "removedUsersURL", "reportsURL"];
+    var liIDs = ["outreachAdmin", "activeOutreach", "pendingOutreach", "removedOutreach", "activitiesAdmin", "schoolsAdmin", "activeSchools", "removedSchools", "resourcesAdmin", "unitsAdmin", "usersAdmin", "activeUsers", "removedUsers", "reportsAdmin"];
     
     for (var i = 0; i < urlIDs.length; i++) {
 

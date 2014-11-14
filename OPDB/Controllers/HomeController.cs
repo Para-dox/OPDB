@@ -48,6 +48,14 @@ namespace OPDB.Controllers
 
             foreach (var activity in activities)
             {
+                var activityDynamic = new ActivityDynamic
+                {
+                    ActivityDynamic1 = ""
+                };
+
+                if (activity.ActivityDynamicID != null)
+                    activityDynamic = db.ActivityDynamics.Find(activity.ActivityDynamicID);
+
                 if (activity.ActivityDate == null)
                     activity.ActivityDate = new DateTime();
 
@@ -69,7 +77,8 @@ namespace OPDB.Controllers
                 homeViewModel.Information.Add(new UserInfoViewModel
                 {
                     Activity = activity,
-                    Interested = interested
+                    Interested = interested,
+                    ActivityDynamic = activityDynamic
                 });
             }
 
@@ -484,7 +493,15 @@ namespace OPDB.Controllers
 
         public ActionResult Administracion()
         {
-            return View();
+            if (User.Identity.IsAuthenticated)
+            {
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
+                    return View();
+                }
+            }
+
+            return RedirectToAction("AccesoDenegado");
         }
 
         public List<SelectListItem> getUserTypes()
@@ -695,6 +712,24 @@ namespace OPDB.Controllers
         public ActionResult AccesoDenegado()
         {
             return View("AccesoDenegado");
+        }
+
+        public ActionResult FormularioReportes(string requested)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1 && Boolean.Parse(requested))
+                {
+                    ReportViewModel reportViewModel = new ReportViewModel
+                    {
+
+                    };
+
+                    return PartialView();
+                }
+            }
+
+            return RedirectToAction("AccesoDenegado");
         }
     }
 

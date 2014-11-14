@@ -33,6 +33,8 @@ namespace OPDB.Models
         public List<SelectListItem> ActivityMajors { get; set; }
         public List<SelectListItem> ActivityDynamics { get; set; }
 
+        public List<SelectListItem> TargetPopulations { get; set; }
+
         public string ActivityDate { get; set; }
 
         public DateTime PreviousDate { get; set; }

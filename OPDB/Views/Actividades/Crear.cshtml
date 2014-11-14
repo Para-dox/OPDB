@@ -56,13 +56,11 @@
                 </div><br />
             </div>
             <div class="editor-label">
-                @Html.LabelFor(model => model.Activity.ActivityDynamicID, "Dinámica de Actividad")
+                @Html.LabelFor(model => model.Activity.TargetPopulationID, "Audiencia *")
             </div>
             <div class="editor-field">
-                @Html.ValidationMessage("Activity_ActivityDynamicID_Required")
-                @Html.DropDownListFor(model => model.Activity.ActivityDynamicID, Model.ActivityDynamics, new { @style = "width: 500px !important; height: 2.55rem !important;" })
+                @Html.DropDownListFor(model => model.Activity.TargetPopulationID, Model.TargetPopulations, new { @style = "width: 500px !important; height: 2.55rem !important;" })
             </div><br />
-
             <div class="editor-label">
                 @Html.LabelFor(model => model.Activity.Title, "Título de Actividad *")
             </div>

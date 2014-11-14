@@ -30,6 +30,10 @@
                 <h4>@Html.ActionLink(item.Activity.Title, "Detalles", "Actividades", new { id = item.Activity.ActivityID }, null)</h4>
                 <span>Propósito: </span><r>@String.Concat(item.Activity.Purpose.Substring(0, item.Activity.Purpose.Length > 100 ? 100 : item.Activity.Purpose.Length), "")</r><br />
                 <span>Tipo: </span><r>@item.Activity.ActivityType.ActivityType1</r><br />
+                <span>Área de Especialidad: </span><r>@item.Activity.ActivityMajor.ActivityMajor1</r><br />
+                @if (item.ActivityDynamic.ActivityDynamic1 != null && item.ActivityDynamic.ActivityDynamic1 != "")
+                {<span>Dinámica de la Actividad: </span><r>@item.ActivityDynamic.ActivityDynamic1</r><br />}
+                <span>Audiencia: </span><r>@item.Activity.TargetPopulation.TargetPopulation1</r><br />
                 @if (item.Activity.Location != null && item.Activity.Location != "")
                 {<span>Localización: </span><r>@item.Activity.Location</r><br /> }
                 @if (item.Activity.ActivityDate != null && item.Activity.ActivityDate != new DateTime())

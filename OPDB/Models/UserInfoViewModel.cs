@@ -27,6 +27,8 @@ namespace OPDB.Models
 
         public OutreachEntityDetail OutreachEntity { get; set; }
 
+        public ActivityDynamic ActivityDynamic { get; set; }
+
         
 
     }
