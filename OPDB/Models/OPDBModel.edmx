@@ -308,6 +308,7 @@
           <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserTypeID" Type="int" Nullable="false" />
           <Property Name="UserPassword" Type="text" Nullable="false" />
+          <Property Name="PasswordSalt" Type="text" />
           <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="PhoneNumber" Type="varchar" MaxLength="12" />
           <Property Name="UserStatus" Type="bit" Nullable="false" />
@@ -3171,6 +3172,7 @@
           <NavigationProperty Name="OutreachEntityDetails" Relationship="OPDBModel.OutreachEntityDetail_ibfk_2" FromRole="User" ToRole="OutreachEntityDetail" />
           <NavigationProperty Name="TargetPopulations" Relationship="OPDBModel.TargetPopulation_ibfk_1" FromRole="User" ToRole="TargetPopulation" />
           <NavigationProperty Name="TargetPopulations1" Relationship="OPDBModel.TargetPopulation_ibfk_2" FromRole="User" ToRole="TargetPopulation" />
+          <Property Name="PasswordSalt" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
           </EntityType>
         <Association Name="Activity_ibfk_21">
           <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
@@ -4295,6 +4297,7 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="OPDBModel.User">
               <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="PasswordSalt" ColumnName="PasswordSalt" />
                 <ScalarProperty Name="RemovalReason" ColumnName="RemovalReason" />
                 <ScalarProperty Name="DeletionDate" ColumnName="DeletionDate" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
