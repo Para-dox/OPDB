@@ -230,6 +230,12 @@ namespace OPDB.Controllers
 
                     if (validModel)
                     {
+                        var crypto = new SimpleCrypto.PBKDF2();
+                        string passwordHash = crypto.Compute(userViewModel.User.UserPassword);
+
+                        userViewModel.User.UserPassword = passwordHash;
+                        userViewModel.User.PasswordSalt = crypto.Salt;
+
                         userViewModel.OutreachEntity.CreateDate = DateTime.Now;
                         userViewModel.OutreachEntity.UpdateDate = DateTime.Now;
                         userViewModel.User.OutreachEntityDetails = new List<OutreachEntityDetail>();

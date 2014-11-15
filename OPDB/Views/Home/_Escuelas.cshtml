@@ -25,10 +25,10 @@
         @Html.LabelFor(model => model.School.Town, "Pueblo")
     </div>
     <div class="editor-field">
-        @Html.DropDownListFor(model => model.School.Town, Model.Towns, new { @style = "width: 500px !important;" })
+        @Html.DropDownListFor(model => model.School.Town, Model.Towns)
     </div>
 
-
+    <br/>
 
     <p style="float:right;">
         <input type="submit" class="btn" value="Buscar" />

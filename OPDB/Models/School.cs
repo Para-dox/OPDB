@@ -40,6 +40,7 @@ namespace OPDB.Models
         [RegularExpression(@"^[a-zA-Z\u00c0-\u017e0-9,.'\s]+[-]?[a-zA-Z\u00c0-\u017e0-9,.'\s]+$", ErrorMessageResourceName = "School_Address_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
         [Required(ErrorMessageResourceName = "School_Address_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Address { get; set; }
+        [Required(ErrorMessageResourceName = "School_Town_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Town { get; set; }
                 
         [RegularExpression(@"^([2-9]\d{2}|[2-9]\d{2})[- .]?\d{3}[- .]?\d{4}$", ErrorMessageResourceName = "School_PhoneNumber_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
@@ -51,6 +52,8 @@ namespace OPDB.Models
         public int UpdateUser { get; set; }
         public System.DateTime UpdateDate { get; set; }
         public Nullable<System.DateTime> DeletionDate { get; set; }
+
+        [Required(ErrorMessageResourceName = "School_RegionID_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public int SchoolRegionID { get; set; }
 
         public virtual ICollection<Activity> Activities { get; set; }

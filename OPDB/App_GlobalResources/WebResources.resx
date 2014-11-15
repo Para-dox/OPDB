@@ -243,6 +243,9 @@
   <data name="School_PhoneNumber_Required" xml:space="preserve">
     <value>No ha ingresado un número telefónico para esta escuela</value>
   </data>
+  <data name="School_RegionID_Required" xml:space="preserve">
+    <value>No ha escogido una region escolar</value>
+  </data>
   <data name="School_SchoolName_Invalid" xml:space="preserve">
     <value>El nombre de la escuelas es inválido</value>
   </data>
@@ -263,6 +266,9 @@
   </data>
   <data name="School_SchoolSequenceNumber_Unique" xml:space="preserve">
     <value>Ya existe una escuela con ese numéro de identificación</value>
+  </data>
+  <data name="School_Town_Required" xml:space="preserve">
+    <value>Debe escoger un pueblo. </value>
   </data>
   <data name="Unit_Building_Invalid" xml:space="preserve">
     <value>El nombre del edificio es inválido</value>

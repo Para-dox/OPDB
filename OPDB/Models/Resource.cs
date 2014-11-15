@@ -28,7 +28,6 @@ namespace OPDB.Models
         [RegularExpression(@"^([a-zA-Z\u00c0-\u017e0-9.,/\s]+[-]?[a-zA-Z\u00c0-\u017e0-9.,/\s]+)+$", ErrorMessageResourceName = "Resource_ResourceName_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
         [Required(ErrorMessageResourceName = "Resource_ResourceName_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Resource1 { get; set; }
-
         public int UnitID { get; set; }
         public int CreateUser { get; set; }
         public System.DateTime CreateDate { get; set; }
