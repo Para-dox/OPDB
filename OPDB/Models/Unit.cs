@@ -24,7 +24,7 @@ namespace OPDB.Models
 
         public int UnitID { get; set; }
 
-        [RegularExpression(@"^[a-zA-Z\u00c0-\u017e0-9\-\s]{1,40}$", ErrorMessageResourceName = "Unit_UnitName_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
+        [RegularExpression(@"^[a-zA-Z\u00c0-\u017e0-9\-\s]{1,100}$", ErrorMessageResourceName = "Unit_UnitName_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
         [Required(ErrorMessageResourceName = "Unit_UnitName_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string UnitName { get; set; }
 
