@@ -11,6 +11,7 @@ using System.Data.Entity.Validation;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Globalization;
+using System.Text;
 
 namespace OPDB.Controllers
 {
@@ -247,7 +248,6 @@ namespace OPDB.Controllers
 
                 else
                 {
-
                     if (userViewModel.UserDetail.FirstName == null || userViewModel.UserDetail.FirstName == "")
                     {
                         ModelState.AddModelError("UserDetail_FirstName_Required", Resources.WebResources.UserDetail_FirstName_Required);
@@ -331,25 +331,25 @@ namespace OPDB.Controllers
                     }
 
                     if (userViewModel.UserDetail.Role != null && userViewModel.UserDetail.Role != "")
+                    {
+                        string pattern = @"^[a-zA-Z\u00c0-\u017e\s]+[-]?[a-zA-Z\u00c0-\u017e\s]+$";
+                        Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                        MatchCollection matches = rgx.Matches(userViewModel.UserDetail.Role);
+                        if (matches.Count == 0)
                         {
-                            string pattern = @"^[a-zA-Z\u00c0-\u017e\s]+[-]?[a-zA-Z\u00c0-\u017e\s]+$";
-                            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                            MatchCollection matches = rgx.Matches(userViewModel.UserDetail.Role);
-                            if (matches.Count == 0)
-                            {
-                                ModelState.AddModelError("UserDetail_Role_Invalid", Resources.WebResources.UserDetail_Role_Invalid);
-                                validModel = false;
-                            }
-                            else if (userViewModel.UserDetail.Role.Length > 100)
-                            {
-                                ModelState.AddModelError("UserDetail_Role_LengthExceeded", Resources.WebResources.UserDetail_Role_LengthExceeded);
-                                validModel = false;
-                            }
-
+                            ModelState.AddModelError("UserDetail_Role_Invalid", Resources.WebResources.UserDetail_Role_Invalid);
+                            validModel = false;
+                        }
+                        else if (userViewModel.UserDetail.Role.Length > 100)
+                        {
+                            ModelState.AddModelError("UserDetail_Role_LengthExceeded", Resources.WebResources.UserDetail_Role_LengthExceeded);
+                            validModel = false;
                         }
 
+                    }
+
                     if (userViewModel.UserDetail.Major != null && userViewModel.UserDetail.Major != "")
-                     {
+                    {
                          string pattern = @"^[a-zA-Z\u00c0-\u017e\s]+[-]?[a-zA-Z\u00c0-\u017e\s]+$";
                          Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
                          MatchCollection matches = rgx.Matches(userViewModel.UserDetail.Major);
@@ -384,6 +384,13 @@ namespace OPDB.Controllers
 
                     if (validModel)
                     {
+                        // TODO: verify if this is working correctly
+                        var crypto = new SimpleCrypto.PBKDF2();
+                        string passwordHash = crypto.Compute(userViewModel.User.UserPassword);
+
+                        userViewModel.User.UserPassword = passwordHash;
+                        userViewModel.User.PasswordSalt = crypto.Salt;
+
                         userViewModel.UserDetail.CreateDate = DateTime.Now;
                         userViewModel.UserDetail.UpdateDate = DateTime.Now;
                         userViewModel.User.UserDetails = new List<UserDetail>();
@@ -400,7 +407,21 @@ namespace OPDB.Controllers
                     }
                 }
 
-                db.SaveChanges();
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (DbEntityValidationException dbEx)
+                {
+                    foreach (var validationErrors in dbEx.EntityValidationErrors)
+                    {
+                        foreach (var validationError in validationErrors.ValidationErrors)
+                        {
+                            Debug.WriteLine("Property: {0} Error: {1}",
+                               validationError.PropertyName, validationError.ErrorMessage);
+                        }
+                    }
+                }
 
                 return RedirectToAction("Index", "Home");
 
@@ -1076,35 +1097,40 @@ namespace OPDB.Controllers
         [HttpPost]
         public ActionResult IniciarSesion(UserViewModel userViewModel)
         {
-            // TODO: passwords have no encryption at all - fix later with SimpleCrypto NuGet Package
             User user = db.Users.FirstOrDefault(u => u.Email == userViewModel.User.Email);
-            
+
             if (user != null)
+            {
+                // TODO: verify if this is working correctly
+                var crypto = new SimpleCrypto.PBKDF2();
+                string hashedLoginPass = crypto.Compute(userViewModel.User.UserPassword, user.PasswordSalt);
+
+                if (!user.UserStatus)
                 {
-                    if (!user.UserStatus)
-                    {
-                        ModelState.AddModelError("", Resources.WebResources.User_Email_NotApproved);
+                    ModelState.AddModelError("", Resources.WebResources.User_Email_NotApproved);
 
-                        return Content(GetErrorsFromModelState(userViewModel));
-                    }
-                    if (userViewModel.User.UserPassword.ToString().Equals(user.UserPassword))
-                    {
-                        FormsAuthentication.SetAuthCookie(user.UserID + "," + user.UserTypeID + "," + user.UserStatus, false);
+                    return Content(GetErrorsFromModelState(userViewModel));
+                }
 
-                        return PartialView("_Hack");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", Resources.WebResources.User_UserPassword_NoMatch);
-                    }
+                //if (user.UserPassword == userViewModel.User.UserPassword)
+                if (user.UserPassword == hashedLoginPass)
+                {
+                    FormsAuthentication.SetAuthCookie(user.UserID + "," + user.UserTypeID + "," + user.UserStatus, false);
+
+                    return PartialView("_Hack");
                 }
                 else
                 {
-                    ModelState.AddModelError("", Resources.WebResources.User_Email_NoMatch);
+                    ModelState.AddModelError("", Resources.WebResources.User_UserPassword_NoMatch);
                 }
+            }
+            else
+            {
+                ModelState.AddModelError("", Resources.WebResources.User_Email_NoMatch);
+            }
 
-                return Content(GetErrorsFromModelState(userViewModel));
-            
+            return Content(GetErrorsFromModelState(userViewModel));
+
         }
 
         public ActionResult CerrarSesion()
@@ -1144,7 +1170,6 @@ namespace OPDB.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-
                 if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
                 {
                     UserViewModel userViewModel = new UserViewModel
@@ -1161,13 +1186,11 @@ namespace OPDB.Controllers
             return RedirectToAction("AccesoDenegado", "Home");
         }
 
-
         [HttpPost]
         public ActionResult CrearUsuario(UserViewModel userViewModel)
         {
             if (User.Identity.IsAuthenticated)
             {
-
                 if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
                 {
                     if (ModelState.IsValid)
@@ -1210,7 +1233,6 @@ namespace OPDB.Controllers
                                 ModelState.AddModelError("UserDetail_FirstName_LengthExceeded", Resources.WebResources.UserDetail_FirstName_LengthExceeded);
                                 validModel = false;
                             }
-
                         }
 
                         if (userViewModel.UserDetail.LastName == null || userViewModel.UserDetail.LastName == "")
@@ -1233,7 +1255,6 @@ namespace OPDB.Controllers
                                 ModelState.AddModelError("UserDetail_LastName_LengthExceeded", Resources.WebResources.UserDetail_LastName_LengthExceeded);
                                 validModel = false;
                             }
-
                         }
 
                         if (userViewModel.UserDetail.Gender == null || userViewModel.UserDetail.Gender == "")
@@ -1326,6 +1347,13 @@ namespace OPDB.Controllers
 
                         if (validModel)
                         {
+                            // TODO: verify if this is working correctly
+                            var crypto = new SimpleCrypto.PBKDF2();
+                            string passwordHash = crypto.Compute(userViewModel.User.UserPassword);
+
+                            userViewModel.User.UserPassword = passwordHash;
+                            userViewModel.User.PasswordSalt = crypto.Salt;
+
                             userViewModel.UserDetail.CreateDate = DateTime.Now;
                             userViewModel.UserDetail.UpdateDate = DateTime.Now;
                             userViewModel.User.UserDetails = new List<UserDetail>();
@@ -1335,13 +1363,11 @@ namespace OPDB.Controllers
                             db.SaveChanges();
                             return RedirectToAction("Administracion", "Home", null);
                         }
-
                     }
 
                     userViewModel.UserTypes = getAllUserTypes();
                     return View("CrearUsuario", userViewModel);
                 }
-
             }
 
             return RedirectToAction("AccesoDenegado", "Home");
@@ -1389,17 +1415,20 @@ namespace OPDB.Controllers
                     validModel = false;
                 }
 
-
-
                 if (validModel && ModelState.IsValid)
                 {
-                    
-                    userViewModel.User.UserPassword = userViewModel.NewPassword;
+                    // TODO verify password hashing here
+                    var crypto = new SimpleCrypto.PBKDF2();
+                    string passwordHash = crypto.Compute(userViewModel.NewPassword);
+
+                    userViewModel.User.UserPassword = passwordHash;
+                    userViewModel.User.PasswordSalt = crypto.Salt;
+
                     userViewModel.User.UpdateDate = DateTime.Now;
                     db.Entry(user).CurrentValues.SetValues(userViewModel.User);
                     db.SaveChanges();
-                    return View("_Hack");                   
 
+                    return View("_Hack");
                 }
             }
                 
