@@ -102,9 +102,11 @@ namespace OPDB.Controllers
             {
                 if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
                 {
+                    HomeController controller = new HomeController();
+
                     SchoolViewModel schoolViewModel = new SchoolViewModel
                     {
-                        Towns = getTowns(),
+                        Towns = controller.getTowns(),
                         SchoolRegions = getSchoolRegions()
                     };
 
@@ -157,10 +159,12 @@ namespace OPDB.Controllers
             {
                 if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
                 {
+                    HomeController controller = new HomeController();
+
                     SchoolViewModel schoolViewModel = new SchoolViewModel
                     {
                         School = db.Schools.Find(id),
-                        Towns = getTowns(),
+                        Towns = controller.getTowns(),
                         SchoolRegions = getSchoolRegions()
                     };
 
@@ -509,33 +513,6 @@ namespace OPDB.Controllers
 
             return regions;
         }
-
-
-        public List<SelectListItem> getTowns()
-        {
-            List<SelectListItem> towns = new List<SelectListItem>();
-
-            String[] town = new String[] { "Adjuntas", "Aguada", "Aguadilla", "Aguas Buenas", "Aibonito", "Añasco",
-            "Arecibo", "Arroyo", "Barceloneta", "Barranquitas", "Bayamón", "Cabo Rojo", "Caguas", "Camuy", "Canóvanas",
-            "Carolina", "Cataño", "Cayey", "Ceiba", "Ciales", "Cidra", "Coamo", "Comerío", "Corozal", "Culebra", "Dorado",
-            "Fajardo", "Florida", "Guánica", "Guayama", "Guayanilla", "Guaynabo", "Gurabo", "Hatillo", "Hormigueros", "Humacao",
-            "Isabela", "Jayuya", "Juana Díaz", "Juncos", "Lajas", "Lares", "Las Marías", "Las Piedras", "Loíza", "Luquillo", "Manatí",
-            "Maricao", "Maunabo", "Mayagüez", "Moca", "Morovis", "Naguabo", "Naranjito", "Orocovis", "Patillas", "Peñuelas", "Ponce",
-            "Quebradillas", "Rincón", "Río Grande", "Sabana Grande", "Salinas", "San Germán", "San Juan", "San Lorenzo", "San Sebastián",
-            "Santa Isabel", "Toa Alta", "Toa Baja", "Trujillo Alto", "Utuado", "Vega Alta", "Vega Baja", "Vieques", "Villalba", "Yabucoa",
-            "Yauco"};
-
-            for (int i = 0; i < town.Length; i++)
-            {
-                towns.Add(new SelectListItem()
-                {
-                    Text = town[i],
-                    Value = town[i]
-                });
-            }
         
-            return towns;
-
-        }
     }
 }

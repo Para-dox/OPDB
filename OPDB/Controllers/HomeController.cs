@@ -178,7 +178,8 @@ namespace OPDB.Controllers
 
             if (view == "_Usuarios")
             {
-               searchViewModel.Types = getUserTypes();
+                UsuariosController controller = new UsuariosController();
+                searchViewModel.Types = controller.getUserTypes("Admin");
             }
 
             if (view == "_Actividades")
@@ -504,33 +505,7 @@ namespace OPDB.Controllers
             return RedirectToAction("AccesoDenegado");
         }
 
-        public List<SelectListItem> getUserTypes()
-        {
-            List<SelectListItem> types = new List<SelectListItem>();
-
-            types.Add(new SelectListItem()
-            {
-                Text = "",
-                Value = ""
-            });
-
-            foreach (var userType in db.UserTypes)
-            {
-
-                if (userType.UserTypeID != 3)
-                {
-                    types.Add(new SelectListItem()
-                    {
-                        Text = userType.UserType1,
-                        Value = userType.UserTypeID + ""
-
-                    });
-                }
-            }
-
-            return types;
-        }
-
+        
         public JsonResult CalendarData()
         {
             List<CalendarActivity> events = new List<CalendarActivity>();
@@ -590,8 +565,8 @@ namespace OPDB.Controllers
 
             types.Add(new SelectListItem()
             {
-                Text = "",
-                Value = ""
+                Text = null,
+                Value = null
             });
 
             foreach (var outreachType in db.OutreachEntityTypes)
@@ -616,8 +591,8 @@ namespace OPDB.Controllers
 
             types.Add(new SelectListItem()
             {
-                Text = "",
-                Value = ""
+                Text = null,
+                Value = null
             });
 
             foreach (var activityType in db.ActivityTypes)
@@ -640,8 +615,8 @@ namespace OPDB.Controllers
 
             types.Add(new SelectListItem()
             {
-                Text = "",
-                Value = ""
+                Text = null,
+                Value = null
             });
 
             foreach (var activityMajor in (from major in db.ActivityMajors orderby major.ActivityMajor1 ascending select major).ToList())
@@ -664,8 +639,8 @@ namespace OPDB.Controllers
 
             types.Add(new SelectListItem()
             {
-                Text = "",
-                Value = ""
+                Text = null,
+                Value = null
             });
 
             foreach (var activityDynamic in db.ActivityDynamics)
@@ -688,8 +663,8 @@ namespace OPDB.Controllers
 
             types.Add(new SelectListItem()
             {
-                Text = "",
-                Value = ""
+                Text = null,
+                Value = null
 
             });
 
@@ -711,7 +686,7 @@ namespace OPDB.Controllers
         {
             List<SelectListItem> towns = new List<SelectListItem>();
 
-            String[] town = new String[] { "", "Adjuntas", "Aguada", "Aguadilla", "Aguas Buenas", "Aibonito", "Añasco",
+            String[] town = new String[] { null, "Adjuntas", "Aguada", "Aguadilla", "Aguas Buenas", "Aibonito", "Añasco",
             "Arecibo", "Arroyo", "Barceloneta", "Barranquitas", "Bayamón", "Cabo Rojo", "Caguas", "Camuy", "Canóvanas",
             "Carolina", "Cataño", "Cayey", "Ceiba", "Ciales", "Cidra", "Coamo", "Comerío", "Corozal", "Culebra", "Dorado",
             "Fajardo", "Florida", "Guánica", "Guayama", "Guayanilla", "Guaynabo", "Gurabo", "Hatillo", "Hormigueros", "Humacao",
@@ -850,13 +825,21 @@ namespace OPDB.Controllers
 
             semesters.Add(new SelectListItem
             {
-                Text = "",
-                Value = ""
+                Text = null,
+                Value = null
             });
-            
-            var minYear = (from activity in db.Activities where activity.DeletionDate == null && activity.ActivityDate != null select activity.ActivityDate.Value.Year).ToList().Min();
 
-            var maxYear = (from activity in db.Activities where activity.DeletionDate == null && activity.ActivityDate != null select activity.ActivityDate.Value.Year).ToList().Max();
+            var minYears = (from activity in db.Activities where activity.DeletionDate == null && activity.ActivityDate != null select activity.ActivityDate.Value.Year).ToList();
+            var minYear = DateTime.Now.Year; 
+
+            if(minYears.Count() > 0)
+                    minYear = minYears.Min();
+
+            var maxYears = (from activity in db.Activities where activity.DeletionDate == null && activity.ActivityDate != null select activity.ActivityDate.Value.Year).ToList();
+            var maxYear = DateTime.Now.Year;
+
+            if(maxYears.Count() > 0)
+                    maxYear = maxYears.Min();
 
             for (int i = minYear; i <= maxYear; i++)
             {

@@ -25,6 +25,7 @@
                 @Html.LabelFor(model => model.User.UserTypeID, "Tipo de Usuario *")
             </div>
             <div class="editor-field">
+                @Html.ValidationMessageFor(model => model.User.UserTypeID)
                 @Html.DropDownListFor(model => model.User.UserTypeID, Model.UserTypes, new { @style = "width: 500px !important;", @id = "userType", @onchange = "getValue()" })
             </div><br />
             <div class="editor-label">

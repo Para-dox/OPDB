@@ -92,12 +92,13 @@ namespace OPDB.Controllers
 
         public ActionResult Crear()
         {
+            HomeController controller = new HomeController();
 
             UserViewModel user = new UserViewModel
             {
 
-                UserTypes = getTypes(),
-                OutreachTypes = getOutreachTypes()
+                UserTypes = getUserTypes("New"),
+                OutreachTypes = controller.getOutreachTypes()
 
             };
 
@@ -110,13 +111,15 @@ namespace OPDB.Controllers
         [HttpPost]
         public ActionResult Crear(UserViewModel userViewModel)
         {
+            HomeController controller = new HomeController();
+
             if (ModelState.IsValid)
             {
                 userViewModel.User.CreateDate = DateTime.Now;
                 userViewModel.User.UpdateDate = DateTime.Now;
                 bool validModel = true;
 
-                User matchingUser = db.Users.FirstOrDefault(u => u.Email == userViewModel.User.Email);
+                User matchingUser = (from user in db.Users where (String.Compare(user.Email, userViewModel.User.Email, true) == 0) && user.DeletionDate == null select user).FirstOrDefault();
 
                 if (matchingUser != null)
                 {
@@ -132,6 +135,11 @@ namespace OPDB.Controllers
 
                 if (userViewModel.User.UserTypeID == 3)
                 {
+                    if (userViewModel.OutreachEntity.OutreachEntityTypeID == 0)
+                    {
+                        ModelState.AddModelError("OutreachEntityDetail_OutreachEntityTypeID_Required", Resources.WebResources.OutreachEntityDetail_OutreachEntityTypeID_Required);
+                        validModel = false;
+                    }
 
                     if (userViewModel.OutreachEntity.OutreachEntityName == null || userViewModel.OutreachEntity.OutreachEntityName == "")
                     {
@@ -246,8 +254,8 @@ namespace OPDB.Controllers
 
                     else
                     {
-                        userViewModel.UserTypes = getTypes();
-                        userViewModel.OutreachTypes = getOutreachTypes();
+                        userViewModel.UserTypes = getUserTypes("New");
+                        userViewModel.OutreachTypes = controller.getOutreachTypes();
                         return View(userViewModel);
                     }
                 }
@@ -356,37 +364,37 @@ namespace OPDB.Controllers
 
                     if (userViewModel.UserDetail.Major != null && userViewModel.UserDetail.Major != "")
                     {
-                         string pattern = @"^[a-zA-Z\u00c0-\u017e\s]+[-]?[a-zA-Z\u00c0-\u017e\s]+$";
-                         Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                         MatchCollection matches = rgx.Matches(userViewModel.UserDetail.Major);
-                         if (matches.Count == 0)
-                         {
-                             ModelState.AddModelError("UserDetail_Major_Invalid", Resources.WebResources.UserDetail_Major_Invalid);
-                             validModel = false;
-                         }
-                         else if (userViewModel.UserDetail.Major.Length > 100)
-                         {
-                             ModelState.AddModelError("UserDetail_Major_LengthExceeded", Resources.WebResources.UserDetail_Major_LengthExceeded);
-                             validModel = false;
-                         }
-                     }
+                        string pattern = @"^[a-zA-Z\u00c0-\u017e\s]+[-]?[a-zA-Z\u00c0-\u017e\s]+$";
+                        Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                        MatchCollection matches = rgx.Matches(userViewModel.UserDetail.Major);
+                        if (matches.Count == 0)
+                        {
+                            ModelState.AddModelError("UserDetail_Major_Invalid", Resources.WebResources.UserDetail_Major_Invalid);
+                            validModel = false;
+                        }
+                        else if (userViewModel.UserDetail.Major.Length > 100)
+                        {
+                            ModelState.AddModelError("UserDetail_Major_LengthExceeded", Resources.WebResources.UserDetail_Major_LengthExceeded);
+                            validModel = false;
+                        }
+                    }
 
-                     if (userViewModel.UserDetail.Grade != null && userViewModel.UserDetail.Grade != "")
-                     {
-                         string pattern = @"^(([1]?[0-2])|[1-9]|[K])$";
-                         Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                         MatchCollection matches = rgx.Matches(userViewModel.UserDetail.Grade);
-                         if (matches.Count == 0)
-                         {
-                             ModelState.AddModelError("UserDetail_Grade_Invalid", Resources.WebResources.UserDetail_Grade_Invalid);
-                             validModel = false;
-                         }
-                         else if (userViewModel.UserDetail.Grade.Length > 2)
-                         {
-                             ModelState.AddModelError("UserDetail_Grade_LengthExceeded", Resources.WebResources.UserDetail_Grade_LengthExceeded);
-                             validModel = false;
-                         }
-                     }
+                    if (userViewModel.UserDetail.Grade != null && userViewModel.UserDetail.Grade != "")
+                    {
+                        string pattern = @"^(([1]?[0-2])|[1-9]|[K])$";
+                        Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                        MatchCollection matches = rgx.Matches(userViewModel.UserDetail.Grade);
+                        if (matches.Count == 0)
+                        {
+                            ModelState.AddModelError("UserDetail_Grade_Invalid", Resources.WebResources.UserDetail_Grade_Invalid);
+                            validModel = false;
+                        }
+                        else if (userViewModel.UserDetail.Grade.Length > 2)
+                        {
+                            ModelState.AddModelError("UserDetail_Grade_LengthExceeded", Resources.WebResources.UserDetail_Grade_LengthExceeded);
+                            validModel = false;
+                        }
+                    }
 
                     if (validModel)
                     {
@@ -403,38 +411,28 @@ namespace OPDB.Controllers
                         userViewModel.User.UserDetails.Add(userViewModel.UserDetail);
                         userViewModel.User.UserStatus = true;
                         db.Users.Add(userViewModel.User);
+
+                       
+
                     }
 
                     else
                     {
-                        userViewModel.UserTypes = getTypes();
-                        userViewModel.OutreachTypes = getOutreachTypes();
+                        userViewModel.UserTypes = getUserTypes("New");
+                        userViewModel.OutreachTypes = controller.getOutreachTypes();
                         return View(userViewModel);
                     }
                 }
 
-                try
-                {
-                    db.SaveChanges();
-                }
-                catch (DbEntityValidationException dbEx)
-                {
-                    foreach (var validationErrors in dbEx.EntityValidationErrors)
-                    {
-                        foreach (var validationError in validationErrors.ValidationErrors)
-                        {
-                            Debug.WriteLine("Property: {0} Error: {1}",
-                               validationError.PropertyName, validationError.ErrorMessage);
-                        }
-                    }
-                }
+                db.SaveChanges();                   
+                
 
                 return RedirectToAction("Index", "Home");
 
             }
 
-            userViewModel.UserTypes = getTypes();
-            userViewModel.OutreachTypes = getOutreachTypes();
+            userViewModel.UserTypes = getUserTypes("New");
+            userViewModel.OutreachTypes = controller.getOutreachTypes();
 
             return View(userViewModel);
         }
@@ -460,10 +458,10 @@ namespace OPDB.Controllers
                     };
 
                     if (Int32.Parse(User.Identity.Name.Split(',')[0]) == id)
-                        userViewModel.UserTypes = getUserTypes();
+                        userViewModel.UserTypes = getUserTypes("User");
 
                     if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
-                        userViewModel.UserTypes = getAllUserTypes();
+                        userViewModel.UserTypes = getUserTypes("Admin");
 
                     if (userViewModel.User == null)
                     {
@@ -654,9 +652,9 @@ namespace OPDB.Controllers
                     }
 
                     if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
-                        userViewModel.UserTypes = getAllUserTypes();
+                        userViewModel.UserTypes = getUserTypes("Admin");
                     else
-                        userViewModel.UserTypes = getUserTypes();
+                        userViewModel.UserTypes = getUserTypes("User");
 
                     return View(userViewModel);
                 }
@@ -664,7 +662,7 @@ namespace OPDB.Controllers
 
             return RedirectToAction("AccesoDenegado", "Home");
         }
-        
+
         [HttpPost]
         public ActionResult PopUpRemover(int id)
         {
@@ -782,20 +780,55 @@ namespace OPDB.Controllers
             base.Dispose(disposing);
         }
 
-        public List<SelectListItem> getTypes()
+        
+
+        public List<SelectListItem> getUserTypes(string request)
         {
             List<SelectListItem> types = new List<SelectListItem>();
-            foreach (var userType in db.UserTypes)
+            types.Add(new SelectListItem()
             {
+                Text = null,
+                Value = null
 
-                if (userType.UserTypeID > 2)
+            });
+
+            if (request == "Admin")
+            {
+                foreach (var userType in (from userType in db.UserTypes where userType.UserTypeID != 3 select userType))
                 {
-                    types.Add(new SelectListItem()
-                    {
-                        Text = userType.UserType1,
-                        Value = userType.UserTypeID + ""
+                        types.Add(new SelectListItem()
+                        {
+                            Text = userType.UserType1,
+                            Value = userType.UserTypeID + ""
 
-                    });
+                        });
+                }
+            }
+            else if(request == "User")
+            {
+                foreach (var userType in (from userType in db.UserTypes where userType.UserTypeID > 3 select userType))
+                {
+
+                        types.Add(new SelectListItem()
+                        {
+                            Text = userType.UserType1,
+                            Value = userType.UserTypeID + ""
+
+                        });
+                }
+
+            }
+            else if(request == "New")
+            {
+                foreach (var userType in (from userType in db.UserTypes where userType.UserTypeID > 2 select userType))
+                {
+
+                        types.Add(new SelectListItem()
+                        {
+                            Text = userType.UserType1,
+                            Value = userType.UserTypeID + ""
+
+                        });
                 }
             }
 
@@ -803,44 +836,6 @@ namespace OPDB.Controllers
 
         }
 
-        public List<SelectListItem> getUserTypes()
-        {
-            List<SelectListItem> types = new List<SelectListItem>();
-            foreach (var userType in db.UserTypes)
-            {
-
-                if (userType.UserTypeID > 3)
-                {
-                    types.Add(new SelectListItem()
-                    {
-                        Text = userType.UserType1,
-                        Value = userType.UserTypeID + ""
-
-                    });
-                }
-            }
-
-            return types;
-
-        }
-
-        public List<SelectListItem> getOutreachTypes()
-        {
-            List<SelectListItem> types = new List<SelectListItem>();
-            foreach (var outreachType in db.OutreachEntityTypes)
-            {
-
-                types.Add(new SelectListItem()
-                    {
-                        Text = outreachType.OutreachEntityType1,
-                        Value = outreachType.OutreachEntityTypeID + ""
-
-                    });
-
-            }
-
-            return types;
-        }
 
         public List<SelectListItem> getSchools()
         {
@@ -849,8 +844,8 @@ namespace OPDB.Controllers
 
             types.Add(new SelectListItem()
             {
-                Text = "",
-                Value = ""
+                Text = null,
+                Value = null
             });
 
             foreach (var school in schools)
@@ -872,8 +867,8 @@ namespace OPDB.Controllers
 
             types.Add(new SelectListItem()
             {
-                Text = "",
-                Value = ""
+                Text = null,
+                Value = null
             });
 
             foreach (var unit in units)
@@ -895,8 +890,8 @@ namespace OPDB.Controllers
 
             types.Add(new SelectListItem()
             {
-                Text = "",
-                Value = ""
+                Text = null,
+                Value = null
             });
 
             foreach (var outreachEntity in outreachEntities)
@@ -1150,28 +1145,6 @@ namespace OPDB.Controllers
         /// Admin Methods
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        public List<SelectListItem> getAllUserTypes()
-        {
-            List<SelectListItem> types = new List<SelectListItem>();
-            foreach (var userType in db.UserTypes)
-            {
-
-                if (userType.UserTypeID != 3)
-                {
-                    types.Add(new SelectListItem()
-                    {
-                        Text = userType.UserType1,
-                        Value = userType.UserTypeID + ""
-
-                    });
-                }
-            }
-
-            return types;
-
-        }
-
-
         public ActionResult CrearUsuario()
         {
             if (User.Identity.IsAuthenticated)
@@ -1181,7 +1154,7 @@ namespace OPDB.Controllers
                     UserViewModel userViewModel = new UserViewModel
                     {
 
-                        UserTypes = getAllUserTypes()
+                        UserTypes = getUserTypes("Admin")
 
                     };
 
@@ -1318,38 +1291,38 @@ namespace OPDB.Controllers
                         }
 
                         if (userViewModel.UserDetail.Major != null && userViewModel.UserDetail.Major != "")
-                         {
-                             string pattern = @"^[a-zA-Z\u00c0-\u017e\s]+[-]?[a-zA-Z\u00c0-\u017e\s]+$";
-                             Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                             MatchCollection matches = rgx.Matches(userViewModel.UserDetail.Major);
-                             if (matches.Count == 0)
-                             {
-                                 ModelState.AddModelError("UserDetail_Major_Invalid", Resources.WebResources.UserDetail_Major_Invalid);
-                                 validModel = false;
-                             }
-                             else if (userViewModel.UserDetail.Major.Length > 100)
-                             {
-                                 ModelState.AddModelError("UserDetail_Major_LengthExceeded", Resources.WebResources.UserDetail_Major_LengthExceeded);
-                                 validModel = false;
-                             }
-                         }
+                        {
+                            string pattern = @"^[a-zA-Z\u00c0-\u017e\s]+[-]?[a-zA-Z\u00c0-\u017e\s]+$";
+                            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                            MatchCollection matches = rgx.Matches(userViewModel.UserDetail.Major);
+                            if (matches.Count == 0)
+                            {
+                                ModelState.AddModelError("UserDetail_Major_Invalid", Resources.WebResources.UserDetail_Major_Invalid);
+                                validModel = false;
+                            }
+                            else if (userViewModel.UserDetail.Major.Length > 100)
+                            {
+                                ModelState.AddModelError("UserDetail_Major_LengthExceeded", Resources.WebResources.UserDetail_Major_LengthExceeded);
+                                validModel = false;
+                            }
+                        }
 
                         if (userViewModel.UserDetail.Grade != null && userViewModel.UserDetail.Grade != "")
-                         {
-                             string pattern = @"^(([1]?[0-2])|[1-9]|[K])$";
-                             Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                             MatchCollection matches = rgx.Matches(userViewModel.UserDetail.Grade);
-                             if (matches.Count == 0)
-                             {
-                                 ModelState.AddModelError("UserDetail_Grade_Invalid", Resources.WebResources.UserDetail_Grade_Invalid);
-                                 validModel = false;
-                             }
-                             else if (userViewModel.UserDetail.Grade.Length > 2)
-                             {
-                                 ModelState.AddModelError("UserDetail_Grade_LengthExceeded", Resources.WebResources.UserDetail_Grade_LengthExceeded);
-                                 validModel = false;
-                             }
-                         }
+                        {
+                            string pattern = @"^(([1]?[0-2])|[1-9]|[K])$";
+                            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                            MatchCollection matches = rgx.Matches(userViewModel.UserDetail.Grade);
+                            if (matches.Count == 0)
+                            {
+                                ModelState.AddModelError("UserDetail_Grade_Invalid", Resources.WebResources.UserDetail_Grade_Invalid);
+                                validModel = false;
+                            }
+                            else if (userViewModel.UserDetail.Grade.Length > 2)
+                            {
+                                ModelState.AddModelError("UserDetail_Grade_LengthExceeded", Resources.WebResources.UserDetail_Grade_LengthExceeded);
+                                validModel = false;
+                            }
+                        }
 
                         if (validModel)
                         {
@@ -1371,7 +1344,7 @@ namespace OPDB.Controllers
                         }
                     }
 
-                    userViewModel.UserTypes = getAllUserTypes();
+                    userViewModel.UserTypes = getUserTypes("Admin");
                     return View("CrearUsuario", userViewModel);
                 }
             }
@@ -1437,9 +1410,9 @@ namespace OPDB.Controllers
                     return View("_Hack");
                 }
             }
-                
+
             return Content(GetErrorsFromModelState(userViewModel));
-            
+
 
         }
     }
