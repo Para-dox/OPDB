@@ -97,11 +97,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to El área de concentración de la actividad es requerido.
+        /// </summary>
+        internal static string Activity_ActivityMajorID_Required {
+            get {
+                return ResourceManager.GetString("Activity_ActivityMajorID_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to El tiempo que ha entrado es inválido.
         /// </summary>
         internal static string Activity_ActivityTime_Invalid {
             get {
                 return ResourceManager.GetString("Activity_ActivityTime_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El tipo de actividad es requerido.
+        /// </summary>
+        internal static string Activity_ActivityTypeID_Required {
+            get {
+                return ResourceManager.GetString("Activity_ActivityTypeID_Required", resourceCulture);
             }
         }
         
@@ -160,6 +178,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to El tipo de audiencia es requerido.
+        /// </summary>
+        internal static string Activity_TargetPopulationID_Required {
+            get {
+                return ResourceManager.GetString("Activity_TargetPopulationID_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to El título entrado no es válido.
         /// </summary>
         internal static string Activity_Title_Invalid {
@@ -174,6 +201,15 @@ namespace Resources {
         internal static string Activity_Title_Required {
             get {
                 return ResourceManager.GetString("Activity_Title_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to La entidad de alcance es requerida.
+        /// </summary>
+        internal static string Activity_UserID_Required {
+            get {
+                return ResourceManager.GetString("Activity_UserID_Required", resourceCulture);
             }
         }
         
@@ -237,15 +273,6 @@ namespace Resources {
         internal static string Media_MediaTitle_Required {
             get {
                 return ResourceManager.GetString("Media_MediaTitle_Required", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string ModelState_AddModelError__User_RemovalReason_Required__ {
-            get {
-                return ResourceManager.GetString("ModelState.AddModelError(\"User_RemovalReason_Required\",", resourceCulture);
             }
         }
         
@@ -331,6 +358,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to El tipo de entidad de alcance es requerido.
+        /// </summary>
+        internal static string OutreachEntityDetail_OutreachEntityTypeID_Required {
+            get {
+                return ResourceManager.GetString("OutreachEntityDetail_OutreachEntityTypeID_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to El contenido de la visión de la entidad de alcance es inválido.
         /// </summary>
         internal static string OutreachEntityDetail_Vision_Invalid {
@@ -372,6 +408,15 @@ namespace Resources {
         internal static string Resource_ResourceName_Required {
             get {
                 return ResourceManager.GetString("Resource_ResourceName_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to La unidad es requerida.
+        /// </summary>
+        internal static string Resource_UnitID_Required {
+            get {
+                return ResourceManager.GetString("Resource_UnitID_Required", resourceCulture);
             }
         }
         
@@ -849,6 +894,15 @@ namespace Resources {
         internal static string User_UserPassword_Required {
             get {
                 return ResourceManager.GetString("User_UserPassword_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El tipo de usuario de es requerido.
+        /// </summary>
+        internal static string User_UserTypeID_Required {
+            get {
+                return ResourceManager.GetString("User_UserTypeID_Required", resourceCulture);
             }
         }
     }

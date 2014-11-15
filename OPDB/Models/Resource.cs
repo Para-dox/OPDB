@@ -29,6 +29,7 @@ namespace OPDB.Models
         [Required(ErrorMessageResourceName = "Resource_ResourceName_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Resource1 { get; set; }
 
+        [Required(ErrorMessageResourceName = "Resource_UnitID_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public int UnitID { get; set; }
         public int CreateUser { get; set; }
         public System.DateTime CreateDate { get; set; }

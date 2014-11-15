@@ -43,18 +43,21 @@
                 @Html.LabelFor(model => model.Activity.UserID, "Entidad de Alcance *")
             </div>
             <div class="editor-field">
+                @Html.ValidationMessageFor(model => model.Activity.UserID)
                 @Html.DropDownListFor(model => model.Activity.UserID, Model.OutreachEntities, new { @style = "width: 500px !important; height: 2.55rem !important;" })
             </div><br />
             <div class="editor-label">
                 @Html.LabelFor(model => model.Activity.ActivityTypeID, "Tipo de Actividad *")
             </div>
             <div class="editor-field">
+                @Html.ValidationMessageFor(model => model.Activity.ActivityTypeID)
                 @Html.DropDownListFor(model => model.Activity.ActivityTypeID, Model.ActivityTypes, new { @style = "width: 500px !important; height: 2.55rem !important;", @id = "activityType", @onchange = "getActivityType()" })
             </div><br />
             <div class="editor-label">
                 @Html.LabelFor(model => model.Activity.ActivityMajorID, "Área de Especialidad de la Actividad *")
             </div>
             <div class="editor-field">
+                @Html.ValidationMessageFor(model => model.Activity.ActivityMajorID)
                 @Html.DropDownListFor(model => model.Activity.ActivityMajorID, Model.ActivityMajors, new { @style = "width: 500px !important; height: 2.55rem !important;" })
             </div><br />
             <div id="dynamic">
@@ -70,6 +73,7 @@
                 @Html.LabelFor(model => model.Activity.TargetPopulationID, "Audiencia *")
             </div>
             <div class="editor-field">
+                @Html.ValidationMessageFor(model => model.Activity.TargetPopulationID)
                 @Html.DropDownListFor(model => model.Activity.TargetPopulationID, Model.TargetPopulations, new { @style = "width: 500px !important; height: 2.55rem !important;" })
             </div><br />
             <div class="editor-label">
@@ -135,7 +139,7 @@
                 @Html.LabelFor(model => model.Activity.Attendees, "Asistencia")
             </div>
             <div class="editor-field">
-                @Html.ValidationMessageFor(model => model.Activity.Attendees)
+                @Html.ValidationMessage("Activity_Attendees_Invalid")
                 @Html.TextBoxFor(model => model.Activity.Attendees, new { @type = "number", @min = "0", @style = "width: 500px !important;" })
             </div><br />
             <p>

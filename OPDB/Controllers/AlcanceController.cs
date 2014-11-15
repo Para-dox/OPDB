@@ -94,9 +94,11 @@ namespace OPDB.Controllers
             {
                 if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
                 {
+                    HomeController controller = new HomeController();
+
                     UserViewModel userViewModel = new UserViewModel
                     {
-                        OutreachTypes = getOutreachTypes(),
+                        OutreachTypes = controller.getOutreachTypes(),
                         User = new User
                         {
                             UserTypeID = 3
@@ -133,6 +135,12 @@ namespace OPDB.Controllers
                         if (String.Compare(userViewModel.User.UserPassword, userViewModel.ConfirmPassword) != 0)
                         {
                             ModelState.AddModelError("User_Password_NoMatch", Resources.WebResources.User_Password_NoMatch);
+                            validModel = false;
+                        }
+
+                        if (userViewModel.OutreachEntity.OutreachEntityTypeID == 0)
+                        {
+                            ModelState.AddModelError("OutreachEntityDetail_OutreachEntityTypeID_Required", Resources.WebResources.OutreachEntityDetail_OutreachEntityTypeID_Required);
                             validModel = false;
                         }
 
@@ -248,8 +256,11 @@ namespace OPDB.Controllers
 
 
                     }
+
+                    HomeController controller = new HomeController();
+
                     GetErrorsFromModelState(userViewModel);
-                    userViewModel.OutreachTypes = getOutreachTypes();
+                    userViewModel.OutreachTypes = controller.getOutreachTypes();
                     return View(userViewModel);
                 }
             }
@@ -266,12 +277,13 @@ namespace OPDB.Controllers
                 {
                     var user = db.Users.Find(id);
                     var outreachEntity = db.OutreachEntityDetails.First(outreach => outreach.UserID == id);
+                    HomeController controller = new HomeController();
 
                     UserViewModel outreachViewModel = new UserViewModel
                     {
                         User = user,
                         OutreachEntity = outreachEntity,
-                        OutreachTypes = getOutreachTypes(),
+                        OutreachTypes = controller.getOutreachTypes(),
                         Source = source
                     };
 
@@ -304,6 +316,12 @@ namespace OPDB.Controllers
                         userViewModel.User.UpdateDate = DateTime.Now;
                         userViewModel.OutreachEntity.UpdateDate = DateTime.Now;
                         bool validModel = true;
+
+                        if (userViewModel.OutreachEntity.OutreachEntityTypeID == 0)
+                        {
+                            ModelState.AddModelError("OutreachEntityDetail_OutreachEntityTypeID_Required", Resources.WebResources.OutreachEntityDetail_OutreachEntityTypeID_Required);
+                            validModel = false;
+                        }
 
                         if (userViewModel.OutreachEntity.OutreachEntityName == null || userViewModel.OutreachEntity.OutreachEntityName == "")
                         {
@@ -399,6 +417,7 @@ namespace OPDB.Controllers
                             }
 
                         }
+                        
 
                         if (validModel)
                         {
@@ -413,15 +432,11 @@ namespace OPDB.Controllers
                                 return RedirectToAction("Administracion", "Home");
                         }
 
-                        else
-                        {
-                            userViewModel.OutreachTypes = getOutreachTypes();
-                            return View(userViewModel);
-                        }
-
                     }
 
-                    userViewModel.OutreachTypes = getOutreachTypes();
+                    HomeController controller = new HomeController();
+
+                    userViewModel.OutreachTypes = controller.getOutreachTypes();
                     return View(userViewModel);
                 }
             }
@@ -725,24 +740,7 @@ namespace OPDB.Controllers
             return str;
         }
 
-        public List<SelectListItem> getOutreachTypes()
-        {
-            List<SelectListItem> types = new List<SelectListItem>();
-            foreach (var outreachType in db.OutreachEntityTypes)
-            {
-
-                types.Add(new SelectListItem()
-                {
-                    Text = outreachType.OutreachEntityType1,
-                    Value = outreachType.OutreachEntityTypeID + ""
-
-                });
-
-            }
-
-            return types;
-        }
-
+        
         public List<SelectListItem> getTypes()
         {
             List<SelectListItem> types = new List<SelectListItem>();
