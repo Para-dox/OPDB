@@ -441,7 +441,7 @@ namespace OPDB.Controllers
 
         public ActionResult Lista()
         {
-            var schools = db.Schools.Include(s => s.User).Include(s => s.User1);
+            var schools = from school in db.Schools.Include(s => s.User).Include(s => s.User1) where school.DeletionDate == null select school;
             return View(schools.ToList());
         }
 
