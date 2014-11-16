@@ -239,6 +239,7 @@ namespace OPDB.Controllers
                     if (validModel)
                     {
                         var crypto = new SimpleCrypto.PBKDF2();
+                        crypto.HashIterations = 5000;
                         string passwordHash = crypto.Compute(userViewModel.User.UserPassword);
 
                         userViewModel.User.UserPassword = passwordHash;
@@ -399,6 +400,7 @@ namespace OPDB.Controllers
                     if (validModel)
                     {
                         var crypto = new SimpleCrypto.PBKDF2();
+                        crypto.HashIterations = 5000;
                         string passwordHash = crypto.Compute(userViewModel.User.UserPassword);
 
                         userViewModel.User.UserPassword = passwordHash;
@@ -1102,6 +1104,7 @@ namespace OPDB.Controllers
             if (user != null)
             {
                 var crypto = new SimpleCrypto.PBKDF2();
+                crypto.HashIterations = 5000;
                 string hashedLoginPass = crypto.Compute(userViewModel.User.UserPassword, user.PasswordSalt);
 
                 if (!user.UserStatus)
@@ -1325,6 +1328,7 @@ namespace OPDB.Controllers
                         if (validModel)
                         {
                             var crypto = new SimpleCrypto.PBKDF2();
+                            crypto.HashIterations = 5000;
                             string passwordHash = crypto.Compute(userViewModel.User.UserPassword);
 
                             userViewModel.User.UserPassword = passwordHash;
@@ -1394,6 +1398,7 @@ namespace OPDB.Controllers
                     else
                     {
                         var crypto = new SimpleCrypto.PBKDF2();
+                        crypto.HashIterations = 5000;
                         string passwordHash = crypto.Compute(userViewModel.OldPassword, user.PasswordSalt);
 
                         if (userViewModel.OldPassword != null && String.Compare(user.UserPassword, passwordHash) != 0)
@@ -1415,6 +1420,7 @@ namespace OPDB.Controllers
                 if (validModel && ModelState.IsValid)
                 {
                     var crypto = new SimpleCrypto.PBKDF2();
+                    crypto.HashIterations = 5000;
                     string passwordHash = crypto.Compute(userViewModel.User.UserPassword);
 
                     userViewModel.User.UserPassword = passwordHash;
