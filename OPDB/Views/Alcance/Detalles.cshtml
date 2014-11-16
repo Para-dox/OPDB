@@ -129,7 +129,7 @@
 
     @if (Request.IsAuthenticated) // only logged users can see notes
     {
-        if (Int32.Parse(User.Identity.Name.Split(',')[1]) <= 3) //only admins, mods, and outreach entities can view notes
+        if (Int32.Parse(User.Identity.Name.Split(',')[1]) <= 2) //only admins, mods, and outreach entities can view notes
         {
     <div class="large-7 columns">
         <h3>Notas</h3>
