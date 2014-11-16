@@ -73,6 +73,8 @@ namespace OPDB.Models
         }
 
         public int UserID { get; set; }
+
+        [Required(ErrorMessageResourceName = "User_UserTypeID_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public int UserTypeID { get; set; }
 
         [Required(ErrorMessageResourceName = "User_UserPassword_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]

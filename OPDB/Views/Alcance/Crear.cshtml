@@ -62,6 +62,7 @@
             </div>
 
             <div class="editor-field">
+                @Html.ValidationMessage("OutreachEntityDetail_OutreachEntityTypeID_Required")
                 @Html.DropDownListFor(model => model.OutreachEntity.OutreachEntityTypeID, Model.OutreachTypes, new { @style = "margin: 0 0 1rem 0 !important; padding: 0.5rem !important; height: 2.3125rem !important; width: 100% !important;" })
             </div>
 

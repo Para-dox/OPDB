@@ -25,6 +25,7 @@
             @Html.HiddenFor(model => model.User.CreateDate)
             @Html.HiddenFor(model => model.User.UserStatus)
             @Html.HiddenFor(model => model.User.UserPassword)
+            @Html.HiddenFor(model => model.User.PasswordSalt)
             @Html.HiddenFor(model => model.User.Email)
             @Html.HiddenFor(model => model.OutreachEntity.OutreachEntityDetailID)
             @Html.HiddenFor(model => model.OutreachEntity.CreateDate)
@@ -60,7 +61,7 @@
             </div>
 
             <div class="editor-field">
-                @Html.ValidationMessageFor(model => model.OutreachEntity.OutreachEntityTypeID)
+                @Html.ValidationMessage("OutreachEntityDetail_OutreachEntityTypeID_Required")
                 @Html.DropDownListFor(model => model.OutreachEntity.OutreachEntityTypeID, Model.OutreachTypes, new { @style = "margin: 0 0 1rem 0 !important; padding: 0.5rem !important; height: 2.3125rem !important; width: 100% !important;" })
             </div>
 

@@ -32,7 +32,11 @@ namespace OPDB.Models
         }
 
         public int ActivityID { get; set; }
+
+        [Required(ErrorMessageResourceName = "Activity_ActivityTypeID_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public int ActivityTypeID { get; set; }
+
+        [Required(ErrorMessageResourceName = "Activity_UserID_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public int UserID { get; set; }
 
         [RegularExpression(@"^([a-zA-Z\u00c0-\u017e0-9¿?.,;:!¡()$""'/\s]+[-]?[a-zA-Z\u00c0-\u017e0-9?.,;:!)@$""'/\s]+)+$", ErrorMessageResourceName = "Activity_Title_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
@@ -47,6 +51,7 @@ namespace OPDB.Models
         [RegularExpression(@"^([a-zA-Z\u00c0-\u017e0-9.,\s]+[-]?[a-zA-Z\u00c0-\u017e0-9.,\s]+)+$", ErrorMessageResourceName = "Activity_Location_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Location { get; set; }
 
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public Nullable<System.DateTime> ActivityDate { get; set; }
 
         [RegularExpression(@"^(([1][0-2])|([0]?[0-9])):[0-5][0-9](AM|PM)$", ErrorMessageResourceName = "Activity_ActivityTime_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
@@ -61,12 +66,14 @@ namespace OPDB.Models
         [AllowHtml]
         public string Details { get; set; }
 
+        [Required(ErrorMessageResourceName = "Activity_ActivityMajorID_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public int ActivityMajorID { get; set; }
-        public Nullable<int> ActivityDynamicID { get; set; }
 
-        [Range(0, Int32.MaxValue, ErrorMessageResourceName = "Activity_Attendees_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
+        public Nullable<int> ActivityDynamicID { get; set; }
+                
         public int Attendees { get; set; }
 
+        [Required(ErrorMessageResourceName = "Activity_TargetPopulationID_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public int TargetPopulationID { get; set; }
 
         public virtual ActivityType ActivityType { get; set; }

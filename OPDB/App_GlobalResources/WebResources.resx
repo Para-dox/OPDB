@@ -129,8 +129,14 @@
   <data name="Activity_ActivityDynamicID_Required" xml:space="preserve">
     <value>Toda actividad que no sea tipo campamento require una dinámica</value>
   </data>
+  <data name="Activity_ActivityMajorID_Required" xml:space="preserve">
+    <value>El área de concentración de la actividad es requerido</value>
+  </data>
   <data name="Activity_ActivityTime_Invalid" xml:space="preserve">
     <value>El tiempo que ha entrado es inválido</value>
+  </data>
+  <data name="Activity_ActivityTypeID_Required" xml:space="preserve">
+    <value>El tipo de actividad es requerido</value>
   </data>
   <data name="Activity_Attendees_Invalid" xml:space="preserve">
     <value>El número de asistencia que ha entrado es inválido</value>
@@ -150,11 +156,17 @@
   <data name="Activity_Purpose_Required" xml:space="preserve">
     <value>No ha ingresado el propósito de esta actividad</value>
   </data>
+  <data name="Activity_TargetPopulationID_Required" xml:space="preserve">
+    <value>El tipo de audiencia es requerido</value>
+  </data>
   <data name="Activity_Title_Invalid" xml:space="preserve">
     <value>El título entrado no es válido</value>
   </data>
   <data name="Activity_Title_Required" xml:space="preserve">
     <value>No ha ingresado el título de esta actividad</value>
+  </data>
+  <data name="Activity_UserID_Required" xml:space="preserve">
+    <value>La entidad de alcance es requerida</value>
   </data>
   <data name="Feedback_Feedback_Invalid" xml:space="preserve">
     <value>El contenido del comentario que ha entrado es inválido</value>
@@ -176,9 +188,6 @@
   </data>
   <data name="Media_MediaTitle_Required" xml:space="preserve">
     <value>No ha ingresado un título para este medio</value>
-  </data>
-  <data name="ModelState.AddModelError(&quot;User_RemovalReason_Required&quot;," xml:space="preserve">
-    <value />
   </data>
   <data name="OutreachEntityDetail_Location_Invalid" xml:space="preserve">
     <value>La localización que ha entrado es inválida</value>
@@ -207,6 +216,9 @@
   <data name="OutreachEntityDetail_OutreachEntityName_Required" xml:space="preserve">
     <value>No ha ingresado el nombre de la organización</value>
   </data>
+  <data name="OutreachEntityDetail_OutreachEntityTypeID_Required" xml:space="preserve">
+    <value>El tipo de entidad de alcance es requerido</value>
+  </data>
   <data name="OutreachEntityDetail_Vision_Invalid" xml:space="preserve">
     <value>El contenido de la visión de la entidad de alcance es inválido</value>
   </data>
@@ -221,6 +233,9 @@
   </data>
   <data name="Resource_ResourceName_Required" xml:space="preserve">
     <value>No ha ingresado un nombre para este recurso</value>
+  </data>
+  <data name="Resource_UnitID_Required" xml:space="preserve">
+    <value>La unidad es requerida</value>
   </data>
   <data name="SchoolNote_Note_Invalid" xml:space="preserve">
     <value>El contenido de la nota es inválido</value>
@@ -243,6 +258,9 @@
   <data name="School_PhoneNumber_Required" xml:space="preserve">
     <value>No ha ingresado un número telefónico para esta escuela</value>
   </data>
+  <data name="School_RegionID_Required" xml:space="preserve">
+    <value>No ha escogido una region escolar</value>
+  </data>
   <data name="School_SchoolName_Invalid" xml:space="preserve">
     <value>El nombre de la escuelas es inválido</value>
   </data>
@@ -263,6 +281,9 @@
   </data>
   <data name="School_SchoolSequenceNumber_Unique" xml:space="preserve">
     <value>Ya existe una escuela con ese numéro de identificación</value>
+  </data>
+  <data name="School_Town_Required" xml:space="preserve">
+    <value>Debe escoger un pueblo. </value>
   </data>
   <data name="Unit_Building_Invalid" xml:space="preserve">
     <value>El nombre del edificio es inválido</value>
@@ -380,5 +401,8 @@
   </data>
   <data name="User_UserPassword_Required" xml:space="preserve">
     <value>No ha ingresado contraseña</value>
+  </data>
+  <data name="User_UserTypeID_Required" xml:space="preserve">
+    <value>El tipo de usuario de es requerido</value>
   </data>
 </root>

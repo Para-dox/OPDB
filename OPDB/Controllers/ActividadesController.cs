@@ -294,10 +294,12 @@ namespace OPDB.Controllers
 
         public ActionResult Crear(int id)
         {
+            HomeController controller = new HomeController();
+
             ActivityViewModel activityViewModel = new ActivityViewModel
             {
-                ActivityTypes = getActivityTypes(),
-                ActivityDynamics = getActivityDynamics(),
+                ActivityTypes = controller.getActivityTypes(),
+                ActivityDynamics = controller.getActivityDynamics(),
                 SchoolList = getSchools(),
                 Activity = new Activity
                 {
@@ -308,8 +310,8 @@ namespace OPDB.Controllers
                 Resources = getResources(),
                 ResourceIDs = new List<int>(),
                 Information = new List<UserInfoViewModel>(),
-                ActivityMajors = getActivityMajors(),
-                TargetPopulations = getTargetPopulations()
+                ActivityMajors = controller.getActivityMajors(),
+                TargetPopulations = controller.getTargetPopulations()
             };
 
             return View(activityViewModel);
@@ -326,15 +328,12 @@ namespace OPDB.Controllers
                 {
                     int id = Int32.Parse(User.Identity.Name.Split(',')[0]);
 
-                    DateTime activityDate = new DateTime();
-
-                    if (activityViewModel.Activity.ActivityDate != null)
-                    {
-                        activityDate = DateTime.ParseExact(activityViewModel.Activity.ActivityDate.Value.ToShortDateString(), "d/MM/yyyy", CultureInfo.InvariantCulture);
+                    if (activityViewModel.ActivityDate != "" && activityViewModel.ActivityDate != null) { 
+                        activityViewModel.Activity.ActivityDate = DateTime.ParseExact(activityViewModel.ActivityDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                        DateTime activityDate = DateTime.ParseExact(activityViewModel.ActivityDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
 
                         if (DateTime.Compare(activityDate, DateTime.Now.Date) <= 0)
                             ModelState.AddModelError("Activity_ActivityDate_EarlierThanCurrentDate", Resources.WebResources.Activity_ActivityDate_EarlierThanCurrentDate);
-                            
                     }
 
                     if (activityViewModel.Activity.Details != null && activityViewModel.Activity.Details != "")
@@ -406,14 +405,12 @@ namespace OPDB.Controllers
                         activityViewModel.Information = CheckForConflicts(activityViewModel.Activity);
                         if (activityViewModel.Information.Count == 0 || activityViewModel.ForceCreate == true)
                         {
-                            if (DateTime.Compare(activityDate, new DateTime()) != 0)
-                                activityViewModel.Activity.ActivityDate = activityDate;
-
                             if (activityViewModel.Activity.ActivityTypeID == 3)
                                 activityViewModel.Activity.ActivityDynamicID = null;
 
                             activityViewModel.Activity.CreateUser = id;
                             activityViewModel.Activity.UpdateUser = id;
+
                             db.Activities.Add(activityViewModel.Activity);
                             db.SaveChanges();
 
@@ -426,13 +423,15 @@ namespace OPDB.Controllers
                         }
                     }
 
-                    activityViewModel.ActivityTypes = getActivityTypes();
+                    HomeController controller = new HomeController();
+
+                    activityViewModel.ActivityTypes = controller.getActivityTypes();
                     activityViewModel.SchoolList = getSchools();
                     activityViewModel.Contacts = getContacts();
                     activityViewModel.Resources = getResources();
-                    activityViewModel.ActivityDynamics = getActivityDynamics();
-                    activityViewModel.ActivityMajors = getActivityMajors();
-                    activityViewModel.TargetPopulations = getTargetPopulations();
+                    activityViewModel.ActivityDynamics = controller.getActivityDynamics();
+                    activityViewModel.ActivityMajors = controller.getActivityMajors();
+                    activityViewModel.TargetPopulations = controller.getTargetPopulations();
                     return View(activityViewModel);
                 }
             }
@@ -540,7 +539,9 @@ namespace OPDB.Controllers
                         activityViewModel.ActivityDate = activityViewModel.Activity.ActivityDate.Value.ToString("dd/MM/yyyy");
                     }
 
-                    activityViewModel.ActivityTypes = getActivityTypes();
+                    HomeController controller = new HomeController();
+
+                    activityViewModel.ActivityTypes = controller.getActivityTypes();
                     activityViewModel.SchoolList = getSchools();
 
                     activityViewModel.ContactIDs = (from contact in db.Contacts where contact.ActivityID == id && contact.DeletionDate == null select contact.UserID).ToList();
@@ -548,9 +549,9 @@ namespace OPDB.Controllers
 
                     activityViewModel.ResourceIDs = (from resource in db.ActivityResources where resource.ActivityID == id && resource.DeletionDate == null select resource.ResourceID).ToList();
                     activityViewModel.Resources = getResources();
-                    activityViewModel.ActivityDynamics = getActivityDynamics();
-                    activityViewModel.ActivityMajors = getActivityMajors();
-                    activityViewModel.TargetPopulations = getTargetPopulations();
+                    activityViewModel.ActivityDynamics = controller.getActivityDynamics();
+                    activityViewModel.ActivityMajors = controller.getActivityMajors();
+                    activityViewModel.TargetPopulations = controller.getTargetPopulations();
 
                     return View(activityViewModel);
                 }
@@ -573,7 +574,14 @@ namespace OPDB.Controllers
                 if ((Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.Split(',')[2])))
                 {
                     int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
-                    //bool different = false;
+
+                    if (activityViewModel.Activity.Attendees != null)
+                    {
+                        if (activityViewModel.Activity.Attendees < 0)
+                            ModelState.AddModelError("Activity_Attendees_Invalid", Resources.WebResources.Activity_Attendees_Invalid);
+                    }
+
+
 
                     if (activityViewModel.ActivityDate != "" && activityViewModel.ActivityDate != null)
                         activityViewModel.Activity.ActivityDate = DateTime.ParseExact(activityViewModel.ActivityDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
@@ -797,13 +805,15 @@ namespace OPDB.Controllers
 
                     }
 
-                    activityViewModel.ActivityTypes = getActivityTypes();
+                    HomeController controller = new HomeController();
+
+                    activityViewModel.ActivityTypes = controller.getActivityTypes();
                     activityViewModel.SchoolList = getSchools();
                     activityViewModel.Contacts = getContacts();
                     activityViewModel.Resources = getResources();
-                    activityViewModel.ActivityDynamics = getActivityDynamics();
-                    activityViewModel.ActivityMajors = getActivityMajors();
-                    activityViewModel.TargetPopulations = getTargetPopulations();
+                    activityViewModel.ActivityDynamics = controller.getActivityDynamics();
+                    activityViewModel.ActivityMajors = controller.getActivityMajors();
+                    activityViewModel.TargetPopulations = controller.getTargetPopulations();
 
                     return View(activityViewModel);
                 }
@@ -1011,64 +1021,7 @@ namespace OPDB.Controllers
             base.Dispose(disposing);
         }
 
-        public List<SelectListItem> getActivityTypes()
-        {
-            List<SelectListItem> types = new List<SelectListItem>();
-            foreach (var activityType in db.ActivityTypes)
-            {
-                types.Add(new SelectListItem()
-                 {
-                     Text = activityType.ActivityType1,
-                     Value = activityType.ActivityTypeID + ""
-
-                 });
-
-            }
-
-            return types;
-        }
-
-        public List<SelectListItem> getActivityDynamics()
-        {
-            List<SelectListItem> dynamics = new List<SelectListItem>();
-
-            dynamics.Add(new SelectListItem()
-            {
-                Text = "",
-                Value = ""
-
-            });
-
-            foreach (var activityDynamic in db.ActivityDynamics)
-            {
-                dynamics.Add(new SelectListItem()
-                {
-                    Text = activityDynamic.ActivityDynamic1,
-                    Value = activityDynamic.ActivityDynamicID + ""
-
-                });
-
-            }
-
-            return dynamics;
-        }
-
-        public List<SelectListItem> getActivityMajors()
-        {
-            List<SelectListItem> majors = new List<SelectListItem>();
-            foreach (var major in (from major in db.ActivityMajors orderby major.ActivityMajor1 ascending select major).ToList())
-            {
-                majors.Add(new SelectListItem()
-                {
-                    Text = major.ActivityMajor1,
-                    Value = major.ActivityMajorID + ""
-
-                });
-
-            }
-
-            return majors;
-        }
+               
 
         public List<SelectListItem> getSchools()
         {
@@ -1429,22 +1382,7 @@ namespace OPDB.Controllers
 
         }
 
-        public List<SelectListItem> getTargetPopulations()
-        {
-            List<SelectListItem> types = new List<SelectListItem>();
-            foreach (var populations in db.TargetPopulations)
-            {
-                types.Add(new SelectListItem()
-                {
-                    Text = populations.TargetPopulation1,
-                    Value = populations.TargetPopulationID + ""
-
-                });
-
-            }
-
-            return types;
-        }
+       
 
         
 
@@ -1527,18 +1465,20 @@ namespace OPDB.Controllers
             {
                 if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
                 {
+                    HomeController controller = new HomeController();
+
                     ActivityViewModel activityViewModel = new ActivityViewModel
                     {
-                        ActivityTypes = getActivityTypes(),
+                        ActivityTypes = controller.getActivityTypes(),
                         SchoolList = getSchools(),
                         OutreachEntities = getOutreachEntities(),
                         Contacts = getContacts(),
                         ContactIDs = new List<int>(),
                         Resources = getResources(),
                         ResourceIDs = new List<int>(),
-                        ActivityMajors = getActivityMajors(),
-                        ActivityDynamics = getActivityDynamics(),
-                        TargetPopulations = getTargetPopulations()
+                        ActivityMajors = controller.getActivityMajors(),
+                        ActivityDynamics = controller.getActivityDynamics(),
+                        TargetPopulations = controller.getTargetPopulations()
                     };
 
                     return View(activityViewModel);
@@ -1557,17 +1497,13 @@ namespace OPDB.Controllers
                 {
                     int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
 
-                    DateTime activityDate = new DateTime();
-
-                    if (activityViewModel.Activity.ActivityDate != null)
+                    if (activityViewModel.ActivityDate != "" && activityViewModel.ActivityDate != null)
                     {
-                        activityDate = DateTime.ParseExact(activityViewModel.Activity.ActivityDate.Value.ToShortDateString(), "d/MM/yyyy", CultureInfo.InvariantCulture);
+                        activityViewModel.Activity.ActivityDate = DateTime.ParseExact(activityViewModel.ActivityDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                        DateTime activityDate = DateTime.ParseExact(activityViewModel.ActivityDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
 
                         if (DateTime.Compare(activityDate, DateTime.Now.Date) <= 0)
                             ModelState.AddModelError("Activity_ActivityDate_EarlierThanCurrentDate", Resources.WebResources.Activity_ActivityDate_EarlierThanCurrentDate);
-
-                        else
-                            activityViewModel.Activity.ActivityDate = activityDate;
                     }
 
                     if (activityViewModel.Activity.Details != null && activityViewModel.Activity.Details != "")
@@ -1641,9 +1577,6 @@ namespace OPDB.Controllers
                         activityViewModel.Information = CheckForConflicts(activityViewModel.Activity);
                         if (activityViewModel.Information.Count == 0 || activityViewModel.ForceCreate == true)
                         {
-                            if (DateTime.Compare(activityDate, new DateTime()) != 0)
-                                activityViewModel.Activity.ActivityDate = activityDate;
-
                             if (activityViewModel.Activity.ActivityTypeID == 3)
                                 activityViewModel.Activity.ActivityDynamicID = null;
 
@@ -1662,14 +1595,17 @@ namespace OPDB.Controllers
                         }
                     }
 
-                    activityViewModel.ActivityTypes = getActivityTypes();
+                    HomeController controller = new HomeController();
+
+                    activityViewModel.ActivityTypes = controller.getActivityTypes();
                     activityViewModel.SchoolList = getSchools();
                     activityViewModel.OutreachEntities = getOutreachEntities();
                     activityViewModel.Contacts = getContacts();
                     activityViewModel.Resources = getResources();
-                    activityViewModel.ActivityDynamics = getActivityDynamics();
-                    activityViewModel.ActivityMajors = getActivityMajors();
-                    activityViewModel.TargetPopulations = getTargetPopulations();
+                    activityViewModel.ActivityDynamics = controller.getActivityDynamics();
+                    activityViewModel.ActivityMajors = controller.getActivityMajors();
+                    activityViewModel.TargetPopulations = controller.getTargetPopulations();
+
                     return View(activityViewModel);
                 }
             }
@@ -1701,16 +1637,18 @@ namespace OPDB.Controllers
                         activityViewModel.ActivityDate = activityViewModel.Activity.ActivityDate.Value.ToString("dd/MM/yyyy");
                     }
 
+                    HomeController controller = new HomeController();
+
                     activityViewModel.ContactIDs = (from contact in db.Contacts where contact.ActivityID == id && contact.DeletionDate == null select contact.UserID).ToList();
                     activityViewModel.ResourceIDs = (from resource in db.ActivityResources where resource.ActivityID == id && resource.DeletionDate == null select resource.ResourceID).ToList();
-                    activityViewModel.ActivityTypes = getActivityTypes();
+                    activityViewModel.ActivityTypes = controller.getActivityTypes();
                     activityViewModel.SchoolList = getSchools();
                     activityViewModel.OutreachEntities = getOutreachEntities();
                     activityViewModel.Contacts = getContacts();
                     activityViewModel.Resources = getResources();
-                    activityViewModel.ActivityDynamics = getActivityDynamics();
-                    activityViewModel.ActivityMajors = getActivityMajors();
-                    activityViewModel.TargetPopulations = getTargetPopulations();
+                    activityViewModel.ActivityDynamics = controller.getActivityDynamics();
+                    activityViewModel.ActivityMajors = controller.getActivityMajors();
+                    activityViewModel.TargetPopulations = controller.getTargetPopulations();
                     
                     
 
@@ -1735,6 +1673,12 @@ namespace OPDB.Controllers
                     if (activityViewModel.ActivityDate != "" && activityViewModel.ActivityDate != null)
                     {                        
                         activityViewModel.Activity.ActivityDate = DateTime.ParseExact(activityViewModel.ActivityDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    }
+
+                    if (activityViewModel.Activity.Attendees != null)
+                    {
+                        if (activityViewModel.Activity.Attendees < 0)
+                            ModelState.AddModelError("Activity_Attendees_Invalid", Resources.WebResources.Activity_Attendees_Invalid);
                     }
                     
                     if (activityViewModel.Activity.Details != null && activityViewModel.Activity.Details != "")
@@ -1957,14 +1901,16 @@ namespace OPDB.Controllers
 
                     }
 
-                    activityViewModel.ActivityTypes = getActivityTypes();
+                    HomeController controller = new HomeController();
+
+                    activityViewModel.ActivityTypes = controller.getActivityTypes();
                     activityViewModel.SchoolList = getSchools();
                     activityViewModel.OutreachEntities = getOutreachEntities();
                     activityViewModel.Contacts = getContacts();
                     activityViewModel.Resources = getResources();
-                    activityViewModel.ActivityDynamics = getActivityDynamics();
-                    activityViewModel.ActivityMajors = getActivityMajors();
-                    activityViewModel.TargetPopulations = getTargetPopulations();
+                    activityViewModel.ActivityDynamics = controller.getActivityDynamics();
+                    activityViewModel.ActivityMajors = controller.getActivityMajors();
+                    activityViewModel.TargetPopulations = controller.getTargetPopulations();
 
                     return View(activityViewModel);
                 }
