@@ -119,33 +119,33 @@ namespace OPDB.Controllers
             searchViewModel.BuscarUnidades = true;
             searchViewModel.BuscarUsuarios = true;
 
-            searchViewModel.Users = from userDetail in db.UserDetails join user in db.Users on userDetail.UserID equals user.UserID 
+            searchViewModel.Users = (from userDetail in db.UserDetails join user in db.Users on userDetail.UserID equals user.UserID 
                                     join userType in db.UserTypes on user.UserTypeID equals userType.UserTypeID
                                     where (userDetail.FirstName.Contains(searchText)
                                         || userDetail.LastName.Contains(searchText) || 
                                         userType.UserType1.Contains(searchText)) && 
                                         userDetail.DeletionDate == null
-                                    select userDetail;
+                                    select userDetail).ToList();
 
-            searchViewModel.OutreachEntities = from outreachEntity in db.OutreachEntityDetails join outreachType in db.OutreachEntityTypes on outreachEntity.OutreachEntityTypeID equals outreachType.OutreachEntityTypeID
+            searchViewModel.OutreachEntities = (from outreachEntity in db.OutreachEntityDetails join outreachType in db.OutreachEntityTypes on outreachEntity.OutreachEntityTypeID equals outreachType.OutreachEntityTypeID
                                                where (outreachEntity.OutreachEntityName.Contains(searchText)
                                                    || outreachEntity.Mission.Contains(searchText) || outreachEntity.Vision.Contains(searchText)
                                                    || outreachEntity.Objectives.Contains(searchText) || outreachType.OutreachEntityType1.Contains(searchText)) && outreachEntity.DeletionDate == null
-                                               select outreachEntity;
+                                               select outreachEntity).ToList();
 
-            searchViewModel.Activities = from activity in db.Activities
+            searchViewModel.Activities = (from activity in db.Activities
                                          where (activity.Title.Contains(searchText) || activity.Purpose.Contains(searchText) ||
                                          activity.ActivityMajor.ActivityMajor1.Contains(searchText) || (activity.ActivityDynamic.ActivityDynamic1 ?? "").Contains(searchText))
                                          && activity.DeletionDate == null
-                                         select activity;
+                                         select activity).ToList();
 
-            searchViewModel.Schools = from school in db.Schools
+            searchViewModel.Schools = (from school in db.Schools
                                       where (school.SchoolName.Contains(searchText)
                                           || school.Address.Contains(searchText)
                                           || school.SchoolRegion.SchoolRegion1.Contains(searchText)) 
-                                          && school.DeletionDate == null select school;
+                                          && school.DeletionDate == null select school).ToList();
 
-            searchViewModel.Units = from unit in db.Units where unit.UnitName.Contains(searchText) && unit.DeletionDate == null select unit;
+            searchViewModel.Units = (from unit in db.Units where unit.UnitName.Contains(searchText) && unit.DeletionDate == null select unit).ToList();
 
             return View(searchViewModel);
 
@@ -220,18 +220,18 @@ namespace OPDB.Controllers
             searchViewModel.BuscarUsuarios = true;
             
             
-            var result = from user in db.UserDetails
+            var result = (from user in db.UserDetails
                          where user.DeletionDate == null
-                         select user;
+                         select user).ToList();
 
             searchViewModel.Users = result;
 
             if (searchViewModel.User.User.UserTypeID != 0)
             {
 
-                result = from user in result
+                result = (from user in result
                          where user.User.UserTypeID == searchViewModel.User.User.UserTypeID
-                         select user;
+                         select user).ToList();
 
                 searchViewModel.Users = result;
             }
@@ -239,36 +239,36 @@ namespace OPDB.Controllers
             if (searchViewModel.User.FirstName != null)
             {
 
-                result = from user in result
+                result = (from user in result
                          where user.FirstName.Contains(searchViewModel.User.FirstName) && user.DeletionDate == null
-                         select user;
+                         select user).ToList();
 
                 searchViewModel.Users = result;
             }
 
             if (searchViewModel.User.LastName != null)
             {
-                result = from user in result
+                result = (from user in result
                          where user.LastName.Contains(searchViewModel.User.LastName) && user.DeletionDate == null
-                         select user;
+                         select user).ToList();
 
                 searchViewModel.Users = result;
             }
 
             if (searchViewModel.User.Role != null)
             {
-                result = from user in result
+                result = (from user in result
                          where user.Role.Contains(searchViewModel.User.Role) && user.DeletionDate == null
-                         select user;
+                         select user).ToList();
 
                 searchViewModel.Users = result;
             }
 
             if (searchViewModel.User.Major != null)
             {
-                result = from user in result
+                result = (from user in result
                          where user.Major.Contains(searchViewModel.User.Major) && user.DeletionDate == null
-                         select user;
+                         select user).ToList();
 
                 searchViewModel.Users = result;
             }
@@ -290,58 +290,58 @@ namespace OPDB.Controllers
         {
             searchViewModel.BuscarActividades = true;
 
-            var result = from activity in db.Activities
+            var result = (from activity in db.Activities
                          where activity.DeletionDate == null 
-                         select activity;
+                         select activity).ToList();
 
             searchViewModel.Activities = result;
 
             if (searchViewModel.Activity.ActivityTypeID != 0)
             {
-                result = from activity in result
+                result = (from activity in result
                          where activity.ActivityTypeID == searchViewModel.Activity.ActivityTypeID
                          && activity.DeletionDate == null
-                         select activity;
+                         select activity).ToList();
 
                 searchViewModel.Activities = result;
             }
 
             if (searchViewModel.Activity.ActivityMajorID != 0)
             {
-                result = from activity in result
+                result = (from activity in result
                          where activity.ActivityMajorID == searchViewModel.Activity.ActivityMajorID
                          && activity.DeletionDate == null
-                         select activity;
+                         select activity).ToList();
 
                 searchViewModel.Activities = result;
             }
 
             if (searchViewModel.Activity.ActivityDynamicID != null && searchViewModel.Activity.ActivityDynamicID != 0)
             {
-                result = from activity in result
+                result = (from activity in result
                          where activity.ActivityDynamicID == searchViewModel.Activity.ActivityDynamicID
                          && activity.DeletionDate == null
-                         select activity;
+                         select activity).ToList();
 
                 searchViewModel.Activities = result;
             }
 
             if (searchViewModel.Activity.Title != null)
             {
-                result = from activity in result
+                result = (from activity in result
                          where activity.Title.Contains(searchViewModel.Activity.Title)
                          && activity.DeletionDate == null
-                         select activity;
+                         select activity).ToList();
 
                 searchViewModel.Activities = result;
             }
 
             if(searchViewModel.Activity.Purpose != null){
 
-                result = from activity in result
+                result = (from activity in result
                          where activity.Purpose.Contains(searchViewModel.Activity.Purpose)
                          && activity.DeletionDate == null
-                         select activity;
+                         select activity).ToList();
 
                 searchViewModel.Activities = result;
             }
@@ -360,19 +360,19 @@ namespace OPDB.Controllers
         {
             searchViewModel.BuscarAlcance = true;
 
-            var result = from outreachEntity in db.OutreachEntityDetails
+            var result = (from outreachEntity in db.OutreachEntityDetails
                          where outreachEntity.DeletionDate == null
-                         select outreachEntity;
+                         select outreachEntity).ToList();
 
             searchViewModel.OutreachEntities = result;
 
             if (searchViewModel.OutreachEntity.OutreachEntityTypeID != 0)
             {
 
-                result = from outreachEntity in result
+                result = (from outreachEntity in result
                          where outreachEntity.OutreachEntityTypeID == searchViewModel.OutreachEntity.OutreachEntityTypeID
                          && outreachEntity.DeletionDate == null
-                         select outreachEntity;
+                         select outreachEntity).ToList();
 
                 searchViewModel.OutreachEntities = result;
             }
@@ -380,10 +380,10 @@ namespace OPDB.Controllers
             if (searchViewModel.OutreachEntity.OutreachEntityName != null)
             {
 
-                result = from outreachEntity in result
+                result = (from outreachEntity in result
                          where outreachEntity.OutreachEntityName.Contains(searchViewModel.OutreachEntity.OutreachEntityName)
                          && outreachEntity.DeletionDate == null
-                         select outreachEntity;
+                         select outreachEntity).ToList();
 
                 searchViewModel.OutreachEntities = result;
             }
@@ -391,10 +391,10 @@ namespace OPDB.Controllers
             if (searchViewModel.OutreachEntity.Mission != null)
             {
 
-                result = from outreachEntity in result
+                result = (from outreachEntity in result
                          where outreachEntity.Mission.Contains(searchViewModel.OutreachEntity.Mission)
                          && outreachEntity.DeletionDate == null
-                         select outreachEntity;
+                          select outreachEntity).ToList();
 
                 searchViewModel.OutreachEntities = result;
 
@@ -403,10 +403,10 @@ namespace OPDB.Controllers
             if (searchViewModel.OutreachEntity.Vision != null)
             {
 
-                result = from outreachEntity in result
+                result = (from outreachEntity in result
                          where outreachEntity.Vision.Contains(searchViewModel.OutreachEntity.Vision)
                          && outreachEntity.DeletionDate == null
-                         select outreachEntity;
+                          select outreachEntity).ToList();
 
                 searchViewModel.OutreachEntities = result;
             }
@@ -414,10 +414,10 @@ namespace OPDB.Controllers
             if (searchViewModel.OutreachEntity.Objectives != null)
             {
 
-                result = from outreachEntity in result
+                result = (from outreachEntity in result
                          where outreachEntity.Objectives.Contains(searchViewModel.OutreachEntity.Objectives)
                          && outreachEntity.DeletionDate == null
-                         select outreachEntity;
+                         select outreachEntity).ToList();
 
                 searchViewModel.OutreachEntities = result;
 
@@ -437,38 +437,38 @@ namespace OPDB.Controllers
         {
             searchViewModel.BuscarEscuelas = true;
 
-            var result = from school in db.Schools
+            var result = (from school in db.Schools
                          where school.DeletionDate == null
-                         select school;
+                         select school).ToList();
 
             searchViewModel.Schools = result;
 
             if (searchViewModel.School.SchoolName != null)
             {
-                result = from school in result
+                result = (from school in result
                          where school.SchoolName.Contains(searchViewModel.School.SchoolName)
                          && school.DeletionDate == null
-                         select school;
+                         select school).ToList();
 
                 searchViewModel.Schools = result;
             }
 
             if (searchViewModel.School.Address != null)
             {
-                result = from school in result
+                result = (from school in result
                          where school.Address.Contains(searchViewModel.School.Address)
                          && school.DeletionDate == null
-                         select school;
+                         select school).ToList();
 
                 searchViewModel.Schools = result;
             }
 
             if (searchViewModel.School.Town != null)
             {
-                result = from school in result
+                result = (from school in result
                          where school.Town.Contains(searchViewModel.School.Town) 
                          && school.DeletionDate == null
-                         select school;
+                         select school).ToList();
 
                 searchViewModel.Schools = result;
             }
@@ -487,7 +487,7 @@ namespace OPDB.Controllers
         {
             searchViewModel.BuscarUnidades = true;
 
-            searchViewModel.Units = from unit in db.Units where unit.UnitName.Contains(searchViewModel.Unit.UnitName ?? "") select unit;
+            searchViewModel.Units = (from unit in db.Units where unit.UnitName.Contains(searchViewModel.Unit.UnitName ?? "") select unit).ToList();
             
             return View("Buscar", searchViewModel);
         }
