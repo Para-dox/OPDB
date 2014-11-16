@@ -239,6 +239,7 @@ namespace OPDB.Controllers
                     if (validModel)
                     {
                         var crypto = new SimpleCrypto.PBKDF2();
+                        crypto.HashIterations = 5000;
                         string passwordHash = crypto.Compute(userViewModel.User.UserPassword);
 
                         userViewModel.User.UserPassword = passwordHash;
@@ -398,8 +399,8 @@ namespace OPDB.Controllers
 
                     if (validModel)
                     {
-                        // TODO: verify if this is working correctly
                         var crypto = new SimpleCrypto.PBKDF2();
+                        crypto.HashIterations = 5000;
                         string passwordHash = crypto.Compute(userViewModel.User.UserPassword);
 
                         userViewModel.User.UserPassword = passwordHash;
@@ -1102,8 +1103,8 @@ namespace OPDB.Controllers
 
             if (user != null)
             {
-                // TODO: verify if this is working correctly
                 var crypto = new SimpleCrypto.PBKDF2();
+                crypto.HashIterations = 5000;
                 string hashedLoginPass = crypto.Compute(userViewModel.User.UserPassword, user.PasswordSalt);
 
                 if (!user.UserStatus)
@@ -1326,8 +1327,8 @@ namespace OPDB.Controllers
 
                         if (validModel)
                         {
-                            // TODO: verify if this is working correctly
                             var crypto = new SimpleCrypto.PBKDF2();
+                            crypto.HashIterations = 5000;
                             string passwordHash = crypto.Compute(userViewModel.User.UserPassword);
 
                             userViewModel.User.UserPassword = passwordHash;
@@ -1352,6 +1353,7 @@ namespace OPDB.Controllers
             return RedirectToAction("AccesoDenegado", "Home");
         }
 
+        [HttpPost]
         public ActionResult ChangePasswordView(string source, int id)
         {
             var user = db.Users.Find(id);
@@ -1359,11 +1361,20 @@ namespace OPDB.Controllers
             if (user == null)
                 return Content("");
 
+           
+
             UserViewModel userViewModel = new UserViewModel
             {
                 User = user,
-                Source = source
+                Source = source,
+
             };
+
+            if (Request.IsAuthenticated)
+            {
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                    return PartialView("ChangePasswordAdmin", userViewModel);
+            }
 
             return PartialView("ChangePassword", userViewModel);
         }
@@ -1371,24 +1382,36 @@ namespace OPDB.Controllers
         [HttpPost]
         public ActionResult ChangePassword(UserViewModel userViewModel)
         {
+            // TODO: is it required to retrieve from the db the user again? it was done on the method that calls this Action
             bool validModel = true;
             var user = db.Users.Find(userViewModel.User.UserID);
 
             if (user != null)
             {
-                if (userViewModel.User.UserPassword != null && String.Compare(user.UserPassword, userViewModel.User.UserPassword) != 0)
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) != 1) // TODO: added this so the system doesnt verify the old password if the current logged user is an admin
                 {
-                    ModelState.AddModelError("User_Password_IncorrectPassword", Resources.WebResources.User_Password_IncorrectPassword);
-                    validModel = false;
+                    if (userViewModel.OldPassword == null)
+                    {
+                        ModelState.AddModelError("User_Password_MissingPassword", Resources.WebResources.User_Password_MissingPassword);
+                        validModel = false;
+                    }
+                    else
+                    {
+                        var crypto = new SimpleCrypto.PBKDF2();
+                        crypto.HashIterations = 5000;
+                        string passwordHash = crypto.Compute(userViewModel.OldPassword, user.PasswordSalt);
+
+                        if (userViewModel.OldPassword != null && String.Compare(user.UserPassword, passwordHash) != 0)
+                        {
+                            ModelState.AddModelError("User_Password_IncorrectPassword", Resources.WebResources.User_Password_IncorrectPassword);
+                            validModel = false;
+                        }
+                    }
                 }
 
-                if (userViewModel.NewPassword == null)
-                {
-                    ModelState.AddModelError("User_Password_MissingPassword", Resources.WebResources.User_Password_MissingPassword);
-                    validModel = false;
-                }
+                
 
-                if (userViewModel.NewPassword != null && userViewModel.ConfirmPassword != null && String.Compare(userViewModel.NewPassword, userViewModel.ConfirmPassword) != 0)
+                if (userViewModel.ConfirmPassword != null && String.Compare(userViewModel.User.UserPassword, userViewModel.ConfirmPassword) != 0)
                 {
                     ModelState.AddModelError("User_Password_NoMatch", Resources.WebResources.User_Password_NoMatch);
                     validModel = false;
@@ -1396,9 +1419,9 @@ namespace OPDB.Controllers
 
                 if (validModel && ModelState.IsValid)
                 {
-                    // TODO verify password hashing here
                     var crypto = new SimpleCrypto.PBKDF2();
-                    string passwordHash = crypto.Compute(userViewModel.NewPassword);
+                    crypto.HashIterations = 5000;
+                    string passwordHash = crypto.Compute(userViewModel.User.UserPassword);
 
                     userViewModel.User.UserPassword = passwordHash;
                     userViewModel.User.PasswordSalt = crypto.Salt;

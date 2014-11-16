@@ -10,6 +10,7 @@
     @Html.HiddenFor(model => model.User.PhoneNumber)
     @Html.HiddenFor(model => model.User.CreateDate)
     @Html.HiddenFor(model => model.User.UpdateDate)
+    @Html.HiddenFor(model => model.User.PasswordSalt)
 
     <div class="editor-label">
         @Html.LabelFor(model => model.User.RemovalReason, "Razón *")

@@ -634,6 +634,7 @@
     <Content Include="Views\Shared\RemovalReason.cshtml" />
     <Content Include="Views\Home\FormularioReportes.cshtml" />
     <Content Include="Views\Home\ResultadosReporte.cshtml" />
+    <Content Include="Views\Shared\ChangePasswordAdmin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

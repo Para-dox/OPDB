@@ -707,8 +707,6 @@ namespace OPDB.Controllers
 
         public ActionResult Pendientes(string requested)
         {
-            // TODO pendientes not working
-
             if (User.Identity.IsAuthenticated)
             {
                 if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1 && Boolean.Parse(requested))
@@ -790,7 +788,6 @@ namespace OPDB.Controllers
                 {
                     var user = db.Users.Find(id);
 
-                    // TODO verify this
                     user.UserStatus = true;
                     user.UpdateDate = DateTime.Now;
 
@@ -802,7 +799,6 @@ namespace OPDB.Controllers
             }
 
             return RedirectToAction("AccesoDenegado", "Home");
-            
         }
 
         protected override void Dispose(bool disposing)
