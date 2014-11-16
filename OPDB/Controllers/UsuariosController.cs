@@ -74,14 +74,18 @@ namespace OPDB.Controllers
                 return HttpNotFound();
             }
 
-            if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.Split(',')[2]))
+            if (Request.IsAuthenticated)
             {
-                int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
-                userViewModel.Notes = from note in db.UserNotes.Include(note => note.NoteType) where note.SubjectID == id && note.UserID == userID && note.DeletionDate == null select note;
-            }
-            else if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
-            {
-                userViewModel.Notes = from note in db.UserNotes.Include(note => note.NoteType) where note.SubjectID == id && note.DeletionDate == null select note;
+
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.Split(',')[2]))
+                {
+                    int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
+                    userViewModel.Notes = from note in db.UserNotes.Include(note => note.NoteType) where note.SubjectID == id && note.UserID == userID && note.DeletionDate == null select note;
+                }
+                else if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
+                    userViewModel.Notes = from note in db.UserNotes.Include(note => note.NoteType) where note.SubjectID == id && note.DeletionDate == null select note;
+                }
             }
 
             return View(userViewModel);

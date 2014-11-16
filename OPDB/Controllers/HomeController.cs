@@ -729,6 +729,24 @@ namespace OPDB.Controllers
                         TargetPopulations = getTargetPopulations()
                     };
 
+                    reportViewModel.ActivityTypes.Add(new SelectListItem
+                    {
+                        Text = "Todos",
+                        Value = "All"
+                    });
+
+                    reportViewModel.ActivityMajors.Add(new SelectListItem
+                    {
+                        Text = "Todas",
+                        Value = "All"
+                    });
+
+                    reportViewModel.ActivityDynamics.Add(new SelectListItem
+                    {
+                        Text = "Todas",
+                        Value = "All"
+                    });
+
                     return PartialView("FormularioReportes", reportViewModel);
                 }
             }
