@@ -200,7 +200,7 @@ namespace OPDB.Controllers
         {
             int currentUserID = Int32.Parse(User.Identity.Name.Split(',')[0]);
 
-            var interested = (from interest in db.Interests join activity in db.Activities on interest.ActivityID equals activity.ActivityID where interest.DeletionDate == null && interest.UserID == currentUserID orderby activity.UpdateDate descending select interest).ToList();
+            var interested = (from interest in db.Interests join activity in db.Activities on interest.ActivityID equals activity.ActivityID where interest.DeletionDate == null && activity.DeletionDate == null && interest.UserID == currentUserID orderby activity.UpdateDate descending select interest).ToList();
             //var interested = (from interest in db.Interests where interest.UserID == currentUserID orderby interest.UpdateDate descending select interest).ToList();
 
             ActivityViewModel activityViewModel = new ActivityViewModel
