@@ -15,7 +15,7 @@ namespace OPDB.Models
         public List<SelectListItem> UserTypes { get; set; }
         public List<SelectListItem> OutreachTypes { get; set; }
 
-        public string NewPassword { get; set; }
+        public string OldPassword { get; set; }
 
         public string ConfirmPassword { get; set; }
 
