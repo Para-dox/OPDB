@@ -9,11 +9,11 @@ namespace OPDB.Models
     public class SearchViewModel
     {
         public string SearchText { get; set; }
-        public IEnumerable<UserDetail> Users {get; set;}
-        public IEnumerable<OutreachEntityDetail> OutreachEntities { get; set; }
-        public IEnumerable<Activity> Activities { get; set; }
-        public IEnumerable<Unit> Units { get; set; }
-        public IEnumerable<School> Schools { get; set; }
+        public List<UserDetail> Users {get; set;}
+        public List<OutreachEntityDetail> OutreachEntities { get; set; }
+        public List<Activity> Activities { get; set; }
+        public List<Unit> Units { get; set; }
+        public List<School> Schools { get; set; }
 
         public UserDetail User { get; set; }
         public OutreachEntityDetail OutreachEntity { get; set; }
