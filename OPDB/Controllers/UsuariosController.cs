@@ -1349,6 +1349,7 @@ namespace OPDB.Controllers
             return RedirectToAction("AccesoDenegado", "Home");
         }
 
+        [HttpPost]
         public ActionResult ChangePasswordView(string source, int id)
         {
             var user = db.Users.Find(id);
@@ -1356,11 +1357,20 @@ namespace OPDB.Controllers
             if (user == null)
                 return Content("");
 
+           
+
             UserViewModel userViewModel = new UserViewModel
             {
                 User = user,
-                Source = source
+                Source = source,
+
             };
+
+            if (Request.IsAuthenticated)
+            {
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                    return PartialView("ChangePasswordAdmin", userViewModel);
+            }
 
             return PartialView("ChangePassword", userViewModel);
         }
