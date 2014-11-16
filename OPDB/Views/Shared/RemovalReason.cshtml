@@ -10,6 +10,7 @@
     @Html.HiddenFor(model => model.User.PhoneNumber)
     @Html.HiddenFor(model => model.User.CreateDate)
     @Html.HiddenFor(model => model.User.UpdateDate)
+    @Html.HiddenFor(model => model.User.PasswordSalt)
 
     <div class="editor-label">
         @Html.LabelFor(model => model.User.RemovalReason, "Razón *")
@@ -19,7 +20,7 @@
     </div>
 
     <p style="text-align:left;">
-        <input type="submit" class="btn" style="float:left !important; width:40% !important; margin-left: 30px !important;" value="Crear" /> <input type="button" value="Cancelar" class="btn" style="float:right !important; width:40% !important; margin-bottom: 20px !important; margin-right: 30px !important;" onclick="modalClose()" />
+        <input type="submit" class="btn" style="float:left !important; width:40% !important; margin-left: 30px !important;" value="Confirmar" /> <input type="button" value="Cancelar" class="btn" style="float:right !important; width:40% !important; margin-bottom: 20px !important; margin-right: 30px !important;" onclick="modalClose()" />
     </p>
 
 
