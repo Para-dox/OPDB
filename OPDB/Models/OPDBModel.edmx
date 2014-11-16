@@ -342,10 +342,10 @@
             <PropertyRef Name="UserNoteID" />
           </Key>
           <Property Name="UserNoteID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="NoteTypeID" Type="int" Nullable="false" />
           <Property Name="SubjectID" Type="int" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="Note" Type="text" Nullable="false" />
+          <Property Name="Read" Type="bit" Nullable="false" />
           <Property Name="CreateUser" Type="int" Nullable="false" />
           <Property Name="CreateDate" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="UpdateUser" Type="int" Nullable="false" />
@@ -1223,18 +1223,6 @@
             </Principal>
             <Dependent Role="UserNote">
               <PropertyRef Name="UpdateUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="UserNote_ibfk_5">
-          <End Role="NoteType" Type="Self.NoteType" Multiplicity="1" />
-          <End Role="UserNote" Type="Self.UserNote" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="NoteType">
-              <PropertyRef Name="NoteTypeID" />
-            </Principal>
-            <Dependent Role="UserNote">
-              <PropertyRef Name="NoteTypeID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2332,10 +2320,6 @@
             <End Role="User" EntitySet="User" />
             <End Role="UserNote" EntitySet="UserNote" />
           </AssociationSet>
-          <AssociationSet Name="UserNote_ibfk_5" Association="Self.UserNote_ibfk_5">
-            <End Role="NoteType" EntitySet="NoteType" />
-            <End Role="UserNote" EntitySet="UserNote" />
-          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -2534,7 +2518,6 @@
           <NavigationProperty Name="SchoolNotes" Relationship="Self.SchoolNote_ibfk_1" FromRole="NoteType" ToRole="SchoolNote" />
           <NavigationProperty Name="User" Relationship="OPDBModel.NoteType_ibfk_1" FromRole="NoteType" ToRole="User" />
           <NavigationProperty Name="User1" Relationship="OPDBModel.NoteType_ibfk_2" FromRole="NoteType" ToRole="User" />
-          <NavigationProperty Name="UserNotes" Relationship="OPDBModel.UserNote_ibfk_5" FromRole="NoteType" ToRole="UserNote" />
         </EntityType>
         <EntityType Name="Resource">
           <Key>
@@ -2611,26 +2594,6 @@
           <Property Name="AffiliateTypeID" Type="Int32" />
           <NavigationProperty Name="AffiliateType" Relationship="Self.UserDetail_ibfk_4" FromRole="UserDetail" ToRole="AffiliateType" />
           <NavigationProperty Name="User" Relationship="OPDBModel.UserDetail_ibfk_5" FromRole="UserDetail" ToRole="User" />
-        </EntityType>
-        <EntityType Name="UserNote">
-          <Key>
-            <PropertyRef Name="UserNoteID" />
-          </Key>
-          <Property Name="UserNoteID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="SubjectID" Type="Int32" Nullable="false" />
-          <Property Name="UserID" Type="Int32" Nullable="false" />
-          <Property Name="Note" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="CreateUser" Type="Int32" Nullable="false" />
-          <Property Name="CreateDate" Type="DateTime" Nullable="false" />
-          <Property Name="UpdateUser" Type="Int32" Nullable="false" />
-          <Property Name="UpdateDate" Type="DateTime" Nullable="false" />
-          <Property Name="DeletionDate" Type="DateTime" />
-          <NavigationProperty Name="User" Relationship="OPDBModel.UserNote_ibfk_1" FromRole="UserNote" ToRole="User" />
-          <NavigationProperty Name="User1" Relationship="OPDBModel.UserNote_ibfk_2" FromRole="UserNote" ToRole="User" />
-          <NavigationProperty Name="User2" Relationship="OPDBModel.UserNote_ibfk_3" FromRole="UserNote" ToRole="User" />
-          <NavigationProperty Name="User3" Relationship="OPDBModel.UserNote_ibfk_4" FromRole="UserNote" ToRole="User" />
-          <Property Name="NoteTypeID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="NoteType" Relationship="OPDBModel.UserNote_ibfk_5" FromRole="UserNote" ToRole="NoteType" />
         </EntityType>
         <EntityType Name="UserType">
           <Key>
@@ -2802,7 +2765,6 @@
           <EntitySet Name="SchoolNotes" EntityType="Self.SchoolNote" />
           <EntitySet Name="Units" EntityType="Self.Unit" />
           <EntitySet Name="UserDetails" EntityType="Self.UserDetail" />
-          <EntitySet Name="UserNotes" EntityType="Self.UserNote" />
           <EntitySet Name="UserTypes" EntityType="Self.UserType" />
           <AssociationSet Name="Activity_ibfk_2" Association="Self.Activity_ibfk_2">
             <End Role="ActivityType" EntitySet="ActivityTypes" />
@@ -2985,26 +2947,6 @@
             <End Role="User" EntitySet="Users" />
             <End Role="UserDetail" EntitySet="UserDetails" />
           </AssociationSet>
-          <AssociationSet Name="UserNote_ibfk_1" Association="OPDBModel.UserNote_ibfk_1">
-            <End Role="User" EntitySet="Users" />
-            <End Role="UserNote" EntitySet="UserNotes" />
-          </AssociationSet>
-          <AssociationSet Name="UserNote_ibfk_2" Association="OPDBModel.UserNote_ibfk_2">
-            <End Role="User" EntitySet="Users" />
-            <End Role="UserNote" EntitySet="UserNotes" />
-          </AssociationSet>
-          <AssociationSet Name="UserNote_ibfk_3" Association="OPDBModel.UserNote_ibfk_3">
-            <End Role="User" EntitySet="Users" />
-            <End Role="UserNote" EntitySet="UserNotes" />
-          </AssociationSet>
-          <AssociationSet Name="UserNote_ibfk_4" Association="OPDBModel.UserNote_ibfk_4">
-            <End Role="User" EntitySet="Users" />
-            <End Role="UserNote" EntitySet="UserNotes" />
-          </AssociationSet>
-          <AssociationSet Name="UserNote_ibfk_5" Association="OPDBModel.UserNote_ibfk_5">
-            <End Role="NoteType" EntitySet="NoteTypes" />
-            <End Role="UserNote" EntitySet="UserNotes" />
-          </AssociationSet>
           <EntitySet Name="OutreachEntityTypes" EntityType="OPDBModel.OutreachEntityType" />
           <AssociationSet Name="OutreachEntityType_ibfk_1" Association="OPDBModel.OutreachEntityType_ibfk_1">
             <End Role="User" EntitySet="Users" />
@@ -3105,6 +3047,23 @@
             <End Role="User" EntitySet="Users" />
             <End Role="TargetPopulation" EntitySet="TargetPopulations" />
           </AssociationSet>
+          <EntitySet Name="UserNotes" EntityType="OPDBModel.UserNote" />
+          <AssociationSet Name="UserNote_ibfk_1" Association="OPDBModel.UserNote_ibfk_1">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserNote" EntitySet="UserNotes" />
+          </AssociationSet>
+          <AssociationSet Name="UserNote_ibfk_2" Association="OPDBModel.UserNote_ibfk_2">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserNote" EntitySet="UserNotes" />
+          </AssociationSet>
+          <AssociationSet Name="UserNote_ibfk_3" Association="OPDBModel.UserNote_ibfk_3">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserNote" EntitySet="UserNotes" />
+          </AssociationSet>
+          <AssociationSet Name="UserNote_ibfk_4" Association="OPDBModel.UserNote_ibfk_4">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserNote" EntitySet="UserNotes" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="User">
           <Key>
@@ -3152,10 +3111,6 @@
           <NavigationProperty Name="Units1" Relationship="OPDBModel.Unit_ibfk_2" FromRole="User" ToRole="Unit" />
           <NavigationProperty Name="UserType" Relationship="OPDBModel.User_ibfk_1" FromRole="User" ToRole="UserType" />
           <NavigationProperty Name="UserDetails" Relationship="OPDBModel.UserDetail_ibfk_5" FromRole="User" ToRole="UserDetail" />
-          <NavigationProperty Name="UserNotes" Relationship="OPDBModel.UserNote_ibfk_1" FromRole="User" ToRole="UserNote" />
-          <NavigationProperty Name="UserNotes1" Relationship="OPDBModel.UserNote_ibfk_2" FromRole="User" ToRole="UserNote" />
-          <NavigationProperty Name="UserNotes2" Relationship="OPDBModel.UserNote_ibfk_3" FromRole="User" ToRole="UserNote" />
-          <NavigationProperty Name="UserNotes3" Relationship="OPDBModel.UserNote_ibfk_4" FromRole="User" ToRole="UserNote" />
           <NavigationProperty Name="OutreachEntityTypes" Relationship="OPDBModel.OutreachEntityType_ibfk_1" FromRole="User" ToRole="OutreachEntityType" />
           <NavigationProperty Name="OutreachEntityTypes1" Relationship="OPDBModel.OutreachEntityType_ibfk_2" FromRole="User" ToRole="OutreachEntityType" />
           <NavigationProperty Name="Schools" Relationship="OPDBModel.School_ibfk_1" FromRole="User" ToRole="School" />
@@ -3173,6 +3128,10 @@
           <NavigationProperty Name="TargetPopulations" Relationship="OPDBModel.TargetPopulation_ibfk_1" FromRole="User" ToRole="TargetPopulation" />
           <NavigationProperty Name="TargetPopulations1" Relationship="OPDBModel.TargetPopulation_ibfk_2" FromRole="User" ToRole="TargetPopulation" />
           <Property Name="PasswordSalt" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="UserNotes" Relationship="OPDBModel.UserNote_ibfk_1" FromRole="User" ToRole="UserNote" />
+          <NavigationProperty Name="UserNotes1" Relationship="OPDBModel.UserNote_ibfk_2" FromRole="User" ToRole="UserNote" />
+          <NavigationProperty Name="UserNotes2" Relationship="OPDBModel.UserNote_ibfk_3" FromRole="User" ToRole="UserNote" />
+          <NavigationProperty Name="UserNotes3" Relationship="OPDBModel.UserNote_ibfk_4" FromRole="User" ToRole="UserNote" />
           </EntityType>
         <Association Name="Activity_ibfk_21">
           <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
@@ -3567,66 +3526,6 @@
             </Principal>
             <Dependent Role="UserDetail">
               <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="UserNote_ibfk_1">
-          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
-          <End Type="OPDBModel.UserNote" Role="UserNote" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="UserNote">
-              <PropertyRef Name="SubjectID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="UserNote_ibfk_2">
-          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
-          <End Type="OPDBModel.UserNote" Role="UserNote" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="UserNote">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="UserNote_ibfk_3">
-          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
-          <End Type="OPDBModel.UserNote" Role="UserNote" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="UserNote">
-              <PropertyRef Name="CreateUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="UserNote_ibfk_4">
-          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
-          <End Type="OPDBModel.UserNote" Role="UserNote" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="UserNote">
-              <PropertyRef Name="UpdateUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="UserNote_ibfk_5">
-          <End Type="OPDBModel.NoteType" Role="NoteType" Multiplicity="1" />
-          <End Type="OPDBModel.UserNote" Role="UserNote" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="NoteType">
-              <PropertyRef Name="NoteTypeID" />
-            </Principal>
-            <Dependent Role="UserNote">
-              <PropertyRef Name="NoteTypeID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4039,6 +3938,73 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="UserNote">
+          <Key>
+            <PropertyRef Name="UserNoteID" />
+          </Key>
+          <Property Name="UserNoteID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SubjectID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="Note" Type="String" Nullable="false" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Read" Type="Boolean" Nullable="false" />
+          <Property Name="CreateUser" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" />
+          <Property Name="UpdateUser" Type="Int32" Nullable="false" />
+          <Property Name="UpdateDate" Type="DateTime" Nullable="false" />
+          <Property Name="DeletionDate" Type="DateTime" />
+          <NavigationProperty Name="User" Relationship="OPDBModel.UserNote_ibfk_1" FromRole="UserNote" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="OPDBModel.UserNote_ibfk_2" FromRole="UserNote" ToRole="User" />
+          <NavigationProperty Name="User2" Relationship="OPDBModel.UserNote_ibfk_3" FromRole="UserNote" ToRole="User" />
+          <NavigationProperty Name="User3" Relationship="OPDBModel.UserNote_ibfk_4" FromRole="UserNote" ToRole="User" />
+        </EntityType>
+        <Association Name="UserNote_ibfk_1">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.UserNote" Role="UserNote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserNote">
+              <PropertyRef Name="SubjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserNote_ibfk_2">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.UserNote" Role="UserNote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserNote">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserNote_ibfk_3">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.UserNote" Role="UserNote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserNote">
+              <PropertyRef Name="CreateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserNote_ibfk_4">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.UserNote" Role="UserNote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserNote">
+              <PropertyRef Name="UpdateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4267,22 +4233,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="UserNotes">
-            <EntityTypeMapping TypeName="OPDBModel.UserNote">
-              <MappingFragment StoreEntitySet="UserNote">
-                <ScalarProperty Name="NoteTypeID" ColumnName="NoteTypeID" />
-                <ScalarProperty Name="UserNoteID" ColumnName="UserNoteID" />
-                <ScalarProperty Name="SubjectID" ColumnName="SubjectID" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="Note" ColumnName="Note" />
-                <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="UpdateUser" ColumnName="UpdateUser" />
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-                <ScalarProperty Name="DeletionDate" ColumnName="DeletionDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="UserTypes">
             <EntityTypeMapping TypeName="OPDBModel.UserType">
               <MappingFragment StoreEntitySet="UserType">
@@ -4424,6 +4374,22 @@
                 <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
                 <ScalarProperty Name="TargetPopulation1" ColumnName="TargetPopulation" />
                 <ScalarProperty Name="TargetPopulationID" ColumnName="TargetPopulationID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserNotes">
+            <EntityTypeMapping TypeName="OPDBModel.UserNote">
+              <MappingFragment StoreEntitySet="UserNote">
+                <ScalarProperty Name="DeletionDate" ColumnName="DeletionDate" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="UpdateUser" ColumnName="UpdateUser" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
+                <ScalarProperty Name="Read" ColumnName="Read" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="SubjectID" ColumnName="SubjectID" />
+                <ScalarProperty Name="UserNoteID" ColumnName="UserNoteID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

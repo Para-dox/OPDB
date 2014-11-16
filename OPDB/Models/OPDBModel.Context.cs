@@ -39,7 +39,6 @@ namespace OPDB.Models
         public DbSet<SchoolNote> SchoolNotes { get; set; }
         public DbSet<Unit> Units { get; set; }
         public DbSet<UserDetail> UserDetails { get; set; }
-        public DbSet<UserNote> UserNotes { get; set; }
         public DbSet<UserType> UserTypes { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<OutreachEntityType> OutreachEntityTypes { get; set; }
@@ -50,5 +49,6 @@ namespace OPDB.Models
         public DbSet<SchoolRegion> SchoolRegions { get; set; }
         public DbSet<OutreachEntityDetail> OutreachEntityDetails { get; set; }
         public DbSet<TargetPopulation> TargetPopulations { get; set; }
+        public DbSet<UserNote> UserNotes { get; set; }
     }
 }

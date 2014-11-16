@@ -19,7 +19,6 @@
         <EntityTypeShape EntityType="OPDBModel.SchoolNote" Width="1.5" PointX="10.5" PointY="46.25" IsExpanded="true" />
         <EntityTypeShape EntityType="OPDBModel.Unit" Width="1.5" PointX="5.25" PointY="62.625" IsExpanded="true" />
         <EntityTypeShape EntityType="OPDBModel.UserDetail" Width="1.5" PointX="7.5" PointY="37.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="OPDBModel.UserNote" Width="1.5" PointX="5.25" PointY="67.125" IsExpanded="true" />
         <EntityTypeShape EntityType="OPDBModel.UserType" Width="1.5" PointX="0.75" PointY="38.875" IsExpanded="true" />
         <AssociationConnector Association="OPDBModel.Activity_ibfk_2" ManuallyRouted="false" />
         <AssociationConnector Association="OPDBModel.ActivityNote_ibfk_4" ManuallyRouted="false" />
@@ -67,11 +66,6 @@
         <AssociationConnector Association="OPDBModel.Unit_ibfk_2" />
         <AssociationConnector Association="OPDBModel.User_ibfk_1" />
         <AssociationConnector Association="OPDBModel.UserDetail_ibfk_5" />
-        <AssociationConnector Association="OPDBModel.UserNote_ibfk_1" />
-        <AssociationConnector Association="OPDBModel.UserNote_ibfk_2" />
-        <AssociationConnector Association="OPDBModel.UserNote_ibfk_3" />
-        <AssociationConnector Association="OPDBModel.UserNote_ibfk_4" />
-        <AssociationConnector Association="OPDBModel.UserNote_ibfk_5" />
         <EntityTypeShape EntityType="OPDBModel.OutreachEntityType" Width="1.5" PointX="5.25" PointY="46.5" />
         <AssociationConnector Association="OPDBModel.OutreachEntityType_ibfk_1" />
         <AssociationConnector Association="OPDBModel.OutreachEntityType_ibfk_2" />
@@ -103,6 +97,11 @@
         <AssociationConnector Association="OPDBModel.Activity_ibfk_10" />
         <AssociationConnector Association="OPDBModel.TargetPopulation_ibfk_1" />
         <AssociationConnector Association="OPDBModel.TargetPopulation_ibfk_2" />
+        <EntityTypeShape EntityType="OPDBModel.UserNote" Width="1.5" PointX="5.25" PointY="16.875" />
+        <AssociationConnector Association="OPDBModel.UserNote_ibfk_1" />
+        <AssociationConnector Association="OPDBModel.UserNote_ibfk_2" />
+        <AssociationConnector Association="OPDBModel.UserNote_ibfk_3" />
+        <AssociationConnector Association="OPDBModel.UserNote_ibfk_4" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
