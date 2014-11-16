@@ -1376,23 +1376,27 @@ namespace OPDB.Controllers
             {
                 if (Int32.Parse(User.Identity.Name.Split(',')[1]) != 1) // TODO: added this so the system doesnt verify the old password if the current logged user is an admin
                 {
-                    var crypto = new SimpleCrypto.PBKDF2();
-                    string passwordHash = crypto.Compute(userViewModel.User.UserPassword, user.PasswordSalt);
-
-                    if (userViewModel.User.UserPassword != null && String.Compare(user.UserPassword, passwordHash) != 0)
+                    if (userViewModel.OldPassword == null)
                     {
-                        ModelState.AddModelError("User_Password_IncorrectPassword", Resources.WebResources.User_Password_IncorrectPassword);
+                        ModelState.AddModelError("User_Password_MissingPassword", Resources.WebResources.User_Password_MissingPassword);
                         validModel = false;
+                    }
+                    else
+                    {
+                        var crypto = new SimpleCrypto.PBKDF2();
+                        string passwordHash = crypto.Compute(userViewModel.OldPassword, user.PasswordSalt);
+
+                        if (userViewModel.OldPassword != null && String.Compare(user.UserPassword, passwordHash) != 0)
+                        {
+                            ModelState.AddModelError("User_Password_IncorrectPassword", Resources.WebResources.User_Password_IncorrectPassword);
+                            validModel = false;
+                        }
                     }
                 }
 
-                if (userViewModel.NewPassword == null)
-                {
-                    ModelState.AddModelError("User_Password_MissingPassword", Resources.WebResources.User_Password_MissingPassword);
-                    validModel = false;
-                }
+                
 
-                if (userViewModel.NewPassword != null && userViewModel.ConfirmPassword != null && String.Compare(userViewModel.NewPassword, userViewModel.ConfirmPassword) != 0)
+                if (userViewModel.ConfirmPassword != null && String.Compare(userViewModel.User.UserPassword, userViewModel.ConfirmPassword) != 0)
                 {
                     ModelState.AddModelError("User_Password_NoMatch", Resources.WebResources.User_Password_NoMatch);
                     validModel = false;
@@ -1401,7 +1405,7 @@ namespace OPDB.Controllers
                 if (validModel && ModelState.IsValid)
                 {
                     var crypto = new SimpleCrypto.PBKDF2();
-                    string passwordHash = crypto.Compute(userViewModel.NewPassword);
+                    string passwordHash = crypto.Compute(userViewModel.User.UserPassword);
 
                     userViewModel.User.UserPassword = passwordHash;
                     userViewModel.User.PasswordSalt = crypto.Salt;
