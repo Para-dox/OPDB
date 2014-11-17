@@ -30,15 +30,26 @@
 </div>
 <br />
 <div class="display-label">
-    @Html.LabelFor(model => model.Note.Note, "Nota")
+    @Html.LabelFor(model => model.Note.Subject, "Asunto")
 </div>
 <div class="display-field">
-    @Html.DisplayFor(model => model.Note.Note)
+    @Html.DisplayFor(model => model.Note.Subject)
+</div>
+<br />
+
+<div class="display-label">
+    @Html.LabelFor(model => model.Note.Note, "Nota")
+</div>
+<div class="display-field note" style="height:100px; overflow-y:scroll;">
+   @Model.Note.Note
 </div>
 <br />
 <a href="#" id="editar" title="Editar Mensaje" class="modal_ajax_btn" data-title="Editar Mensaje" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarNota", "Usuarios", new { id = Model.Note.UserNoteID })"><input type="button" class="btn" style="float:left !important; width:40% !important; margin-left: 30px !important;" value="Editar" /></a>
-<a href="#" id="responder" title="Responder" class="modal_ajax_btn" data-title="Respuesta" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Usuarios", new { id = Model.Note.UserNoteID })"><input type="button" class="btn" style="float:left !important; width:40% !important; margin-left: 30px !important;" value="Responder" /></a>
+<a href="#" id="responder" title="Responder" class="modal_ajax_btn" data-title="Respuesta" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Usuarios", new { id = Model.Note.UserID })"><input type="button" class="btn" style="float:left !important; width:40% !important; margin-left: 30px !important;" value="Responder" /></a>
 <input type="button" class="btn" style="float:right !important; width:40% !important; margin-bottom: 20px !important; margin-right: 30px !important;" value="Volver" onclick="modalClose()" />
+
+
+<script src="~/Scripts/nicescroll/jquery.nicescroll.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
 
@@ -56,6 +67,8 @@
         if (document.getElementById('readMessage').value == "True") {
             document.getElementById('editar').setAttribute("hidden", "hidden"); 
         }
+
+        
 
     });
 </script>

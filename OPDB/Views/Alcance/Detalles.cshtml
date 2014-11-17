@@ -40,6 +40,25 @@
     .fa-remove:hover {
         color: #008cba !important;
     }
+      .frame {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .dummy {
+        padding-top: 100%;
+    }
+
+    .image-container {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: center; /* align horizontal */
+        align-items: center; /* align vertical */
+    }
 </style>
 
 <h2> @Html.DisplayFor(model => model.OutreachEntity.OutreachEntityName)</h2>
@@ -130,7 +149,7 @@
     @if (Request.IsAuthenticated) // only logged users can see notes
     {
         <div class="large-7 columns">
-            <h3>Notas</h3>
+            <h3>Mensajes</h3>
             <table id="outreachNotes">
                 <thead>
                     <tr>
@@ -156,7 +175,7 @@
                                 }
                             </td>
                             <td>@note.Sender</td>
-                            <td><a href="#" title="Ver Mensaje" data-validation="false" data-title="Mensaje" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("VerNota", "Alcance", new { id = note.UserNote.UserNoteID })" class="modal_ajax_btn link">@String.Concat(note.UserNote.Note.Substring(0, note.UserNote.Note.Length > 100 ? 100 : note.UserNote.Note.Length), " ...")</a></td>
+                            <td style="text-align:left !important;"><a href="#" title="Ver Mensaje" data-validation="false" data-title="Mensaje" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("VerNota", "Alcance", new { id = note.UserNote.UserNoteID })" class="modal_ajax_btn link">@String.Concat(note.UserNote.Note.Substring(0, note.UserNote.Note.Length > 100 ? 100 : note.UserNote.Note.Length), " ...")</a></td>
                             <td>
                                 @if ((Int32.Parse(User.Identity.Name.Split(',')[0]) == note.UserNote.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1) && !note.UserNote.Read)
                                 {
@@ -177,7 +196,10 @@
                 <a href="#" title="Dejar Mensaje" class="modal_ajax_btn" data-title="Mensaje Nuevo" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Alcance", new { id = Model.OutreachEntity.UserID })"><input type="button" value="Dejar Mensaje" class="btn" /></a>}
         </div>
 
-    }
+    }else
+{
+    <div class="large-6 columns frame"><div class="dummy"></div><div class="image-container"><img src="@Url.Content("~/Images/person90.svg")" height="297" width="297" /></div></div>
+}
 
 
 </div>

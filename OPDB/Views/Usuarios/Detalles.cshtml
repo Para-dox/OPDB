@@ -169,7 +169,7 @@
                                 }
                             </td>
                             <td>@note.Sender</td>
-                            <td><a href="#" title="Ver Mensaje" data-validation="false" style="color:#222222;" data-title="Mensaje" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("VerNota", "Usuarios", new { id = note.UserNote.UserNoteID })" class="modal_ajax_btn link">@String.Concat(note.UserNote.Note.Substring(0, note.UserNote.Note.Length > 100 ? 100 : note.UserNote.Note.Length), " ...")</a></td>
+                            <td style="text-align:left !important;"><a href="#" title="Ver Mensaje" data-validation="false" style="color:#222222;" data-title="Mensaje" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("VerNota", "Usuarios", new { id = note.UserNote.UserNoteID })" class="modal_ajax_btn link">@String.Concat(note.UserNote.Note.Substring(0, note.UserNote.Note.Length > 100 ? 100 : note.UserNote.Note.Length), " ...")</a></td>
                             <td>
                                 @if ((Int32.Parse(User.Identity.Name.Split(',')[0]) == note.UserNote.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1) && !note.UserNote.Read)
                                 {
