@@ -14,12 +14,13 @@
     @Html.HiddenFor(model => model.Note.CreateDate)
     @Html.HiddenFor(model => model.Note.CreateUser)
     @Html.HiddenFor(model => model.Note.SubjectID)
+    @Html.HiddenFor(model => model.Note.Read)
 
     <div class="editor-label">
-        @Html.LabelFor(model => model.Note.NoteTypeID, "Tipo de Nota")
+        @Html.LabelFor(model => model.Note.Subject, "Asunto *")
     </div>
     <div class="editor-field">
-        @Html.DropDownListFor(model => model.Note.NoteTypeID, Model.NoteTypes, new { @style = "margin: 0 0 1rem 0 !important; padding: 0.5rem !important; height: 2.3125rem !important; width: 100% !important;" })
+        @Html.EditorFor(model => model.Note.Subject, new { @style = "width: 100% !important;" })
     </div>
     <div class="editor-label">
         @Html.LabelFor(model => model.Note.Note, "Nota *")

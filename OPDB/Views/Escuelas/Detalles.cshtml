@@ -39,6 +39,26 @@
           color: #008cba !important;
       }
 
+      .frame {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .dummy {
+        padding-top: 100%;
+    }
+
+    .image-container {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: center; /* align horizontal */
+        align-items: center; /* align vertical */
+    }
+
 </style>
 
 <h2 style="text-align:center;">@Model.School.SchoolName</h2>
@@ -129,6 +149,14 @@
 @if (Int32.Parse(User.Identity.Name.ToString().Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.ToString().Split(',')[2])) {
         <a href="#" title="Añadir Nota" class="modal_ajax_btn" data-title="Nueva Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Escuelas", new { id = Model.School.SchoolID })"><input type="button" class="btn" value="Añadir Nota" /></a>}
     </div>}
+   else
+{
+    <div class="large-6 columns frame"><div class="dummy"></div><div class="image-container"><img src="@Url.Content("~/Images/school7.svg")" height="297" width="297" /></div></div>
+}
+}
+else
+{
+    <div class="large-6 columns frame"><div class="dummy"></div><div class="image-container"><img src="@Url.Content("~/Images/school7.svg")" height="297" width="297" /></div></div>
 }
 </div>
  

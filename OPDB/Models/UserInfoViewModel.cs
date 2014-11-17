@@ -16,6 +16,8 @@ namespace OPDB.Models
         public Contact Contact { get; set; }
         public ActivityResource ActivityResource { get; set; }
 
+        public UserNote UserNote { get; set; }
+
         public bool Interested { get; set; }
 
         public UserDetail UserDetail { get; set; }
@@ -28,6 +30,8 @@ namespace OPDB.Models
         public OutreachEntityDetail OutreachEntity { get; set; }
 
         public ActivityDynamic ActivityDynamic { get; set; }
+
+        public string Sender { get; set; }
 
         
 

@@ -41,14 +41,17 @@
     .fa-remove:hover {
         color: #008cba !important;
     }
-    .frame{
+
+    .frame {
         position: relative;
         overflow: hidden;
     }
-    .dummy{
+
+    .dummy {
          padding-top: 100%;
     }
-    .image-container{
+
+    .image-container {
         position: absolute;
         top: 0;
         bottom: 0;
@@ -140,15 +143,14 @@
 
     @if (User.Identity.IsAuthenticated)
     {
-        if ((Int32.Parse(User.Identity.Name.ToString().Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.ToString().Split(',')[2])) || Int32.Parse(User.Identity.Name.ToString().Split(',')[1]) == 1)
-        {
             <div class="large-7 columns">
-                <h3>Notas</h3>
+            <h3>Mensajes</h3>
                 <table id="userNotes">
                     <thead>
                         <tr>
-                            <th>Tipo</th>
-                            <th style="width:70%;">Nota</th>
+                        <th style="width:20%;">Leído</th>
+                        <th>Enviado Por</th>
+                        <th>Mensaje</th>
                             <th style="width:10%;"></th>
                         </tr>
                     </thead>
@@ -156,10 +158,27 @@
                         @foreach (var note in Model.Notes)
                         {
                             <tr>
-                                <td><a href="#" title="Ver Nota" data-validation="false" style="color:#222222;" data-title="Detalles" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("VerNota", "Usuarios", new { id = note.UserNoteID })" class="modal_ajax_btn link">@String.Concat(note.Note.Substring(0, note.Note.Length > 100 ? 100 : note.Note.Length), " ...")</a></td>
+                            <td>
+                                @if (note.UserNote.Read)
+                                {
+                                    <i class="fa fa-check" title="Leído"></i>
+                                }
+                                else
+                                {
+                                    <i class="fa fa-exclamation" title="No Leído"></i>
+                                }
+                            </td>
+                            <td>@note.Sender</td>
+                            <td style="text-align:left !important;"><a href="#" title="Ver Mensaje" data-validation="false" style="color:#222222;" data-title="Mensaje" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("VerNota", "Usuarios", new { id = note.UserNote.UserNoteID })" class="modal_ajax_btn link">@String.Concat(note.UserNote.Note.Substring(0, note.UserNote.Note.Length > 100 ? 100 : note.UserNote.Note.Length), " ...")</a></td>
                                 <td>
-                                    <a href="#" title="Editar" style="color:#222222;" data-title="Editar Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarNota", "Usuarios", new { id = note.UserNoteID })" class="modal_ajax_btn link"><i class="fa fa-pencil"></i></a>
-                                    <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this, 'userNotes')" data-url="@Url.Action("RemoverNota", "Usuarios", new { id = note.UserNoteID })"></i>
+                                @if ((Int32.Parse(User.Identity.Name.Split(',')[0]) == note.UserNote.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1) && !note.UserNote.Read)
+                                {
+                                    <a href="#" title="Editar" style="color:#222222;" data-title="Editar Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarNota", "Usuarios", new { id = note.UserNote.UserNoteID })" class="modal_ajax_btn link"><i class="fa fa-pencil"></i></a>
+                                    <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this, 'userNotes')" data-url="@Url.Action("RemoverNota", "Usuarios", new { id = note.UserNote.UserNoteID })"></i>}
+                                else if (Int32.Parse(User.Identity.Name.Split(',')[0]) == note.UserNote.SubjectID)
+                                {
+                                    <a href="#" title="Responder" style="color:#222222;" data-title="Respuesta" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Usuarios", new { id = note.UserNote.UserID })" class="modal_ajax_btn link"><i class="fa fa-mail-reply"></i></a>
+                                }
 
                                 </td>
                             </tr>
@@ -167,10 +186,11 @@
                     </tbody>
 
                 </table><br />
-                @if (Int32.Parse(User.Identity.Name.ToString().Split(',')[0]) == 3 && Boolean.Parse(User.Identity.Name.ToString().Split(',')[2]))
+            @if (Int32.Parse(User.Identity.Name.ToString().Split(',')[0]) != Model.User.UserID && Boolean.Parse(User.Identity.Name.Split(',')[2]))
                 {
-                    <a href="#" title="Añadir Nota" class="modal_ajax_btn" data-title="Nueva Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Usuarios", new { id = Model.User.UserID })"><input type="button" class="btn" value="Añadir Nota" /></a>}
-            </div>}
+                <a href="#" title="Dejar Mensaje" class="modal_ajax_btn" data-title="Mensaje Nuevo" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Usuarios", new { id = Model.User.UserID })"><input type="button" class="btn" value="Dejar Mensaje" /></a>}
+        </div>
+
     }
     else if (Model.User.UserTypeID == 1)
     {
@@ -210,7 +230,7 @@
             "columnDefs": [
                 {
                     "orderable": false,
-                    "targets": 2
+                    "targets": 3
                 }
             ],
             "oLanguage": {

@@ -83,12 +83,8 @@
                         @*<li class="name">@Html.ActionLink("Contact", "Contact", "Home")</li>*@
                         <li class="has-form busqueda"></li>
                         <li class="name">@Html.ActionLink("Búsqueda Avanzada", "BusquedaAvanzada", "Home")</li>
-                        <li class="has-dropdown not-click">
-                            <a href="#">Sesión</a>
-                            <ul class="dropdown">
-                                <li class="name">@Html.Partial("_LoginPartial")</li>
-                            </ul>
-                        </li>
+                        <li class="name">@Html.Partial("_LoginPartial")</li>
+                       
                     </ul>
                 </section>
             </nav>
