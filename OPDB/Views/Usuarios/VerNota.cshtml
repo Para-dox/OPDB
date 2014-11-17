@@ -11,20 +11,22 @@
         line-height: 13px;
     }
 </style>
+@Html.HiddenFor(model => model.Note.Read, new { id = "readMessage" })
+@Html.HiddenFor(model => model.Reader, new  { id = "reader"})
 
 <div class="display-label">
     @Html.LabelFor(model => model.UserDetail, "Usuario")
 </div>
 <div class="display-field">
-    @Model.UserDetail.FirstName @Model.UserDetail.MiddleInitial @Model.UserDetail.LastName 
+    @Model.UserDetail.FirstName @Model.UserDetail.MiddleInitial @Model.UserDetail.LastName
 </div>
 <br />
 <div class="display-label">
-    @Html.LabelFor(model => model.Note.NoteType.NoteType1, "Tipo de Nota")
+    @Html.LabelFor(model => model.Sender, "Envíado Por")
 </div>
-    <div class="display-field">
-       @Html.DisplayFor(model => model.Note.NoteType.NoteType1)
-    </div>
+<div class="display-field">
+    @Model.Sender
+</div>
 <br />
 <div class="display-label">
     @Html.LabelFor(model => model.Note.Note, "Nota")
@@ -33,6 +35,28 @@
     @Html.DisplayFor(model => model.Note.Note)
 </div>
 <br />
-<a href="#" title="Editar" class="modal_ajax_btn" data-title="Editar Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarNota", "Usuarios", new { id = Model.Note.UserNoteID })"><input type="button" class="btn" style="float:left !important; width:40% !important; margin-left: 30px !important;" value="Editar" /></a>
+<a href="#" id="editar" title="Editar Mensaje" class="modal_ajax_btn" data-title="Editar Mensaje" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarNota", "Usuarios", new { id = Model.Note.UserNoteID })"><input type="button" class="btn" style="float:left !important; width:40% !important; margin-left: 30px !important;" value="Editar" /></a>
+<a href="#" id="responder" title="Responder" class="modal_ajax_btn" data-title="Respuesta" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Usuarios", new { id = Model.Note.UserNoteID })"><input type="button" class="btn" style="float:left !important; width:40% !important; margin-left: 30px !important;" value="Responder" /></a>
 <input type="button" class="btn" style="float:right !important; width:40% !important; margin-bottom: 20px !important; margin-right: 30px !important;" value="Volver" onclick="modalClose()" />
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        
+
+        if (document.getElementById('reader').value == "Emisor") {
+            document.getElementById('editar').removeAttribute("hidden", "hidden");
+            document.getElementById('responder').setAttribute("hidden", "hidden");
+        }
+
+        if (document.getElementById('reader').value == "Receptor") {
+            document.getElementById('editar').setAttribute("hidden", "hidden");
+            document.getElementById('responder').removeAttribute("hidden", "hidden");
+        }
+
+        if (document.getElementById('readMessage').value == "True") {
+            document.getElementById('editar').setAttribute("hidden", "hidden");
+        }
+
+    });
+</script>
 

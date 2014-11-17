@@ -575,7 +575,7 @@ namespace OPDB.Controllers
                 {
                     int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
 
-                    if (activityViewModel.Activity.Attendees != null)
+                    if (activityViewModel.Activity.Attendees != null && activityViewModel.Activity.Attendees != 0)
                     {
                         if (activityViewModel.Activity.Attendees < 0)
                             ModelState.AddModelError("Activity_Attendees_Invalid", Resources.WebResources.Activity_Attendees_Invalid);
@@ -1675,7 +1675,7 @@ namespace OPDB.Controllers
                         activityViewModel.Activity.ActivityDate = DateTime.ParseExact(activityViewModel.ActivityDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
                     }
 
-                    if (activityViewModel.Activity.Attendees != null)
+                    if (activityViewModel.Activity.Attendees != null && activityViewModel.Activity.Attendees != 0)
                     {
                         if (activityViewModel.Activity.Attendees < 0)
                             ModelState.AddModelError("Activity_Attendees_Invalid", Resources.WebResources.Activity_Attendees_Invalid);

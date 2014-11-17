@@ -63,7 +63,8 @@ namespace OPDB.Controllers
             UserViewModel userViewModel = new UserViewModel
             {
                 User = db.Users.Find(id),
-                UserDetail = (from ud in db.UserDetails where ud.UserID == id select ud).SingleOrDefault()
+                UserDetail = (from ud in db.UserDetails where ud.UserID == id select ud).SingleOrDefault(),
+                Notes = new List<UserInfoViewModel>()
             };
 
             if (userViewModel.UserDetail.DateOfBirth == null)
@@ -76,16 +77,48 @@ namespace OPDB.Controllers
 
             if (Request.IsAuthenticated)
             {
+                var Notes = new List<UserNote>();
 
-                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.Split(',')[2]))
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1 || Int32.Parse(User.Identity.Name.Split(',')[0]) == id)
+                {
+                    Notes = (from note in db.UserNotes where note.SubjectID == id && note.DeletionDate == null select note).ToList();
+                }
+                else if(Int32.Parse(User.Identity.Name.Split(',')[0]) != id && Boolean.Parse(User.Identity.Name.Split(',')[2]))
                 {
                     int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
-                    userViewModel.Notes = from note in db.UserNotes.Include(note => note.NoteType) where note.SubjectID == id && note.UserID == userID && note.DeletionDate == null select note;
+                    Notes = (from note in db.UserNotes where note.SubjectID == id && note.UserID == userID && note.DeletionDate == null select note).ToList();
                 }
-                else if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+
+                foreach (var note in Notes)
                 {
-                    userViewModel.Notes = from note in db.UserNotes.Include(note => note.NoteType) where note.SubjectID == id && note.DeletionDate == null select note;
+                    string sender = "";
+
+                    var user = db.Users.Find(note.UserID);
+
+                    if (user.UserTypeID != 3)
+                    {
+                        var userDetail = db.UserDetails.FirstOrDefault(u => u.UserID == user.UserID);
+
+                        if(userDetail.MiddleInitial != null)
+                            sender = userDetail.FirstName + " " + userDetail.MiddleInitial + " " + userDetail.LastName;
+                        else
+                            sender = userDetail.FirstName + " " + userDetail.LastName;
+                        
+                    }
+                    else
+                    {
+                        var outreachEntity = db.OutreachEntityDetails.FirstOrDefault(u => u.UserID == user.UserID);
+                        sender = outreachEntity.OutreachEntityName;
+                    }
+
+                    userViewModel.Notes.Add(new UserInfoViewModel
+                    {
+                        UserNote = note,
+                        Sender = sender
+                    });
                 }
+         
+               
             }
 
             return View(userViewModel);
@@ -914,22 +947,21 @@ namespace OPDB.Controllers
         [HttpPost]
         public ActionResult CrearNota(int id)
         {
-            if (User.Identity.IsAuthenticated)
+            if (Request.IsAuthenticated)
             {
 
-                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.Split(',')[2]))
+                if (Boolean.Parse(User.Identity.Name.Split(',')[2]))
                 {
                     EscuelasController controller = new EscuelasController();
 
                     UserViewModel userViewModel = new UserViewModel
                     {
 
-                        NoteTypes = controller.getNoteTypes(),
                         Note = new UserNote
-                {
+                        {
 
-                    SubjectID = id
-                }
+                            SubjectID = id
+                        }
                     };
 
                     return PartialView("CrearNota", userViewModel);
@@ -946,7 +978,7 @@ namespace OPDB.Controllers
             if (User.Identity.IsAuthenticated)
             {
 
-                if ((Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.Split(',')[2])) || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                if (Boolean.Parse(User.Identity.Name.Split(',')[2]) || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
                 {
                     int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
 
@@ -961,6 +993,7 @@ namespace OPDB.Controllers
 
                             userViewModel.Note.UserID = userID;
                             userViewModel.Note.CreateUser = userID;
+                            userViewModel.Note.Read = false;
 
                             db.UserNotes.Add(userViewModel.Note);
                             db.SaveChanges();
@@ -992,14 +1025,13 @@ namespace OPDB.Controllers
             if (User.Identity.IsAuthenticated)
             {
 
-                if ((Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.Split(',')[2])) || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                if (Boolean.Parse(User.Identity.Name.Split(',')[2]) || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
                 {
                     EscuelasController controller = new EscuelasController();
 
                     UserViewModel userViewModel = new UserViewModel
                     {
 
-                        NoteTypes = controller.getNoteTypes(),
                         Note = db.UserNotes.Find(id)
                     };
 
@@ -1018,20 +1050,57 @@ namespace OPDB.Controllers
             {
                 UserNote userNote = db.UserNotes.Find(id);
 
-                if ((Int32.Parse(User.Identity.Name.Split(',')[0]) == userNote.UserID && Boolean.Parse(User.Identity.Name.Split(',')[2])) || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                if (Int32.Parse(User.Identity.Name.Split(',')[0]) == userNote.UserID || Int32.Parse(User.Identity.Name.Split(',')[0]) == userNote.SubjectID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1 && Boolean.Parse(User.Identity.Name.Split(',')[2]))
                 {
 
-                    userNote.NoteType = db.NoteTypes.Find(userNote.NoteTypeID);
-
-
+                
                     UserViewModel userViewModel = new UserViewModel
                     {
                         Note = userNote,
-                        UserDetail = db.UserDetails.First(user => user.UserID == userNote.SubjectID)
+                        UserDetail = db.UserDetails.FirstOrDefault(u => u.UserID == userNote.SubjectID)
+                        
                     };
 
+                    var user = db.Users.Find(userNote.UserID);
 
-                    return PartialView("VerNota", userViewModel);
+                    if (user.UserTypeID != 3)
+                    {
+                        var userDetail = db.UserDetails.FirstOrDefault(u => u.UserID == user.UserID);
+
+                        if(userDetail.MiddleInitial != null)
+                            userViewModel.Sender = userDetail.FirstName + " " + userDetail.MiddleInitial + " " + userDetail.LastName;
+                        else
+                            userViewModel.Sender = userDetail.FirstName + " " + userDetail.LastName;
+                        
+                    }
+                    else
+                    {
+                        var outreachEntity = db.OutreachEntityDetails.FirstOrDefault(u => u.UserID == user.UserID);
+                        userViewModel.Sender = outreachEntity.OutreachEntityName;
+                    }
+
+                    if (Int32.Parse(User.Identity.Name.Split(',')[0]) == userNote.SubjectID && !userNote.Read)
+                    {
+                        userViewModel.Note.Read = true;
+                        db.Entry(userNote).CurrentValues.SetValues(userViewModel.Note);
+                        db.SaveChanges();                        
+                    }
+
+
+
+                    if ((Int32.Parse(User.Identity.Name.Split(',')[0]) == userNote.UserID || (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1 && Int32.Parse(User.Identity.Name.Split(',')[0]) != userNote.SubjectID)) && Boolean.Parse(User.Identity.Name.Split(',')[2]))
+                       {
+                            userViewModel.Reader = "Emisor";
+                        }
+
+                        else if (Int32.Parse(User.Identity.Name.Split(',')[0]) == userNote.SubjectID && Boolean.Parse(User.Identity.Name.Split(',')[2]))
+                        {
+                            userViewModel.Reader = "Receptor";
+                        }
+
+
+                        return PartialView("VerNota", userViewModel);
+                   
                 }
             }
 

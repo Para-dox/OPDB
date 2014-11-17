@@ -20,8 +20,8 @@ namespace OPDB.Models
         public string ConfirmPassword { get; set; }
 
         public UserNote Note { get; set; }
-        public List<SelectListItem> NoteTypes { get; set; }
-        public IEnumerable<UserNote> Notes { get; set; }
+
+        public List<UserInfoViewModel> Notes { get; set; }
 
         public List<UserInfoViewModel> Information { get; set; }
 
@@ -67,6 +67,10 @@ namespace OPDB.Models
         public string Source { get; set; }
 
         public string BirthDate { get; set; }
+
+        public string Sender { get; set; }
+
+        public string Reader { get; set; }
         
     }
 }
