@@ -201,8 +201,7 @@ namespace OPDB.Controllers
             int currentUserID = Int32.Parse(User.Identity.Name.Split(',')[0]);
 
             var interested = (from interest in db.Interests join activity in db.Activities on interest.ActivityID equals activity.ActivityID where interest.DeletionDate == null && activity.DeletionDate == null && interest.UserID == currentUserID orderby activity.UpdateDate descending select interest).ToList();
-            //var interested = (from interest in db.Interests where interest.UserID == currentUserID orderby interest.UpdateDate descending select interest).ToList();
-
+           
             ActivityViewModel activityViewModel = new ActivityViewModel
             {
                 Information = new List<UserInfoViewModel>()
@@ -827,7 +826,7 @@ namespace OPDB.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                if ((Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.Split(',')[2])) || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) <= 3 && Boolean.Parse(User.Identity.Name.Split(',')[2]))
                 {
                     EscuelasController controller = new EscuelasController();
 
@@ -906,7 +905,7 @@ namespace OPDB.Controllers
                 if (note == null)
                     return HttpNotFound();
 
-                else if (Int32.Parse(User.Identity.Name.Split(',')[0]) == note.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                else if (Int32.Parse(User.Identity.Name.Split(',')[0]) == note.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) <= 2)
                 {
                     note.DeletionDate = DateTime.Now;
                     db.Entry(note).State = EntityState.Modified;
@@ -947,7 +946,7 @@ namespace OPDB.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                if ((Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.Split(',')[2])) || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) <= 3 && Boolean.Parse(User.Identity.Name.Split(',')[2]))
                 {
                     int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
 
@@ -1088,7 +1087,7 @@ namespace OPDB.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                if ((Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.Split(',')[2])) || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) <= 3 && Boolean.Parse(User.Identity.Name.Split(',')[2]))
                 {
                     ActivityNote activityNote = db.ActivityNotes.Find(id);
                     activityNote.NoteType = db.NoteTypes.Find(activityNote.NoteTypeID);
@@ -1153,7 +1152,7 @@ namespace OPDB.Controllers
                 if (activityViewModel.Feedback == null)
                     return HttpNotFound();
 
-                else if (Int32.Parse(User.Identity.Name.Split(',')[0]) == activityViewModel.Feedback.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                else if (Int32.Parse(User.Identity.Name.Split(',')[0]) == activityViewModel.Feedback.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) <= 2)
                 {
                     return PartialView("EditarComentario", activityViewModel);
                 }

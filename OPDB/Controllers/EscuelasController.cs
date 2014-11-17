@@ -300,9 +300,10 @@ namespace OPDB.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                var note = db.SchoolNotes.Find(id);
+
+                if ((Int32.Parse(User.Identity.Name.Split(',')[1]) <= 2 || Int32.Parse(User.Identity.Name.Split(',')[0]) == note.UserID) && Boolean.Parse(User.Identity.Name.Split(',')[2]))
                 {
-                    var note = db.SchoolNotes.Find(id);
                     note.DeletionDate = DateTime.Now;
                     db.Entry(note).State = EntityState.Modified;
                     db.SaveChanges();
@@ -324,7 +325,7 @@ namespace OPDB.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1 || (Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.Split(',')[2])))
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) <= 3 && Boolean.Parse(User.Identity.Name.Split(',')[2]))
                 {
                     schoolViewModel.Note.UpdateUser = Int32.Parse(User.Identity.Name.Split(',')[0]);
                     schoolViewModel.Note.UpdateDate = DateTime.Now;
@@ -367,7 +368,7 @@ namespace OPDB.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1 || (Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.Split(',')[2])))
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) <= 3 && Boolean.Parse(User.Identity.Name.Split(',')[2]))
                 {
                     SchoolViewModel schoolViewModel = new SchoolViewModel
                     {
@@ -382,7 +383,7 @@ namespace OPDB.Controllers
                 }
             }
 
-            return PartialView("AccesoDenegado", "Home");
+            return RedirectToAction("AccesoDenegado", "Home");
         }
 
         [HttpPost]
@@ -390,7 +391,7 @@ namespace OPDB.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                if ((Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.Split(',')[2])) || Int32.Parse(User.Identity.Name.Split(',')[2]) == 2 || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) <= 3 && Boolean.Parse(User.Identity.Name.Split(',')[2]))
                 {
 
                     SchoolNote schoolNote = db.SchoolNotes.Find(id);
@@ -410,8 +411,9 @@ namespace OPDB.Controllers
                     return PartialView("VerNota", schoolViewModel);
 
                 }
-            }       
-            return PartialView("AccesoDenegado", "Home");
+            }
+
+            return RedirectToAction("AccesoDenegado", "Home");
         }
 
         [HttpPost]
@@ -419,20 +421,22 @@ namespace OPDB.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                if ((Int32.Parse(User.Identity.Name.Split(',')[0]) == id && Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.Split(',')[2])) || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                var note = db.SchoolNotes.Find(id);
+
+                if ((Int32.Parse(User.Identity.Name.Split(',')[0]) == note.UserID && Boolean.Parse(User.Identity.Name.Split(',')[2])) || Int32.Parse(User.Identity.Name.Split(',')[1]) >= 2)
                 {
                     SchoolViewModel schoolViewModel = new SchoolViewModel
                     {
 
                         NoteTypes = getNoteTypes(),
-                        Note = db.SchoolNotes.Find(id)
+                        Note = note
                     };
 
                     return PartialView(schoolViewModel);
                 }
             }
 
-            return PartialView("AccesoDenegado", "Home");
+            return RedirectToAction("AccesoDenegado", "Home");
         }
 
         public List<SelectListItem> getNoteTypes()
@@ -477,11 +481,11 @@ namespace OPDB.Controllers
             return str;
         }
 
-        public ActionResult Removidos()
+        public ActionResult Removidos(string requested)
         {
             if (User.Identity.IsAuthenticated)
             {
-                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1 && Boolean.Parse(requested))
                 {
                     var schools = (from school in db.Schools where school.DeletionDate != null select school).ToList();
 
@@ -505,7 +509,7 @@ namespace OPDB.Controllers
                 }
             }
 
-           return PartialView("AccesoDenegado", "Home");
+            return RedirectToAction("AccesoDenegado", "Home");
         }
 
         public List<SelectListItem> getSchoolRegions()

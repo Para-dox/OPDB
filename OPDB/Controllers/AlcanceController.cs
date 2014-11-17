@@ -624,7 +624,7 @@ namespace OPDB.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                if ((Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.Split(',')[2])) || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                if (Boolean.Parse(User.Identity.Name.Split(',')[2]))
                 {
                     int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
 
