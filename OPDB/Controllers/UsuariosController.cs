@@ -1446,7 +1446,9 @@ namespace OPDB.Controllers
             if (Request.IsAuthenticated)
             {
                 if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
-                    return PartialView("ChangePasswordAdmin", userViewModel);
+                    userViewModel.Reader = "Admin";
+                else
+                    userViewModel.Reader = "User";
             }
 
             return PartialView("ChangePassword", userViewModel);

@@ -880,7 +880,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No ha ingresado su nueva contraseña.
+        ///   Looks up a localized string similar to No ha ingresado su contraseña actual.
         /// </summary>
         internal static string User_Password_MissingPassword {
             get {

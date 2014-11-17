@@ -391,7 +391,7 @@
     <value>Su contraseña es incorrecta</value>
   </data>
   <data name="User_Password_MissingPassword" xml:space="preserve">
-    <value>No ha ingresado su nueva contraseña</value>
+    <value>No ha ingresado su contraseña actual</value>
   </data>
   <data name="User_Password_NoMatch" xml:space="preserve">
     <value>Su contraseña no coincide</value>
