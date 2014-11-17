@@ -24,15 +24,18 @@ namespace OPDB.Models
 
         public int UnitID { get; set; }
 
-        [RegularExpression(@"^[a-zA-Z\u00c0-\u017e0-9\-\s]{1,100}$", ErrorMessageResourceName = "Unit_UnitName_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
+        [StringLength(100, ErrorMessageResourceName = "Unit_UnitName_LengthExceeded", ErrorMessageResourceType = typeof(Resources.WebResources))]
+        [RegularExpression(@"^[a-zA-Z\u00c0-\u017e0-9\-\s]+$", ErrorMessageResourceName = "Unit_UnitName_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
         [Required(ErrorMessageResourceName = "Unit_UnitName_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string UnitName { get; set; }
 
-        [RegularExpression(@"^[a-zA-Z\u00c0-\u017e\s]{1,50}$", ErrorMessageResourceName = "Unit_Building_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
+        [StringLength(50, ErrorMessageResourceName = "Unit_Building_LengthExceeded", ErrorMessageResourceType = typeof(Resources.WebResources))]
+        [RegularExpression(@"^[a-zA-Z\u00c0-\u017e\s]+$", ErrorMessageResourceName = "Unit_Building_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
         [Required(ErrorMessageResourceName = "Unit_Building_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Building { get; set; }
 
-        [RegularExpression(@"^[a-zA-Z0-9\-\s]{1,10}$", ErrorMessageResourceName = "Unit_RoomNumber_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
+        [StringLength(10, ErrorMessageResourceName = "Unit_RoomNumber_LengthExceeded", ErrorMessageResourceType = typeof(Resources.WebResources))]
+        [RegularExpression(@"^[a-zA-Z0-9\-\s]+$", ErrorMessageResourceName = "Unit_RoomNumber_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
         [Required(ErrorMessageResourceName = "Unit_RoomNumber_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string RoomNumber { get; set; }
 
