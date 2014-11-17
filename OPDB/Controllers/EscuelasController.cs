@@ -71,10 +71,22 @@ namespace OPDB.Controllers
 
         public ActionResult Detalles(int id = 0)
         {
+            int currentUser = Int32.Parse(User.Identity.Name.Split(',')[0]);
+            IEnumerable<SchoolNote> schoolNotes;
+
+            if (Int32.Parse(User.Identity.Name.Split(',')[1]) <= 2)
+            {
+                schoolNotes = from note in db.SchoolNotes.Include(note => note.NoteType) where note.SchoolID == id && note.DeletionDate == null select note;
+            }
+            else
+            {
+                schoolNotes = from note in db.SchoolNotes.Include(note => note.NoteType) where note.SchoolID == id && note.UserID == currentUser && note.DeletionDate == null select note;
+            }   
+
             SchoolViewModel schoolViewModel = new SchoolViewModel
             {
                 School = db.Schools.Find(id),
-                Notes = from note in db.SchoolNotes.Include(note => note.NoteType) where note.SchoolID == id && note.DeletionDate == null select note
+                Notes = schoolNotes
             };
 
             if (schoolViewModel.School == null)
@@ -312,7 +324,7 @@ namespace OPDB.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1 || (Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.Split(',')[2])))
                 {
                     schoolViewModel.Note.UpdateUser = Int32.Parse(User.Identity.Name.Split(',')[0]);
                     schoolViewModel.Note.UpdateDate = DateTime.Now;
@@ -323,8 +335,8 @@ namespace OPDB.Controllers
                         {
                             schoolViewModel.Note.CreateDate = DateTime.Now;
 
-                            schoolViewModel.Note.UserID = 2;
-                            schoolViewModel.Note.CreateUser = 2;
+                            schoolViewModel.Note.UserID = Int32.Parse(User.Identity.Name.Split(',')[0]);
+                            schoolViewModel.Note.CreateUser = Int32.Parse(User.Identity.Name.Split(',')[0]);
 
                             db.SchoolNotes.Add(schoolViewModel.Note);
                             db.SaveChanges();
@@ -355,15 +367,13 @@ namespace OPDB.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1 || (Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.Split(',')[2])))
                 {
                     SchoolViewModel schoolViewModel = new SchoolViewModel
                     {
-
                         NoteTypes = getNoteTypes(),
                         Note = new SchoolNote
                         {
-
                             SchoolID = id
                         }
                     };
@@ -409,7 +419,7 @@ namespace OPDB.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                if ((Int32.Parse(User.Identity.Name.Split(',')[0]) == id && Int32.Parse(User.Identity.Name.Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.Split(',')[2])) || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
                 {
                     SchoolViewModel schoolViewModel = new SchoolViewModel
                     {
@@ -513,6 +523,5 @@ namespace OPDB.Controllers
 
             return regions;
         }
-        
     }
 }

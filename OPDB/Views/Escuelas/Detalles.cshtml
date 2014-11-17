@@ -99,7 +99,7 @@
 
 @if (Request.IsAuthenticated)
 {
-    if (Int32.Parse(User.Identity.Name.ToString().Split(',')[1]) == 1)
+    if ((Int32.Parse(User.Identity.Name.ToString().Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.ToString().Split(',')[2])) || Int32.Parse(User.Identity.Name.ToString().Split(',')[1]) == 1)
     {
     <div class="large-7 columns">
         <h3>Notas</h3>
@@ -126,13 +126,12 @@
                 }
             </tbody>          
         </table>
-@if (Int32.Parse(User.Identity.Name.ToString().Split(',')[0]) == 3 && Boolean.Parse(User.Identity.Name.ToString().Split(',')[2])) {
+@if (Int32.Parse(User.Identity.Name.ToString().Split(',')[1]) == 3 && Boolean.Parse(User.Identity.Name.ToString().Split(',')[2])) {
         <a href="#" title="Añadir Nota" class="modal_ajax_btn" data-title="Nueva Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Escuelas", new { id = Model.School.SchoolID })"><input type="button" class="btn" value="Añadir Nota" /></a>}
     </div>}
 }
 </div>
-   
-                    
+ 
 <script src="~/Scripts/myScripts.js"></script>
 <script>
     $(document).ready(function () {

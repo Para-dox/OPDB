@@ -156,7 +156,6 @@
                         @foreach (var note in Model.Notes)
                         {
                             <tr>
-                                <td>@note.NoteType.NoteType1</td>
                                 <td><a href="#" title="Ver Nota" data-validation="false" style="color:#222222;" data-title="Detalles" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("VerNota", "Usuarios", new { id = note.UserNoteID })" class="modal_ajax_btn link">@String.Concat(note.Note.Substring(0, note.Note.Length > 100 ? 100 : note.Note.Length), " ...")</a></td>
                                 <td>
                                     <a href="#" title="Editar" style="color:#222222;" data-title="Editar Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarNota", "Usuarios", new { id = note.UserNoteID })" class="modal_ajax_btn link"><i class="fa fa-pencil"></i></a>
