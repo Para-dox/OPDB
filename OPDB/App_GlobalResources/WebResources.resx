@@ -288,6 +288,9 @@
   <data name="Unit_Building_Invalid" xml:space="preserve">
     <value>El nombre del edificio es inválido</value>
   </data>
+  <data name="Unit_Building_LengthExceeded" xml:space="preserve">
+    <value>El nombre del edificio se excede del límite de 50 caracteres</value>
+  </data>
   <data name="Unit_Building_Required" xml:space="preserve">
     <value>No ha ingresado un edificio para esta unidad</value>
   </data>
@@ -303,11 +306,17 @@
   <data name="Unit_RoomNumber_Invalid" xml:space="preserve">
     <value>La oficina o salón entrado es inválido</value>
   </data>
+  <data name="Unit_RoomNumber_LengthExceeded" xml:space="preserve">
+    <value>El salón u oficina se excede del limite de 10 caracteres</value>
+  </data>
   <data name="Unit_RoomNumber_Required" xml:space="preserve">
     <value>No ha ingresado una oficina o salón para esta unidad</value>
   </data>
   <data name="Unit_UnitName_Invalid" xml:space="preserve">
     <value>El nombre de la unidad es inválido</value>
+  </data>
+  <data name="Unit_UnitName_LengthExceeded" xml:space="preserve">
+    <value>El nombre de la unidad se excede del límite de 100 caracteres</value>
   </data>
   <data name="Unit_UnitName_Required" xml:space="preserve">
     <value>No ha ingresado un nombre para esta unidad</value>
