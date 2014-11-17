@@ -26,7 +26,12 @@
     </tbody>
 
 </table><br />
-<a href="#" title="Añadir Nota" class="modal_ajax_btn" data-title="Nueva Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Actividades", new { id = Model.Activity.ActivityID })"><input type="button" class="btn" value="Añadir Nota" /></a>
+@if (Request.IsAuthenticated)
+{
+    if (Int32.Parse(User.Identity.Name.Split(',')[1]) != 2)
+    {
+        <a href="#" title="Añadir Nota" class="modal_ajax_btn" data-title="Nueva Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Actividades", new { id = Model.Activity.ActivityID })"><input type="button" class="btn" value="Añadir Nota" /></a>}
+}
 <script type="text/javascript">
 
     $(document).ready(function () {

@@ -71,17 +71,23 @@ namespace OPDB.Controllers
 
         public ActionResult Detalles(int id = 0)
         {
-            int currentUser = Int32.Parse(User.Identity.Name.Split(',')[0]);
-            IEnumerable<SchoolNote> schoolNotes;
+            List<SchoolNote> schoolNotes = new List<SchoolNote>();
 
-            if (Int32.Parse(User.Identity.Name.Split(',')[1]) <= 2)
+            if (Request.IsAuthenticated)
             {
-                schoolNotes = from note in db.SchoolNotes.Include(note => note.NoteType) where note.SchoolID == id && note.DeletionDate == null select note;
+
+                int currentUser = Int32.Parse(User.Identity.Name.Split(',')[0]);
+                
+
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) <= 2)
+                {
+                    schoolNotes = (from note in db.SchoolNotes.Include(note => note.NoteType) where note.SchoolID == id && note.DeletionDate == null select note).ToList();
+                }
+                else
+                {
+                    schoolNotes = (from note in db.SchoolNotes.Include(note => note.NoteType) where note.SchoolID == id && note.UserID == currentUser && note.DeletionDate == null select note).ToList();
+                }
             }
-            else
-            {
-                schoolNotes = from note in db.SchoolNotes.Include(note => note.NoteType) where note.SchoolID == id && note.UserID == currentUser && note.DeletionDate == null select note;
-            }   
 
             SchoolViewModel schoolViewModel = new SchoolViewModel
             {
@@ -93,6 +99,7 @@ namespace OPDB.Controllers
             {
                 return HttpNotFound();
             }
+
             return View(schoolViewModel);
         }
 

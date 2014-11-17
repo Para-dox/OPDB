@@ -48,7 +48,7 @@
     }
 
     .dummy {
-         padding-top: 100%;
+        padding-top: 100%;
     }
 
     .image-container {
@@ -83,12 +83,14 @@
             @Html.DisplayFor(model => model.User.Email)
         </div>
         <br />
-        <div class="display-label">
-            @Html.LabelFor(model => model.User.PhoneNumber, "Número Telefónico")
-        </div>
-        <div class="display-field">
-            @Html.DisplayFor(model => model.User.PhoneNumber)
-        </div><br />
+        @if (Model.User.PhoneNumber != null && Model.User.PhoneNumber != "")
+        {
+            <div class="display-label">
+                @Html.LabelFor(model => model.User.PhoneNumber, "Número Telefónico")
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.User.PhoneNumber)
+            </div><br />}
         @if (Model.UserDetail.DateOfBirth != null && Model.UserDetail.DateOfBirth != new DateTime())
         {
             <div class="display-label">
@@ -143,21 +145,21 @@
 
     @if (User.Identity.IsAuthenticated)
     {
-            <div class="large-7 columns">
+        <div class="large-7 columns">
             <h3>Mensajes</h3>
-                <table id="userNotes">
-                    <thead>
-                        <tr>
+            <table id="userNotes">
+                <thead>
+                    <tr>
                         <th style="width:20%;">Leído</th>
                         <th>Enviado Por</th>
                         <th>Mensaje</th>
-                            <th style="width:10%;"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var note in Model.Notes)
-                        {
-                            <tr>
+                        <th style="width:10%;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var note in Model.Notes)
+                    {
+                        <tr>
                             <td>
                                 @if (note.UserNote.Read)
                                 {
@@ -170,7 +172,7 @@
                             </td>
                             <td>@note.Sender</td>
                             <td style="text-align:left !important;"><a href="#" title="Ver Mensaje" data-validation="false" style="color:#222222;" data-title="Mensaje" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("VerNota", "Usuarios", new { id = note.UserNote.UserNoteID })" class="modal_ajax_btn link">@String.Concat(note.UserNote.Note.Substring(0, note.UserNote.Note.Length > 100 ? 100 : note.UserNote.Note.Length), " ...")</a></td>
-                                <td>
+                            <td>
                                 @if ((Int32.Parse(User.Identity.Name.Split(',')[0]) == note.UserNote.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1) && !note.UserNote.Read)
                                 {
                                     <a href="#" title="Editar" style="color:#222222;" data-title="Editar Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarNota", "Usuarios", new { id = note.UserNote.UserNoteID })" class="modal_ajax_btn link"><i class="fa fa-pencil"></i></a>
@@ -180,14 +182,14 @@
                                     <a href="#" title="Responder" style="color:#222222;" data-title="Respuesta" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Usuarios", new { id = note.UserNote.UserID })" class="modal_ajax_btn link"><i class="fa fa-mail-reply"></i></a>
                                 }
 
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
 
-                </table><br />
+            </table><br />
             @if (Int32.Parse(User.Identity.Name.ToString().Split(',')[0]) != Model.User.UserID && Boolean.Parse(User.Identity.Name.Split(',')[2]))
-                {
+            {
                 <a href="#" title="Dejar Mensaje" class="modal_ajax_btn" data-title="Mensaje Nuevo" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Usuarios", new { id = Model.User.UserID })"><input type="button" class="btn" value="Dejar Mensaje" /></a>}
         </div>
 
