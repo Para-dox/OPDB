@@ -1,5 +1,6 @@
 ﻿@{
     ViewBag.Title = "Búsqueda Avanzada";
+    ViewBag.Nav = "Advanced";
 }
 
 <style>
@@ -12,7 +13,7 @@
         display: none !important;
     }
 </style>
-<h2>Búsqueda Avanzada</h2>
+<h2>Búsqueda Avanzada</h2><br />
 
 <ul class="side-nav" style="border-right: 1px solid #dddddd;">
     <li id="alcance"><a onclick="getAdvancedSearchForm(this)" data-url="@Url.Action("_PartialViewLoad", "Home", new { view = "_Alcance" })">Alcance</a></li>

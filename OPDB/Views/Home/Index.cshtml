@@ -10,10 +10,6 @@
         color: #4d4d4d;
     }
 
-    h4 {
-        color: #4d4d4d;
-    }
-
     r {
         font-size: 0.875rem;
     }
@@ -26,8 +22,8 @@
     {
 
         <div class="large-6 columns panel" style="height:250px;">
-            <div class="activity" style="height:175px; overflow:hidden;" title="Desplace hacia abajo para más información">
-                <h4>@Html.ActionLink(item.Activity.Title, "Detalles", "Actividades", new { id = item.Activity.ActivityID }, null)</h4>
+            <h4>@Html.ActionLink(item.Activity.Title, "Detalles", "Actividades", new { id = item.Activity.ActivityID }, null)</h4>
+                <div class="activity" style="height:150px; overflow:hidden;" title="Desplace hacia abajo para más información">                
                 <span>Propósito: </span><r>@String.Concat(item.Activity.Purpose.Substring(0, item.Activity.Purpose.Length > 100 ? 100 : item.Activity.Purpose.Length), "")</r><br />
                 <span>Tipo: </span><r>@item.Activity.ActivityType.ActivityType1</r><br />
                 <span>Área de Especialidad: </span><r>@item.Activity.ActivityMajor.ActivityMajor1</r><br />

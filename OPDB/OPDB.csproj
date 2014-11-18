@@ -233,14 +233,8 @@
       <DependentUpon>OPDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ActivityViewModel.cs" />
-    <Compile Include="Models\AffiliateType.cs">
-      <DependentUpon>OPDBModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\CalendarActivity.cs" />
     <Compile Include="Models\Contact.cs">
-      <DependentUpon>OPDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Document.cs">
       <DependentUpon>OPDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Feedback.cs">
@@ -341,6 +335,7 @@
     <Content Include="Content\sceditor\default.min.css" />
     <Content Include="Content\sceditor\famfamfam.png" />
     <Content Include="Content\sceditor\jquery.sceditor.default.min.css" />
+    <Content Include="Content\style.css" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />

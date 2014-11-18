@@ -7,29 +7,28 @@
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <meta name="viewport" content="width=device-width" />
 
-   
+
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
-   
+
     <link href="~/Content/orderedList.css" rel="stylesheet" />
     <link href="~/Content/modalcss.css" rel="stylesheet" />
     <link href="~/Content/modalStyle.css" rel="stylesheet" />
     <link href="~/Content/buttonStyle.css" rel="stylesheet" />
     <link href="~/Content/timepicker/jquery.timepicker.css" rel="stylesheet" />
     <link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />
-    <link href="~/Content/dataTables/jquery.dataTables.css" rel="stylesheet" />    
+    <link href="~/Content/dataTables/jquery.dataTables.css" rel="stylesheet" />
     <link href="~/Content/foundation/foundation.css" rel="stylesheet" />
     <link href="~/Content/foundation/normalize.css" rel="stylesheet" />
     <link href="~/Content/multi-select/chosen.css" rel="stylesheet" />
     <link href="~/Content/fullcalendar/fullcalendar.css" rel="stylesheet" />
     <link href="~/Content/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
-    
-    
-    
+    <link href="~/Content/style.css" rel="stylesheet" />
+
     <script src="~/Scripts/jquery-1.8.2.min.js"></script>
-    <script src="~/Scripts/jquery-ui-1.8.24.min.js"></script>     
-    <script src="~/Scripts/nicescroll/jquery.nicescroll.js"></script>  
+    <script src="~/Scripts/jquery-ui-1.8.24.min.js"></script>
+    <script src="~/Scripts/nicescroll/jquery.nicescroll.js"></script>
     <script src="~/Scripts/modal.js"></script>
     <script src="~/Scripts/modalmanager.js"></script>
     <script src="~/Scripts/ajaxmodal.js"></script>
@@ -38,18 +37,15 @@
     <script src="~/Scripts/foundation/foundation.js"></script>
     <script src="~/Scripts/foundation/foundation.clearing.js"></script>
     <script src="~/Scripts/foundation/foundation.dropdown.js"></script>
-    <script src="~/Scripts/foundation/foundation.topbar.js"></script>    
+    <script src="~/Scripts/foundation/foundation.topbar.js"></script>
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/Scripts/timepicker/jquery.timepicker.js"></script>
-    
-    
-    
 </head>
 <body>
-    <header>
-        <div>         
+    <div id="wrap">
+        <div id="header">
             <nav class="top-bar docs-bar hide-for-small" data-topbar role="navigation">
                 <ul class="title-area">
                     <li class="name">
@@ -60,11 +56,23 @@
                 <section class="top-bar-section">
                     <!-- Right Nav Section -->
                     <ul class="right">
-                        <li class="name">@Html.ActionLink("Calendario", "Calendario", "Home")</li>
+                        @if (ViewBag.Nav == "Calendario")
+                        {
+                            <li class="active">@Html.ActionLink("Calendario", "Calendario", "Home")</li>}
+                        else
+                        {
+                            <li>@Html.ActionLink("Calendario", "Calendario", "Home")</li>
+                        }
                         <li class="has-dropdown not-click">
                             <a href="#">Navegar</a>
                             <ul class="dropdown">
-                                <li>@Html.ActionLink("Alcance", "Lista", "Alcance")</li>
+                                @if (ViewBag.Nav == "Alcance")
+                                {
+                                    <li class="active">@Html.ActionLink("Alcance", "Lista", "Alcance")</li>}
+                                else
+                                {
+                                    <li>@Html.ActionLink("Alcance", "Lista", "Alcance")</li>
+                                }
                                 <li>@Html.ActionLink("Actividades", "Lista", "Actividades")</li>
                                 <li>@Html.ActionLink("Escuelas", "Lista", "Escuelas")</li>
                                 <li>@Html.ActionLink("Unidades", "Lista", "Unidades")</li>
@@ -77,34 +85,37 @@
                                         <li>@Html.ActionLink("Admin", "Administracion", "Home")</li>
                                     }
                                 }
-                                
+
                             </ul>
                         </li>
                         @*<li class="name">@Html.ActionLink("Contact", "Contact", "Home")</li>*@
                         <li class="has-form busqueda"></li>
-                        <li class="name">@Html.ActionLink("Búsqueda Avanzada", "BusquedaAvanzada", "Home")</li>
-                        <li class="name">@Html.Partial("_LoginPartial")</li>
-                       
+                        @if (ViewBag.Nav == "Advanced")
+                        {
+                            <li class="active">@Html.ActionLink("Búsqueda Avanzada", "BusquedaAvanzada", "Home")</li>}
+                        else
+                        {
+                            <li>@Html.ActionLink("Búsqueda Avanzada", "BusquedaAvanzada", "Home")</li>
+                        }
+                        <li>@Html.Partial("_LoginPartial")</li>
+
                     </ul>
                 </section>
-            </nav>
-               
-                <br /><br /><br />
-            </div>
-    </header>
-
-    <div id="body">
-        <section class="content-wrapper">
-            @RenderBody()
-        </section>
-    </div>
-    <footer id="foot">
-        <div class="content-wrapper">
-            <div>
-                <p style="font-size:0.6em">&copy; @DateTime.Now.Year - Paradox Solutions</p>
-            </div>
+            </nav><br /><br />
         </div>
-    </footer>
+        <div id="main">
+            <section class="content-wrapper">
+                @RenderBody()
+            </section>
+        </div>
+            
+    </div>
+    <div id="footer">
+        <p style="font-size:0.6em; color:white;">&copy; @DateTime.Now.Year - Paradox Solutions</p>
+    </div>
+
+
+
 
 
     @RenderSection("scripts", required: false)
@@ -113,20 +124,25 @@
     <div id="ajax-modal" class="modal hide fade modalStyle" aria-hidden="true" style="display: none;" data-backdrop="static" data-keyboard="false">
         <div class="modal-header" style="margin: 0px 10px 0 10px !important; height: 30px;">
             <i onclick="modalClose()" class='fa fa-times-circle fa-lg' style="float: right; margin: 5px -2px; cursor: pointer; "></i>
-         <h3></h3>  
+            <h3></h3>
         </div><div id="instructions"><label style="font-size: 0.875rem; color: black; margin:15px 0 0 15px;">Todo campo con (*) es requerido.</label></div><ul id="validation" style="color: red; margin-top:15px; width: 100%; list-style-type: none;"></ul>
         <div style="margin-top:-10px;" class="modal-body">
         </div>
     </div>
-    
 
+
+    <script src="~/Scripts/myScripts.js"></script>
     <script type="text/javascript">
-
+        sleep(100);
         $(document).ready(function () {
+        
             $('.busqueda').load("@Url.Action("_Buscar", "Home")");
             $("html").niceScroll();
         });
-
     </script>
+
 </body>
+
+
 </html>
+

@@ -1,5 +1,5 @@
 ﻿html {
-    background-color: #e2e2e2;
+    background-color: white;
     margin: 0;
     padding: 0;
 }
@@ -7,8 +7,8 @@
 body {
     /*background-color: #fff;
     border-top: solid 10px #000;
-    color: #333;*/
-    font-size: .85em;
+    color: #333;
+    font-size: .85em;*/
     font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif !important;
     margin: 0;
     padding: 0;

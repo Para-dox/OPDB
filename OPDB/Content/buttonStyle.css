@@ -5,19 +5,19 @@
   font-family: Segoe UI !important;
   color: #ffffff !important;
   font-size: 1.2em !important;
-  background: #3498db !important; /*00A00F*/
+  background: #00A00F !important; /*00A00F*/
   padding: 5px 10px 5px 10px !important;
   text-decoration: none !important;
   font-weight: normal !important;
 }
 
 .btn:hover {
-  background: #3cb0fd !important;
-  background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db) !important;
-  background-image: -moz-linear-gradient(top, #3cb0fd, #3498db) !important;
-  background-image: -ms-linear-gradient(top, #3cb0fd, #3498db) !important;
-  background-image: -o-linear-gradient(top, #3cb0fd, #3498db) !important;
-  background-image: linear-gradient(to bottom, #3cb0fd, #3498db) !important;
+  background: #007A0B !important;
+  background-image: -webkit-linear-gradient(top, #007A0B, #007A0B) !important;
+  background-image: -moz-linear-gradient(top, #007A0B, #007A0B) !important;
+  background-image: -ms-linear-gradient(top, #007A0B, #007A0B) !important;
+  background-image: -o-linear-gradient(top, #007A0B, #007A0B) !important;
+  background-image: linear-gradient(to bottom, #007A0B, #007A0B) !important;
   text-decoration: none !important;
 }
 

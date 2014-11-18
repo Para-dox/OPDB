@@ -29,14 +29,9 @@ namespace OPDB.Models
             this.ActivityResources1 = new HashSet<ActivityResource>();
             this.ActivityTypes = new HashSet<ActivityType>();
             this.ActivityTypes1 = new HashSet<ActivityType>();
-            this.AffiliateTypes = new HashSet<AffiliateType>();
-            this.AffiliateTypes1 = new HashSet<AffiliateType>();
             this.Contacts = new HashSet<Contact>();
             this.Contacts1 = new HashSet<Contact>();
             this.Contacts2 = new HashSet<Contact>();
-            this.Documents = new HashSet<Document>();
-            this.Documents1 = new HashSet<Document>();
-            this.Documents2 = new HashSet<Document>();
             this.Feedbacks = new HashSet<Feedback>();
             this.Feedbacks1 = new HashSet<Feedback>();
             this.Feedbacks2 = new HashSet<Feedback>();
@@ -103,14 +98,9 @@ namespace OPDB.Models
         public virtual ICollection<ActivityResource> ActivityResources1 { get; set; }
         public virtual ICollection<ActivityType> ActivityTypes { get; set; }
         public virtual ICollection<ActivityType> ActivityTypes1 { get; set; }
-        public virtual ICollection<AffiliateType> AffiliateTypes { get; set; }
-        public virtual ICollection<AffiliateType> AffiliateTypes1 { get; set; }
         public virtual ICollection<Contact> Contacts { get; set; }
         public virtual ICollection<Contact> Contacts1 { get; set; }
         public virtual ICollection<Contact> Contacts2 { get; set; }
-        public virtual ICollection<Document> Documents { get; set; }
-        public virtual ICollection<Document> Documents1 { get; set; }
-        public virtual ICollection<Document> Documents2 { get; set; }
         public virtual ICollection<Feedback> Feedbacks { get; set; }
         public virtual ICollection<Feedback> Feedbacks1 { get; set; }
         public virtual ICollection<Feedback> Feedbacks2 { get; set; }

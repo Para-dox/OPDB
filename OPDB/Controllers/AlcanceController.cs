@@ -639,7 +639,7 @@ namespace OPDB.Controllers
 
                             userViewModel.Note.UserID = userID;
                             userViewModel.Note.CreateUser = userID;
-                            userViewModel.Note.Read = false;
+                            userViewModel.Note.IsRead = false;
 
                             db.UserNotes.Add(userViewModel.Note);
                             db.SaveChanges();
@@ -720,9 +720,9 @@ namespace OPDB.Controllers
                         userViewModel.Sender = outreachEntity.OutreachEntityName;
                     }
 
-                    if (Int32.Parse(User.Identity.Name.Split(',')[0]) == userNote.SubjectID && !userNote.Read)
+                    if (Int32.Parse(User.Identity.Name.Split(',')[0]) == userNote.SubjectID && !userNote.IsRead)
                     {
-                        userViewModel.Note.Read = true;
+                        userViewModel.Note.IsRead = true;
                         db.Entry(userNote).CurrentValues.SetValues(userViewModel.Note);
                         db.SaveChanges();
                     }

@@ -21,7 +21,7 @@
     }
     
     tr{
-        background-color: #e2e2e2 !important;
+        background-color: #EFEEEF !important;
     }
 
     table{
@@ -47,7 +47,8 @@
                     <span>Edificio: </span> @unit.Building<br />
                     <span>Oficina o Salón: </span> @unit.RoomNumber<br />
                     <span>Teléfono: </span> @unit.PhoneNumber<br />
-                    <span>Extensión: </span> @unit.Extension<br />
+                    @if (unit.Extension != null) { 
+                    <span>Extensión: </span> @unit.Extension<br />}
                     
                 </td>
             </tr>

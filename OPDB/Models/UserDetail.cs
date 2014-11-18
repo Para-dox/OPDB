@@ -27,10 +27,7 @@ namespace OPDB.Models
         public System.DateTime CreateDate { get; set; }
         public System.DateTime UpdateDate { get; set; }
         public Nullable<System.DateTime> DeletionDate { get; set; }
-        public Nullable<int> AffiliateID { get; set; }
-        public Nullable<int> AffiliateTypeID { get; set; }
     
-        public virtual AffiliateType AffiliateType { get; set; }
         public virtual User User { get; set; }
     }
 }

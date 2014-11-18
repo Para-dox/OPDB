@@ -152,7 +152,8 @@
                     <tr>
                         <th style="width:20%;">Leído</th>
                         <th>Enviado Por</th>
-                        <th>Mensaje</th>
+                        <th>Asunto</th>
+                        <th></th>
                         <th style="width:10%;"></th>
                     </tr>
                 </thead>
@@ -161,7 +162,7 @@
                     {
                         <tr>
                             <td>
-                                @if (note.UserNote.Read)
+                                @if (note.UserNote.IsRead)
                                 {
                                     <i class="fa fa-check" title="Leído"></i>
                                 }
@@ -171,9 +172,10 @@
                                 }
                             </td>
                             <td>@note.Sender</td>
-                            <td style="text-align:left !important;"><a href="#" title="Ver Mensaje" data-validation="false" style="color:#222222;" data-title="Mensaje" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("VerNota", "Usuarios", new { id = note.UserNote.UserNoteID })" class="modal_ajax_btn link">@String.Concat(note.UserNote.Note.Substring(0, note.UserNote.Note.Length > 100 ? 100 : note.UserNote.Note.Length), " ...")</a></td>
+                            <td style="text-align:left !important;"><a href="#" title="Ver Mensaje" data-validation="false" style="color:#222222;" data-title="Mensaje" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("VerNota", "Usuarios", new { id = note.UserNote.UserNoteID })" class="modal_ajax_btn link">@note.UserNote.Subject</a></td>
+                            <td>@note.UserNote.Note</td>
                             <td>
-                                @if ((Int32.Parse(User.Identity.Name.Split(',')[0]) == note.UserNote.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1) && !note.UserNote.Read)
+                                @if ((Int32.Parse(User.Identity.Name.Split(',')[0]) == note.UserNote.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1) && !note.UserNote.IsRead)
                                 {
                                     <a href="#" title="Editar" style="color:#222222;" data-title="Editar Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarNota", "Usuarios", new { id = note.UserNote.UserNoteID })" class="modal_ajax_btn link"><i class="fa fa-pencil"></i></a>
                                     <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this, 'userNotes')" data-url="@Url.Action("RemoverNota", "Usuarios", new { id = note.UserNote.UserNoteID })"></i>}
@@ -232,6 +234,10 @@
             "columnDefs": [
                 {
                     "orderable": false,
+                    "targets": 4
+                },
+                {
+                    "visible": false,
                     "targets": 3
                 }
             ],

@@ -276,16 +276,19 @@
     <tbody>
         @foreach (var feedback in Model.Feedbacks)
         {
-            <tr>
+            <tr style="border: 1px solid black !important;">
                 <td style="float:left;">
                     @feedback.Feedback.Feedback1 - @feedback.UserDetail.FirstName @if (feedback.UserDetail.MiddleInitial != null)
                     { @feedback.UserDetail.MiddleInitial } @feedback.UserDetail.LastName
                 </td>
                 <td style="width:6%;">
-                    @if (Int32.Parse(User.Identity.Name.Split(',')[0]) == feedback.Feedback.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                    @if (Request.IsAuthenticated)
+                    { 
+                    if (Int32.Parse(User.Identity.Name.Split(',')[0]) == feedback.Feedback.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
                     {
                         <a href="#" title="Editar" data-title="Editar Comentario" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarComentario", "Actividades", new { id = feedback.Feedback.FeedbackID })" class="modal_ajax_btn link"><i class="fa fa-pencil"></i></a>
                         <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this, 'activityFeedback')" data-url="@Url.Action("RemoverComentario", "Actividades", new { id = feedback.Feedback.FeedbackID })"></i>
+                    }
                     }
                 </td>
             </tr>

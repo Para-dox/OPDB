@@ -145,6 +145,7 @@ function DisplayModal(e) {
 }
 
 function modalClose() {
+    debugger;
     $('#validation li').empty();
     $('#ajax-modal').modal('hide');
 }

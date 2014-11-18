@@ -4,21 +4,19 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="778818767fce4033a1af720dcd101fac" Name="Diagram1" ZoomLevel="98">
+      <Diagram DiagramId="778818767fce4033a1af720dcd101fac" Name="Diagram1" ZoomLevel="93">
         <EntityTypeShape EntityType="OPDBModel.Activity" Width="1.5" PointX="7.5" PointY="43.5" IsExpanded="true" />
         <EntityTypeShape EntityType="OPDBModel.ActivityNote" Width="1.5" PointX="9.75" PointY="37" IsExpanded="true" />
         <EntityTypeShape EntityType="OPDBModel.ActivityResource" Width="1.5" PointX="12.75" PointY="43.375" IsExpanded="true" />
         <EntityTypeShape EntityType="OPDBModel.ActivityType" Width="1.5" PointX="5.25" PointY="31" IsExpanded="true" />
-        <EntityTypeShape EntityType="OPDBModel.AffiliateType" Width="1.5" PointX="5.25" PointY="34.75" IsExpanded="true" />
         <EntityTypeShape EntityType="OPDBModel.Contact" Width="1.5" PointX="12.75" PointY="39.125" IsExpanded="true" />
         <EntityTypeShape EntityType="OPDBModel.Document" Width="1.5" PointX="15.75" PointY="40" IsExpanded="true" />
         <EntityTypeShape EntityType="OPDBModel.Feedback" Width="1.5" PointX="12.75" PointY="34.125" IsExpanded="true" />
         <EntityTypeShape EntityType="OPDBModel.Interest" Width="1.5" PointX="15.75" PointY="45.125" IsExpanded="true" />
         <EntityTypeShape EntityType="OPDBModel.NoteType" Width="1.5" PointX="5.25" PointY="42.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="OPDBModel.Resource" Width="1.5" PointX="7.5" PointY="50.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="OPDBModel.Resource" Width="1.5" PointX="7.5" PointY="51.875" IsExpanded="true" />
         <EntityTypeShape EntityType="OPDBModel.SchoolNote" Width="1.5" PointX="10.5" PointY="46.25" IsExpanded="true" />
         <EntityTypeShape EntityType="OPDBModel.Unit" Width="1.5" PointX="5.25" PointY="62.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="OPDBModel.UserDetail" Width="1.5" PointX="7.5" PointY="37.75" IsExpanded="true" />
         <EntityTypeShape EntityType="OPDBModel.UserType" Width="1.5" PointX="0.75" PointY="38.875" IsExpanded="true" />
         <AssociationConnector Association="OPDBModel.Activity_ibfk_2" ManuallyRouted="false" />
         <AssociationConnector Association="OPDBModel.ActivityNote_ibfk_4" ManuallyRouted="false" />
@@ -29,7 +27,6 @@
         <AssociationConnector Association="OPDBModel.Interest_ibfk_1" ManuallyRouted="false" />
         <AssociationConnector Association="OPDBModel.ActivityNote_ibfk_3" ManuallyRouted="false" />
         <AssociationConnector Association="OPDBModel.ActivityResource_ibfk_2" ManuallyRouted="false" />
-        <AssociationConnector Association="OPDBModel.UserDetail_ibfk_4" ManuallyRouted="false" />
         <AssociationConnector Association="OPDBModel.SchoolNote_ibfk_1" ManuallyRouted="false" />
         <AssociationConnector Association="OPDBModel.Resource_ibfk_1" ManuallyRouted="false" />
         <EntityTypeShape EntityType="OPDBModel.User" Width="1.5" PointX="3" PointY="34.125" />
@@ -43,8 +40,6 @@
         <AssociationConnector Association="OPDBModel.ActivityResource_ibfk_4" />
         <AssociationConnector Association="OPDBModel.ActivityType_ibfk_1" />
         <AssociationConnector Association="OPDBModel.ActivityType_ibfk_2" />
-        <AssociationConnector Association="OPDBModel.AffiliateType_ibfk_1" />
-        <AssociationConnector Association="OPDBModel.AffiliateType_ibfk_2" />
         <AssociationConnector Association="OPDBModel.Contact_ibfk_2" />
         <AssociationConnector Association="OPDBModel.Contact_ibfk_3" />
         <AssociationConnector Association="OPDBModel.Contact_ibfk_4" />
@@ -65,7 +60,6 @@
         <AssociationConnector Association="OPDBModel.Unit_ibfk_1" />
         <AssociationConnector Association="OPDBModel.Unit_ibfk_2" />
         <AssociationConnector Association="OPDBModel.User_ibfk_1" />
-        <AssociationConnector Association="OPDBModel.UserDetail_ibfk_5" />
         <EntityTypeShape EntityType="OPDBModel.OutreachEntityType" Width="1.5" PointX="5.25" PointY="46.5" />
         <AssociationConnector Association="OPDBModel.OutreachEntityType_ibfk_1" />
         <AssociationConnector Association="OPDBModel.OutreachEntityType_ibfk_2" />
@@ -102,6 +96,8 @@
         <AssociationConnector Association="OPDBModel.UserNote_ibfk_2" />
         <AssociationConnector Association="OPDBModel.UserNote_ibfk_3" />
         <AssociationConnector Association="OPDBModel.UserNote_ibfk_4" />
+        <EntityTypeShape EntityType="OPDBModel.UserDetail" Width="1.5" PointX="5.25" PointY="11.625" />
+        <AssociationConnector Association="OPDBModel.UserDetail_ibfk_5" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
