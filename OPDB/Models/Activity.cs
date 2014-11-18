@@ -25,7 +25,6 @@ namespace OPDB.Models
             this.ActivityNotes = new HashSet<ActivityNote>();
             this.ActivityResources = new HashSet<ActivityResource>();
             this.Contacts = new HashSet<Contact>();
-            this.Documents = new HashSet<Document>();
             this.Feedbacks = new HashSet<Feedback>();
             this.Interests = new HashSet<Interest>();
             this.Media = new HashSet<Medium>();
@@ -80,7 +79,6 @@ namespace OPDB.Models
         public virtual ICollection<ActivityNote> ActivityNotes { get; set; }
         public virtual ICollection<ActivityResource> ActivityResources { get; set; }
         public virtual ICollection<Contact> Contacts { get; set; }
-        public virtual ICollection<Document> Documents { get; set; }
         public virtual ICollection<Feedback> Feedbacks { get; set; }
         public virtual ICollection<Interest> Interests { get; set; }
         public virtual User User { get; set; }

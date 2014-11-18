@@ -2205,7 +2205,6 @@
           <NavigationProperty Name="ActivityNotes" Relationship="Self.ActivityNote_ibfk_4" FromRole="Activity" ToRole="ActivityNote" />
           <NavigationProperty Name="ActivityResources" Relationship="Self.ActivityResource_ibfk_1" FromRole="Activity" ToRole="ActivityResource" />
           <NavigationProperty Name="Contacts" Relationship="Self.Contact_ibfk_1" FromRole="Activity" ToRole="Contact" />
-          <NavigationProperty Name="Documents" Relationship="Self.Document_ibfk_2" FromRole="Activity" ToRole="Document" />
           <NavigationProperty Name="Feedbacks" Relationship="Self.Feedback_ibfk_1" FromRole="Activity" ToRole="Feedback" />
           <NavigationProperty Name="Interests" Relationship="Self.Interest_ibfk_1" FromRole="Activity" ToRole="Interest" />
           <NavigationProperty Name="User" Relationship="OPDBModel.Activity_ibfk_21" FromRole="Activity" ToRole="User" />
@@ -2291,25 +2290,6 @@
           <NavigationProperty Name="User" Relationship="OPDBModel.Contact_ibfk_2" FromRole="Contact" ToRole="User" />
           <NavigationProperty Name="User1" Relationship="OPDBModel.Contact_ibfk_3" FromRole="Contact" ToRole="User" />
           <NavigationProperty Name="User2" Relationship="OPDBModel.Contact_ibfk_4" FromRole="Contact" ToRole="User" />
-        </EntityType>
-        <EntityType Name="Document">
-          <Key>
-            <PropertyRef Name="DocumentID" />
-          </Key>
-          <Property Name="DocumentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserID" Type="Int32" Nullable="false" />
-          <Property Name="ActivityID" Type="Int32" />
-          <Property Name="DocumentTitle" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="DocumentPath" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="CreateUser" Type="Int32" Nullable="false" />
-          <Property Name="CreateDate" Type="DateTime" Nullable="false" />
-          <Property Name="UpdateUser" Type="Int32" Nullable="false" />
-          <Property Name="UpdateDate" Type="DateTime" Nullable="false" />
-          <Property Name="DeletionDate" Type="DateTime" />
-          <NavigationProperty Name="Activity" Relationship="Self.Document_ibfk_2" FromRole="Document" ToRole="Activity" />
-          <NavigationProperty Name="User" Relationship="OPDBModel.Document_ibfk_1" FromRole="Document" ToRole="User" />
-          <NavigationProperty Name="User1" Relationship="OPDBModel.Document_ibfk_3" FromRole="Document" ToRole="User" />
-          <NavigationProperty Name="User2" Relationship="OPDBModel.Document_ibfk_4" FromRole="Document" ToRole="User" />
         </EntityType>
         <EntityType Name="Feedback">
           <Key>
@@ -2475,18 +2455,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="Document_ibfk_2">
-          <End Role="Activity" Type="Self.Activity" Multiplicity="0..1" />
-          <End Role="Document" Type="Self.Document" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Activity">
-              <PropertyRef Name="ActivityID" />
-            </Principal>
-            <Dependent Role="Document">
-              <PropertyRef Name="ActivityID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="Feedback_ibfk_1">
           <End Role="Activity" Type="Self.Activity" Multiplicity="1" />
           <End Role="Feedback" Type="Self.Feedback" Multiplicity="*" />
@@ -2565,7 +2533,6 @@
           <EntitySet Name="ActivityResources" EntityType="Self.ActivityResource" />
           <EntitySet Name="ActivityTypes" EntityType="Self.ActivityType" />
           <EntitySet Name="Contacts" EntityType="Self.Contact" />
-          <EntitySet Name="Documents" EntityType="Self.Document" />
           <EntitySet Name="Feedbacks" EntityType="Self.Feedback" />
           <EntitySet Name="Interests" EntityType="Self.Interest" />
           <EntitySet Name="NoteTypes" EntityType="Self.NoteType" />
@@ -2588,10 +2555,6 @@
           <AssociationSet Name="Contact_ibfk_1" Association="Self.Contact_ibfk_1">
             <End Role="Activity" EntitySet="Activities" />
             <End Role="Contact" EntitySet="Contacts" />
-          </AssociationSet>
-          <AssociationSet Name="Document_ibfk_2" Association="Self.Document_ibfk_2">
-            <End Role="Activity" EntitySet="Activities" />
-            <End Role="Document" EntitySet="Documents" />
           </AssociationSet>
           <AssociationSet Name="Feedback_ibfk_1" Association="Self.Feedback_ibfk_1">
             <End Role="Activity" EntitySet="Activities" />
@@ -2669,18 +2632,6 @@
           <AssociationSet Name="Contact_ibfk_4" Association="OPDBModel.Contact_ibfk_4">
             <End Role="User" EntitySet="Users" />
             <End Role="Contact" EntitySet="Contacts" />
-          </AssociationSet>
-          <AssociationSet Name="Document_ibfk_1" Association="OPDBModel.Document_ibfk_1">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Document" EntitySet="Documents" />
-          </AssociationSet>
-          <AssociationSet Name="Document_ibfk_3" Association="OPDBModel.Document_ibfk_3">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Document" EntitySet="Documents" />
-          </AssociationSet>
-          <AssociationSet Name="Document_ibfk_4" Association="OPDBModel.Document_ibfk_4">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Document" EntitySet="Documents" />
           </AssociationSet>
           <AssociationSet Name="Feedback_ibfk_2" Association="OPDBModel.Feedback_ibfk_2">
             <End Role="User" EntitySet="Users" />
@@ -2838,6 +2789,11 @@
             <End Role="User" EntitySet="Users" />
             <End Role="TargetPopulation" EntitySet="TargetPopulations" />
           </AssociationSet>
+          <EntitySet Name="UserDetails" EntityType="OPDBModel.UserDetail" />
+          <AssociationSet Name="UserDetail_ibfk_5" Association="OPDBModel.UserDetail_ibfk_5">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserDetail" EntitySet="UserDetails" />
+          </AssociationSet>
           <EntitySet Name="UserNotes" EntityType="OPDBModel.UserNote" />
           <AssociationSet Name="UserNote_ibfk_1" Association="OPDBModel.UserNote_ibfk_1">
             <End Role="User" EntitySet="Users" />
@@ -2854,11 +2810,6 @@
           <AssociationSet Name="UserNote_ibfk_4" Association="OPDBModel.UserNote_ibfk_4">
             <End Role="User" EntitySet="Users" />
             <End Role="UserNote" EntitySet="UserNotes" />
-          </AssociationSet>
-          <EntitySet Name="UserDetails" EntityType="OPDBModel.UserDetail" />
-          <AssociationSet Name="UserDetail_ibfk_5" Association="OPDBModel.UserDetail_ibfk_5">
-            <End Role="User" EntitySet="Users" />
-            <End Role="UserDetail" EntitySet="UserDetails" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="User">
@@ -2887,9 +2838,6 @@
           <NavigationProperty Name="Contacts" Relationship="OPDBModel.Contact_ibfk_2" FromRole="User" ToRole="Contact" />
           <NavigationProperty Name="Contacts1" Relationship="OPDBModel.Contact_ibfk_3" FromRole="User" ToRole="Contact" />
           <NavigationProperty Name="Contacts2" Relationship="OPDBModel.Contact_ibfk_4" FromRole="User" ToRole="Contact" />
-          <NavigationProperty Name="Documents" Relationship="OPDBModel.Document_ibfk_1" FromRole="User" ToRole="Document" />
-          <NavigationProperty Name="Documents1" Relationship="OPDBModel.Document_ibfk_3" FromRole="User" ToRole="Document" />
-          <NavigationProperty Name="Documents2" Relationship="OPDBModel.Document_ibfk_4" FromRole="User" ToRole="Document" />
           <NavigationProperty Name="Feedbacks" Relationship="OPDBModel.Feedback_ibfk_2" FromRole="User" ToRole="Feedback" />
           <NavigationProperty Name="Feedbacks1" Relationship="OPDBModel.Feedback_ibfk_3" FromRole="User" ToRole="Feedback" />
           <NavigationProperty Name="Feedbacks2" Relationship="OPDBModel.Feedback_ibfk_4" FromRole="User" ToRole="Feedback" />
@@ -2921,11 +2869,11 @@
           <NavigationProperty Name="TargetPopulations" Relationship="OPDBModel.TargetPopulation_ibfk_1" FromRole="User" ToRole="TargetPopulation" />
           <NavigationProperty Name="TargetPopulations1" Relationship="OPDBModel.TargetPopulation_ibfk_2" FromRole="User" ToRole="TargetPopulation" />
           <Property Name="PasswordSalt" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="UserDetails" Relationship="OPDBModel.UserDetail_ibfk_5" FromRole="User" ToRole="UserDetail" />
           <NavigationProperty Name="UserNotes" Relationship="OPDBModel.UserNote_ibfk_1" FromRole="User" ToRole="UserNote" />
           <NavigationProperty Name="UserNotes1" Relationship="OPDBModel.UserNote_ibfk_2" FromRole="User" ToRole="UserNote" />
           <NavigationProperty Name="UserNotes2" Relationship="OPDBModel.UserNote_ibfk_3" FromRole="User" ToRole="UserNote" />
           <NavigationProperty Name="UserNotes3" Relationship="OPDBModel.UserNote_ibfk_4" FromRole="User" ToRole="UserNote" />
-          <NavigationProperty Name="UserDetails" Relationship="OPDBModel.UserDetail_ibfk_5" FromRole="User" ToRole="UserDetail" />
           </EntityType>
         <Association Name="Activity_ibfk_21">
           <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
@@ -3080,42 +3028,6 @@
             </Principal>
             <Dependent Role="Contact">
               <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Document_ibfk_1">
-          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
-          <End Type="OPDBModel.Document" Role="Document" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Document">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Document_ibfk_3">
-          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
-          <End Type="OPDBModel.Document" Role="Document" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Document">
-              <PropertyRef Name="CreateUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Document_ibfk_4">
-          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
-          <End Type="OPDBModel.Document" Role="Document" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Document">
-              <PropertyRef Name="UpdateUser" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3696,6 +3608,37 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="UserDetail">
+          <Key>
+            <PropertyRef Name="UserDetailID" />
+          </Key>
+          <Property Name="UserDetailID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MiddleInitial" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="Gender" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="DateOfBirth" Type="DateTime" />
+          <Property Name="Role" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Major" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Grade" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" />
+          <Property Name="UpdateDate" Type="DateTime" Nullable="false" />
+          <Property Name="DeletionDate" Type="DateTime" />
+          <NavigationProperty Name="User" Relationship="OPDBModel.UserDetail_ibfk_5" FromRole="UserDetail" ToRole="User" />
+        </EntityType>
+        <Association Name="UserDetail_ibfk_5">
+          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="OPDBModel.UserDetail" Role="UserDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserDetail">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityType Name="UserNote">
           <Key>
             <PropertyRef Name="UserNoteID" />
@@ -3703,8 +3646,9 @@
           <Property Name="UserNoteID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="SubjectID" Type="Int32" Nullable="false" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="Subject" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Note" Type="String" Nullable="false" MaxLength="65535" FixedLength="false" Unicode="false" />
-          <Property Name="Read" Type="Boolean" Nullable="false" />
+          <Property Name="IsRead" Type="Boolean" Nullable="false" />
           <Property Name="CreateUser" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" />
           <Property Name="UpdateUser" Type="Int32" Nullable="false" />
@@ -3714,8 +3658,6 @@
           <NavigationProperty Name="User1" Relationship="OPDBModel.UserNote_ibfk_2" FromRole="UserNote" ToRole="User" />
           <NavigationProperty Name="User2" Relationship="OPDBModel.UserNote_ibfk_3" FromRole="UserNote" ToRole="User" />
           <NavigationProperty Name="User3" Relationship="OPDBModel.UserNote_ibfk_4" FromRole="UserNote" ToRole="User" />
-          <Property Name="Subject" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="IsRead" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="UserNote_ibfk_1">
           <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
@@ -3762,37 +3704,6 @@
             </Principal>
             <Dependent Role="UserNote">
               <PropertyRef Name="UpdateUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="UserDetail">
-          <Key>
-            <PropertyRef Name="UserDetailID" />
-          </Key>
-          <Property Name="UserDetailID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserID" Type="Int32" Nullable="false" />
-          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="LastName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="MiddleInitial" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Name="Gender" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Name="DateOfBirth" Type="DateTime" />
-          <Property Name="Role" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Major" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Grade" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
-          <Property Name="CreateDate" Type="DateTime" Nullable="false" />
-          <Property Name="UpdateDate" Type="DateTime" Nullable="false" />
-          <Property Name="DeletionDate" Type="DateTime" />
-          <NavigationProperty Name="User" Relationship="OPDBModel.UserDetail_ibfk_5" FromRole="UserDetail" ToRole="User" />
-        </EntityType>
-        <Association Name="UserDetail_ibfk_5">
-          <End Type="OPDBModel.User" Role="User" Multiplicity="1" />
-          <End Type="OPDBModel.UserDetail" Role="UserDetail" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="UserDetail">
-              <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4118,23 +4029,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="UserNotes">
-            <EntityTypeMapping TypeName="OPDBModel.UserNote">
-              <MappingFragment StoreEntitySet="UserNote">
-                <ScalarProperty Name="IsRead" ColumnName="IsRead" />
-                <ScalarProperty Name="Subject" ColumnName="Subject" />
-                <ScalarProperty Name="DeletionDate" ColumnName="DeletionDate" />
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-                <ScalarProperty Name="UpdateUser" ColumnName="UpdateUser" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
-                <ScalarProperty Name="Note" ColumnName="Note" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="SubjectID" ColumnName="SubjectID" />
-                <ScalarProperty Name="UserNoteID" ColumnName="UserNoteID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="UserDetails">
             <EntityTypeMapping TypeName="OPDBModel.UserDetail">
               <MappingFragment StoreEntitySet="UserDetail">
@@ -4151,6 +4045,23 @@
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="UserDetailID" ColumnName="UserDetailID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserNotes">
+            <EntityTypeMapping TypeName="OPDBModel.UserNote">
+              <MappingFragment StoreEntitySet="UserNote">
+                <ScalarProperty Name="DeletionDate" ColumnName="DeletionDate" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="UpdateUser" ColumnName="UpdateUser" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
+                <ScalarProperty Name="IsRead" ColumnName="IsRead" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="SubjectID" ColumnName="SubjectID" />
+                <ScalarProperty Name="UserNoteID" ColumnName="UserNoteID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -20,7 +20,12 @@ namespace OPDB.Models
         public int UserNoteID { get; set; }
         public int SubjectID { get; set; }
         public int UserID { get; set; }
+
+        [StringLength(100, ErrorMessageResourceName = "UserNote_Subject_LengthExceeded", ErrorMessageResourceType = typeof(Resources.WebResources))]
+        [RegularExpression(@"([a-zA-Z\u00c0-\u017e0-9¿?.,;:!¡()$""'/\s]+[-]?[a-zA-Z\u00c0-\u017e0-9?.,;:!)@$""'/\s]+)+$", ErrorMessageResourceName = "UserNote_Subject_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
+        [Required(ErrorMessageResourceName = "UserNote_Subject_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Subject { get; set; }
+        
         [RegularExpression(@"([a-zA-Z\u00c0-\u017e0-9¿?.,;:!¡()$""'/\s]+[-]?[a-zA-Z\u00c0-\u017e0-9?.,;:!)@$""'/\s]+)+$", ErrorMessageResourceName = "UserNote_Note_Invalid", ErrorMessageResourceType = typeof(Resources.WebResources))]
         [Required(ErrorMessageResourceName = "UserNote_Note_Required", ErrorMessageResourceType = typeof(Resources.WebResources))]
         public string Note { get; set; }

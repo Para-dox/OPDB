@@ -372,6 +372,15 @@
   <data name="UserNote_Note_Required" xml:space="preserve">
     <value>No ha ingresado el contenido de la nota</value>
   </data>
+  <data name="UserNote_Subject_Invalid" xml:space="preserve">
+    <value>El asunto de la nota es inválido</value>
+  </data>
+  <data name="UserNote_Subject_LengthExceeded" xml:space="preserve">
+    <value>El asunto excede el límite de 100 caracteres</value>
+  </data>
+  <data name="UserNote_Subject_Required" xml:space="preserve">
+    <value>El asunto de la nota es requerido</value>
+  </data>
   <data name="User_Email_Exists" xml:space="preserve">
     <value>El correo electrónico ingresado ya esta en uso.</value>
   </data>

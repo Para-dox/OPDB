@@ -826,6 +826,33 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to El asunto de la nota es inválido.
+        /// </summary>
+        internal static string UserNote_Subject_Invalid {
+            get {
+                return ResourceManager.GetString("UserNote_Subject_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El asunto excede el límite de 100 caracteres.
+        /// </summary>
+        internal static string UserNote_Subject_LengthExceeded {
+            get {
+                return ResourceManager.GetString("UserNote_Subject_LengthExceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El asunto de la nota es requerido.
+        /// </summary>
+        internal static string UserNote_Subject_Required {
+            get {
+                return ResourceManager.GetString("UserNote_Subject_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to El correo electrónico ingresado ya esta en uso..
         /// </summary>
         internal static string User_Email_Exists {
