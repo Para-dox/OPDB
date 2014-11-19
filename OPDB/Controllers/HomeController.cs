@@ -835,8 +835,6 @@ namespace OPDB.Controllers
                         }
                     }
 
-                    //return View("ResultadosReporte", reportViewModel);
-
                     return generateReportFile(result);
                 }
             }
@@ -902,7 +900,7 @@ namespace OPDB.Controllers
                 }
             }
 
-            var byteArray = Encoding.ASCII.GetBytes(dataText);
+            var byteArray = Encoding.Unicode.GetBytes(dataText);
             var stream = new System.IO.MemoryStream(byteArray);
 
             return File(stream, "text/csv", "reporte.csv");
@@ -958,7 +956,6 @@ namespace OPDB.Controllers
             }
 
             return semesters;
-
         }
     }
 
