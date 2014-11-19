@@ -764,35 +764,39 @@ namespace OPDB.Controllers
                 {
                     var result = (IEnumerable<Activity>) null;
 
-                    if (reportViewModel.TargetMonths.Contains("All"))
+                    if (reportViewModel.TargetMonths != null)
                     {
-                        var academicYear = Int32.Parse(reportViewModel.TargetMonths.Split('-')[1]);
+                        if (reportViewModel.TargetMonths.Contains("All"))
+                        {
+                            var academicYear = Int32.Parse(reportViewModel.TargetMonths.Split('-')[1]);
 
-                        result = from activity in db.Activities
+                            result = from activity in db.Activities
                                      where activity.DeletionDate == null
                                      && ((activity.ActivityDate.Value.Year == academicYear && (activity.ActivityDate.Value.Month >= 6 && activity.ActivityDate.Value.Month <= 12))
                                      || (activity.ActivityDate.Value.Year == (academicYear + 1) && (activity.ActivityDate.Value.Month >= 1 && activity.ActivityDate.Value.Month <= 5)))
-                                     orderby activity.ActivityDate ascending select activity;
+                                     orderby activity.ActivityDate ascending
+                                     select activity;
 
-                        reportViewModel.Results = result;
-                    }
-                    else
-                    {
-                        var minMonth = Int32.Parse(reportViewModel.TargetMonths.Split('-')[0]);
-                        var maxMonth = Int32.Parse(reportViewModel.TargetMonths.Split('-')[1]); 
-                        var academicYear = Int32.Parse(reportViewModel.TargetMonths.Split('-')[2]);
+                            reportViewModel.Results = result;
+                        }
+                        else
+                        {
+                            var minMonth = Int32.Parse(reportViewModel.TargetMonths.Split('-')[0]);
+                            var maxMonth = Int32.Parse(reportViewModel.TargetMonths.Split('-')[1]);
+                            var academicYear = Int32.Parse(reportViewModel.TargetMonths.Split('-')[2]);
 
-                        result = from activity in db.Activities
-                                      where activity.DeletionDate == null
-                                      && activity.ActivityDate.Value.Year == academicYear && (activity.ActivityDate.Value.Month >= minMonth && activity.ActivityDate.Value.Month <= maxMonth)
-                                      orderby activity.ActivityDate ascending select activity;
+                            result = from activity in db.Activities
+                                     where activity.DeletionDate == null
+                                     && activity.ActivityDate.Value.Year == academicYear && (activity.ActivityDate.Value.Month >= minMonth && activity.ActivityDate.Value.Month <= maxMonth)
+                                     orderby activity.ActivityDate ascending
+                                     select activity;
 
-                        reportViewModel.Results = result;
-                    }
-                    
-                    if (reportViewModel.Activity.ActivityTypeID != 0)
-                    {
-                        
+                            reportViewModel.Results = result;
+                        }
+
+                        if (reportViewModel.Activity.ActivityTypeID != 0)
+                        {
+
 
                             result = from activity in result
                                      where activity.ActivityTypeID == reportViewModel.Activity.ActivityTypeID
@@ -800,43 +804,110 @@ namespace OPDB.Controllers
                                      select activity;
 
                             reportViewModel.Results = result;
+                        }
+
+                        if (reportViewModel.Activity.ActivityMajorID != 0)
+                        {
+                            result = from activity in result
+                                     where activity.ActivityMajorID == reportViewModel.Activity.ActivityMajorID
+                                     && activity.DeletionDate == null
+                                     select activity;
+
+                            reportViewModel.Results = result;
+                        }
+
+                        if (reportViewModel.Activity.ActivityDynamicID != null && reportViewModel.Activity.ActivityDynamicID != 0)
+                        {
+                            result = from activity in result
+                                     where activity.ActivityDynamicID == reportViewModel.Activity.ActivityDynamicID
+                                     && activity.DeletionDate == null
+                                     select activity;
+
+                            reportViewModel.Results = result;
+                        }
+
+                        if (reportViewModel.Activity.TargetPopulationID != 0)
+                        {
+                            result = from activity in result
+                                     where activity.TargetPopulationID == reportViewModel.Activity.TargetPopulationID
+                                     && activity.DeletionDate == null
+                                     select activity;
+
+                            reportViewModel.Results = result;
+                        }
                     }
 
-                    if (reportViewModel.Activity.ActivityMajorID != 0)
-                    {
-                        result = from activity in result
-                                 where activity.ActivityMajorID == reportViewModel.Activity.ActivityMajorID
-                                 && activity.DeletionDate == null
-                                 select activity;
+                    //return View("ResultadosReporte", reportViewModel);
 
-                        reportViewModel.Results = result;
-                    }
-
-                    if (reportViewModel.Activity.ActivityDynamicID != null && reportViewModel.Activity.ActivityDynamicID != 0)
-                    {
-                        result = from activity in result
-                                 where activity.ActivityDynamicID == reportViewModel.Activity.ActivityDynamicID
-                                 && activity.DeletionDate == null
-                                 select activity;
-
-                        reportViewModel.Results = result;
-                    }
-
-                    if (reportViewModel.Activity.TargetPopulationID != 0)
-                    {
-                        result = from activity in result
-                                 where activity.TargetPopulationID == reportViewModel.Activity.TargetPopulationID
-                                 && activity.DeletionDate == null
-                                 select activity;
-
-                        reportViewModel.Results = result;
-                    }
-
-                    return View("ResultadosReporte", reportViewModel);
+                    return generateReportFile(result);
                 }
             }
 
             return RedirectToAction("AccesoDenegado");
+        }
+
+        public FileStreamResult generateReportFile(IEnumerable<Activity> results)
+        {
+            // TODO: acentos are not working in the CSV in excel
+            string dataText = "Título,Tipo,Dinámica,Concentración,Fecha,Hora";
+            string dataRow = "";
+
+            if (results != null)
+            {
+                foreach (Activity activity in results.ToList())
+                {
+                    string activityTitle = null;
+                    string activityType = null;
+                    string activityDynamic = null;
+                    string activityMajor = null;
+                    string activityDate = null;
+                    string activityTime = null;
+
+                    try
+                    {
+                        activityTitle = activity.Title;
+                    }
+                    catch (NullReferenceException){}
+
+                    try
+                    {
+                        activityType = activity.ActivityType.ActivityType1;
+                    }
+                    catch (NullReferenceException) { }
+
+                    try
+                    {
+                        activityDynamic = activity.ActivityDynamic.ActivityDynamic1;
+                    }
+                    catch (NullReferenceException) { }
+
+                    try
+                    {
+                        activityMajor = activity.ActivityMajor.ActivityMajor1;
+                    }
+                    catch (NullReferenceException) { }
+
+                    try
+                    {
+                        activityDate = activity.ActivityDate.ToString().Split(' ')[0];
+                    }
+                    catch (NullReferenceException) { }
+
+                    try
+                    {
+                        activityTime = activity.ActivityTime;
+                    }
+                    catch (NullReferenceException) { }
+                    
+                    dataRow = string.Format("{0},{1},{2},{3},{4},{5}", activityTitle, activityType, activityDynamic, activityMajor, activityDate, activityTime);
+                    dataText = dataText + "\n" + dataRow;
+                }
+            }
+
+            var byteArray = Encoding.ASCII.GetBytes(dataText);
+            var stream = new System.IO.MemoryStream(byteArray);
+
+            return File(stream, "text/csv", "reporte.csv");
         }
 
         public List<SelectListItem> getSemesters()
