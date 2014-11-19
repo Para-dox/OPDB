@@ -27,6 +27,18 @@
     .previous, .next {
         display: none !important;
     }
+
+       a span i:hover {
+        color: #007A0B;
+    }
+
+    .link:hover {
+        color: #007A0B !important;
+    }
+
+    .fa-plus:hover {
+        color: #007A0B !important;
+    }
 </style>
 
 <table id="removedSchoolsTable">
@@ -47,13 +59,13 @@
         {
             <tr>
                 <td>
-                    @Html.ActionLink(item.School.SchoolName + " ", "Detalles", "Escuelas", new { id = item.School.SchoolID }, null)
+                    @Html.ActionLink(item.School.SchoolName + " ", "Detalles", "Escuelas", new { id = item.School.SchoolID }, new { @class = "link"})
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.School.SchoolID)
                 </td>
                 <td>
-                    @Html.ActionLink(item.CreateUser.FirstName + " " + item.CreateUser.MiddleInitial + " " + item.CreateUser.LastName, "Detalles", "Usuarios", new { id = item.School.CreateUser }, null)
+                    @Html.ActionLink(item.CreateUser.FirstName + " " + item.CreateUser.MiddleInitial + " " + item.CreateUser.LastName, "Detalles", "Usuarios", new { id = item.School.CreateUser }, new { @class = "link"})
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.School.CreateDate)

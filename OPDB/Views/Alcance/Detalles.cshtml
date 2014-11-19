@@ -30,7 +30,7 @@
     }
 
     a span i:hover {
-        color: #008cba;
+        color: #007A0B;
     }
 
     .link:hover {
@@ -38,7 +38,7 @@
     }
 
     .fa-remove:hover {
-        color: #008cba !important;
+        color: #007A0B !important;
     }
       .frame {
         position: relative;
@@ -183,11 +183,11 @@
                         <td>
                                 @if ((Int32.Parse(User.Identity.Name.Split(',')[0]) == note.UserNote.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1) && !note.UserNote.IsRead)
                                 {
-                                    <a href="#" title="Editar" data-title="Editar Mensaje" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarNota", "Alcance", new { id = note.UserNote.UserNoteID })" class="modal_ajax_btn link"><i class="fa fa-pencil"></i></a>
+                                    <a href="#" title="Editar" style="color:black;" data-title="Editar Mensaje" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarNota", "Alcance", new { id = note.UserNote.UserNoteID })" class="modal_ajax_btn link"><i class="fa fa-pencil"></i></a>
                                     <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this, 'outreachNotes')" data-url="@Url.Action("RemoverNota", "Alcance", new { id = note.UserNote.UserNoteID })"></i>      }
                                 else if (Int32.Parse(User.Identity.Name.Split(',')[0]) == note.UserNote.SubjectID)
                                 {
-                                    <a href="#" title="Responder" style="color:#222222;" data-title="Respuesta" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Alcance", new { id = note.UserNote.UserID })" class="modal_ajax_btn link"><i class="fa fa-mail-reply"></i></a>
+                                    <a href="#" title="Responder" style="color:black;" data-title="Respuesta" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Alcance", new { id = note.UserNote.UserID })" class="modal_ajax_btn link"><i class="fa fa-mail-reply"></i></a>
                                 }
                         </td>
                     </tr>
@@ -224,11 +224,11 @@
                 <tr style="background-color: #DBFFDB !important;">
                  <td style="text-align: left !important;">
                     @Html.ActionLink(activity.Title, "Detalles", "Actividades", new { id = activity.ActivityID }, null)<br />
-                    <span>Propósito: </span> @activity.Purpose<br />
+                    <r>Propósito: </r> @activity.Purpose<br />
                         <div>
                             @if (activity.ActivityDate != new DateTime())
-                    { <span>Fecha: </span> @activity.ActivityDate.Value.ToString("dd/MM/yyyy") } @if (activity.ActivityTime != "")
-                            {<span>Hora: </span> @activity.ActivityTime}
+                    { <r>Fecha: </r> @activity.ActivityDate.Value.ToString("dd/MM/yyyy") } @if (activity.ActivityTime != "")
+                            {<r>Hora: </r> @activity.ActivityTime}
                         </div>
                  </td>
                 </tr>
@@ -243,7 +243,7 @@
     $(document).ready(function () {
 
         $('#outreachNotes').DataTable({
-            "sDom": '<"top"lf>t<"bottom"pr><"clear">',
+            "sDom": '<"top"f>t<"bottom"pr><"clear">',
             "sPaginationType": "full_numbers",
             "bProcessing": false,
             "iDisplayLength": 12,

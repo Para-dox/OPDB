@@ -502,7 +502,7 @@ namespace OPDB.Controllers
                     int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
                     activityViewModel.Notes = from note in db.ActivityNotes.Include(note => note.NoteType) where note.ActivityID == id && note.UserID == userID && note.DeletionDate == null select note;
                 }
-                else if (Int32.Parse(User.Identity.Name.Split(',')[1]) >= 2)
+                else if (Int32.Parse(User.Identity.Name.Split(',')[1]) <= 2)
                 {
                     activityViewModel.Notes = from note in db.ActivityNotes.Include(note => note.NoteType) where note.ActivityID == id && note.DeletionDate == null select note;
                 }

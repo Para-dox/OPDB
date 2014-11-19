@@ -495,6 +495,9 @@ namespace OPDB.Controllers
                         Units = getUnits()
                     };
 
+                    if (userViewModel.UserDetail.DateOfBirth != null)
+                        userViewModel.BirthDate = userViewModel.UserDetail.DateOfBirth.Value.ToString("dd/MM/yyyy");
+
                     if (Int32.Parse(User.Identity.Name.Split(',')[0]) == id)
                         userViewModel.UserTypes = getUserTypes("User");
 
@@ -526,15 +529,6 @@ namespace OPDB.Controllers
                 {
                     if (ModelState.IsValid)
                     {
-                        //if(userViewModel.SchoolID != "")
-                        //    userViewModel.userDetail.AffiliateTypeID  = Int32.Parse(userViewModel.SchoolID);
-
-                        //if(userViewModel.UnitID != "")
-                        //    userViewModel.userDetail.AffiliateTypeID = Int32.Parse(userViewModel.UnitID);
-
-                        //if(userViewModel.OutreachEntityDetailID != "")
-                        //    userViewModel.userDetail.AffiliateTypeID = Int32.Parse(userViewModel.OutreachEntityDetailID);
-
                         bool validModel = true;
 
                         if (userViewModel.UserDetail.FirstName == null || userViewModel.UserDetail.FirstName == "")
@@ -671,6 +665,8 @@ namespace OPDB.Controllers
                                 validModel = false;
                             }
                         }
+
+                        
 
                         if (validModel)
                         {

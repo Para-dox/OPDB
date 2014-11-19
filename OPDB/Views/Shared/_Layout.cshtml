@@ -45,7 +45,7 @@
 </head>
 <body>
     <div id="wrap">
-        <div id="header">
+        <div id="header" style="position:fixed; width:100%; z-index:1000;">
             <nav class="top-bar docs-bar hide-for-small" data-topbar role="navigation">
                 <ul class="title-area">
                     <li class="name">
@@ -88,7 +88,7 @@
 
                             </ul>
                         </li>
-                        @*<li class="name">@Html.ActionLink("Contact", "Contact", "Home")</li>*@
+                        @*<li class="name"></li>*@
                         <li class="has-form busqueda"></li>
                         @if (ViewBag.Nav == "Advanced")
                         {
@@ -101,17 +101,18 @@
 
                     </ul>
                 </section>
-            </nav><br /><br />
+            </nav>
         </div>
         <div id="main">
-            <section class="content-wrapper">
+            <section class="content-wrapper" style="margin-top:80px;">
                 @RenderBody()
             </section>
         </div>
             
     </div>
     <div id="footer">
-        <p style="font-size:0.6em; color:white;">&copy; @DateTime.Now.Year - Paradox Solutions</p>
+        @*<div style="float:right;">@Html.ActionLink("Contacto", "Contact", "Home", null, new { @style = "font-size:0.6em; color:white;" })</div>*@
+        <p style="font-size:0.6em; color:white;">&copy; @DateTime.Now.Year - Paradox Solutions</p>        
     </div>
 
 

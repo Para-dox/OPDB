@@ -31,6 +31,8 @@
             @Html.HiddenFor(model => model.UserDetail.UserDetailID)
             @Html.HiddenFor(model => model.UserDetail.UserID)
             @Html.HiddenFor(model => model.UserDetail.CreateDate)
+            @Html.HiddenFor(model => model.User.UserPassword)
+            @Html.HiddenFor(model => model.User.PasswordSalt)
 
             <div class="editor-label">
                 @Html.LabelFor(model => model.User.UserTypeID, "Tipo de Usuario *")
@@ -95,39 +97,7 @@
                 @Html.ValidationMessage("UserDetail_DateOfBirth_Invalid")
                 @Html.TextBoxFor(model => model.BirthDate, new { @placeholder = "dd/MM/yyyy", @style = "width:500px;"})
             </div>
-            @*<div class="editor-label">
-                    @Html.LabelFor(model => model.userDetail.AffiliateType, "Afiliación")
-                </div>
-                <div class="editor-field" style="text-align:left !important;">
-                    @Html.DropDownListFor(model => model.userDetail.AffiliateType, Model.AffiliateTypes, new { @style = "width: 500px;", @id = "affiliateTypes", @onchange = "getAffiliateValue()" })
-                </div><br />
-
-                <div id="schools">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.SchoolID, "Escuela")
-                    </div>
-                    <div class="editor-field" style="text-align:left !important;">
-                        @Html.DropDownListFor(model => model.SchoolID, Model.Schools, new { @style = "width: 500px;", @id = "school" })
-                    </div><br />
-                </div>
-
-                <div id="outreachEntities">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.OutreachEntityDetailID, "Entidad de Alcance")
-                    </div>
-                    <div class="editor-field" style="text-align:left !important;">
-                        @Html.DropDownListFor(model => model.OutreachEntityDetailID, Model.OutreachEntities, new { @style = "width: 500px;", @id = "outreachEntity" })
-                    </div><br />
-                </div>
-
-                <div id="units">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.UnitID, "Unidad")
-                    </div>
-                    <div class="editor-field" style="text-align:left !important;">
-                        @Html.DropDownListFor(model => model.UnitID, Model.Units, new { @style = "width: 500px;", @id = "unit" })
-                    </div><br />
-                </div>*@
+            
 
             <div id="faculty">
                 <div class="editor-label">
@@ -174,7 +144,7 @@
 <script>
     $(document).ready(function () {
         getValue();
-        //getAffiliateValue();
+        $("html").getNiceScroll().resize();
     })
 </script>
 

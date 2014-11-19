@@ -31,6 +31,9 @@
     .last, .first, .previous, .next {
         display: none !important;
     }
+    .link:hover {
+        color: #007A0B !important;
+    }
 </style>
 
 <div><h2 style="float:left;">Actividades</h2>
@@ -54,7 +57,7 @@
             <tr>
                 <td class="panel callout large-12 columns">
                     <div class="large-10 columns">
-                        @Html.ActionLink(item.Activity.Title, "Detalles", "Actividades", new { id = item.Activity.ActivityID }, null)<br />
+                        <h5>@Html.ActionLink(item.Activity.Title, "Detalles", "Actividades", new { id = item.Activity.ActivityID }, new { @class = "link", @style="color:black;"})</h5>
                         <span>Propósito: </span> @item.Activity.Purpose<br />
                         <div>@if (item.Activity.ActivityDate != new DateTime()){ <span>Fecha: </span> @item.Activity.ActivityDate.Value.ToString("dd/MM/yyyy") } @if(item.Activity.ActivityTime != ""){<span>Hora: </span> @item.Activity.ActivityTime}</div>
                         <span>Tipo: </span>@item.Activity.ActivityType.ActivityType1<br />
