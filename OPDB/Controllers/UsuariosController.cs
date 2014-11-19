@@ -469,10 +469,10 @@ namespace OPDB.Controllers
 
             }
 
-            userViewModel.UserTypes = getUserTypes("New");
-            userViewModel.OutreachTypes = controller.getOutreachTypes();
+            //userViewModel.UserTypes = getUserTypes("New");
+            //userViewModel.OutreachTypes = controller.getOutreachTypes();
 
-            return View(userViewModel);
+            return Content(GetErrorsFromModelState(userViewModel));
         }
 
         //

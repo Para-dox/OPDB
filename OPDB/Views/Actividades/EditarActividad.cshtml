@@ -117,6 +117,18 @@
                 </div>
                 @Html.ValidationMessageFor(model => model.Activity.ActivityTime)
             </div><br />
+            <div class="editor-field">
+                <div class="large-6 columns" style="text-align:left;">
+                    <span>Duración </span><br />
+                    @Html.TextBoxFor(model => model.Duration, new { @type = "number", @min = "0" })
+                </div>
+                <div class="large-6 columns" style="text-align:left;">
+                    <span> </span><br />
+                    @Html.DropDownListFor(model => model.Measurement, Model.Measurements, new { @style = "width: 100px !important;" })
+                </div>
+                @Html.ValidationMessage("Activity_ActivityDuration_Required")
+                @Html.ValidationMessage("Activity_ActivityDuration_Invalid")
+            </div><br /><br />
             <div class="editor-label">
                 @Html.LabelFor(model => model.Activity.SchoolID, "Escuela")
             </div>

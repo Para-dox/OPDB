@@ -21,6 +21,7 @@
           <Property Name="Location" Type="varchar" MaxLength="100" />
           <Property Name="ActivityDate" Type="date" />
           <Property Name="ActivityTime" Type="varchar" MaxLength="7" />
+          <Property Name="Duration" Type="varchar" MaxLength="10" />
           <Property Name="SchoolID" Type="int" />
           <Property Name="Attendees" Type="int" Nullable="false" />
           <Property Name="CreateUser" Type="int" Nullable="false" />
@@ -2220,6 +2221,7 @@
           <NavigationProperty Name="ActivityMajor" Relationship="OPDBModel.Activity_ibfk_8" FromRole="Activity" ToRole="ActivityMajor" />
           <Property Name="TargetPopulationID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="TargetPopulation" Relationship="OPDBModel.Activity_ibfk_10" FromRole="Activity" ToRole="TargetPopulation" />
+          <Property Name="Duration" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ActivityNote">
           <Key>
@@ -3716,6 +3718,7 @@
           <EntitySetMapping Name="Activities">
             <EntityTypeMapping TypeName="OPDBModel.Activity">
               <MappingFragment StoreEntitySet="Activity">
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
                 <ScalarProperty Name="TargetPopulationID" ColumnName="TargetPopulationID" />
                 <ScalarProperty Name="Attendees" ColumnName="Attendees" />
                 <ScalarProperty Name="ActivityDynamicID" ColumnName="ActivityDynamicID" />

@@ -115,10 +115,11 @@ function loadResourceAction(e) {
 }
 
 function DisplayModal(e) {
-    modalClose();
+    modalClose();    
     var instructions = $(e).attr('data-validation');
     var url = $(e).attr('data-url');
     var title = $(e).attr('data-title');
+    var calendar = $('fc-view-container');
     
     if (instructions == "false")
         $('#instructions').attr("hidden", true);
@@ -136,6 +137,9 @@ function DisplayModal(e) {
             $('#ajax-modal').find('.modal-header').find('h3').html(title);
             $('#ajax-modal').find('.modal-body').html(data);
             $('#ajax-modal').modal('show');
+
+            if (calendar != null)
+                calendar.css('z-index', '-1');
         },
         error: function (xhr, ajaxOptions, thrownError) {
             alert(xhr.status);

@@ -119,33 +119,55 @@ namespace OPDB.Controllers
             searchViewModel.BuscarUnidades = true;
             searchViewModel.BuscarUsuarios = true;
 
-            searchViewModel.Users = (from userDetail in db.UserDetails join user in db.Users on userDetail.UserID equals user.UserID 
-                                    join userType in db.UserTypes on user.UserTypeID equals userType.UserTypeID
+            searchViewModel.Users = (from userDetail in db.UserDetails
+                                     where userDetail.DeletionDate == null 
+                                     select userDetail).ToList();
+
+
+            searchViewModel.Users = (from userDetail in searchViewModel.Users
                                      where (userDetail.FirstName.Contains(searchText, StringComparison.InvariantCultureIgnoreCase)
                                         || userDetail.LastName.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) ||
-                                        userType.UserType1.Contains(searchText, StringComparison.InvariantCultureIgnoreCase)) && 
+                                        userDetail.User.UserType.UserType1.Contains(searchText, StringComparison.InvariantCultureIgnoreCase)) && 
                                         userDetail.DeletionDate == null
                                     select userDetail).ToList();
 
-            searchViewModel.OutreachEntities = (from outreachEntity in db.OutreachEntityDetails join outreachType in db.OutreachEntityTypes on outreachEntity.OutreachEntityTypeID equals outreachType.OutreachEntityTypeID
+            searchViewModel.OutreachEntities = (from outreachDetail in db.OutreachEntityDetails
+                                                where outreachDetail.DeletionDate == null
+                                                select outreachDetail).ToList();
+
+
+            searchViewModel.OutreachEntities = (from outreachEntity in searchViewModel.OutreachEntities
                                                 where (outreachEntity.OutreachEntityName.Contains(searchText, StringComparison.InvariantCultureIgnoreCase)
                                                    || outreachEntity.Mission.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) || outreachEntity.Vision.Contains(searchText, StringComparison.InvariantCultureIgnoreCase)
-                                                   || outreachEntity.Objectives.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) || outreachType.OutreachEntityType1.Contains(searchText, StringComparison.InvariantCultureIgnoreCase)) && outreachEntity.DeletionDate == null
+                                                   || outreachEntity.Objectives.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) || outreachEntity.OutreachEntityType.OutreachEntityType1.Contains(searchText, StringComparison.InvariantCultureIgnoreCase)) && outreachEntity.DeletionDate == null
                                                select outreachEntity).ToList();
 
             searchViewModel.Activities = (from activity in db.Activities
+                                          where activity.DeletionDate == null
+                                          select activity).ToList();
+
+            searchViewModel.Activities = (from activity in searchViewModel.Activities
                                           where (activity.Title.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) || activity.Purpose.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) ||
                                          activity.ActivityMajor.ActivityMajor1.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) || (activity.ActivityDynamic.ActivityDynamic1 ?? "").Contains(searchText, StringComparison.InvariantCultureIgnoreCase))
                                          && activity.DeletionDate == null
                                          select activity).ToList();
 
             searchViewModel.Schools = (from school in db.Schools
+                                          where school.DeletionDate == null
+                                          select school).ToList();
+
+
+            searchViewModel.Schools = (from school in searchViewModel.Schools
                                        where (school.SchoolName.Contains(searchText, StringComparison.InvariantCultureIgnoreCase)
                                           || school.Address.Contains(searchText, StringComparison.InvariantCultureIgnoreCase)
                                           || school.SchoolRegion.SchoolRegion1.Contains(searchText, StringComparison.InvariantCultureIgnoreCase)) 
                                           && school.DeletionDate == null select school).ToList();
 
-            searchViewModel.Units = (from unit in db.Units where unit.UnitName.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) && unit.DeletionDate == null select unit).ToList();
+            searchViewModel.Units = (from unit in db.Units
+                                     where unit.DeletionDate == null
+                                     select unit).ToList();
+
+            searchViewModel.Units = (from unit in searchViewModel.Units where unit.UnitName.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) && unit.DeletionDate == null select unit).ToList();
 
             return View(searchViewModel);
 
@@ -487,7 +509,9 @@ namespace OPDB.Controllers
         {
             searchViewModel.BuscarUnidades = true;
 
-            searchViewModel.Units = (from unit in db.Units where unit.UnitName.Contains(searchViewModel.Unit.UnitName ?? "", StringComparison.InvariantCultureIgnoreCase) select unit).ToList();
+            var result = (from unit in db.Units where unit.DeletionDate == null select unit).ToList();
+            
+            searchViewModel.Units = (from unit in result where unit.UnitName.Contains(searchViewModel.Unit.UnitName ?? "", StringComparison.InvariantCultureIgnoreCase) select unit).ToList();
             
             return View("Buscar", searchViewModel);
         }
@@ -566,7 +590,7 @@ namespace OPDB.Controllers
             types.Add(new SelectListItem()
             {
                 Text = null,
-                Value = null
+                Value = "0"
             });
 
             foreach (var outreachType in db.OutreachEntityTypes)

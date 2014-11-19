@@ -67,6 +67,50 @@ namespace OPDB.Models
 
         public string Source { get; set; }
 
+        public string Duration { get; set; }
+
+        public string Measurement { get; set; }
+
+        public List<SelectListItem> Measurements
+        {
+            get
+            {
+                var measurements = new List<SelectListItem>();
+
+                measurements.Add(new SelectListItem()
+                {
+                    Text = "",
+                    Value = ""
+                });
+
+                measurements.Add(new SelectListItem()
+                {
+                    Text = "Minuto(s)",
+                    Value = "Minutes"
+                });
+
+                measurements.Add(new SelectListItem()
+                {
+                    Text = "Hora(s)",
+                    Value = "Hours"
+                });
+
+                measurements.Add(new SelectListItem()
+                {
+                    Text = "Día(s)",
+                    Value = "Days"
+                });
+
+                measurements.Add(new SelectListItem()
+                {
+                    Text = "Semana(s)",
+                    Value = "Weeks"
+                });
+
+                return measurements;
+            }
+        }
+
         
     }
 }

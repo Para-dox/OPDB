@@ -45,7 +45,7 @@
 </head>
 <body>
     <div id="wrap">
-        <div id="header" style="position:fixed; width:100%; z-index:1000;">
+        <div id="header" style="position:fixed; width:100%; z-index: 2 !important;">
             <nav class="top-bar docs-bar hide-for-small" data-topbar role="navigation">
                 <ul class="title-area">
                     <li class="name">
@@ -89,7 +89,16 @@
                             </ul>
                         </li>
                         @*<li class="name"></li>*@
-                        <li class="has-form busqueda"></li>
+                        <li class="has-form busqueda">
+                            <div class="row collapse">
+                                <div class="large-8 small-9 columns">
+                                    <input type="text" placeholder="Buscar" style="width:170px;"/>
+                                </div>
+                                    <div class="large-4 small-3 columns">
+                                        <input value="Ir" type="submit" style="width:51px;" class="alert button expand" />
+                                    </div>
+                            </div>
+                        </li>
                         @if (ViewBag.Nav == "Advanced")
                         {
                             <li class="active">@Html.ActionLink("Búsqueda Avanzada", "BusquedaAvanzada", "Home")</li>}
@@ -104,7 +113,7 @@
             </nav>
         </div>
         <div id="main">
-            <section class="content-wrapper" style="margin-top:80px;">
+            <section class="content-wrapper" style="margin-top:80px; z-index: 1 !important;">
                 @RenderBody()
             </section>
         </div>
@@ -124,21 +133,20 @@
     <!-- Modal Popup -->
     <div id="ajax-modal" class="modal hide fade modalStyle" aria-hidden="true" style="display: none;" data-backdrop="static" data-keyboard="false">
         <div class="modal-header" style="margin: 0px 10px 0 10px !important; height: 30px;">
-            <i onclick="modalClose()" class='fa fa-times-circle fa-lg' style="float: right; margin: 5px -2px; cursor: pointer; "></i>
+            <i onclick="modalClose()" class='fa fa-times-circle fa-lg' style="float: right; margin: 5px -2px; cursor: pointer;"></i>
             <h3></h3>
         </div><div id="instructions"><label style="font-size: 0.875rem; color: black; margin:15px 0 0 15px;">Todo campo con (*) es requerido.</label></div><ul id="validation" style="color: red; margin-top:15px; width: 100%; list-style-type: none;"></ul>
-        <div style="margin-top:-10px;" class="modal-body">
+        <div style="margin-top:-10px; z-index: 3 !important" class="modal-body">
         </div>
     </div>
 
 
-    <script src="~/Scripts/myScripts.js"></script>
+    
     <script type="text/javascript">
-        sleep(100);
         $(document).ready(function () {
         
             $('.busqueda').load("@Url.Action("_Buscar", "Home")");
-            $("html").niceScroll();
+            //$("html").niceScroll();
         });
     </script>
 

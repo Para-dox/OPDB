@@ -25,34 +25,7 @@ namespace OPDB.Models
 
         public List<UserInfoViewModel> Information { get; set; }
 
-        public List<SelectListItem> AffiliateTypes {
-          get{
-                var types = new List<SelectListItem>();
-
-                types.Add(new SelectListItem()
-                {
-                    Text = "",
-                    Value = ""
-                });
-
-                types.Add(new SelectListItem(){
-                    Text = "Escuela",
-                    Value = "School"
-                });
-
-                types.Add(new SelectListItem(){
-                    Text = "Entidad de Alcance",
-                    Value = "Outreach Entity"
-                });
-
-                types.Add(new SelectListItem(){
-                    Text = "Unidad",
-                    Value = "Unit"
-                });
-
-                return types; 
-            } 
-        }
+        
 
         public List<SelectListItem> Schools { get; set; }
         public List<SelectListItem> OutreachEntities { get; set; }
