@@ -580,8 +580,6 @@ namespace OPDB.Controllers
                             ModelState.AddModelError("Activity_Attendees_Invalid", Resources.WebResources.Activity_Attendees_Invalid);
                     }
 
-
-
                     if (activityViewModel.ActivityDate != "" && activityViewModel.ActivityDate != null)
                         activityViewModel.Activity.ActivityDate = DateTime.ParseExact(activityViewModel.ActivityDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
                     
