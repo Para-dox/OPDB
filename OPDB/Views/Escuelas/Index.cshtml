@@ -28,7 +28,19 @@
     }
 
      a:not(.button) {
-      color: #222222; }
+      color: black; }
+
+        a span i:hover {
+        color: #007A0B;
+    }
+
+    .link:hover {
+        color: #007A0B !important;
+    }
+
+    .fa-remove:hover {
+        color: #007A0B !important;
+    }
     
 </style>
 <table id="schools">
@@ -48,25 +60,25 @@
         {
             <tr>
                 <td>
-                    @Html.ActionLink(item.School.SchoolName + " ", "Detalles", "Escuelas", new { id = item.School.SchoolID }, null)
+                    @Html.ActionLink(item.School.SchoolName + " ", "Detalles", "Escuelas", new { id = item.School.SchoolID }, new { @class = "link"})
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.School.SchoolSequenceNumber)
                 </td>
                 <td>
-                    @Html.ActionLink(item.CreateUser.FirstName + " " + item.CreateUser.MiddleInitial + " " + item.CreateUser.LastName, "Detalles", "Usuarios", new { id = item.School.CreateUser }, null)
+                    @Html.ActionLink(item.CreateUser.FirstName + " " + item.CreateUser.MiddleInitial + " " + item.CreateUser.LastName, "Detalles", "Usuarios", new { id = item.School.CreateUser }, new { @class="link" })
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.School.CreateDate)
                 </td>
                 <td>
-                    @Html.ActionLink(item.UpdateUser.FirstName + " " + item.UpdateUser.MiddleInitial + " " + item.UpdateUser.LastName, "Detalles", "Usuarios", new { id = item.School.UpdateUser }, null)
+                    @Html.ActionLink(item.UpdateUser.FirstName + " " + item.UpdateUser.MiddleInitial + " " + item.UpdateUser.LastName, "Detalles", "Usuarios", new { id = item.School.UpdateUser }, new { @class = "link"})
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.School.UpdateDate)
                 </td>
                 <td>
-                    <a href="#" title="Editar" data-title="Editar Escuela" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("PopUpEditar", "Escuelas", new { id = item.School.SchoolID })" class="modal_ajax_btn"><i class="fa fa-pencil"></i></a> 
+                    <a href="#" title="Editar" data-title="Editar Escuela" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("PopUpEditar", "Escuelas", new { id = item.School.SchoolID })" class="modal_ajax_btn link"><i class="fa fa-pencil"></i></a> 
                     <i title="Remover" class="fa fa-remove" style="cursor:pointer;" onclick="removeRecord(this)" data-url="@Url.Action("Remover", "Escuelas", new { id = item.School.SchoolID })"></i>        
                 </td>
             </tr>

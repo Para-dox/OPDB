@@ -31,6 +31,9 @@
       .last, .first, .previous, .next{
         display: none !important;
     }
+      .link:hover {
+        color: #007A0B !important;
+    }
 </style>
 
 <h2>Escuelas</h2><br />
@@ -43,7 +46,7 @@
         {
             <tr>
                 <td class="panel callout large-12 columns">
-                    @Html.ActionLink(school.SchoolName, "Detalles", "Escuelas", new { id = school.SchoolID }, null)<br />
+                    <h5>@Html.ActionLink(school.SchoolName, "Detalles", "Escuelas", new { id = school.SchoolID }, new { @class="link", @style="color:black;"})</h5>
                     <span>Dirección: </span> @school.Address<br />
                     <span>Pueblo: </span> @school.Town<br />
                     <span>Región: </span>@school.SchoolRegion.SchoolRegion1<br />

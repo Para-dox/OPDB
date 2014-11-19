@@ -12,7 +12,7 @@
     }
 </style>
 
-@Html.HiddenFor(model => model.Note.Read, new { id = "readMessage" })
+@Html.HiddenFor(model => model.Note.IsRead, new { id = "readMessage" })
 @Html.HiddenFor(model => model.Reader, new { id = "reader" })
 
 <div class="display-label">

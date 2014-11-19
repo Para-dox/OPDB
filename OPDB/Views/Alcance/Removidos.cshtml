@@ -23,6 +23,18 @@
     .previous, .next {
         display: none !important;
     }
+
+       a span i:hover {
+        color: #007A0B;
+    }
+
+    .link:hover {
+        color: #007A0B !important;
+    }
+
+    .fa-plus:hover {
+        color: #007A0B !important;
+    }
 </style>
 
 <table id="removedOutreachTable">
@@ -41,7 +53,7 @@
         {
             <tr>
                 <td>
-                    @Html.ActionLink(item.OutreachEntityDetails.FirstOrDefault(i => i.UserID == item.UserID).OutreachEntityName, "Detalles", "Alcance", new { id = item.UserID }, null)
+                    @Html.ActionLink(item.OutreachEntityDetails.FirstOrDefault(i => i.UserID == item.UserID).OutreachEntityName, "Detalles", "Alcance", new { id = item.UserID }, new { @class="link"})
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.OutreachEntityDetails.FirstOrDefault(i => i.UserID == item.UserID).OutreachEntityType.OutreachEntityType1)

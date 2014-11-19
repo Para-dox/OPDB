@@ -31,15 +31,15 @@
     }
 
     a span i:hover {
-        color: #008cba;
+        color: #007A0B;
     }
 
     .link:hover {
-        color: #008cba !important;
+        color: #007A0B !important;
     }
 
     .fa-remove:hover {
-        color: #008cba !important;
+        color: #007A0B !important;
     }
 
     .frame {
@@ -172,12 +172,12 @@
                                 }
                             </td>
                             <td>@note.Sender</td>
-                            <td style="text-align:left !important;"><a href="#" title="Ver Mensaje" data-validation="false" style="color:#222222;" data-title="Mensaje" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("VerNota", "Usuarios", new { id = note.UserNote.UserNoteID })" class="modal_ajax_btn link">@note.UserNote.Subject</a></td>
+                            <td style="text-align:left !important;"><a href="#" title="Ver Mensaje" data-validation="false" style="color:black;" data-title="Mensaje" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("VerNota", "Usuarios", new { id = note.UserNote.UserNoteID })" class="modal_ajax_btn link">@note.UserNote.Subject</a></td>
                             <td>@note.UserNote.Note</td>
                             <td>
                                 @if ((Int32.Parse(User.Identity.Name.Split(',')[0]) == note.UserNote.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1) && !note.UserNote.IsRead)
                                 {
-                                    <a href="#" title="Editar" style="color:#222222;" data-title="Editar Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarNota", "Usuarios", new { id = note.UserNote.UserNoteID })" class="modal_ajax_btn link"><i class="fa fa-pencil"></i></a>
+                                    <a href="#" title="Editar" style="color:black;" data-title="Editar Nota" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarNota", "Usuarios", new { id = note.UserNote.UserNoteID })" class="modal_ajax_btn link"><i class="fa fa-pencil"></i></a>
                                     <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this, 'userNotes')" data-url="@Url.Action("RemoverNota", "Usuarios", new { id = note.UserNote.UserNoteID })"></i>}
                                 else if (Int32.Parse(User.Identity.Name.Split(',')[0]) == note.UserNote.SubjectID)
                                 {

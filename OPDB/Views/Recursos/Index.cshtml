@@ -34,7 +34,19 @@
     }
 
      a:not(.button) {
-      color: #222222; }
+      color: black; }
+
+        a span i:hover {
+        color: #007A0B;
+    }
+
+    .link:hover {
+        color: #007A0B !important;
+    }
+
+    .fa-remove:hover {
+        color: #007A0B !important;
+    }
 </style>
 <div>
     <table id="resources">
@@ -54,21 +66,21 @@
             {
                 <tr>
                     <td>
-                        <a href="#" title="Ver Detalles" class="modal_ajax_btn" data-validation="false" data-title="@item.Resource.Resource1" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("Detalles", "Recursos", new { id = item.Resource.ResourceID })">@item.Resource.Resource1</a>
+                        <a href="#" title="Ver Detalles" class="modal_ajax_btn link" data-validation="false" data-title="@item.Resource.Resource1" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("Detalles", "Recursos", new { id = item.Resource.ResourceID })">@item.Resource.Resource1</a>
                      </td>
                     <td>
-                        @Html.ActionLink(item.CreateUser.FirstName + " " + item.CreateUser.MiddleInitial + " " + item.CreateUser.LastName, "Detalles", "Usuarios", new { id = item.Resource.CreateUser }, null)
+                        @Html.ActionLink(item.CreateUser.FirstName + " " + item.CreateUser.MiddleInitial + " " + item.CreateUser.LastName, "Detalles", "Usuarios", new { id = item.Resource.CreateUser }, new { @class = "link"})
                     <td>
                         @Html.DisplayFor(modelItem => item.Resource.CreateDate)
                     </td>
                     <td>
-                       @Html.ActionLink(item.UpdateUser.FirstName + " " + item.UpdateUser.MiddleInitial + " " + item.UpdateUser.LastName, "Detalles", "Usuarios", new { id = item.Resource.UpdateUser }, null)
+                       @Html.ActionLink(item.UpdateUser.FirstName + " " + item.UpdateUser.MiddleInitial + " " + item.UpdateUser.LastName, "Detalles", "Usuarios", new { id = item.Resource.UpdateUser }, new { @class = "link"})
                      </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Resource.UpdateDate)
                     </td>
                     <td>
-                        <a href="#" title="Editar" data-title="Editar Recurso" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("PopUpEditar", "Recursos", new { id = item.Resource.ResourceID })" class="modal_ajax_btn"><i class="fa fa-pencil"></i></a> 
+                        <a href="#" title="Editar" data-title="Editar Recurso" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("PopUpEditar", "Recursos", new { id = item.Resource.ResourceID })" class="modal_ajax_btn link"><i class="fa fa-pencil"></i></a> 
                         <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this, 'resources')" data-url="@Url.Action("Remover", "Recursos", new { id = item.Resource.ResourceID })"></i>
                     </td>
                 </tr>

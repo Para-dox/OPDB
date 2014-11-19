@@ -28,6 +28,18 @@
         display: none !important;
     }
 
+       a span i:hover {
+        color: #007A0B;
+    }
+
+    .link:hover {
+        color: #007A0B !important;
+    }
+
+    .fa-remove:hover {
+        color: #007A0B !important;
+    }
+
 </style>
 <table id="outreach">
     <thead>
@@ -45,7 +57,7 @@
         {
             <tr>
                 <td>
-                    @Html.ActionLink(item.OutreachEntityDetails.FirstOrDefault(outreach => outreach.UserID == item.UserID).OutreachEntityName, "Detalles", "Alcance", new { id = item.UserID }, null)
+                    @Html.ActionLink(item.OutreachEntityDetails.FirstOrDefault(outreach => outreach.UserID == item.UserID).OutreachEntityName, "Detalles", "Alcance", new { id = item.UserID }, new { @class = "link"})
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.OutreachEntityDetails.FirstOrDefault(outreach => outreach.UserID == item.UserID).OutreachEntityType.OutreachEntityType1)
@@ -60,7 +72,7 @@
                     @Html.DisplayFor(modelItem => item.UpdateDate)
                 </td>
                 <td>
-                    <a href="@Url.Action("Editar", "Alcance", new { source = "Administracion", id = item.UserID })"><i class="fa fa-pencil" title="Editar"></i></a>
+                    <a class="link" href="@Url.Action("Editar", "Alcance", new { source = "Administracion", id = item.UserID })"><i class="fa fa-pencil" title="Editar"></i></a>
                     <a href="#" title="Remover" class="modal_ajax_btn" data-title="Remover Entidad de Alcance" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("PopUpRemover", "Usuarios", new { id = item.UserID })"><i class="fa fa-remove"></i></a>  
                 </td>
             </tr>

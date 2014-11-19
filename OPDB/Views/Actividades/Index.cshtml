@@ -28,7 +28,19 @@
         display: none !important;
     }
      a:not(.button) {
-      color: #222222; }
+      color: black; }
+
+        a span i:hover {
+        color: #007A0B;
+    }
+
+    .link:hover {
+        color: #007A0B !important;
+    }
+
+    .fa-remove:hover {
+        color: #007A0B !important;
+    }
 </style>
 
 <table id="activities">
@@ -47,15 +59,15 @@
         {
             <tr>
                 <td>
-                    @Html.ActionLink(item.Activity.Title, "Detalles", "Actividades", new { id = item.Activity.ActivityID }, new { title = "Ver Detalles" })
+                    @Html.ActionLink(item.Activity.Title, "Detalles", "Actividades", new { id = item.Activity.ActivityID }, new { title = "Ver Detalles" ,  @class = "link"})
                 </td>
                 <td>
                 @if (item.CreateUser.FirstName != "") { 
-                   @Html.ActionLink(item.CreateUser.FirstName + " " + item.CreateUser.MiddleInitial + " " + item.CreateUser.LastName, "Detalles", "Usuarios", new { id = item.Activity.CreateUser }, null)
+                   @Html.ActionLink(item.CreateUser.FirstName + " " + item.CreateUser.MiddleInitial + " " + item.CreateUser.LastName, "Detalles", "Usuarios", new { id = item.Activity.CreateUser }, new { @class = "link" })
                 }
                 else
                 {
-                    @Html.ActionLink(item.CreateEntity.OutreachEntityName, "Detalles", "Alcance", new { id = item.Activity.CreateUser }, null)
+                    @Html.ActionLink(item.CreateEntity.OutreachEntityName, "Detalles", "Alcance", new { id = item.Activity.CreateUser }, new { @class = "link"})
                 }
                 </td>
                 <td>
@@ -63,18 +75,18 @@
                 </td>
                 <td>
                 @if (item.UpdateUser.FirstName != "") { 
-                    @Html.ActionLink(item.UpdateUser.FirstName + " " + item.UpdateUser.MiddleInitial + " " + item.UpdateUser.LastName, "Detalles", "Usuarios", new { id = item.Activity.UpdateUser }, null)
+                    @Html.ActionLink(item.UpdateUser.FirstName + " " + item.UpdateUser.MiddleInitial + " " + item.UpdateUser.LastName, "Detalles", "Usuarios", new { id = item.Activity.UpdateUser }, new { @class = "link" })
                 }
                 else
                 {
-                    @Html.ActionLink(item.UpdateEntity.OutreachEntityName, "Detalles", "Alcance", new { id = item.Activity.UpdateUser }, null)
+                    @Html.ActionLink(item.UpdateEntity.OutreachEntityName, "Detalles", "Alcance", new { id = item.Activity.UpdateUser }, new { @class = "link" })
                 }
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Activity.UpdateDate)
                 </td>
                 <td>
-                    <a href="@Url.Action("EditarActividad", "Actividades", new { source = "Administracion", id = item.Activity.ActivityID })"><i class="fa fa-pencil" title="Editar"></i></a>
+                    <a class="link" href="@Url.Action("EditarActividad", "Actividades", new { source = "Administracion", id = item.Activity.ActivityID })"><i class="fa fa-pencil" title="Editar"></i></a>
                     <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this)" data-url="@Url.Action("Remover", "Actividades", new { id = item.Activity.ActivityID })"></i>
                     
                 </td>

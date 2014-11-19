@@ -32,6 +32,9 @@
     .last, .first, .previous, .next {
         display: none !important;
     }
+    .link:hover {
+        color: #007A0B !important;
+    }
 </style>
 
 <h2>Organizaciones de Alcance</h2><br />
@@ -44,7 +47,7 @@
         {
             <tr>
                 <td class="panel callout large-12 columns">
-                    @Html.ActionLink(item.OutreachEntity.OutreachEntityName, "Detalles", "Alcance", new { id = item.User.UserID }, null)<br />
+                    <h5>@Html.ActionLink(item.OutreachEntity.OutreachEntityName, "Detalles", "Alcance", new { id = item.User.UserID }, new { @class = "link", @style="color:black;"})</h5>
                     <span>Misión: </span> @item.OutreachEntity.Mission<br />
                     <span>Visión: </span> @item.OutreachEntity.Vision<br />
                     <span>Objetivos: </span> @item.OutreachEntity.Objectives<br />                 

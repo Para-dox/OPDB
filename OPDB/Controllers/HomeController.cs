@@ -121,31 +121,31 @@ namespace OPDB.Controllers
 
             searchViewModel.Users = (from userDetail in db.UserDetails join user in db.Users on userDetail.UserID equals user.UserID 
                                     join userType in db.UserTypes on user.UserTypeID equals userType.UserTypeID
-                                    where (userDetail.FirstName.Contains(searchText)
-                                        || userDetail.LastName.Contains(searchText) || 
-                                        userType.UserType1.Contains(searchText)) && 
+                                     where (userDetail.FirstName.Contains(searchText, StringComparison.InvariantCultureIgnoreCase)
+                                        || userDetail.LastName.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) ||
+                                        userType.UserType1.Contains(searchText, StringComparison.InvariantCultureIgnoreCase)) && 
                                         userDetail.DeletionDate == null
                                     select userDetail).ToList();
 
             searchViewModel.OutreachEntities = (from outreachEntity in db.OutreachEntityDetails join outreachType in db.OutreachEntityTypes on outreachEntity.OutreachEntityTypeID equals outreachType.OutreachEntityTypeID
-                                               where (outreachEntity.OutreachEntityName.Contains(searchText)
-                                                   || outreachEntity.Mission.Contains(searchText) || outreachEntity.Vision.Contains(searchText)
-                                                   || outreachEntity.Objectives.Contains(searchText) || outreachType.OutreachEntityType1.Contains(searchText)) && outreachEntity.DeletionDate == null
+                                                where (outreachEntity.OutreachEntityName.Contains(searchText, StringComparison.InvariantCultureIgnoreCase)
+                                                   || outreachEntity.Mission.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) || outreachEntity.Vision.Contains(searchText, StringComparison.InvariantCultureIgnoreCase)
+                                                   || outreachEntity.Objectives.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) || outreachType.OutreachEntityType1.Contains(searchText, StringComparison.InvariantCultureIgnoreCase)) && outreachEntity.DeletionDate == null
                                                select outreachEntity).ToList();
 
             searchViewModel.Activities = (from activity in db.Activities
-                                         where (activity.Title.Contains(searchText) || activity.Purpose.Contains(searchText) ||
-                                         activity.ActivityMajor.ActivityMajor1.Contains(searchText) || (activity.ActivityDynamic.ActivityDynamic1 ?? "").Contains(searchText))
+                                          where (activity.Title.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) || activity.Purpose.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) ||
+                                         activity.ActivityMajor.ActivityMajor1.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) || (activity.ActivityDynamic.ActivityDynamic1 ?? "").Contains(searchText, StringComparison.InvariantCultureIgnoreCase))
                                          && activity.DeletionDate == null
                                          select activity).ToList();
 
             searchViewModel.Schools = (from school in db.Schools
-                                      where (school.SchoolName.Contains(searchText)
-                                          || school.Address.Contains(searchText)
-                                          || school.SchoolRegion.SchoolRegion1.Contains(searchText)) 
+                                       where (school.SchoolName.Contains(searchText, StringComparison.InvariantCultureIgnoreCase)
+                                          || school.Address.Contains(searchText, StringComparison.InvariantCultureIgnoreCase)
+                                          || school.SchoolRegion.SchoolRegion1.Contains(searchText, StringComparison.InvariantCultureIgnoreCase)) 
                                           && school.DeletionDate == null select school).ToList();
 
-            searchViewModel.Units = (from unit in db.Units where unit.UnitName.Contains(searchText) && unit.DeletionDate == null select unit).ToList();
+            searchViewModel.Units = (from unit in db.Units where unit.UnitName.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) && unit.DeletionDate == null select unit).ToList();
 
             return View(searchViewModel);
 
@@ -240,7 +240,7 @@ namespace OPDB.Controllers
             {
 
                 result = (from user in result
-                         where user.FirstName.Contains(searchViewModel.User.FirstName) && user.DeletionDate == null
+                          where user.FirstName.Contains(searchViewModel.User.FirstName, StringComparison.InvariantCultureIgnoreCase) && user.DeletionDate == null
                          select user).ToList();
 
                 searchViewModel.Users = result;
@@ -249,7 +249,7 @@ namespace OPDB.Controllers
             if (searchViewModel.User.LastName != null)
             {
                 result = (from user in result
-                         where user.LastName.Contains(searchViewModel.User.LastName) && user.DeletionDate == null
+                          where user.LastName.Contains(searchViewModel.User.LastName, StringComparison.InvariantCultureIgnoreCase) && user.DeletionDate == null
                          select user).ToList();
 
                 searchViewModel.Users = result;
@@ -258,7 +258,7 @@ namespace OPDB.Controllers
             if (searchViewModel.User.Role != null)
             {
                 result = (from user in result
-                         where user.Role.Contains(searchViewModel.User.Role) && user.DeletionDate == null
+                          where user.Role.Contains(searchViewModel.User.Role, StringComparison.InvariantCultureIgnoreCase) && user.DeletionDate == null
                          select user).ToList();
 
                 searchViewModel.Users = result;
@@ -267,7 +267,7 @@ namespace OPDB.Controllers
             if (searchViewModel.User.Major != null)
             {
                 result = (from user in result
-                         where user.Major.Contains(searchViewModel.User.Major) && user.DeletionDate == null
+                          where user.Major.Contains(searchViewModel.User.Major, StringComparison.InvariantCultureIgnoreCase) && user.DeletionDate == null
                          select user).ToList();
 
                 searchViewModel.Users = result;
@@ -329,7 +329,7 @@ namespace OPDB.Controllers
             if (searchViewModel.Activity.Title != null)
             {
                 result = (from activity in result
-                         where activity.Title.Contains(searchViewModel.Activity.Title)
+                          where activity.Title.Contains(searchViewModel.Activity.Title, StringComparison.InvariantCultureIgnoreCase)
                          && activity.DeletionDate == null
                          select activity).ToList();
 
@@ -339,7 +339,7 @@ namespace OPDB.Controllers
             if(searchViewModel.Activity.Purpose != null){
 
                 result = (from activity in result
-                         where activity.Purpose.Contains(searchViewModel.Activity.Purpose)
+                          where activity.Purpose.Contains(searchViewModel.Activity.Purpose, StringComparison.InvariantCultureIgnoreCase)
                          && activity.DeletionDate == null
                          select activity).ToList();
 
@@ -381,7 +381,7 @@ namespace OPDB.Controllers
             {
 
                 result = (from outreachEntity in result
-                         where outreachEntity.OutreachEntityName.Contains(searchViewModel.OutreachEntity.OutreachEntityName)
+                          where outreachEntity.OutreachEntityName.Contains(searchViewModel.OutreachEntity.OutreachEntityName, StringComparison.InvariantCultureIgnoreCase)
                          && outreachEntity.DeletionDate == null
                          select outreachEntity).ToList();
 
@@ -392,7 +392,7 @@ namespace OPDB.Controllers
             {
 
                 result = (from outreachEntity in result
-                         where outreachEntity.Mission.Contains(searchViewModel.OutreachEntity.Mission)
+                          where outreachEntity.Mission.Contains(searchViewModel.OutreachEntity.Mission, StringComparison.InvariantCultureIgnoreCase)
                          && outreachEntity.DeletionDate == null
                           select outreachEntity).ToList();
 
@@ -404,7 +404,7 @@ namespace OPDB.Controllers
             {
 
                 result = (from outreachEntity in result
-                         where outreachEntity.Vision.Contains(searchViewModel.OutreachEntity.Vision)
+                          where outreachEntity.Vision.Contains(searchViewModel.OutreachEntity.Vision, StringComparison.InvariantCultureIgnoreCase)
                          && outreachEntity.DeletionDate == null
                           select outreachEntity).ToList();
 
@@ -415,7 +415,7 @@ namespace OPDB.Controllers
             {
 
                 result = (from outreachEntity in result
-                         where outreachEntity.Objectives.Contains(searchViewModel.OutreachEntity.Objectives)
+                          where outreachEntity.Objectives.Contains(searchViewModel.OutreachEntity.Objectives, StringComparison.InvariantCultureIgnoreCase)
                          && outreachEntity.DeletionDate == null
                          select outreachEntity).ToList();
 
@@ -446,7 +446,7 @@ namespace OPDB.Controllers
             if (searchViewModel.School.SchoolName != null)
             {
                 result = (from school in result
-                         where school.SchoolName.Contains(searchViewModel.School.SchoolName)
+                          where school.SchoolName.Contains(searchViewModel.School.SchoolName, StringComparison.InvariantCultureIgnoreCase)
                          && school.DeletionDate == null
                          select school).ToList();
 
@@ -456,7 +456,7 @@ namespace OPDB.Controllers
             if (searchViewModel.School.Address != null)
             {
                 result = (from school in result
-                         where school.Address.Contains(searchViewModel.School.Address)
+                          where school.Address.Contains(searchViewModel.School.Address, StringComparison.InvariantCultureIgnoreCase)
                          && school.DeletionDate == null
                          select school).ToList();
 
@@ -466,7 +466,7 @@ namespace OPDB.Controllers
             if (searchViewModel.School.Town != null)
             {
                 result = (from school in result
-                         where school.Town.Contains(searchViewModel.School.Town) 
+                          where school.Town.Contains(searchViewModel.School.Town, StringComparison.InvariantCultureIgnoreCase) 
                          && school.DeletionDate == null
                          select school).ToList();
 
@@ -487,7 +487,7 @@ namespace OPDB.Controllers
         {
             searchViewModel.BuscarUnidades = true;
 
-            searchViewModel.Units = (from unit in db.Units where unit.UnitName.Contains(searchViewModel.Unit.UnitName ?? "") select unit).ToList();
+            searchViewModel.Units = (from unit in db.Units where unit.UnitName.Contains(searchViewModel.Unit.UnitName ?? "", StringComparison.InvariantCultureIgnoreCase) select unit).ToList();
             
             return View("Buscar", searchViewModel);
         }
@@ -708,6 +708,8 @@ namespace OPDB.Controllers
             return towns;
 
         }
+
+       
 
         public ActionResult AccesoDenegado()
         {
@@ -987,6 +989,11 @@ namespace OPDB.Controllers
                 }
             }
             return (sb.ToString().Normalize(NormalizationForm.FormC));
+        }
+
+        public static bool Contains(this string source, string toCheck, StringComparison comp)
+        {
+            return source.IndexOf(toCheck, comp) >= 0;
         }
     }
 }
