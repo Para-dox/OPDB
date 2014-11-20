@@ -144,11 +144,20 @@
   <data name="Activity_Details_Invalid" xml:space="preserve">
     <value>El contenido de la sección de detalles es inválido</value>
   </data>
+  <data name="Activity_Duration_Invalid" xml:space="preserve">
+    <value>La duración es inválida</value>
+  </data>
+  <data name="Activity_Duration_Required" xml:space="preserve">
+    <value>La duración de la actividad es requerida</value>
+  </data>
   <data name="Activity_Location_Invalid" xml:space="preserve">
     <value>La localización que ha entrado es inválida</value>
   </data>
   <data name="Activity_Location_LengthExceeded" xml:space="preserve">
     <value>El contenido de su localización excede el límite de 100 caracteres</value>
+  </data>
+  <data name="Activity_Measurement_Required" xml:space="preserve">
+    <value>La medida de la duración de la actividad</value>
   </data>
   <data name="Activity_Purpose_Invalid" xml:space="preserve">
     <value>El propósito de la actividad es inválido</value>

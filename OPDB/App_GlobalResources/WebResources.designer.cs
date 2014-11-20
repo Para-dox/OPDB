@@ -142,6 +142,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to La duración es inválida.
+        /// </summary>
+        internal static string Activity_Duration_Invalid {
+            get {
+                return ResourceManager.GetString("Activity_Duration_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to La duración de la actividad es requerida.
+        /// </summary>
+        internal static string Activity_Duration_Required {
+            get {
+                return ResourceManager.GetString("Activity_Duration_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to La localización que ha entrado es inválida.
         /// </summary>
         internal static string Activity_Location_Invalid {
@@ -156,6 +174,15 @@ namespace Resources {
         internal static string Activity_Location_LengthExceeded {
             get {
                 return ResourceManager.GetString("Activity_Location_LengthExceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to La medida de la duración de la actividad.
+        /// </summary>
+        internal static string Activity_Measurement_Required {
+            get {
+                return ResourceManager.GetString("Activity_Measurement_Required", resourceCulture);
             }
         }
         

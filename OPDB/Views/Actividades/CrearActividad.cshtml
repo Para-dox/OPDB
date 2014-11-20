@@ -116,8 +116,9 @@
                 </div>
                 @Html.ValidationMessage("Activity_ActivityDate_EarlierThanCurrentDate")
                 @Html.ValidationMessageFor(model => model.Activity.ActivityTime)
-                @Html.ValidationMessage("Activity_ActivityDuration_Required")
-                @Html.ValidationMessage("Activity_ActivityDuration_Invalid")
+                @Html.ValidationMessage("Activity_Duration_Required")
+                @Html.ValidationMessage("Activity_Measurement_Required")
+                @Html.ValidationMessage("Activity_Duration_Invalid")
             </div><br />
             <div class="editor-label">
                 @Html.LabelFor(model => model.Activity.SchoolID, "Escuela")

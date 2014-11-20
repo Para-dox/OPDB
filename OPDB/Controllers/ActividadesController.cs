@@ -225,7 +225,12 @@ namespace OPDB.Controllers
         // GET: /Actividades/Details/5
         public ActionResult Detalles(int id = 0)
         {
+
             Activity foundActivity = db.Activities.Find(id);
+
+            DateTime endDate = new DateTime();
+
+            DateTime activityDate = new DateTime();
 
             User currentUser = null;
 
@@ -235,7 +240,13 @@ namespace OPDB.Controllers
             string date = "";
 
             if (foundActivity.ActivityDate != null)
+            {
                 date = foundActivity.ActivityDate.Value.ToString("dd/MM/yyyy");
+                activityDate = (DateTime) foundActivity.ActivityDate;
+            }
+
+            if (activityDate != new DateTime() && foundActivity.ActivityTime != null && foundActivity.Duration != null)
+                endDate = calculateDuration(activityDate, foundActivity.ActivityTime, foundActivity.Duration);
 
             var allFeedback = (from feedback in db.Feedbacks where feedback.ActivityID == id && feedback.DeletionDate == null select feedback).ToList();
             var feedbackList = new List<UserInfoViewModel>();
@@ -275,6 +286,7 @@ namespace OPDB.Controllers
                 Activity = foundActivity,
                 ActivityDynamic = activityDynamic,
                 ActivityDate = date,
+                EndDate = endDate,
                 Feedbacks = feedbackList,
                 Interested = interested,
                 Videos = (from video in db.Media where video.ActivityID == id && video.MediaType == "Video" && video.DeletionDate == null select video).ToList(),
@@ -350,10 +362,30 @@ namespace OPDB.Controllers
                         ModelState.AddModelError("Activity_ActivityDynamicID_Required", Resources.WebResources.Activity_ActivityDynamicID_Required);
                     }
 
+                    if (activityViewModel.Activity.ActivityDate != null && activityViewModel.Duration == 0)
+                    {
+                        ModelState.AddModelError("Activity_Duration_Required", Resources.WebResources.Activity_Duration_Required);
+
+                    }
+                    else if (activityViewModel.Measurement == "" || activityViewModel.Measurement == null)
+                    {
+
+                        ModelState.AddModelError("Activity_Measurement_Required", Resources.WebResources.Activity_Measurement_Required);
+                    }
+                    else if (activityViewModel.Duration < 0)
+                    {
+                        ModelState.AddModelError("Activity_Duration_Invalid", Resources.WebResources.Activity_Duration_Invalid);
+                    }
+
                     if (ModelState.IsValid)
                     {
                         activityViewModel.Activity.UpdateDate = DateTime.Now;
                         activityViewModel.Activity.CreateDate = DateTime.Now;
+
+                        if (activityViewModel.Duration > 0 && (activityViewModel.Measurement != "" || activityViewModel.Measurement != null))
+                        {
+                            activityViewModel.Activity.Duration = activityViewModel.Duration + "/" + activityViewModel.Measurement;
+                        }
 
                         if (activityViewModel.ContactIDs != null)
                         {
@@ -599,6 +631,21 @@ namespace OPDB.Controllers
                         ModelState.AddModelError("Activity_ActivityDynamicID_Required", Resources.WebResources.Activity_ActivityDynamicID_Required);
                     }
 
+                    if (activityViewModel.Activity.ActivityDate != null && activityViewModel.Duration == 0)
+                    {
+                        ModelState.AddModelError("Activity_Duration_Required", Resources.WebResources.Activity_Duration_Required);
+
+                    }
+                    else if (activityViewModel.Measurement == "" || activityViewModel.Measurement == null)
+                    {
+
+                        ModelState.AddModelError("Activity_Measurement_Required", Resources.WebResources.Activity_Measurement_Required);
+                    }
+                    else if (activityViewModel.Duration < 0)
+                    {
+                        ModelState.AddModelError("Activity_Duration_Invalid", Resources.WebResources.Activity_Duration_Invalid);
+                    }
+
                     if (ModelState.IsValid)
                     {
                         if (activityViewModel.Activity.ActivityTime != "" && activityViewModel.Activity.ActivityTime != null)
@@ -606,6 +653,11 @@ namespace OPDB.Controllers
 
                         activityViewModel.Activity.UpdateUser = userID;
                         activityViewModel.Activity.UpdateDate = DateTime.Now;
+
+                        if (activityViewModel.Duration > 0 && (activityViewModel.Measurement != "" || activityViewModel.Measurement != null))
+                        {
+                            activityViewModel.Activity.Duration = activityViewModel.Duration + "/" + activityViewModel.Measurement;
+                        }
 
                         ///Contacts///
 
@@ -1452,6 +1504,38 @@ namespace OPDB.Controllers
             return conflictingActivities;
         }
 
+        public DateTime calculateDuration(DateTime activityDate, string time, string duration)
+        {
+            DateTime calculatedDuration = new DateTime();
+            string date;
+
+            date = activityDate.ToShortDateString() + " " + time.Substring(0,time.LastIndexOfAny(new char[]{'A', 'P'})) + " " + time.Substring(time.LastIndexOfAny(new char[]{'A', 'P'}));
+            calculatedDuration = DateTime.ParseExact(date, "MM/dd/yyyy hh:mm tt", CultureInfo.InvariantCulture);
+            
+                            
+            if (duration != null && duration != "")
+            {
+                var parts = duration.Split('/');
+
+                if (activityDate != new DateTime())
+                {
+
+                    if (parts[1] == "Minutes")
+                        calculatedDuration = calculatedDuration.AddMinutes(Double.Parse(parts[0]));
+
+                    if (parts[1] == "Hours")
+                        calculatedDuration = calculatedDuration.AddHours(Double.Parse(parts[0]));
+
+
+                    if (parts[1] == "Days")
+                        calculatedDuration = calculatedDuration.AddDays(Double.Parse(parts[0]));
+                }
+                    
+            }
+
+            return calculatedDuration;
+        }
+
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         /// Admin activity creation methods.
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1519,10 +1603,28 @@ namespace OPDB.Controllers
                         ModelState.AddModelError("Activity_ActivityDynamicID_Required", Resources.WebResources.Activity_ActivityDynamicID_Required);
                     }
 
+                    if (activityViewModel.Activity.ActivityDate != null && activityViewModel.Duration == 0)
+                    {
+                        ModelState.AddModelError("Activity_Duration_Required", Resources.WebResources.Activity_Duration_Required);
+
+                    }else if(activityViewModel.Measurement == "" || activityViewModel.Measurement == null){
+
+                        ModelState.AddModelError("Activity_Measurement_Required", Resources.WebResources.Activity_Measurement_Required);
+                    }
+                    else if (activityViewModel.Duration < 0)
+                    {
+                        ModelState.AddModelError("Activity_Duration_Invalid", Resources.WebResources.Activity_Duration_Invalid);
+                    }
+
                     if (ModelState.IsValid)
                     {
                         activityViewModel.Activity.UpdateDate = DateTime.Now;
                         activityViewModel.Activity.CreateDate = DateTime.Now;
+
+                        if (activityViewModel.Duration > 0 && (activityViewModel.Measurement != "" || activityViewModel.Measurement != null))
+                        {
+                            activityViewModel.Activity.Duration = activityViewModel.Duration + "/" + activityViewModel.Measurement;
+                        }
 
                         if (activityViewModel.ContactIDs != null)
                         {
@@ -1694,6 +1796,21 @@ namespace OPDB.Controllers
                         ModelState.AddModelError("Activity_ActivityDynamicID_Required", Resources.WebResources.Activity_ActivityDynamicID_Required);
                     }
 
+                    if (activityViewModel.Activity.ActivityDate != null && activityViewModel.Duration == 0)
+                    {
+                        ModelState.AddModelError("Activity_Duration_Required", Resources.WebResources.Activity_Duration_Required);
+
+                    }
+                    else if (activityViewModel.Measurement == "" || activityViewModel.Measurement == null)
+                    {
+
+                        ModelState.AddModelError("Activity_Measurement_Required", Resources.WebResources.Activity_Measurement_Required);
+                    }
+                    else if (activityViewModel.Duration < 0)
+                    {
+                        ModelState.AddModelError("Activity_Duration_Invalid", Resources.WebResources.Activity_Duration_Invalid);
+                    }
+
                     if (ModelState.IsValid)
                     {
                         if (activityViewModel.Activity.ActivityTime != "" && activityViewModel.Activity.ActivityTime != null)
@@ -1701,6 +1818,11 @@ namespace OPDB.Controllers
 
                         activityViewModel.Activity.UpdateUser = userID;
                         activityViewModel.Activity.UpdateDate = DateTime.Now;
+
+                        if (activityViewModel.Duration > 0 && (activityViewModel.Measurement != "" || activityViewModel.Measurement != null))
+                        {
+                            activityViewModel.Activity.Duration = activityViewModel.Duration + "/" + activityViewModel.Measurement;
+                        }
 
                         ///Contacts///
 

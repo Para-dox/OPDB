@@ -67,9 +67,11 @@ namespace OPDB.Models
 
         public string Source { get; set; }
 
-        public string Duration { get; set; }
+        public int Duration { get; set; }
 
         public string Measurement { get; set; }
+
+        public DateTime EndDate { get; set; }
 
         public List<SelectListItem> Measurements
         {
@@ -99,12 +101,6 @@ namespace OPDB.Models
                 {
                     Text = "Día(s)",
                     Value = "Days"
-                });
-
-                measurements.Add(new SelectListItem()
-                {
-                    Text = "Semana(s)",
-                    Value = "Weeks"
                 });
 
                 return measurements;

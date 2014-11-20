@@ -14,7 +14,7 @@
 
     label {
         width: 100% !important;
-        cursor:default !important;
+        cursor: default !important;
     }
 
     input[type="search"] {
@@ -76,9 +76,9 @@
         color: #008cba !important;
     }
 
-    .disabled{
-        pointer-events:none;
-        cursor:default;
+    .disabled {
+        pointer-events: none;
+        cursor: default;
     }
 </style>
 
@@ -177,6 +177,24 @@
             </div>
             <br />
         }
+        @if (Model.EndDate != new DateTime())
+        {
+            <div class="display-label">
+                @Html.LabelFor(model => model.EndDate, "Finaliza")
+            </div>
+            if (Model.Activity.Duration.Split('/')[1] == "Minutes" || Model.Activity.Duration.Split('/')[1] == "Hours")
+            {
+                <div class="display-field">
+                    @Model.EndDate.ToString("hh:mm tt")
+                </div>
+            }
+            else
+            {<div class="display-field">
+                @Model.EndDate.ToString("dd/MM/yyyy hh:mm tt")
+            </div>
+            }
+            <br />
+        }
         <a title="Regresar" onclick="window.history.back()"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-arrow-left fa-stack-1x fa-inverse"></i></span></a>
         @if (User.Identity.IsAuthenticated)
         {
@@ -184,13 +202,13 @@
             {
                 <a title="Me Interesa" onclick="showInterest(this)" data-url="@Url.Action("Interes", "Actividades", new { id = Model.Activity.ActivityID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-thumbs-up fa-stack-1x fa-inverse"></i></span></a>
             }
-            
+
             if (Int32.Parse(User.Identity.Name.Split(',')[0]) == Model.Activity.UserID && Boolean.Parse(User.Identity.Name.Split(',')[2]))
             {
                 <a title="Editar Actividad" href="@Url.Action("Editar", "Actividades", new {id = Model.Activity.ActivityID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-pencil fa-stack-1x fa-inverse"></i></span></a>
             }
-            else if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1) 
-            { 
+            else if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+            {
                 <a title="Editar Actividad" href="@Url.Action("EditarActividad", "Actividades", new {source = "Detalles", id = Model.Activity.ActivityID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-pencil fa-stack-1x fa-inverse"></i></span></a>
             }
 
@@ -205,9 +223,9 @@
             {
                 <a href="#" title="Añadir Multimedia" class="modal_ajax_btn" data-title="Añadir Multimedia" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("MediaUpload", "Actividades", new { id = Model.Activity.ActivityID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-file-video-o fa-stack-1x fa-inverse"></i></span></a>
             }
-         
+
         }
-        
+
 
     </div>
 
@@ -248,9 +266,9 @@
                     </ol>
                 </div>
             </div>
-    <div id="mediaFrame" class="large-9 columns disabled">
-        <iframe width="560" id="videoarea" height="315" src="//www.youtube.com/embed/" frameborder="0" allowfullscreen></iframe>
-    </div>
+            <div id="mediaFrame" class="large-9 columns disabled">
+                <iframe width="560" id="videoarea" height="315" src="//www.youtube.com/embed/" frameborder="0" allowfullscreen></iframe>
+            </div>
         }
         @if (Model.Photos.Count != 0)
         {
@@ -283,12 +301,12 @@
                 </td>
                 <td style="width:6%;">
                     @if (Request.IsAuthenticated)
-                    { 
-                    if (Int32.Parse(User.Identity.Name.Split(',')[0]) == feedback.Feedback.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
                     {
-                        <a href="#" title="Editar" data-title="Editar Comentario" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarComentario", "Actividades", new { id = feedback.Feedback.FeedbackID })" class="modal_ajax_btn link"><i class="fa fa-pencil"></i></a>
-                        <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this, 'activityFeedback')" data-url="@Url.Action("RemoverComentario", "Actividades", new { id = feedback.Feedback.FeedbackID })"></i>
-                    }
+                        if (Int32.Parse(User.Identity.Name.Split(',')[0]) == feedback.Feedback.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                        {
+                            <a href="#" title="Editar" data-title="Editar Comentario" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarComentario", "Actividades", new { id = feedback.Feedback.FeedbackID })" class="modal_ajax_btn link"><i class="fa fa-pencil"></i></a>
+                            <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this, 'activityFeedback')" data-url="@Url.Action("RemoverComentario", "Actividades", new { id = feedback.Feedback.FeedbackID })"></i>
+                        }
                     }
                 </td>
             </tr>
@@ -338,7 +356,7 @@
         });
 
         $(document).foundation('clearing', 'reflow');
-        $(".playlistScroll").niceScroll();        
+        $(".playlistScroll").niceScroll();
         loadRightDetailsView("<a id='verContactos' data-url='@Url.Action("ContactosyRecursos", "Actividades", new { id = Model.Activity.ActivityID })'></a>");
 
     });
