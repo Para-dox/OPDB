@@ -80,6 +80,9 @@
 <script src="~/Scripts/myScripts.js"></script>
 <script>
     $(document).ready(function () {
+
+        sessionStorage.setItem('Tab', 'outreachURL');
+
         $('#removedOutreachTable').DataTable({
             "sDom": '<"top"f>t<"bottom"ipr><"clear">',
             "sPaginationType": "full_numbers",
@@ -96,9 +99,6 @@
                 "sEmptyTable": "No se ha removido ningúna entidad de alcance",
                 "sZeroRecords": "No se ha encontrado ningún registro",
                 "sSearch": "Buscar:"
-            },
-            "fnDrawCallback": function () {
-                $("html").getNiceScroll().resize();
             }
         });
 

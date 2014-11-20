@@ -150,7 +150,8 @@
                 @Html.TextBoxFor(model => model.Activity.Attendees, new { @type = "number", @min = "0", @style = "width: 500px !important;" })
             </div><br />
             <p>
-                <input type="submit" class="btn" style="float:left !important; width:40% !important; margin-left: 30px !important;" value="Guardar" /> <input type="button" value="Cancelar" class="btn" style="float:right !important; width:40% !important; margin-bottom: 20px !important; margin-right: 30px !important;" onclick="window.history.back()" />
+                <input type="submit" class="btn" style="float:left !important; width:40% !important; margin-left: 30px !important;" value="Guardar" /><input type="button" value="Cancelar" class="btn" style="float:right !important; width:40% !important; margin-bottom: 20px !important; margin-right: 30px !important;" onclick="window.history.back()" />
+                                                                                                                                                                                                                       
             </p>
         </fieldset>
     </center>
@@ -177,7 +178,6 @@
         });
 
         getActivityType();
-        $("html").getNiceScroll().resize();
 
     });
 </script>

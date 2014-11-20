@@ -94,6 +94,9 @@
 <script>
     $(document).ready(function () {
 
+
+        sessionStorage.setItem('Tab', 'schoolsURL');
+
         $('#removedSchoolsTable').DataTable({
             "sDom": '<"top"f>t<"bottom"ipr><"clear">',
             "sPaginationType": "full_numbers",
@@ -109,9 +112,6 @@
             "oLanguage": {
                 "sEmptyTable": "No se ha removido ninguna escuela",
                 "sSearch": "Buscar:"
-            },
-            "fnDrawCallback": function () {
-                $("html").getNiceScroll().resize();
             }
         });
 

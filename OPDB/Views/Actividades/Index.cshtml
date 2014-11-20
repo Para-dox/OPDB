@@ -103,6 +103,8 @@
 <script>
     $(document).ready(function () {
 
+        sessionStorage.setItem('Tab', 'activitiesURL');
+
         $('#activities').DataTable({
             "sDom": '<"top"f>t<"bottom"pr><"clear">',
             "sPaginationType": "full_numbers",
@@ -122,9 +124,6 @@
                 "sEmptyTable": "No se ha creado ninguna actividad",
                 "sZeroRecords": "No se ha encontrado ningún registro",
                 "sSearch": "Buscar:"
-            },
-            "fnDrawCallback": function() {
-                $("html").getNiceScroll().resize();
             }
         });
         

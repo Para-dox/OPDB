@@ -97,6 +97,8 @@
 <script>
     $(document).ready(function () {
 
+        sessionStorage.setItem('Tab', 'resourcesURL');
+
         $('#resources').DataTable({
             "sDom": '<"top"f>t<"bottom"ipr><"clear">',
             "sPaginationType": "full_numbers",
@@ -115,9 +117,6 @@
                 "sEmptyTable": "No se ha añadido ningún recurso",
                 "sZeroRecords": "No se ha encontrado ningún registro",
                 "sSearch": "Buscar:"
-            },
-            "fnDrawCallback": function () {
-                $("html").getNiceScroll().resize();
             }
         });
 

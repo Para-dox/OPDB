@@ -141,7 +141,8 @@ namespace OPDB.Controllers
 
                             db.Resources.Add(resourceViewModel.Resource);
                             db.SaveChanges();
-                            return View("_Hack");
+
+                           return View("_Hack");
                         }
 
                         return Content(GetErrorsFromModelState(resourceViewModel));
@@ -215,6 +216,7 @@ namespace OPDB.Controllers
                         resourceViewModel.Resource.UpdateDate = DateTime.Now;
                         db.Entry(resourceViewModel.Resource).State = EntityState.Modified;
                         db.SaveChanges();
+
                         return View("_Hack");
                     }
 
@@ -248,7 +250,8 @@ namespace OPDB.Controllers
                         db.Entry(resource).State = EntityState.Modified;
                         db.SaveChanges();
                     }
-                    return RedirectToAction("Index");
+
+                    return RedirectToAction("Administracion", "Home");
                 }
             }
 

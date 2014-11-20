@@ -570,6 +570,12 @@ namespace OPDB.Controllers
                         activityViewModel.ActivityDate = activityViewModel.Activity.ActivityDate.Value.ToString("dd/MM/yyyy");
                     }
 
+                    if (activityViewModel.Activity.Duration != null)
+                    {
+                        activityViewModel.Duration = Int32.Parse(activityViewModel.Activity.Duration.Split('/')[0]);
+                        activityViewModel.Measurement = activityViewModel.Activity.Duration.Split('/')[1];
+                    }
+
                     HomeController controller = new HomeController();
 
                     activityViewModel.ActivityTypes = controller.getActivityTypes();
@@ -920,7 +926,9 @@ namespace OPDB.Controllers
                         if (userID == activity.UserID)
                             return RedirectToAction("Detalles", "Alcance", new { id = activity.UserID });
                         else
+                        {
                             return RedirectToAction("Administracion", "Home");
+                        }
                     }
                 }
                 catch (DbEntityValidationException ex)
@@ -1685,7 +1693,7 @@ namespace OPDB.Controllers
                             db.Activities.Add(activityViewModel.Activity);
                             db.SaveChanges();
 
-                            return RedirectToAction("Administracion", "Home", null);
+                           return RedirectToAction("Administracion", "Home");
                         }
                         else
                         {
@@ -1734,6 +1742,12 @@ namespace OPDB.Controllers
                     {
                         activityViewModel.PreviousDate = ((DateTime) activityViewModel.Activity.ActivityDate);
                         activityViewModel.ActivityDate = activityViewModel.Activity.ActivityDate.Value.ToString("dd/MM/yyyy");
+                    }
+
+                    if (activityViewModel.Activity.Duration != null)
+                    {
+                        activityViewModel.Duration = Int32.Parse(activityViewModel.Activity.Duration.Split('/')[0]);
+                        activityViewModel.Measurement = activityViewModel.Activity.Duration.Split('/')[1];
                     }
 
                     HomeController controller = new HomeController();

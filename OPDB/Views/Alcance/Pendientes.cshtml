@@ -79,6 +79,8 @@
 <script>
     $(document).ready(function () {
 
+        sessionStorage.setItem('Tab', 'outreachURL');
+
         $('#outreach').DataTable({
             "sDom": '<"top"f>t<"bottom"ipr><"clear">',
             "sPaginationType": "full_numbers",
@@ -96,9 +98,6 @@
                 "sEmptyTable": "No se ha creado ninguna entidad de alcance",
                 "sZeroRecords": "No se ha encontrado ningún registro",
                 "sSearch": "Buscar:"
-            },
-            "fnDrawCallback": function() {
-                $("html").getNiceScroll().resize();
             }
         });
 

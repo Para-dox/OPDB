@@ -95,6 +95,8 @@
 <script>
     $(document).ready(function () {
 
+        sessionStorage.setItem('Tab', 'schoolsURL');
+
         $('#schools').DataTable({
             "sDom": '<"top"f>t<"bottom"ipr><"clear">',
             "sPaginationType": "full_numbers",
@@ -112,9 +114,6 @@
             "oLanguage": {"sEmptyTable": "No se ha añadido ninguna escuela",
                 "sZeroRecords": "No se ha encontrado ningún registro",
                 "sSearch": "Buscar:"
-            },
-            "fnDrawCallback": function () {
-                $("html").getNiceScroll().resize();
             }
         });
 

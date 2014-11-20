@@ -474,8 +474,10 @@ namespace OPDB.Controllers
                             if (userViewModel.Source == "Detalles")
                                 return RedirectToAction("Detalles", "Alcance", new { id = userViewModel.User.UserID });
 
-                            else if(userViewModel.Source == "Administracion")
+                            else if (userViewModel.Source == "Administracion")
+                            {
                                 return RedirectToAction("Administracion", "Home");
+                            }
                         }
 
                     }
@@ -569,7 +571,7 @@ namespace OPDB.Controllers
                         db.SaveChanges();
                     }
 
-                    return RedirectToAction("Administracion", "Home");
+                    return RedirectToAction("Administracion", "Home", new { tab = "outreachURL" });
                 }
             }
 
@@ -870,7 +872,7 @@ namespace OPDB.Controllers
                     db.Entry(user).State = EntityState.Modified;
                     db.SaveChanges();
 
-                    return RedirectToAction("Administracion", "Home");
+                    return RedirectToAction("Administracion", "Home", new { tab = "outreachURL" });
                 }
             }
 

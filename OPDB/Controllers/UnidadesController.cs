@@ -166,6 +166,7 @@ namespace OPDB.Controllers
                         unitViewModel.Unit.UpdateDate = DateTime.Now;
                         db.Entry(unitViewModel.Unit).State = EntityState.Modified;
                         db.SaveChanges();
+
                         return View("_Hack");
                     }
 
@@ -198,7 +199,7 @@ namespace OPDB.Controllers
                         db.SaveChanges();
                     }
 
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Administracion", "Home");
                 }
             }
 

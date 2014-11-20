@@ -253,7 +253,8 @@ namespace OPDB.Controllers
                             db.Entry(school).State = EntityState.Modified;
                             db.SaveChanges();
                         }
-                        return RedirectToAction("Administracion", "Home", null);
+
+                        return RedirectToAction("Administracion", "Home");
                     }
                     catch (DbEntityValidationException ex)
                     {
@@ -296,6 +297,7 @@ namespace OPDB.Controllers
                         db.Entry(school).State = EntityState.Modified;
                         db.SaveChanges();
                     }
+
                     return RedirectToAction("Administracion", "Home");
                 }
             }

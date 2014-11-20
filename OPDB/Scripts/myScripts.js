@@ -137,9 +137,6 @@ function DisplayModal(e) {
             $('#ajax-modal').find('.modal-header').find('h3').html(title);
             $('#ajax-modal').find('.modal-body').html(data);
             $('#ajax-modal').modal('show');
-
-            if (calendar != null)
-                calendar.css('z-index', '-1');
         },
         error: function (xhr, ajaxOptions, thrownError) {
             alert(xhr.status);
@@ -155,6 +152,7 @@ function modalClose() {
 }
 
 function loadAdminView(e) {
+    debugger;
     var url = $(e).attr('data-url');
     var id = $(e).attr('id');
 
@@ -189,6 +187,9 @@ function loadAdminView(e) {
         }
 
     }
+
+    if (url == "false")
+        url = $('#' + id).attr('data-url');
 
     if (id.search("active") != -1 || id.search("pending") != -1 || id.search("removed") != -1) {
         $('#managementTableInner').load(url);

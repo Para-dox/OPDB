@@ -89,6 +89,8 @@
 <script>
     $(document).ready(function () {
 
+        sessionStorage.setItem('Tab', 'usersURL');
+
         $('#users').DataTable({
             "sDom": '<"top"f>t<"bottom"ipr><"clear">',
             "sPaginationType": "full_numbers",
@@ -105,10 +107,7 @@
             ],
             "oLanguage": { "sEmptyTable": "No existe ningún usuario",
                 "sZeroRecords": "No se ha encontrado ningún registro",
-                "sSearch": "Buscar:" },
-            "fnDrawCallback": function() {
-                $("html").getNiceScroll().resize();
-            }
+                "sSearch": "Buscar:" }
         });
         document.getElementsByTagName("loading")[0].innerHTML = "";
         document.getElementsByTagName("loadinginner")[0].innerHTML = "";
