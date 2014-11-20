@@ -12,18 +12,19 @@ ol {
 .rounded-list a{
     position: relative;
     display: block;
-    padding: .4em .4em .4em 2em;
+    padding: .4em 1.4em .4em 1.4em;
     *padding: .4em;
     margin: .5em 0;
-    background: #ddd;
-    color: #444;
+    background: #333333;
+    color: white !important;
     text-decoration: none;
     border-radius: .3em;
     transition: all .3s ease-out;   
 }
 
 .rounded-list a:hover{
-    background: #eee;
+    background: #007A0B;
+    color: white !important;
 }
 
 /*.rounded-list a:hover:before{
@@ -37,8 +38,8 @@ ol {
     left: -1.3em;
     top: 50%;
     margin-top: -1.3em;
-    background: #87ceeb;
-    height: 2em;
+    background: #007A0B;
+    /*height: 2em;*/
     width: 2em;
     border: .3em solid #fff;
     text-align: center;

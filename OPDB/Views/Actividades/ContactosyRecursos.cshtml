@@ -43,7 +43,9 @@
                                <p style="text-align:left !important; font-size: 0.77778rem !important;"><b>Unidad:</b> @resource.Unit.UnitName<br />
                                <b>Edificio:</b> @resource.Unit.Building<br />
                                <b>Oficina:</b> @resource.Unit.RoomNumber<br />
-                               <b>Extensión:</b> @resource.Unit.Extension</p>
+                               @if (resource.Unit.Extension != null) { 
+                               <b>Extensión:</b> @resource.Unit.Extension
+                               }</p>
                            </div>
                        </td>
                        <td>

@@ -13,13 +13,13 @@
     @Html.HiddenFor(model => model.Media.ActivityID)
     
     <div class="editor-label">
-        @Html.LabelFor(model => model.Media.MediaType, "Tipo de Medio")
+        @Html.LabelFor(model => model.Media.MediaType, "Tipo de Medio *")
     </div>
     <div class="editor-field">
         @Html.DropDownListFor(model => model.Media.MediaType, Model.MediaTypes, new { @id="mediaType", @style = "margin: 0 0 1rem 0 !important; padding: 0.5rem !important; height: 2.3125rem !important; width: 100% !important;", @onchange = "changePlaceholder()"})
     </div><br />
     <div class="editor-label">
-        @Html.LabelFor(model => model.Media.MediaTitle, "Título")
+        @Html.LabelFor(model => model.Media.MediaTitle, "Título *")
     </div>
     <div class="editor-field">
         @Html.EditorFor(model => model.Media.MediaTitle)
