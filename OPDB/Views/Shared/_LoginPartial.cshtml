@@ -2,7 +2,7 @@
     <ul>
         @if (Int32.Parse(User.Identity.Name.ToString().Split(',')[1]) == 3)
         {
-            <li>@Html.ActionLink("Mi Perfil", "Detalles", "Alcance", new { id = Int32.Parse(User.Identity.Name.ToString().Split(',')[0]) }, null)</li>
+            <li>@Html.ActionLink("Mi Perfil", "Detalles", "Alcance", new { id = Int32.Parse(User.Identity.Name.ToString().Split(',')[0]) }, new { @onclick = "sessionStorage.setItem('Route', 'home');" })</li>
         }
         else
         {
