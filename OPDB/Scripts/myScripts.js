@@ -392,7 +392,6 @@ function activityReturn() {
             admin.setAttribute("hidden", "hidden");
             home.setAttribute("hidden", "hidden");
             list.setAttribute("hidden", "hidden");
-            calendar.setAttribute("hidden", "hidden");
             interest.setAttribute("hidden", "hidden");
         } else if (sessionStorage.getItem('Activity') == "interest") {
             interest.removeAttribute("hidden", "hidden");
