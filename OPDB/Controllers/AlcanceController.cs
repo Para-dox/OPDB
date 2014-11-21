@@ -569,6 +569,7 @@ namespace OPDB.Controllers
 
                     else
                     {
+                        user.UserStatus = true;
                         user.DeletionDate = null;
                         user.RemovalReason = null;
                         outreachDetail.DeletionDate = null;

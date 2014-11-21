@@ -42,7 +42,7 @@
             </div>
             <div class="editor-field">
                 @Html.ValidationMessageFor(model => model.User.UserPassword)
-                @Html.EditorFor(model => model.User.UserPassword, new { @style = "width: 500px !important;" })
+                @Html.PasswordFor(model => model.User.UserPassword, new { @style = "width: 500px !important;" })
             </div>
             <div class="editor-label">
                 @Html.LabelFor(model => model.ConfirmPassword, "Confirmar Contraseña *")

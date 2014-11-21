@@ -724,6 +724,7 @@ namespace OPDB.Controllers
 
                         if (userViewModel.User.RemovalReason != null)
                         {
+                            userViewModel.User.UserStatus = false;
                             userViewModel.User.DeletionDate = DateTime.Now;
                             userViewModel.UserDetail.DeletionDate = DateTime.Now;
                             db.Entry(userViewModel.User).State = EntityState.Modified;
@@ -744,6 +745,7 @@ namespace OPDB.Controllers
 
                         if (userViewModel.User.RemovalReason != null)
                         {
+                            userViewModel.User.UserStatus = false;
                             userViewModel.User.DeletionDate = DateTime.Now;
                             userViewModel.OutreachEntity.DeletionDate = DateTime.Now;
                             db.Entry(userViewModel.User).State = EntityState.Modified;
@@ -779,6 +781,7 @@ namespace OPDB.Controllers
                     }
                     else
                     {
+                        user.UserStatus = true;
                         user.DeletionDate = null;
                         user.RemovalReason = null;
                         userDetail.DeletionDate = null;
