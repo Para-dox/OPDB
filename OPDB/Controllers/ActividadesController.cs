@@ -400,7 +400,7 @@ namespace OPDB.Controllers
                         string duration = activityViewModel.Duration + "/" + activityViewModel.Measurement;
 
                         date = activityDate.ToShortDateString() + " " + time.Substring(0, time.LastIndexOfAny(new char[] { 'A', 'P' })) + " " + time.Substring(time.LastIndexOfAny(new char[] { 'A', 'P' }));
-                        var currentDate = DateTime.ParseExact(date, "MM/dd/yyyy hh:mm tt", CultureInfo.InvariantCulture);
+                        var currentDate = DateTime.ParseExact(date, "M/d/yyyy hh:mm tt", CultureInfo.InvariantCulture);
 
                         var endDate = calculateDuration(activityDate, time, duration);
 
@@ -1567,7 +1567,7 @@ namespace OPDB.Controllers
             string date;
 
             date = activityDate.ToShortDateString() + " " + time.Substring(0,time.LastIndexOfAny(new char[]{'A', 'P'})) + " " + time.Substring(time.LastIndexOfAny(new char[]{'A', 'P'}));
-            calculatedDuration = DateTime.ParseExact(date, "MM/dd/yyyy hh:mm tt", CultureInfo.InvariantCulture);
+            calculatedDuration = DateTime.ParseExact(date, "M/d/yyyy hh:mm tt", CultureInfo.InvariantCulture);
             
                             
             if (duration != null && duration != "")
@@ -1681,7 +1681,7 @@ namespace OPDB.Controllers
                         string duration = activityViewModel.Duration + "/" + activityViewModel.Measurement;
 
                         date = activityDate.ToShortDateString() + " " + time.Substring(0, time.LastIndexOfAny(new char[] { 'A', 'P' })) + " " + time.Substring(time.LastIndexOfAny(new char[] { 'A', 'P' }));
-                        var currentDate = DateTime.ParseExact(date, "MM/dd/yyyy hh:mm tt", CultureInfo.InvariantCulture);
+                        var currentDate = DateTime.ParseExact(date, "M/d/yyyy hh:mm tt", CultureInfo.InvariantCulture);
 
                         var endDate = calculateDuration(activityDate, time, duration);
 
@@ -1899,7 +1899,7 @@ namespace OPDB.Controllers
                         string duration = activityViewModel.Duration + "/" + activityViewModel.Measurement;
 
                         date = activityDate.ToShortDateString() + " " + time.Substring(0, time.LastIndexOfAny(new char[] { 'A', 'P' })) + " " + time.Substring(time.LastIndexOfAny(new char[] { 'A', 'P' }));
-                        var currentDate = DateTime.ParseExact(date, "MM/dd/yyyy hh:mm tt", CultureInfo.InvariantCulture);
+                        var currentDate = DateTime.ParseExact(date, "M/d/yyyy hh:mm tt", CultureInfo.InvariantCulture);
 
                         var endDate = calculateDuration(activityDate, time, duration);
 
