@@ -59,15 +59,15 @@
         {
             <tr>
                 <td>
-                    @Html.ActionLink(item.Activity.Title, "Detalles", "Actividades", new { id = item.Activity.ActivityID }, new { title = "Ver Detalles" ,  @class = "link"})
+                    @Html.ActionLink(item.Activity.Title, "Detalles", "Actividades", new { id = item.Activity.ActivityID }, new { title = "Ver Detalles", @class = "link", @onclick = "sessionStorage.setItem('Route', 'admin');" })
                 </td>
                 <td>
                 @if (item.CreateUser.FirstName != "") { 
-                   @Html.ActionLink(item.CreateUser.FirstName + " " + item.CreateUser.MiddleInitial + " " + item.CreateUser.LastName, "Detalles", "Usuarios", new { id = item.Activity.CreateUser }, new { @class = "link" })
+                   @Html.ActionLink(item.CreateUser.FirstName + " " + item.CreateUser.MiddleInitial + " " + item.CreateUser.LastName, "Detalles", "Usuarios", new { id = item.Activity.CreateUser }, new { @class = "link", @onclick = "sessionStorage.setItem('Route', 'admin');" })
                 }
                 else
                 {
-                    @Html.ActionLink(item.CreateEntity.OutreachEntityName, "Detalles", "Alcance", new { id = item.Activity.CreateUser }, new { @class = "link"})
+                    @Html.ActionLink(item.CreateEntity.OutreachEntityName, "Detalles", "Alcance", new { id = item.Activity.CreateUser }, new { @class = "link", @onclick = "sessionStorage.setItem('Route', 'admin');" })
                 }
                 </td>
                 <td>
@@ -75,18 +75,18 @@
                 </td>
                 <td>
                 @if (item.UpdateUser.FirstName != "") { 
-                    @Html.ActionLink(item.UpdateUser.FirstName + " " + item.UpdateUser.MiddleInitial + " " + item.UpdateUser.LastName, "Detalles", "Usuarios", new { id = item.Activity.UpdateUser }, new { @class = "link" })
+                    @Html.ActionLink(item.UpdateUser.FirstName + " " + item.UpdateUser.MiddleInitial + " " + item.UpdateUser.LastName, "Detalles", "Usuarios", new { id = item.Activity.UpdateUser }, new { @class = "link", @onclick = "sessionStorage.setItem('Route', 'admin');" })
                 }
                 else
                 {
-                    @Html.ActionLink(item.UpdateEntity.OutreachEntityName, "Detalles", "Alcance", new { id = item.Activity.UpdateUser }, new { @class = "link" })
+                    @Html.ActionLink(item.UpdateEntity.OutreachEntityName, "Detalles", "Alcance", new { id = item.Activity.UpdateUser }, new { @class = "link", @onclick = "sessionStorage.setItem('Route', 'admin');" })
                 }
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Activity.UpdateDate)
                 </td>
                 <td>
-                    <a class="link" href="@Url.Action("EditarActividad", "Actividades", new { source = "Administracion", id = item.Activity.ActivityID })"><i class="fa fa-pencil" title="Editar"></i></a>
+                    <a class="link" href="@Url.Action("EditarActividad", "Actividades", new { source = "Administracion", id = item.Activity.ActivityID })" onclick="sessionStorage.setItem('Route', 'admin');"><i class="fa fa-pencil" title="Editar"></i></a>
                     <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this)" data-url="@Url.Action("Remover", "Actividades", new { id = item.Activity.ActivityID })"></i>
                     
                 </td>

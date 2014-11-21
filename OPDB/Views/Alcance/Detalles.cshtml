@@ -144,7 +144,7 @@
             {
                 if ((Int32.Parse(User.Identity.Name.ToString().Split(',')[0]) == Model.OutreachEntity.UserID && Boolean.Parse(User.Identity.Name.ToString().Split(',')[2])) || Int32.Parse(User.Identity.Name.ToString().Split(',')[1]) == 1)
                 {
-                    <a title="Editar Entidad de Alcance" href="@Url.Action("Editar", "Alcance", new { source = "Detalles", id = Model.OutreachEntity.UserID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-pencil fa-stack-1x fa-inverse"></i></span></a>
+                    <a title="Editar Entidad de Alcance" onclick="sessionStorage.setItem('Route', 'details');" href="@Url.Action("Editar", "Alcance", new { source = "Detalles", id = Model.OutreachEntity.UserID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-pencil fa-stack-1x fa-inverse"></i></span></a>
                     <a title="Añadir Actividad" href="@Url.Action("Crear", "Actividades", new { id = Model.OutreachEntity.UserID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-plus fa-stack-1x fa-inverse"></i></span></a>
                 }
             }
@@ -228,7 +228,7 @@
             {
                 <tr style="background-color: #DBFFDB !important;">
                     <td style="text-align: left !important;">
-                        @Html.ActionLink(activity.Title, "Detalles", "Actividades", new { id = activity.ActivityID }, null)<br />
+                        @Html.ActionLink(activity.Title, "Detalles", "Actividades", new { id = activity.ActivityID }, new { @onclick = "sessionStorage.setItem('Route', 'details');" })<br />
                         <r>Propósito: </r> @activity.Purpose<br />
                         <div>
                             @if (activity.ActivityDate != new DateTime())

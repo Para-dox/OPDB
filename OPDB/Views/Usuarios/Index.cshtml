@@ -72,7 +72,7 @@
                     @Html.DisplayFor(modelItem => item.UpdateDate)
                 </td>
                 <td>
-                    <a class="link" href="@Url.Action("Editar", "Usuarios", new { source = "Administracion", id = item.UserID })"><i class="fa fa-pencil" title="Editar"></i></a>
+                    <a class="link" onclick="sessionStorage.setItem('Route', 'admin');" href="@Url.Action("Editar", "Usuarios", new { source = "Administracion", id = item.UserID })"><i class="fa fa-pencil" title="Editar"></i></a>
                     <a href="#" title="Remover" class="modal_ajax_btn" data-title="Remover Usuario" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("PopUpRemover", "Usuarios", new { id = item.UserID })"><i class="fa fa-remove"></i></a>  
                </td>
             </tr>

@@ -149,7 +149,6 @@ function modalClose() {
 }
 
 function loadAdminView(e) {
-    debugger;
     var url = $(e).attr('data-url');
     var id = $(e).attr('id');
 
@@ -307,26 +306,41 @@ function compareDate(e) {
 }
 
 function displayReturn() {
-    debugger;
     if (sessionStorage.getItem('Route') != undefined && sessionStorage.getItem('Route') != "") {
         var home = document.getElementById('home');
+        var details = document.getElementById('details');
+        var admin = document.getElementById('admin');
+        var list = document.getElementById('list');
 
         if (sessionStorage.getItem('Route') == "admin") {
-            document.getElementById('admin').removeAttribute("hidden", "hidden");
-            document.getElementById('list').setAttribute("hidden", "hidden");
+            admin.removeAttribute("hidden", "hidden");
+            list.setAttribute("hidden", "hidden");
             if(home != null)
                 home.setAttribute("hidden", "hidden");
+            if(details != null)
+                details.setAttribute("hidden", "hidden");
         } else if (sessionStorage.getItem('Route') == "list") {
-            document.getElementById('list').removeAttribute("hidden", "hidden");
-            document.getElementById('admin').setAttribute("hidden", "hidden");
+            list.removeAttribute("hidden", "hidden");
+            admin.setAttribute("hidden", "hidden");
             if (home != null)
                 home.setAttribute("hidden", "hidden");
+            if (details != null)
+                details.setAttribute("hidden", "hidden");
         } else if (sessionStorage.getItem('Route') == "home") {
             if(home != null)
                 home.removeAttribute("hidden", "hidden");
-            document.getElementById('admin').setAttribute("hidden", "hidden");
-            document.getElementById('list').setAttribute("hidden", "hidden");
-
+            admin.setAttribute("hidden", "hidden");
+            list.setAttribute("hidden", "hidden");
+            if (details != null)
+                details.setAttribute("hidden", "hidden");
+        } else if (sessionStorage.getItem('Route') == "details") {
+            if (details != null)
+                details.removeAttribute("hidden", "hidden");
+            admin.setAttribute("hidden", "hidden");
+            if(home != null)
+                home.setAttribute("hidden", "hidden");
+            if(list != null)
+                list.setAttribute("hidden", "hidden");
         }
 
 

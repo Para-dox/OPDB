@@ -118,7 +118,12 @@
 
             <p style="text-align:left;">
                 <input type="submit" class="btn" style="float:left !important; width:40% !important; margin-left: 30px !important;" value="Guardar" /> 
-                <input type="button" value="Cancelar" class="btn" style="float:right !important; width:40% !important; margin-bottom: 20px !important; margin-right: 30px !important;" onclick="window.history.back();" />
+                <div id="admin">
+                    <input type="button" value="Cancelar" class="btn" style="float:right !important; width:40% !important; margin-bottom: 20px !important; margin-right: 30px !important;" onclick="location.href='@Url.Action("Administracion", "Home")'" />
+                </div>
+                <div id="details">
+                    <input type="button" value="Cancelar" class="btn" style="float:right !important; width:40% !important; margin-bottom: 20px !important; margin-right: 30px !important;" onclick="location.href = '@Url.Action("Detalles", "Alcance", new { id = Model.User.UserID })'" />
+                </div>
                 
             </p>
         </fieldset>
@@ -128,7 +133,7 @@
 <script src="~/Scripts/myScripts.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
-        $("html").getNiceScroll().resize();
+        displayReturn();
     });
 </script>
 
