@@ -16,7 +16,7 @@
                     foreach (var user in Model.Users)
                     {
                         <li>
-                            @Html.ActionLink(user.FirstName + " " + user.LastName, "Detalles", "Usuarios", new { id = user.UserID }, null)
+                            @Html.ActionLink(user.FirstName + " " + user.LastName, "Detalles", "Usuarios", new { id = user.UserID }, new { @onclick = "sessionStorage.setItem('Route', 'home');" })
                         </li>
                     }
                 }
@@ -38,7 +38,7 @@
                     foreach (var outreach in Model.OutreachEntities)
                     {
                         <li>
-                            @Html.ActionLink(outreach.OutreachEntityName, "Detalles", "Alcance", new { id = outreach.UserID }, null)
+                            @Html.ActionLink(outreach.OutreachEntityName, "Detalles", "Alcance", new { id = outreach.UserID }, new { @onclick = "sessionStorage.setItem('Route', 'home');" })
                         </li>
                     }
                 }
@@ -60,7 +60,7 @@
                     foreach (var activity in Model.Activities)
                     {
                         <li>
-                            @Html.ActionLink(activity.Title, "Detalles", "Actividades", new { id = activity.ActivityID }, null)
+                            @Html.ActionLink(activity.Title, "Detalles", "Actividades", new { id = activity.ActivityID }, new { @onclick = "sessionStorage.setItem('Activity', 'home');" })
                         </li>
                     }
                 }
@@ -82,7 +82,7 @@
                     foreach (var unit in Model.Units)
                     {
                         <li>
-                            @Html.ActionLink(unit.UnitName, "Detalles", "Unidades", new { id = unit.UnitID }, null)
+                            @Html.ActionLink(unit.UnitName, "Detalles", "Unidades", new { id = unit.UnitID }, new { @onclick = "sessionStorage.setItem('Route', 'home');" })
                         </li>
                     }
                 }
@@ -105,7 +105,7 @@
                     foreach (var school in Model.Schools)
                     {
                         <li>
-                            @Html.ActionLink(school.SchoolName, "Detalles", "Escuelas", new { id = school.SchoolID }, null)
+                            @Html.ActionLink(school.SchoolName, "Detalles", "Escuelas", new { id = school.SchoolID }, new { @onclick = "sessionStorage.setItem('Route', 'home');" })
                         </li>
                     }
                 }

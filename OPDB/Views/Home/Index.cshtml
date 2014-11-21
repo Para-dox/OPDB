@@ -26,7 +26,7 @@
     {
 
         <div class="large-6 columns panel" style="height:250px;">
-            <h4>@Html.ActionLink(item.Activity.Title, "Detalles", "Actividades", new { id = item.Activity.ActivityID }, new { @style = "color:black;", @class = "link", @onclick = "sessionStorage.setItem('Route', 'home');" })</h4>
+            <h4>@Html.ActionLink(item.Activity.Title, "Detalles", "Actividades", new { id = item.Activity.ActivityID }, new { @style = "color:black;", @class = "link", @onclick = "sessionStorage.setItem('Activity', 'home');" })</h4>
                 <div class="activity" style="height:150px; overflow:hidden;" title="Desplace hacia abajo para más información">                
                 <span>Propósito: </span><r>@String.Concat(item.Activity.Purpose.Substring(0, item.Activity.Purpose.Length > 100 ? 100 : item.Activity.Purpose.Length), "")</r><br />
                 <span>Tipo: </span><r>@item.Activity.ActivityType.ActivityType1</r><br />

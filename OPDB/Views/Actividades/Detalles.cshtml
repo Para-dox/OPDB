@@ -217,11 +217,11 @@
 
             if (Int32.Parse(User.Identity.Name.Split(',')[0]) == Model.Activity.UserID && Boolean.Parse(User.Identity.Name.Split(',')[2]))
             {
-                <a title="Editar Actividad" onclick="sessionStorage.setItem('Route', 'details');" href="@Url.Action("Editar", "Actividades", new {id = Model.Activity.ActivityID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-pencil fa-stack-1x fa-inverse"></i></span></a>
+                <a title="Editar Actividad" onclick="sessionStorage.setItem('Cancel', 'details');" href="@Url.Action("Editar", "Actividades", new {id = Model.Activity.ActivityID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-pencil fa-stack-1x fa-inverse"></i></span></a>
             }
             else if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
             {
-                <a title="Editar Actividad" onclick="sessionStorage.setItem('Route', 'details');" href="@Url.Action("EditarActividad", "Actividades", new {source = "Detalles", id = Model.Activity.ActivityID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-pencil fa-stack-1x fa-inverse"></i></span></a>
+                <a title="Editar Actividad" onclick="sessionStorage.setItem('Cancel', 'details');" href="@Url.Action("EditarActividad", "Actividades", new {source = "Detalles", id = Model.Activity.ActivityID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-pencil fa-stack-1x fa-inverse"></i></span></a>
             }
 
             if (Int32.Parse(User.Identity.Name.Split(',')[1]) <= 3 && Boolean.Parse(User.Identity.Name.Split(',')[2]))
@@ -336,8 +336,8 @@
 <script src="~/Scripts/myScripts.js"></script>
 <script>
     $(document).ready(function () {
-        
-        displayReturn();
+       
+        activityReturn();
 
         $('#activityFeedback').DataTable({
             "sDom": '<"top">t<"bottom"pr><"clear">',
