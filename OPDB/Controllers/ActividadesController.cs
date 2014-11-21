@@ -218,6 +218,14 @@ namespace OPDB.Controllers
             {
                 var activity = db.Activities.Find(interest.ActivityID);
 
+              if(activity.ActivityMajor == null)
+              {
+                  activity.ActivityMajor = new ActivityMajor
+                  {
+                      ActivityMajor1 = ""
+                  };
+             }
+
                 activityViewModel.Information.Add(new UserInfoViewModel
                 {
                     Activity = activity,

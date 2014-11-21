@@ -21,7 +21,7 @@
         }
 
         tr {
-            background-color: #e2e2e2 !important;
+            background-color: #EFEEEF !important;
         }
 
         table {
@@ -49,7 +49,7 @@
                             <div>@if (item.Activity.ActivityDate != new DateTime()){ <span>Fecha: </span> @item.Activity.ActivityDate.Value.ToString("dd/MM/yyyy") } @if (item.Activity.ActivityTime != "") { <span>Hora: </span> @item.Activity.ActivityTime }</div>
                             <span>Tipo: </span> @item.Activity.ActivityType.ActivityType1<br />
                             <span>Area de Especialidad: </span> @item.Activity.ActivityMajor.ActivityMajor1<br />
-                            @if (item.Activity.ActivityDynamic.ActivityDynamic1 != null && item.Activity.ActivityDynamic.ActivityDynamic1 != "")
+                            @if (item.Activity.ActivityDynamic.ActivityDynamic1 != "")
                             {<span>Dinámica de la Actividad: </span>@item.Activity.ActivityDynamic.ActivityDynamic1<br />}
                             <span>Audiencia: </span> @item.Activity.TargetPopulation.TargetPopulation1<br />
                             <span>Organizada Por: </span>@item.OutreachEntity.OutreachEntityName
