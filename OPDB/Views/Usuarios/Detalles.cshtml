@@ -139,7 +139,9 @@
         <span id="list">
             <a title="Regresar" onclick="location.href='@Url.Action("Lista", "Usuarios")'"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-arrow-left fa-stack-1x fa-inverse"></i></span></a>
         </span>
-
+        <span id="home">
+            <a title="Regresar" onclick="location.href='@Url.Action("Index", "Home")'"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-arrow-left fa-stack-1x fa-inverse"></i></span></a>
+        </span>
         @if (User.Identity.IsAuthenticated)
         {
             if (Int32.Parse(User.Identity.Name.Split(',')[0]) == Model.User.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)

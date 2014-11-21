@@ -156,7 +156,7 @@ namespace OPDB.Controllers
 
             searchViewModel.Activities = (from activity in searchViewModel.Activities
                                           where (activity.Title.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) || activity.Purpose.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) ||
-                                         activity.ActivityMajor.ActivityMajor1.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) || (activity.ActivityDynamic.ActivityDynamic1 ?? "").Contains(searchText, StringComparison.InvariantCultureIgnoreCase))
+                                         activity.ActivityMajor.ActivityMajor1.Contains(searchText, StringComparison.InvariantCultureIgnoreCase))
                                          && activity.DeletionDate == null
                                          select activity).ToList();
 
