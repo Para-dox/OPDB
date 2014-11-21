@@ -139,6 +139,8 @@
             
             <a title="Regresar" id="list" onclick="location.href='@Url.Action("Lista", "Alcance")'"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-arrow-left fa-stack-1x fa-inverse"></i></span></a>
 
+            <a title="Regresar" id="home" onclick="location.href='@Url.Action("Index", "Home")'"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-arrow-left fa-stack-1x fa-inverse"></i></span></a>
+
             @if (Request.IsAuthenticated)
             {
                 if ((Int32.Parse(User.Identity.Name.ToString().Split(',')[0]) == Model.OutreachEntity.UserID && Boolean.Parse(User.Identity.Name.ToString().Split(',')[2])) || Int32.Parse(User.Identity.Name.ToString().Split(',')[1]) == 1)

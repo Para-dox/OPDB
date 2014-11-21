@@ -82,7 +82,7 @@
                     foreach (var unit in Model.Units)
                     {
                         <li>
-                            @Html.ActionLink(unit.UnitName, "Detalles", "Unidades", new { id = unit.UnitID }, new { @onclick = "sessionStorage.setItem('Route', 'home');" })
+                            <a href="#" title="Ver Detalles" class="modal_ajax_btn link" data-validation="false" data-title="@unit.UnitName" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("Detalles", "Unidades", new { id = unit.UnitID })">@unit.UnitName</a>
                         </li>
                     }
                 }
