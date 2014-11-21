@@ -1173,15 +1173,15 @@ namespace OPDB.Controllers
         [HttpPost]
         public ActionResult IniciarSesion(UserViewModel userViewModel)
         {
-            User user = db.Users.FirstOrDefault(u => u.Email == userViewModel.User.Email);
+            User matchingUser = (from user in db.Users where (String.Compare(user.Email, userViewModel.User.Email, true) == 0) && user.DeletionDate == null select user).FirstOrDefault();
 
-            if (user != null)
+            if (matchingUser != null)
             {
                 var crypto = new SimpleCrypto.PBKDF2();
                 crypto.HashIterations = 5000;
-                string hashedLoginPass = crypto.Compute(userViewModel.User.UserPassword, user.PasswordSalt);
+                string hashedLoginPass = crypto.Compute(userViewModel.User.UserPassword, matchingUser.PasswordSalt);
 
-                if (!user.UserStatus)
+                if (!matchingUser.UserStatus)
                 {
                     ModelState.AddModelError("", Resources.WebResources.User_Email_NotApproved);
 
@@ -1189,9 +1189,9 @@ namespace OPDB.Controllers
                 }
 
                 //if (user.UserPassword == userViewModel.User.UserPassword)
-                if (user.UserPassword == hashedLoginPass)
+                if (matchingUser.UserPassword == hashedLoginPass)
                 {
-                    FormsAuthentication.SetAuthCookie(user.UserID + "," + user.UserTypeID + "," + user.UserStatus, false);
+                    FormsAuthentication.SetAuthCookie(matchingUser.UserID + "," + matchingUser.UserTypeID + "," + matchingUser.UserStatus, false);
 
                     return PartialView("_Hack");
                 }
@@ -1253,7 +1253,7 @@ namespace OPDB.Controllers
                         userViewModel.User.UpdateDate = DateTime.Now;
                         bool validModel = true;
 
-                        User matchingUser = db.Users.FirstOrDefault(u => u.Email == userViewModel.User.Email);
+                        User matchingUser = (from user in db.Users where (String.Compare(user.Email, userViewModel.User.Email, true) == 0) && user.DeletionDate == null select user).FirstOrDefault();
 
                         if (matchingUser != null)
                         {

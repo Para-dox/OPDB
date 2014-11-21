@@ -170,7 +170,7 @@ namespace OPDB.Controllers
                     {
                         bool validModel = true;
 
-                        User matchingUser = db.Users.FirstOrDefault(u => u.Email == userViewModel.User.Email);
+                        User matchingUser = (from user in db.Users where (String.Compare(user.Email, userViewModel.User.Email, true) == 0) && user.DeletionDate == null select user).FirstOrDefault();
 
                         if (matchingUser != null)
                         {
