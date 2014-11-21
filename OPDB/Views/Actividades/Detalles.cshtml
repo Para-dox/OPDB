@@ -196,25 +196,18 @@
             <br />
         }  
 
-        <span id="admin">
-            <a title="Regresar" onclick="location.href='@Url.Action("Administracion", "Home")'"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-arrow-left fa-stack-1x fa-inverse"></i></span></a>
-        </span>
-        <span id="list">
-            <a title="Regresar" onclick="location.href='@Url.Action("Lista", "Actividades")'"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-arrow-left fa-stack-1x fa-inverse"></i></span></a>
-        </span>
-        <span id="home">
-            <a title="Regresar" onclick="location.href='@Url.Action("Index", "Home")'"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-arrow-left fa-stack-1x fa-inverse"></i></span></a>
-        </span>
-        <span id="details">
-            <a title="Regresar" onclick="location.href='@Url.Action("Detalles", "Alcance", new { id = Model.Activity.UserID })'"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-arrow-left fa-stack-1x fa-inverse"></i></span></a>
-        </span>
-        <span id="calendar">
-            <a title="Regresar" onclick="location.href='@Url.Action("Calendario", "Home")'"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-arrow-left fa-stack-1x fa-inverse"></i></span></a>
-        </span>
-        <span id="interest">
-            <a title="Regresar" onclick="location.href='@Url.Action("DeInteres", "Actividades")'"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-arrow-left fa-stack-1x fa-inverse"></i></span></a>
-        </span>
-                
+        <a title="Regresar" id="admin" onclick="location.href='@Url.Action("Administracion", "Home")'"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-arrow-left fa-stack-1x fa-inverse"></i></span></a>
+        
+        <a title="Regresar" id="list" onclick="location.href='@Url.Action("Lista", "Actividades")'"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-arrow-left fa-stack-1x fa-inverse"></i></span></a>
+       
+        <a title="Regresar" id="home" onclick="location.href='@Url.Action("Index", "Home")'"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-arrow-left fa-stack-1x fa-inverse"></i></span></a>
+        
+        <a title="Regresar" id="details" onclick="location.href='@Url.Action("Detalles", "Alcance", new { id = Model.Activity.UserID })'"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-arrow-left fa-stack-1x fa-inverse"></i></span></a>
+      
+        <a title="Regresar" id="calendar" onclick="location.href='@Url.Action("Calendario", "Home")'"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-arrow-left fa-stack-1x fa-inverse"></i></span></a>
+        
+        <a title="Regresar" id="interest" onclick="location.href='@Url.Action("DeInteres", "Actividades")'"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-arrow-left fa-stack-1x fa-inverse"></i></span></a>
+         
         @if (User.Identity.IsAuthenticated)
         {
             if (Model.Interested != true && Int32.Parse(User.Identity.Name.Split(',')[1]) != 3)
