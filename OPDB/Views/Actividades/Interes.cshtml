@@ -44,7 +44,7 @@
                 <tr>
                     <td class="panel callout large-12 columns">
                         <div class="large-10 columns">
-                            @Html.ActionLink(item.Activity.Title, "Detalles", "Actividades", new { id = item.Activity.ActivityID }, null)<br />
+                            @Html.ActionLink(item.Activity.Title, "Detalles", "Actividades", new { id = item.Activity.ActivityID }, new { @onclick = "sessionStorage.setItem('Route', 'interest');" })<br />
                             <span>Propósito: </span> @item.Activity.Purpose<br />
                             <div>@if (item.Activity.ActivityDate != new DateTime()){ <span>Fecha: </span> @item.Activity.ActivityDate.Value.ToString("dd/MM/yyyy") } @if (item.Activity.ActivityTime != "") { <span>Hora: </span> @item.Activity.ActivityTime }</div>
                             <span>Tipo: </span> @item.Activity.ActivityType.ActivityType1<br />

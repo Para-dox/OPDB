@@ -311,6 +311,8 @@ function displayReturn() {
         var details = document.getElementById('details');
         var admin = document.getElementById('admin');
         var list = document.getElementById('list');
+        var calendar = document.getElementById('calendar');
+        var interest = document.getElementById('interest');
 
         if (sessionStorage.getItem('Route') == "admin") {
             admin.removeAttribute("hidden", "hidden");
@@ -319,6 +321,10 @@ function displayReturn() {
                 home.setAttribute("hidden", "hidden");
             if(details != null)
                 details.setAttribute("hidden", "hidden");
+            if (calendar != null)
+                calendar.setAttribute("hidden", "hidden");
+            if (interest != null)
+                interest.setAttribute("hidden", "hidden");
         } else if (sessionStorage.getItem('Route') == "list") {
             list.removeAttribute("hidden", "hidden");
             admin.setAttribute("hidden", "hidden");
@@ -326,6 +332,10 @@ function displayReturn() {
                 home.setAttribute("hidden", "hidden");
             if (details != null)
                 details.setAttribute("hidden", "hidden");
+            if (calendar != null)
+                calendar.setAttribute("hidden", "hidden");
+            if (interest != null)
+                interest.setAttribute("hidden", "hidden");
         } else if (sessionStorage.getItem('Route') == "home") {
             if(home != null)
                 home.removeAttribute("hidden", "hidden");
@@ -333,6 +343,10 @@ function displayReturn() {
             list.setAttribute("hidden", "hidden");
             if (details != null)
                 details.setAttribute("hidden", "hidden");
+            if (calendar != null)
+                calendar.setAttribute("hidden", "hidden");
+            if (interest != null)
+                interest.setAttribute("hidden", "hidden");
         } else if (sessionStorage.getItem('Route') == "details") {
             if (details != null)
                 details.removeAttribute("hidden", "hidden");
@@ -340,6 +354,36 @@ function displayReturn() {
             if(home != null)
                 home.setAttribute("hidden", "hidden");
             if(list != null)
+                list.setAttribute("hidden", "hidden");
+            if (calendar != null)
+                calendar.setAttribute("hidden", "hidden");
+            if (interest != null)
+                interest.setAttribute("hidden", "hidden");
+        } else if (sessionStorage.getItem('Route') == "calendar") {
+            if (calendar != null)
+                calendar.removeAttribute("hidden", "hidden");
+            if (details != null)
+                details.setAttribute("hidden", "hidden");
+            admin.setAttribute("hidden", "hidden");
+            if (home != null)
+                home.setAttribute("hidden", "hidden");
+            if (list != null)
+                list.setAttribute("hidden", "hidden");
+            if (calendar != null)
+                calendar.setAttribute("hidden", "hidden");
+            if (interest != null)
+                interest.setAttribute("hidden", "hidden");
+        } else if (sessionStorage.getItem('Route') == "interest") {
+            if (interest != null)
+                interest.removeAttribute("hidden", "hidden");
+            if (calendar != null)
+                calendar.setAttribute("hidden", "hidden");
+            if (details != null)
+                details.setAttribute("hidden", "hidden");
+            admin.setAttribute("hidden", "hidden");
+            if (home != null)
+                home.setAttribute("hidden", "hidden");
+            if (list != null)
                 list.setAttribute("hidden", "hidden");
         }
 

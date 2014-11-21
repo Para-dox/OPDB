@@ -208,6 +208,12 @@
         <span id="details">
             <a title="Regresar" onclick="location.href='@Url.Action("Detalles", "Alcance", new { id = Model.Activity.UserID })'"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-arrow-left fa-stack-1x fa-inverse"></i></span></a>
         </span>
+        <span id="calendar">
+            <a title="Regresar" onclick="location.href='@Url.Action("Calendario", "Home")'"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-arrow-left fa-stack-1x fa-inverse"></i></span></a>
+        </span>
+        <span id="interest">
+            <a title="Regresar" onclick="location.href='@Url.Action("DeInteres", "Actividades")'"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-arrow-left fa-stack-1x fa-inverse"></i></span></a>
+        </span>
                 
         @if (User.Identity.IsAuthenticated)
         {
