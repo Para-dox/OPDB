@@ -286,6 +286,12 @@ namespace OPDB.Controllers
 
                         if (validModel)
                         {
+                            var crypto = new SimpleCrypto.PBKDF2();
+                            crypto.HashIterations = 5000;
+                            string passwordHash = crypto.Compute(userViewModel.User.UserPassword);
+
+                            userViewModel.User.UserPassword = passwordHash;
+                            userViewModel.User.PasswordSalt = crypto.Salt;
 
                             userViewModel.User.CreateDate = DateTime.Now;
                             userViewModel.User.UpdateDate = DateTime.Now;
