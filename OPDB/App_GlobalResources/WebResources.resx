@@ -150,6 +150,9 @@
   <data name="Activity_Duration_Required" xml:space="preserve">
     <value>La duración de la actividad es requerida</value>
   </data>
+  <data name="Activity_Duration_SelectDays" xml:space="preserve">
+    <value>La duracion escogida es mayor de 24hrs, por favor seleccione 'Día(s)'</value>
+  </data>
   <data name="Activity_Location_Invalid" xml:space="preserve">
     <value>La localización que ha entrado es inválida</value>
   </data>

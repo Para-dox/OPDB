@@ -33,6 +33,8 @@ namespace OPDB.Models
 
         public string Sender { get; set; }
 
+        public DateTime EndDate { get; set; }
+
         
 
     }

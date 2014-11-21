@@ -40,7 +40,8 @@
     .fa-remove:hover {
         color: #007A0B !important;
     }
-      .frame {
+
+    .frame {
         position: relative;
         overflow: hidden;
     }
@@ -64,21 +65,21 @@
 <h2> @Html.DisplayFor(model => model.OutreachEntity.OutreachEntityName)</h2>
 <div class="panel callout columns">
     <div class="large-5 columns">
-    <div class="display-label">
+        <div class="display-label">
             @Html.LabelFor(model => model.OutreachEntity.OutreachEntityType.OutreachEntityType1, "Tipo de Organización")
-    </div>
-    <div class="display-field">
+        </div>
+        <div class="display-field">
             @Html.DisplayFor(model => model.OutreachEntity.OutreachEntityType.OutreachEntityType1)
-    </div>
+        </div>
         <br />
 
-    <div class="display-label">
+        <div class="display-label">
             @Html.LabelFor(model => model.OutreachEntity.OutreachEntityName, "Nombre de la Organización")
-    </div>
+        </div>
 
-    <div class="display-field">
+        <div class="display-field">
             @Html.DisplayFor(model => model.OutreachEntity.OutreachEntityName)
-    </div>
+        </div>
         <br />
         <div class="display-label">
             @Html.LabelFor(model => model.User.Email, "Correo Eléctronico")
@@ -88,61 +89,65 @@
             @Html.DisplayFor(model => model.User.Email)
         </div>
         <br />
-    @if (Model.User.PhoneNumber != null && Model.User.PhoneNumber != "") 
-    { 
-        <div class="display-label">
+        @if (Model.User.PhoneNumber != null && Model.User.PhoneNumber != "")
+        {
+            <div class="display-label">
                 @Html.LabelFor(model => model.User.PhoneNumber, "Número Telefónico")
-        </div>
+            </div>
 
-        <div class="display-field">
+            <div class="display-field">
                 @Html.DisplayFor(model => model.User.PhoneNumber)
-        </div>  
+            </div>
             <br />
-    }
-    <div class="display-label">
-            @Html.LabelFor(model => model.OutreachEntity.Mission, "Misión")
-    </div>
-    <div class="display-field">
-            @Html.DisplayFor(model => model.OutreachEntity.Mission)
-    </div>
-        <br />
-
-    <div class="display-label">
-            @Html.LabelFor(model => model.OutreachEntity.Vision, "Visión")
-    </div>
-    <div class="display-field">
-            @Html.DisplayFor(model => model.OutreachEntity.Vision)
-    </div>
-        <br />
-
-    <div class="display-label">
-            @Html.LabelFor(model => model.OutreachEntity.Objectives, "Objetivos")
-    </div>
-    <div class="display-field">
-            @Html.DisplayFor(model => model.OutreachEntity.Objectives)
-    </div>
-        <br />
-    @if (Model.OutreachEntity.Location != null && Model.OutreachEntity.Location != "") 
-    { 
+        }
         <div class="display-label">
-                @Html.LabelFor(model => model.OutreachEntity.Location, "Localización")
+            @Html.LabelFor(model => model.OutreachEntity.Mission, "Misión")
         </div>
         <div class="display-field">
-                @Html.DisplayFor(model => model.OutreachEntity.Location)
+            @Html.DisplayFor(model => model.OutreachEntity.Mission)
         </div>
-    }
+        <br />
+
+        <div class="display-label">
+            @Html.LabelFor(model => model.OutreachEntity.Vision, "Visión")
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.OutreachEntity.Vision)
+        </div>
+        <br />
+
+        <div class="display-label">
+            @Html.LabelFor(model => model.OutreachEntity.Objectives, "Objetivos")
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.OutreachEntity.Objectives)
+        </div>
+        <br />
+        @if (Model.OutreachEntity.Location != null && Model.OutreachEntity.Location != "")
+        {
+            <div class="display-label">
+                @Html.LabelFor(model => model.OutreachEntity.Location, "Localización")
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.OutreachEntity.Location)
+            </div>
+        }
         <p>
             <br />
-            <a title="Regresar" onclick="window.history.back()"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-arrow-left fa-stack-1x fa-inverse"></i></span></a>
-
-        @if (Request.IsAuthenticated)
-        {
-            if ((Int32.Parse(User.Identity.Name.ToString().Split(',')[0]) == Model.OutreachEntity.UserID && Boolean.Parse(User.Identity.Name.ToString().Split(',')[2])) || Int32.Parse(User.Identity.Name.ToString().Split(',')[1]) == 1)
+            <div id="admin">
+                <a title="Regresar" onclick="location.href='@Url.Action("Administracion", "Home")'"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-arrow-left fa-stack-1x fa-inverse"></i></span></a>
+            </div>
+            <div id="list">
+                <a title="Regresar" onclick="location.href='@Url.Action("Lista", "Alcance")'"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-arrow-left fa-stack-1x fa-inverse"></i></span></a>
+            </div>
+            @if (Request.IsAuthenticated)
             {
-            <a title="Editar Entidad de Alcance" href="@Url.Action("Editar", "Alcance", new { source = "Detalles", id = Model.OutreachEntity.UserID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-pencil fa-stack-1x fa-inverse"></i></span></a>
-            <a title="Añadir Actividad" href="@Url.Action("Crear", "Actividades", new { id = Model.OutreachEntity.UserID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-plus fa-stack-1x fa-inverse"></i></span></a>
+                if ((Int32.Parse(User.Identity.Name.ToString().Split(',')[0]) == Model.OutreachEntity.UserID && Boolean.Parse(User.Identity.Name.ToString().Split(',')[2])) || Int32.Parse(User.Identity.Name.ToString().Split(',')[1]) == 1)
+                {
+                    <a title="Editar Entidad de Alcance" href="@Url.Action("Editar", "Alcance", new { source = "Detalles", id = Model.OutreachEntity.UserID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-pencil fa-stack-1x fa-inverse"></i></span></a>
+                    <a title="Añadir Actividad" href="@Url.Action("Crear", "Actividades", new { id = Model.OutreachEntity.UserID })"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-plus fa-stack-1x fa-inverse"></i></span></a>
+                }
             }
-        }
         </p>
     </div>
 
@@ -150,63 +155,63 @@
     {
         if (Int32.Parse(User.Identity.Name.Split(',')[1]) <= 3) //only admins, mods, and outreach entities can view notes
         {
-    <div class="large-7 columns">
-            <h3>Mensajes</h3>
-        <table id="outreachNotes">
-            <thead>
-                <tr>
-                        <th>Leído</th>
-                        <th>Enviado Por</th>
-                        <th>Asunto</th>
-                        <th></th>
-                    <th style="width:10%;"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var note in Model.Notes)
+            <div class="large-7 columns">
+                <h3>Mensajes</h3>
+                <table id="outreachNotes">
+                    <thead>
+                        <tr>
+                            <th>Leído</th>
+                            <th>Enviado Por</th>
+                            <th>Asunto</th>
+                            <th></th>
+                            <th style="width:10%;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var note in Model.Notes)
+                        {
+                            <tr>
+
+                                <td>
+                                    @if (note.UserNote.IsRead)
+                                    {
+                                        <i class="fa fa-check" title="Leído"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="fa fa-exclamation" title="No Leído"></i>
+                                    }
+                                </td>
+                                <td>@note.Sender</td>
+                                <td style="text-align:left !important;"><a href="#" title="Ver Mensaje" data-validation="false" style="color:black" data-title="Mensaje" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("VerNota", "Alcance", new { id = note.UserNote.UserNoteID })" class="modal_ajax_btn link">@note.UserNote.Subject</a></td>
+                                <td>@note.UserNote.Note</td>
+                                <td>
+                                    @if ((Int32.Parse(User.Identity.Name.Split(',')[0]) == note.UserNote.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1) && !note.UserNote.IsRead)
+                                    {
+                                        <a href="#" title="Editar" style="color:black;" data-title="Editar Mensaje" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarNota", "Alcance", new { id = note.UserNote.UserNoteID })" class="modal_ajax_btn link"><i class="fa fa-pencil"></i></a>
+                                        <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this, 'outreachNotes')" data-url="@Url.Action("RemoverNota", "Alcance", new { id = note.UserNote.UserNoteID })"></i>      }
+                                    else if (Int32.Parse(User.Identity.Name.Split(',')[0]) == note.UserNote.SubjectID)
+                                    {
+                                        <a href="#" title="Responder" style="color:black;" data-title="Respuesta" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Alcance", new { id = note.UserNote.UserID })" class="modal_ajax_btn link"><i class="fa fa-mail-reply"></i></a>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table><br />
+                @if (Int32.Parse(User.Identity.Name.ToString().Split(',')[0]) != Model.User.UserID && Boolean.Parse(User.Identity.Name.Split(',')[2]))
                 {
-                    <tr>
-
-                            <td>
-                                @if (note.UserNote.IsRead)
-                                {
-                                    <i class="fa fa-check" title="Leído"></i>
-                                }
-                                else
-                                {
-                                    <i class="fa fa-exclamation" title="No Leído"></i>
-                                }
-                            </td>
-                            <td>@note.Sender</td>
-                            <td style="text-align:left !important;"><a href="#" title="Ver Mensaje" data-validation="false" style="color:black" data-title="Mensaje" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("VerNota", "Alcance", new { id = note.UserNote.UserNoteID })" class="modal_ajax_btn link">@note.UserNote.Subject</a></td>
-                            <td>@note.UserNote.Note</td>
-                        <td>
-                                @if ((Int32.Parse(User.Identity.Name.Split(',')[0]) == note.UserNote.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1) && !note.UserNote.IsRead)
-                                {
-                                    <a href="#" title="Editar" style="color:black;" data-title="Editar Mensaje" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("EditarNota", "Alcance", new { id = note.UserNote.UserNoteID })" class="modal_ajax_btn link"><i class="fa fa-pencil"></i></a>
-                                    <i title="Remover" style="cursor:pointer;" class="fa fa-remove" onclick="removeRecord(this, 'outreachNotes')" data-url="@Url.Action("RemoverNota", "Alcance", new { id = note.UserNote.UserNoteID })"></i>      }
-                                else if (Int32.Parse(User.Identity.Name.Split(',')[0]) == note.UserNote.SubjectID)
-                                {
-                                    <a href="#" title="Responder" style="color:black;" data-title="Respuesta" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Alcance", new { id = note.UserNote.UserID })" class="modal_ajax_btn link"><i class="fa fa-mail-reply"></i></a>
-                                }
-                        </td>
-                    </tr>
-                }
-            </tbody>
-
-        </table><br />
-            @if (Int32.Parse(User.Identity.Name.ToString().Split(',')[0]) != Model.User.UserID && Boolean.Parse(User.Identity.Name.Split(',')[2]))
-            {
-                <a href="#" title="Dejar Mensaje" class="modal_ajax_btn" data-title="Mensaje Nuevo" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Alcance", new { id = Model.OutreachEntity.UserID })"><input type="button" value="Dejar Mensaje" class="btn" /></a>}
-    </div>
+                    <a href="#" title="Dejar Mensaje" class="modal_ajax_btn" data-title="Mensaje Nuevo" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("CrearNota", "Alcance", new { id = Model.OutreachEntity.UserID })"><input type="button" value="Dejar Mensaje" class="btn" /></a>}
+            </div>
 
         }
     }
     else
     {
-    <div class="large-6 columns frame"><div class="dummy"></div><div class="image-container"><img src="@Url.Content("~/Images/handshake1.svg")" height="297" width="297" /></div></div>
+        <div class="large-6 columns frame"><div class="dummy"></div><div class="image-container"><img src="@Url.Content("~/Images/handshake1.svg")" height="297" width="297" /></div></div>
     }
-    
+
 
 </div>
 
@@ -222,15 +227,15 @@
             @foreach (var activity in Model.Activities)
             {
                 <tr style="background-color: #DBFFDB !important;">
-                 <td style="text-align: left !important;">
-                    @Html.ActionLink(activity.Title, "Detalles", "Actividades", new { id = activity.ActivityID }, null)<br />
-                    <r>Propósito: </r> @activity.Purpose<br />
+                    <td style="text-align: left !important;">
+                        @Html.ActionLink(activity.Title, "Detalles", "Actividades", new { id = activity.ActivityID }, null)<br />
+                        <r>Propósito: </r> @activity.Purpose<br />
                         <div>
                             @if (activity.ActivityDate != new DateTime())
-                    { <r>Fecha: </r> @activity.ActivityDate.Value.ToString("dd/MM/yyyy") } @if (activity.ActivityTime != "")
+                            { <r>Fecha: </r> @activity.ActivityDate.Value.ToString("dd/MM/yyyy") } @if (activity.ActivityTime != "")
                             {<r>Hora: </r> @activity.ActivityTime}
                         </div>
-                 </td>
+                    </td>
                 </tr>
             }
         </tbody>
@@ -241,6 +246,9 @@
 <script src="~/Scripts/myScripts.js"></script>
 <script>
     $(document).ready(function () {
+
+        displayReturn();
+            
 
         $('#outreachNotes').DataTable({
             "sDom": '<"top"f>t<"bottom"pr><"clear">',

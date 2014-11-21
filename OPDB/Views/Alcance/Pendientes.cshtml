@@ -53,7 +53,7 @@
         {
             <tr>
                 <td>
-                    @Html.ActionLink(item.OutreachEntityDetails.FirstOrDefault(outreach => outreach.UserID == item.UserID).OutreachEntityName, "Detalles", "Alcance", new { id = item.UserID }, new { @class = "link"})
+                    @Html.ActionLink(item.OutreachEntityDetails.FirstOrDefault(outreach => outreach.UserID == item.UserID).OutreachEntityName, "Detalles", "Alcance", new { id = item.UserID }, new { @class = "link", @onclick = "sessionStorage.setItem('Route', 'admin');" })
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.OutreachEntityDetails.FirstOrDefault(outreach => outreach.UserID == item.UserID).OutreachEntityType.OutreachEntityType1)

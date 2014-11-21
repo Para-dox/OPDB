@@ -57,7 +57,7 @@
         {
             <tr>
                 <td>
-                    @Html.ActionLink(item.UserDetails.FirstOrDefault(i => i.UserID == item.UserID).FirstName + " " + item.UserDetails.FirstOrDefault(i => i.UserID == item.UserID).MiddleInitial + " " + item.UserDetails.FirstOrDefault(i => i.UserID == item.UserID).LastName, "Detalles", "Usuarios", new { id = item.UserID }, new { @class = "link"})
+                    @Html.ActionLink(item.UserDetails.FirstOrDefault(i => i.UserID == item.UserID).FirstName + " " + item.UserDetails.FirstOrDefault(i => i.UserID == item.UserID).MiddleInitial + " " + item.UserDetails.FirstOrDefault(i => i.UserID == item.UserID).LastName, "Detalles", "Usuarios", new { id = item.UserID }, new { @class = "link", @onclick = "sessionStorage.setItem('Route', 'admin');" })
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.UserType.UserType1)

@@ -23,6 +23,8 @@ namespace OPDB.Controllers
         /// <returns>The Home Index, also known as the web portal home page.</returns>
         public ActionResult Index()
         {
+            ActividadesController controller = new ActividadesController();
+
             User currentUser = null;
 
             if (User.Identity.IsAuthenticated)
@@ -62,6 +64,11 @@ namespace OPDB.Controllers
                 if (activity.ActivityTime == null)
                     activity.ActivityTime = "";
 
+                DateTime endDate = new DateTime();
+
+                if (activity.ActivityDate != new DateTime() && activity.ActivityTime != "" && activity.Duration != null)
+                    endDate = controller.calculateDuration((DateTime)activity.ActivityDate, activity.ActivityTime, activity.Duration);
+
                 List<OPDB.Models.Interest> interest = new List<OPDB.Models.Interest>();
 
                 if (currentUser !=  null)
@@ -78,7 +85,8 @@ namespace OPDB.Controllers
                 {
                     Activity = activity,
                     Interested = interested,
-                    ActivityDynamic = activityDynamic
+                    ActivityDynamic = activityDynamic,
+                    EndDate = endDate
                 });
             }
 
@@ -790,7 +798,16 @@ namespace OPDB.Controllers
 
                     if (reportViewModel.TargetMonths != null)
                     {
-                        if (reportViewModel.TargetMonths.Contains("All"))
+                        if(reportViewModel.TargetMonths.Contains("Full Report"))
+                        {
+                            result = from activity in db.Activities
+                                     where activity.DeletionDate == null
+                                     orderby activity.ActivityDate ascending
+                                     select activity;
+
+                            reportViewModel.Results = result;
+                        }
+                        else if (reportViewModel.TargetMonths.Contains("All"))
                         {
                             var academicYear = Int32.Parse(reportViewModel.TargetMonths.Split('-')[1]);
 
@@ -802,8 +819,8 @@ namespace OPDB.Controllers
                                      select activity;
 
                             reportViewModel.Results = result;
-                        }
-                        else
+                        }                       
+                        else 
                         {
                             var minMonth = Int32.Parse(reportViewModel.TargetMonths.Split('-')[0]);
                             var maxMonth = Int32.Parse(reportViewModel.TargetMonths.Split('-')[1]);
@@ -871,7 +888,7 @@ namespace OPDB.Controllers
         public FileStreamResult generateReportFile(IEnumerable<Activity> results)
         {
             // TODO: acentos are not working in the CSV in excel
-            string dataText = "Título,Tipo,Dinámica,Concentración,Fecha,Hora";
+            string dataText = "Título,Tipo,Dinámica,Concentración,Audiencia,Fecha,Hora,Asistencia";
             string dataRow = "";
 
             if (results != null)
@@ -882,8 +899,10 @@ namespace OPDB.Controllers
                     string activityType = null;
                     string activityDynamic = null;
                     string activityMajor = null;
+                    string activityTargetPopulation = null;
                     string activityDate = null;
                     string activityTime = null;
+                    string activityAttendees = null;
 
                     try
                     {
@@ -911,6 +930,12 @@ namespace OPDB.Controllers
 
                     try
                     {
+                        activityTargetPopulation = activity.TargetPopulation.TargetPopulation1;
+                    }
+                    catch (NullReferenceException) { }
+
+                    try
+                    {
                         activityDate = activity.ActivityDate.ToString().Split(' ')[0];
                     }
                     catch (NullReferenceException) { }
@@ -920,8 +945,14 @@ namespace OPDB.Controllers
                         activityTime = activity.ActivityTime;
                     }
                     catch (NullReferenceException) { }
+
+                    try
+                    {
+                        activityAttendees = activity.Attendees.ToString();
+                    }
+                    catch (NullReferenceException) { }
                     
-                    dataRow = string.Format("{0},{1},{2},{3},{4},{5}", activityTitle, activityType, activityDynamic, activityMajor, activityDate, activityTime);
+                    dataRow = string.Format("{0},{1},{2},{3},{4},{5},{6},{7}", activityTitle, activityType, activityDynamic, activityMajor, activityTargetPopulation, activityDate, activityTime, activityAttendees);
                     dataText = dataText + "\n" + dataRow;
                 }
             }
@@ -938,8 +969,8 @@ namespace OPDB.Controllers
 
             semesters.Add(new SelectListItem
             {
-                Text = null,
-                Value = null
+                Text = "Todo Año Académico",
+                Value = "Full Report"
             });
 
             var minYears = (from activity in db.Activities where activity.DeletionDate == null && activity.ActivityDate != null select activity.ActivityDate.Value.Year).ToList();

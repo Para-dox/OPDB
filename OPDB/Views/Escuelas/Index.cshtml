@@ -60,19 +60,19 @@
         {
             <tr>
                 <td>
-                    @Html.ActionLink(item.School.SchoolName + " ", "Detalles", "Escuelas", new { id = item.School.SchoolID }, new { @class = "link"})
+                    @Html.ActionLink(item.School.SchoolName + " ", "Detalles", "Escuelas", new { id = item.School.SchoolID }, new { @class = "link", @onclick = "sessionStorage.setItem('Route', 'admin');" })
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.School.SchoolSequenceNumber)
                 </td>
                 <td>
-                    @Html.ActionLink(item.CreateUser.FirstName + " " + item.CreateUser.MiddleInitial + " " + item.CreateUser.LastName, "Detalles", "Usuarios", new { id = item.School.CreateUser }, new { @class="link" })
+                    @Html.ActionLink(item.CreateUser.FirstName + " " + item.CreateUser.MiddleInitial + " " + item.CreateUser.LastName, "Detalles", "Usuarios", new { id = item.School.CreateUser }, new { @class = "link", @onclick = "sessionStorage.setItem('Route', 'admin');" })
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.School.CreateDate)
                 </td>
                 <td>
-                    @Html.ActionLink(item.UpdateUser.FirstName + " " + item.UpdateUser.MiddleInitial + " " + item.UpdateUser.LastName, "Detalles", "Usuarios", new { id = item.School.UpdateUser }, new { @class = "link"})
+                    @Html.ActionLink(item.UpdateUser.FirstName + " " + item.UpdateUser.MiddleInitial + " " + item.UpdateUser.LastName, "Detalles", "Usuarios", new { id = item.School.UpdateUser }, new { @class = "link", @onclick = "sessionStorage.setItem('Route', 'admin');" })
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.School.UpdateDate)

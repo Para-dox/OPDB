@@ -132,7 +132,13 @@
             <br />
         }
         <br />
-        <a title="Regresar" onclick="window.history.back()"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-arrow-left fa-stack-1x fa-inverse"></i></span></a>
+        
+        <div id="admin">
+            <a title="Regresar" onclick="location.href='@Url.Action("Administracion", "Home")'"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-arrow-left fa-stack-1x fa-inverse"></i></span></a>
+        </div>
+        <div id="list">
+            <a title="Regresar" onclick="location.href='@Url.Action("Lista", "Usuarios")'"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-arrow-left fa-stack-1x fa-inverse"></i></span></a>
+        </div>
 
         @if (User.Identity.IsAuthenticated)
         {
@@ -225,6 +231,8 @@
 <script src="~/Scripts/myScripts.js"></script>
 <script>
     $(document).ready(function () {
+
+        displayReturn();
 
         $('#userNotes').DataTable({
             "sDom": '<"top"f>t<"bottom"pr><"clear">',

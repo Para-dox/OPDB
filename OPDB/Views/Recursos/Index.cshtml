@@ -69,12 +69,12 @@
                         <a href="#" title="Ver Detalles" class="modal_ajax_btn link" data-validation="false" data-title="@item.Resource.Resource1" onclick="DisplayModal(this)" data-toggle="modal" data-url="@Url.Action("Detalles", "Recursos", new { id = item.Resource.ResourceID })">@item.Resource.Resource1</a>
                      </td>
                     <td>
-                        @Html.ActionLink(item.CreateUser.FirstName + " " + item.CreateUser.MiddleInitial + " " + item.CreateUser.LastName, "Detalles", "Usuarios", new { id = item.Resource.CreateUser }, new { @class = "link"})
+                        @Html.ActionLink(item.CreateUser.FirstName + " " + item.CreateUser.MiddleInitial + " " + item.CreateUser.LastName, "Detalles", "Usuarios", new { id = item.Resource.CreateUser }, new { @class = "link", @onclick = "sessionStorage.setItem('Route', 'admin');" })
                     <td>
                         @Html.DisplayFor(modelItem => item.Resource.CreateDate)
                     </td>
                     <td>
-                       @Html.ActionLink(item.UpdateUser.FirstName + " " + item.UpdateUser.MiddleInitial + " " + item.UpdateUser.LastName, "Detalles", "Usuarios", new { id = item.Resource.UpdateUser }, new { @class = "link"})
+                       @Html.ActionLink(item.UpdateUser.FirstName + " " + item.UpdateUser.MiddleInitial + " " + item.UpdateUser.LastName, "Detalles", "Usuarios", new { id = item.Resource.UpdateUser }, new { @class = "link", @onclick = "sessionStorage.setItem('Route', 'admin');" })
                      </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Resource.UpdateDate)

@@ -160,6 +160,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to La duracion escogida es mayor de 24hrs, por favor seleccione &apos;Día(s)&apos;.
+        /// </summary>
+        internal static string Activity_Duration_SelectDays {
+            get {
+                return ResourceManager.GetString("Activity_Duration_SelectDays", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to La localización que ha entrado es inválida.
         /// </summary>
         internal static string Activity_Location_Invalid {

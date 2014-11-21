@@ -57,7 +57,7 @@
             {
                 <tr>
                     <td class="panel callout large-12 columns">
-                        <h5>@Html.ActionLink(item.UserDetail.FirstName + " " + item.UserDetail.MiddleInitial + " " + item.UserDetail.LastName, "Detalles", "Usuarios", new { id = item.UserDetail.UserID }, new { @class="link", @style = "color:black;" })</h5>
+                        <h5>@Html.ActionLink(item.UserDetail.FirstName + " " + item.UserDetail.MiddleInitial + " " + item.UserDetail.LastName, "Detalles", "Usuarios", new { id = item.UserDetail.UserID }, new { @class="link", @style = "color:black;", @onclick="sessionStorage.setItem('Route', 'list');" })</h5>
                         <span>Tipo de Usuario: </span><r>@item.User.UserType.UserType1</r><br />
                         <span>Correo Electrónico: </span><r>@item.User.Email</r><br />
                     </td>

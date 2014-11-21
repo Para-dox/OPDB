@@ -46,7 +46,7 @@
         {
             <tr>
                 <td class="panel callout large-12 columns">
-                    <h5>@Html.ActionLink(school.SchoolName, "Detalles", "Escuelas", new { id = school.SchoolID }, new { @class="link", @style="color:black;"})</h5>
+                    <h5>@Html.ActionLink(school.SchoolName, "Detalles", "Escuelas", new { id = school.SchoolID }, new { @class = "link", @style = "color:black;", @onclick = "sessionStorage.setItem('Route', 'list');" })</h5>
                     <span>Dirección: </span> @school.Address<br />
                     <span>Pueblo: </span> @school.Town<br />
                     <span>Región: </span>@school.SchoolRegion.SchoolRegion1<br />

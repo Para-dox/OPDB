@@ -61,7 +61,6 @@ function getValue() {
 }
 
 function removeRecord(e, table) {
-    debugger;
     var url = $(e).attr('data-url');
     if (confirm("Este record será removido del sistema. ¿Esta seguro(a) que desea proceder?")) {
         $.post(url, null, function (e) { alert(e);});
@@ -114,8 +113,7 @@ function loadResourceAction(e) {
     });
 }
 
-function DisplayModal(e) {
-    modalClose();    
+function DisplayModal(e) { 
     var instructions = $(e).attr('data-validation');
     var url = $(e).attr('data-url');
     var title = $(e).attr('data-title');
@@ -146,7 +144,6 @@ function DisplayModal(e) {
 }
 
 function modalClose() {
-    debugger;
     $('#validation li').empty();
     $('#ajax-modal').modal('hide');
 }
@@ -241,29 +238,6 @@ function restoreRecord(e, table) {
 
 }
 
-//function getUserTypeValue() {
-//    if (document.getElementById('userTypes').value == 4) {
-//        document.getElementById('faculty').removeAttribute("hidden", "hidden");
-//        document.getElementById('collegeStudent').setAttribute("hidden", "hidden");
-//        document.getElementById('grade').setAttribute("hidden", "hidden");
-//    }
-//    else if (document.getElementById('userTypes').value == 5) {
-//        document.getElementById('collegeStudent').removeAttribute("hidden", "hidden");
-//        document.getElementById('faculty').setAttribute("hidden", "hidden");
-//        document.getElementById('grade').setAttribute("hidden", "hidden");
-//    }
-//    else if (document.getElementById('userTypes').value == 7) {
-//        document.getElementById('grade').removeAttribute("hidden", "hidden");
-//        document.getElementById('faculty').setAttribute("hidden", "hidden");
-//        document.getElementById('collegeStudent').setAttribute("hidden", "hidden");
-//    }
-//    else {
-//        document.getElementById('collegeStudent').setAttribute("hidden", "hidden");
-//        document.getElementById('faculty').setAttribute("hidden", "hidden");
-//        document.getElementById('grade').setAttribute("hidden", "hidden");
-//    }
-//}
-
 function approve(e) {
     var url = $(e).attr('data-url');
 
@@ -274,7 +248,6 @@ function approve(e) {
 }
 
 function getAffiliateValue() {
-    debugger;
     if (document.getElementById('affiliateTypes').value == "School") {
         document.getElementById('schools').removeAttribute("hidden", "hidden");
         document.getElementById('outreachEntities').setAttribute("hidden", "hidden");
@@ -322,7 +295,6 @@ function getActivityType() {
 }
 
 function compareDate(e) {
-    debugger;
     var id = $(e).attr('id');
     var dateParts = document.getElementById(id).value.split('/');
     var selectedDate = dateParts[1] + '/' + dateParts[0] + '/' + dateParts[2];
@@ -333,3 +305,31 @@ function compareDate(e) {
         alert("La fecha escogida es menor o igual que hoy.")
 
 }
+
+function displayReturn() {
+    debugger;
+    if (sessionStorage.getItem('Route') != undefined && sessionStorage.getItem('Route') != "") {
+        var home = document.getElementById('home');
+
+        if (sessionStorage.getItem('Route') == "admin") {
+            document.getElementById('admin').removeAttribute("hidden", "hidden");
+            document.getElementById('list').setAttribute("hidden", "hidden");
+            if(home != null)
+                home.setAttribute("hidden", "hidden");
+        } else if (sessionStorage.getItem('Route') == "list") {
+            document.getElementById('list').removeAttribute("hidden", "hidden");
+            document.getElementById('admin').setAttribute("hidden", "hidden");
+            if (home != null)
+                home.setAttribute("hidden", "hidden");
+        } else if (sessionStorage.getItem('Route') == "home") {
+            if(home != null)
+                home.removeAttribute("hidden", "hidden");
+            document.getElementById('admin').setAttribute("hidden", "hidden");
+            document.getElementById('list').setAttribute("hidden", "hidden");
+
+        }
+
+
+    }
+}
+
