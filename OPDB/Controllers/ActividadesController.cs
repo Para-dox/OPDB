@@ -218,11 +218,11 @@ namespace OPDB.Controllers
             {
                 var activity = db.Activities.Find(interest.ActivityID);
 
-              if(activity.ActivityMajor == null)
+              if(activity.ActivityDynamic == null)
               {
-                  activity.ActivityMajor = new ActivityMajor
+                  activity.ActivityDynamic = new ActivityDynamic
                   {
-                      ActivityMajor1 = ""
+                      ActivityDynamic1 = ""
                   };
              }
 
