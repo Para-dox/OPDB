@@ -263,7 +263,7 @@ namespace OPDB.Controllers
             if (activityDate != new DateTime() && foundActivity.ActivityTime != null && foundActivity.Duration != null)
                 endDate = calculateDuration(activityDate, foundActivity.ActivityTime, foundActivity.Duration);
 
-            var allFeedback = (from feedback in db.Feedbacks where feedback.ActivityID == id && feedback.DeletionDate == null select feedback).ToList();
+            var allFeedback = (from feedback in db.Feedbacks where feedback.ActivityID == id && feedback.DeletionDate == null orderby feedback.CreateDate descending select feedback).ToList();
             var feedbackList = new List<UserInfoViewModel>();
 
             var interest = new List<Interest>();
@@ -304,8 +304,8 @@ namespace OPDB.Controllers
                 EndDate = endDate,
                 Feedbacks = feedbackList,
                 Interested = interested,
-                Videos = (from video in db.Media where video.ActivityID == id && video.MediaType == "Video" && video.DeletionDate == null select video).ToList(),
-                Photos = (from photo in db.Media where photo.ActivityID == id && photo.MediaType == "Foto" && photo.DeletionDate == null select photo).ToList()
+                Videos = (from video in db.Media where video.ActivityID == id && video.MediaType == "Video" && video.DeletionDate == null orderby video.CreateDate descending select video).ToList(),
+                Photos = (from photo in db.Media where photo.ActivityID == id && photo.MediaType == "Foto" && photo.DeletionDate == null orderby photo.CreateDate descending select photo).ToList()
             };
 
             if (activityViewModel.Activity == null)
@@ -564,11 +564,11 @@ namespace OPDB.Controllers
                 if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 3)
                 {
                     int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
-                    activityViewModel.Notes = from note in db.ActivityNotes.Include(note => note.NoteType) where note.ActivityID == id && note.UserID == userID && note.DeletionDate == null select note;
+                    activityViewModel.Notes = from note in db.ActivityNotes.Include(note => note.NoteType) where note.ActivityID == id && note.UserID == userID && note.DeletionDate == null orderby note.CreateDate descending select note;
                 }
                 else if (Int32.Parse(User.Identity.Name.Split(',')[1]) <= 2)
                 {
-                    activityViewModel.Notes = from note in db.ActivityNotes.Include(note => note.NoteType) where note.ActivityID == id && note.DeletionDate == null select note;
+                    activityViewModel.Notes = from note in db.ActivityNotes.Include(note => note.NoteType) where note.ActivityID == id && note.DeletionDate == null orderby note.CreateDate descending select note;
                 }
 
                 return PartialView("Notas", activityViewModel);
@@ -692,7 +692,7 @@ namespace OPDB.Controllers
                         string duration = activityViewModel.Duration + "/" + activityViewModel.Measurement;
 
                         date = activityDate.ToShortDateString() + " " + time.Substring(0, time.LastIndexOfAny(new char[] { 'A', 'P' })) + " " + time.Substring(time.LastIndexOfAny(new char[] { 'A', 'P' }));
-                        var currentDate = DateTime.ParseExact(date, "MM/dd/yyyy hh:mm tt", CultureInfo.InvariantCulture);
+                        var currentDate = DateTime.ParseExact(date, "M/d/yyyy hh:mm tt", CultureInfo.InvariantCulture);
 
                         var endDate = calculateDuration(activityDate, time, duration);
 

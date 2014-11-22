@@ -20,11 +20,7 @@
     input[type="search"] {
         padding: 0.2rem;
     }
-
-    th, td {
-        text-align: center !important;
-    }
-
+    
     .last, .first, .previous, .next {
         display: none !important;
     }
@@ -79,6 +75,18 @@
     .disabled {
         pointer-events: none;
         cursor: default;
+    }
+
+    .comment{
+        border-bottom: 1px solid #D8D8D8 !important; 
+        border-top: 1px solid #D8D8D8 !important;
+        border-left: 1px solid #D8D8D8 !important;
+    }
+
+    .commentButtons{
+        border-bottom: 1px solid #D8D8D8 !important; 
+        border-top: 1px solid #D8D8D8 !important;
+        border-right: 1px solid #D8D8D8 !important;
     }
 </style>
 
@@ -305,12 +313,13 @@
     <tbody>
         @foreach (var feedback in Model.Feedbacks)
         {
-            <tr style="border: 1px solid black !important;">
-                <td style="float:left;">
-                    @feedback.Feedback.Feedback1 - @feedback.UserDetail.FirstName @if (feedback.UserDetail.MiddleInitial != null)
-                    { @feedback.UserDetail.MiddleInitial } @feedback.UserDetail.LastName
+            <tr style="background-color: #E6FFE6;">
+                <td style="float:left; width:98%;" class="comment">
+                  <div><b> @feedback.UserDetail.FirstName @if (feedback.UserDetail.MiddleInitial != null)
+                   { @feedback.UserDetail.MiddleInitial } @feedback.UserDetail.LastName</b> says: </div><br />
+                     @feedback.Feedback.Feedback1
                 </td>
-                <td style="width:6%;">
+                <td style="width:6%;" class="commentButtons">
                     @if (Request.IsAuthenticated)
                     {
                         if (Int32.Parse(User.Identity.Name.Split(',')[0]) == feedback.Feedback.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)

@@ -766,19 +766,19 @@ namespace OPDB.Controllers
                     reportViewModel.ActivityTypes.Add(new SelectListItem
                     {
                         Text = "Todos",
-                        Value = "All"
+                        Value = "0"
                     });
 
                     reportViewModel.ActivityMajors.Add(new SelectListItem
                     {
                         Text = "Todas",
-                        Value = "All"
+                        Value = "0"
                     });
 
                     reportViewModel.ActivityDynamics.Add(new SelectListItem
                     {
                         Text = "Todas",
-                        Value = "All"
+                        Value = "0"
                     });
 
                     return PartialView("FormularioReportes", reportViewModel);
@@ -837,8 +837,6 @@ namespace OPDB.Controllers
 
                         if (reportViewModel.Activity.ActivityTypeID != 0)
                         {
-
-
                             result = from activity in result
                                      where activity.ActivityTypeID == reportViewModel.Activity.ActivityTypeID
                                      && activity.DeletionDate == null

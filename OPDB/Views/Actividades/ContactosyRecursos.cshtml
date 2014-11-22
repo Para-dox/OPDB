@@ -15,9 +15,9 @@
                 @foreach (var contact in Model.ActivityContacts)
                 {
                     <tr style="background-color: #ecfaff !important;">
-                        <td>@contact.UserDetail.FirstName @contact.UserDetail.MiddleInitial @contact.UserDetail.LastName</td>
-                        <td>@contact.User.Email</td>
-                        <td>@contact.User.PhoneNumber</td>
+                        <td style="text-align: center !important;">@contact.UserDetail.FirstName @contact.UserDetail.MiddleInitial @contact.UserDetail.LastName</td>
+                        <td style="text-align: center !important;">@contact.User.Email</td>
+                        <td style="text-align: center !important;">@contact.User.PhoneNumber</td>
                     </tr>
                 }
             </tbody>

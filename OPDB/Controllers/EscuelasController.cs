@@ -81,11 +81,11 @@ namespace OPDB.Controllers
 
                 if (Int32.Parse(User.Identity.Name.Split(',')[1]) <= 2)
                 {
-                    schoolNotes = (from note in db.SchoolNotes.Include(note => note.NoteType) where note.SchoolID == id && note.DeletionDate == null select note).ToList();
+                    schoolNotes = (from note in db.SchoolNotes.Include(note => note.NoteType) where note.SchoolID == id && note.DeletionDate == null orderby note.CreateDate descending select note).ToList();
                 }
                 else
                 {
-                    schoolNotes = (from note in db.SchoolNotes.Include(note => note.NoteType) where note.SchoolID == id && note.UserID == currentUser && note.DeletionDate == null select note).ToList();
+                    schoolNotes = (from note in db.SchoolNotes.Include(note => note.NoteType) where note.SchoolID == id && note.UserID == currentUser && note.DeletionDate == null orderby note.CreateDate descending select note).ToList();
                 }
             }
 

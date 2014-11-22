@@ -81,12 +81,12 @@ namespace OPDB.Controllers
 
                 if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1 || Int32.Parse(User.Identity.Name.Split(',')[0]) == id)
                 {
-                    Notes = (from note in db.UserNotes where note.SubjectID == id && note.DeletionDate == null select note).ToList();
+                    Notes = (from note in db.UserNotes where note.SubjectID == id && note.DeletionDate == null orderby note.CreateDate descending select note).ToList();
                 }
                 else if(Int32.Parse(User.Identity.Name.Split(',')[0]) != id && Boolean.Parse(User.Identity.Name.Split(',')[2]))
                 {
                     int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
-                    Notes = (from note in db.UserNotes where note.SubjectID == id && note.UserID == userID && note.DeletionDate == null select note).ToList();
+                    Notes = (from note in db.UserNotes where note.SubjectID == id && note.UserID == userID && note.DeletionDate == null orderby note.CreateDate descending select note).ToList();
                 }
 
                 foreach (var note in Notes)
