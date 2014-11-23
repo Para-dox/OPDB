@@ -382,7 +382,7 @@ namespace OPDB.Controllers
                         ModelState.AddModelError("Activity_Duration_Required", Resources.WebResources.Activity_Duration_Required);
 
                     }
-                    else if (activityViewModel.Measurement == "" || activityViewModel.Measurement == null)
+                    else if (activityViewModel.Duration != 0 && activityViewModel.Measurement == null)
                     {
 
                         ModelState.AddModelError("Activity_Measurement_Required", Resources.WebResources.Activity_Measurement_Required);
@@ -674,7 +674,7 @@ namespace OPDB.Controllers
                         ModelState.AddModelError("Activity_Duration_Required", Resources.WebResources.Activity_Duration_Required);
 
                     }
-                    else if (activityViewModel.Measurement == "" || activityViewModel.Measurement == null)
+                    else if (activityViewModel.Duration != 0 && activityViewModel.Measurement == null)
                     {
 
                         ModelState.AddModelError("Activity_Measurement_Required", Resources.WebResources.Activity_Measurement_Required);
@@ -1664,8 +1664,9 @@ namespace OPDB.Controllers
                     {
                         ModelState.AddModelError("Activity_Duration_Required", Resources.WebResources.Activity_Duration_Required);
 
-                    }else if(activityViewModel.Measurement == "" || activityViewModel.Measurement == null){
-
+                    }
+                    else if (activityViewModel.Duration != 0 && activityViewModel.Measurement == null)
+                    {
                         ModelState.AddModelError("Activity_Measurement_Required", Resources.WebResources.Activity_Measurement_Required);
                     }
                     else if (activityViewModel.Duration < 0)
@@ -1881,7 +1882,7 @@ namespace OPDB.Controllers
                         ModelState.AddModelError("Activity_Duration_Required", Resources.WebResources.Activity_Duration_Required);
 
                     }
-                    else if (activityViewModel.Measurement == "" || activityViewModel.Measurement == null)
+                    else if (activityViewModel.Duration != 0 && activityViewModel.Measurement == null)
                     {
 
                         ModelState.AddModelError("Activity_Measurement_Required", Resources.WebResources.Activity_Measurement_Required);

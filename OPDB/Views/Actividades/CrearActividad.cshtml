@@ -111,16 +111,17 @@
                 <div class="large-6 columns" style="text-align:left;">
                     <span>Hora </span><br />
                     @Html.TextBoxFor(model => model.Activity.ActivityTime, new { id = "timepicker"}) &nbsp;<i class="fa fa-clock-o"></i><br />
-                    <span> </span><br />
+                    <br />
                     @Html.DropDownListFor(model => model.Measurement, Model.Measurements, new { @style = "width: 164px !important; height: 2.55rem !important;" })
                 </div>
-                @Html.ValidationMessage("Activity_ActivityDate_EarlierThanCurrentDate")
-                @Html.ValidationMessageFor(model => model.Activity.ActivityTime)
-                @Html.ValidationMessage("Activity_Duration_Required")
-                @Html.ValidationMessage("Activity_Measurement_Required")
-                @Html.ValidationMessage("Activity_Duration_Invalid")
-                @Html.ValidationMessage("Activity_Duration_SelectDays")
-            </div><br />
+            </div>
+            @Html.ValidationMessage("Activity_ActivityDate_EarlierThanCurrentDate")
+            @Html.ValidationMessageFor(model => model.Activity.ActivityTime)
+            @Html.ValidationMessage("Activity_Duration_Required")
+            @Html.ValidationMessage("Activity_Measurement_Required")
+            @Html.ValidationMessage("Activity_Duration_Invalid")
+            @Html.ValidationMessage("Activity_Duration_SelectDays")
+            <br />
             <div class="editor-label">
                 @Html.LabelFor(model => model.Activity.SchoolID, "Escuela")
             </div>

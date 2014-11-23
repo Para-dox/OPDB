@@ -423,3 +423,64 @@ function cancelReturn() {
 
     }
 }
+
+function timeDifference(current, previous) {
+
+    var msPerMinute = 60 * 1000;
+    var msPerHour = msPerMinute * 60;
+    var msPerDay = msPerHour * 24;
+    var msPerMonth = msPerDay * 30;
+    var msPerYear = msPerDay * 365;
+
+    var elapsed = current - previous;
+
+    var msg;
+
+    if (elapsed < msPerMinute) {
+        msg = Math.round(elapsed / 1000);
+        if (msg == 1)
+            return msg + ' second ago';
+        else
+            return msg + ' seconds ago';
+    }
+
+    else if (elapsed < msPerHour) {
+        msg = Math.round(elapsed / msPerMinute);
+        if (msg == 1)
+            return msg + ' minute ago';
+        else
+            return msg + ' minutes ago';
+    }
+
+    else if (elapsed < msPerDay) {
+        msg = Math.round(elapsed / msPerHour);
+        if (msg == 1)
+            return msg + ' hour ago';
+        else
+            return msg + ' hours ago';
+    }
+
+    else if (elapsed < msPerMonth) {
+        msg = Math.round(elapsed / msPerDay);
+        if (msg == 1)
+            return msg + ' day ago';
+        else
+            return msg + ' days ago';
+    }
+
+    else if (elapsed < msPerYear) {
+        msg = Math.round(elapsed / msPerMonth);
+        if (msg == 1)
+            return msg + ' month ago';
+        else
+            return msg + ' months ago';
+    }
+
+    else {
+        msg = Math.round(elapsed / msPerYear);
+        if (msg == 1)
+            return msg + ' year ago';
+        else
+            return msg + ' years ago';
+    }
+}

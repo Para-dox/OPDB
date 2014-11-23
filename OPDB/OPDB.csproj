@@ -541,6 +541,7 @@
     <Content Include="Content\font-awesome\scss\_spinning.scss" />
     <Content Include="Content\font-awesome\scss\_stacked.scss" />
     <Content Include="Content\font-awesome\scss\_variables.scss" />
+    <None Include="Properties\PublishProfiles\Default Settings %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\OPDB.pubxml">
       <SubType>Designer</SubType>
     </None>
