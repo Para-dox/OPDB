@@ -934,7 +934,7 @@ namespace OPDB.Controllers
 
                     try
                     {
-                        activityDate = activity.ActivityDate.ToString().Split(' ')[0];
+                        activityDate = activity.ActivityDate.Value.ToString("dd/MM/yyyy");
                     }
                     catch (NullReferenceException) { }
 
