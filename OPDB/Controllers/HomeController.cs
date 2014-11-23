@@ -781,6 +781,12 @@ namespace OPDB.Controllers
                         Value = "0"
                     });
 
+                    reportViewModel.TargetPopulations.Add(new SelectListItem
+                    {
+                        Text = "Todas",
+                        Value = "0"
+                    });
+
                     return PartialView("FormularioReportes", reportViewModel);
                 }
             }
@@ -855,7 +861,7 @@ namespace OPDB.Controllers
                             reportViewModel.Results = result;
                         }
 
-                        if (reportViewModel.Activity.ActivityDynamicID != null && reportViewModel.Activity.ActivityDynamicID != 0)
+                        if (reportViewModel.Activity.ActivityDynamicID != 0)
                         {
                             result = from activity in result
                                      where activity.ActivityDynamicID == reportViewModel.Activity.ActivityDynamicID
@@ -885,7 +891,6 @@ namespace OPDB.Controllers
 
         public FileStreamResult generateReportFile(IEnumerable<Activity> results)
         {
-            // TODO: acentos are not working in the CSV in excel
             string dataText = "Título,Tipo,Dinámica,Concentración,Audiencia,Fecha,Hora,Asistencia";
             string dataRow = "";
 
@@ -1016,34 +1021,6 @@ namespace OPDB.Controllers
 
     public static class StringExtensions
     {
-        /// <summary>
-        /// Remove accent from strings 
-        /// </summary>
-        /// <example>
-        /// input: "Příliš žluťoučký kůň úpěl ďábelské ódy."
-        /// result: "Prilis zlutoucky kun upel dabelske ody."
-        /// </example>
-        /// <param name="s"></param>
-        /// <remarks>founded at http://stackoverflow.com/questions/249087/
-        /// how-do-i-remove-diacritics-accents-from-a-string-in-net</remarks>
-        /// <returns>string without accents</returns>
-
-        public static string RemoveDiacritics(this string s)
-        {
-            string stFormD = s.Normalize(NormalizationForm.FormD);
-            StringBuilder sb = new StringBuilder();
-
-            for (int ich = 0; ich < stFormD.Length; ich++)
-            {
-                UnicodeCategory uc = CharUnicodeInfo.GetUnicodeCategory(stFormD[ich]);
-                if (uc != UnicodeCategory.NonSpacingMark)
-                {
-                    sb.Append(stFormD[ich]);
-                }
-            }
-            return (sb.ToString().Normalize(NormalizationForm.FormC));
-        }
-
         public static bool Contains(this string source, string toCheck, StringComparison comp)
         {
             return source.IndexOf(toCheck, comp) >= 0;
