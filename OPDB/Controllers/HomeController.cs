@@ -806,8 +806,12 @@ namespace OPDB.Controllers
                     {
                         if(reportViewModel.TargetMonths.Contains("Full Report"))
                         {
+                            var minYear = Int32.Parse(reportViewModel.TargetMonths.Split('-')[1]);
+                            var maxYear = Int32.Parse(reportViewModel.TargetMonths.Split('-')[2]);
+
                             result = from activity in db.Activities
                                      where activity.DeletionDate == null
+                                     && (activity.ActivityDate.Value.Year >= minYear && activity.ActivityDate.Value.Year <= maxYear)
                                      orderby activity.ActivityDate ascending
                                      select activity;
 
@@ -861,7 +865,7 @@ namespace OPDB.Controllers
                             reportViewModel.Results = result;
                         }
 
-                        if (reportViewModel.Activity.ActivityDynamicID != 0)
+                        if (reportViewModel.Activity.ActivityDynamicID != null && reportViewModel.Activity.ActivityDynamicID != 0)
                         {
                             result = from activity in result
                                      where activity.ActivityDynamicID == reportViewModel.Activity.ActivityDynamicID
@@ -941,7 +945,7 @@ namespace OPDB.Controllers
                     {
                         activityDate = activity.ActivityDate.Value.ToString("dd/MM/yyyy");
                     }
-                    catch (NullReferenceException) { }
+                    catch (Exception) { }
 
                     try
                     {
@@ -970,11 +974,7 @@ namespace OPDB.Controllers
         {
             List<SelectListItem> semesters = new List<SelectListItem>();
 
-            semesters.Add(new SelectListItem
-            {
-                Text = "Todo Año Académico",
-                Value = "Full Report"
-            });
+           
 
             var minYears = (from activity in db.Activities where activity.DeletionDate == null && activity.ActivityDate != null select activity.ActivityDate.Value.Year).ToList();
             var minYear = DateTime.Now.Year; 
@@ -987,6 +987,12 @@ namespace OPDB.Controllers
 
             if(maxYears.Count() > 0)
                     maxYear = maxYears.Min();
+
+            semesters.Add(new SelectListItem
+            {
+                Text = "Todo Año Académico",
+                Value = "Full Report-"+minYear+"-"+maxYear
+            });
 
             for (int i = minYear; i <= maxYear; i++)
             {
