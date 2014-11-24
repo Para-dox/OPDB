@@ -288,7 +288,7 @@
                             {
                                 if ((Int32.Parse(User.Identity.Name.Split(',')[0]) == Model.Activity.UserID && Boolean.Parse(User.Identity.Name.Split(',')[2])) || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
                                 {
-                                    <li data-url="@video.MediaPath"><a>@video.MediaTitle <i title="Remover" style="cursor:pointer; float:right;" class="fa fa-remove media" onclick="removeRecord(this)" data-url="@Url.Action("RemoverMultimedia", "Actividades", new { id = video.MediaID })"></i></a></li>
+                                    <li data-url="@video.MediaPath"><a class="large-12 columns">@video.MediaTitle <div style="float:right; margin-left:4px;"><i title="Remover" style="cursor:pointer;" class="fa fa-remove media" onclick="removeRecord(this)" data-url="@Url.Action("RemoverMultimedia", "Actividades", new { id = video.MediaID })"></i></div></a></li>
                                 }
                                 else
                                 {
