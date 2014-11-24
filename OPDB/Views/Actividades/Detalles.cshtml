@@ -194,8 +194,9 @@
             <div class="display-label">
                 @Html.LabelFor(model => model.EndDate, "Finaliza")
             </div>
-            if (Model.Activity.Duration.Split('/')[1] == "Minutes" || Model.Activity.Duration.Split('/')[1] == "Hours")
+            if (DateTime.Compare(Model.Activity.ActivityDate.Value.Date, Model.EndDate.Date) == 0)
             {
+                //Model.Activity.Duration.Split('/')[1] == "Minutes" || Model.Activity.Duration.Split('/')[1] == "Hours"
                 <div class="display-field">
                     @Model.EndDate.ToString("hh:mm tt")
                 </div>

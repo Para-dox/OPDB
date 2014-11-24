@@ -392,23 +392,7 @@ namespace OPDB.Controllers
                         ModelState.AddModelError("Activity_Duration_Invalid", Resources.WebResources.Activity_Duration_Invalid);
                     }
 
-                    if (activityViewModel.Activity.ActivityDate != null && activityViewModel.Activity.ActivityTime != null && activityViewModel.Duration != 0 && activityViewModel.Measurement != null)
-                    {
-                        string date;
-                        DateTime activityDate = (DateTime)activityViewModel.Activity.ActivityDate;
-                        string time = activityViewModel.Activity.ActivityTime;
-                        string duration = activityViewModel.Duration + "/" + activityViewModel.Measurement;
-
-                        date = activityDate.ToShortDateString() + " " + time.Substring(0, time.LastIndexOfAny(new char[] { 'A', 'P' })) + " " + time.Substring(time.LastIndexOfAny(new char[] { 'A', 'P' }));
-                        var currentDate = DateTime.ParseExact(date, "M/d/yyyy hh:mm tt", CultureInfo.InvariantCulture);
-
-                        var endDate = calculateDuration(activityDate, time, duration);
-
-                        if (endDate.Date.CompareTo(currentDate.Date) == 1 && (duration.Split('/')[1] == "Hours" || duration.Split('/')[1] == "Minutes"))
-                            ModelState.AddModelError("Activity_Duration_SelectDays", Resources.WebResources.Activity_Duration_SelectDays);
-
-                    }
-
+                    
                     if (ModelState.IsValid)
                     {
                         activityViewModel.Activity.UpdateDate = DateTime.Now;
@@ -644,7 +628,7 @@ namespace OPDB.Controllers
                 {
                     int userID = Int32.Parse(User.Identity.Name.Split(',')[0]);
 
-                    if (activityViewModel.Activity.Attendees != null && activityViewModel.Activity.Attendees != 0)
+                    if (activityViewModel.Activity.Attendees != 0)
                     {
                         if (activityViewModel.Activity.Attendees < 0)
                             ModelState.AddModelError("Activity_Attendees_Invalid", Resources.WebResources.Activity_Attendees_Invalid);
@@ -684,23 +668,7 @@ namespace OPDB.Controllers
                         ModelState.AddModelError("Activity_Duration_Invalid", Resources.WebResources.Activity_Duration_Invalid);
                     }
 
-                    if (activityViewModel.Activity.ActivityDate != null && activityViewModel.Activity.ActivityTime != null && activityViewModel.Duration != 0 && activityViewModel.Measurement != null)
-                    {
-                        string date;
-                        DateTime activityDate = (DateTime) activityViewModel.Activity.ActivityDate;
-                        string time = activityViewModel.Activity.ActivityTime;
-                        string duration = activityViewModel.Duration + "/" + activityViewModel.Measurement;
-
-                        date = activityDate.ToShortDateString() + " " + time.Substring(0, time.LastIndexOfAny(new char[] { 'A', 'P' })) + " " + time.Substring(time.LastIndexOfAny(new char[] { 'A', 'P' }));
-                        var currentDate = DateTime.ParseExact(date, "M/d/yyyy hh:mm tt", CultureInfo.InvariantCulture);
-
-                        var endDate = calculateDuration(activityDate, time, duration);
-
-                        if(endDate.Date.CompareTo(currentDate.Date) == 1 && (duration.Split('/')[1] == "Hours" || duration.Split('/')[1] == "Minutes"))
-                            ModelState.AddModelError("Activity_Duration_SelectDays", Resources.WebResources.Activity_Duration_SelectDays);
-
-                    }
-
+                   
                     if (ModelState.IsValid)
                     {
                         if (activityViewModel.Activity.ActivityTime != "" && activityViewModel.Activity.ActivityTime != null)
@@ -1701,23 +1669,6 @@ namespace OPDB.Controllers
                         ModelState.AddModelError("Activity_Duration_Invalid", Resources.WebResources.Activity_Duration_Invalid);
                     }
 
-                    if (activityViewModel.Activity.ActivityDate != null && activityViewModel.Activity.ActivityTime != null && activityViewModel.Duration != 0 && activityViewModel.Measurement != null)
-                    {
-                        string date;
-                        DateTime activityDate = (DateTime)activityViewModel.Activity.ActivityDate;
-                        string time = activityViewModel.Activity.ActivityTime;
-                        string duration = activityViewModel.Duration + "/" + activityViewModel.Measurement;
-
-                        date = activityDate.ToShortDateString() + " " + time.Substring(0, time.LastIndexOfAny(new char[] { 'A', 'P' })) + " " + time.Substring(time.LastIndexOfAny(new char[] { 'A', 'P' }));
-                        var currentDate = DateTime.ParseExact(date, "M/d/yyyy hh:mm tt", CultureInfo.InvariantCulture);
-
-                        var endDate = calculateDuration(activityDate, time, duration);
-
-                        if (endDate.Date.CompareTo(currentDate.Date) == 1 && (duration.Split('/')[1] == "Hours" || duration.Split('/')[1] == "Minutes"))
-                            ModelState.AddModelError("Activity_Duration_SelectDays", Resources.WebResources.Activity_Duration_SelectDays);
-
-                    }
-
                     if (ModelState.IsValid)
                     {
                         activityViewModel.Activity.UpdateDate = DateTime.Now;
@@ -1882,7 +1833,7 @@ namespace OPDB.Controllers
                         activityViewModel.Activity.ActivityDate = DateTime.ParseExact(activityViewModel.ActivityDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
                     }
 
-                    if (activityViewModel.Activity.Attendees != null && activityViewModel.Activity.Attendees != 0)
+                    if (activityViewModel.Activity.Attendees != 0)
                     {
                         if (activityViewModel.Activity.Attendees < 0)
                             ModelState.AddModelError("Activity_Attendees_Invalid", Resources.WebResources.Activity_Attendees_Invalid);
@@ -1919,23 +1870,7 @@ namespace OPDB.Controllers
                         ModelState.AddModelError("Activity_Duration_Invalid", Resources.WebResources.Activity_Duration_Invalid);
                     }
 
-                    if (activityViewModel.Activity.ActivityDate != null && activityViewModel.Activity.ActivityTime != null && activityViewModel.Duration != 0 && activityViewModel.Measurement != null)
-                    {
-                        string date;
-                        DateTime activityDate = (DateTime)activityViewModel.Activity.ActivityDate;
-                        string time = activityViewModel.Activity.ActivityTime;
-                        string duration = activityViewModel.Duration + "/" + activityViewModel.Measurement;
-
-                        date = activityDate.ToShortDateString() + " " + time.Substring(0, time.LastIndexOfAny(new char[] { 'A', 'P' })) + " " + time.Substring(time.LastIndexOfAny(new char[] { 'A', 'P' }));
-                        var currentDate = DateTime.ParseExact(date, "M/d/yyyy hh:mm tt", CultureInfo.InvariantCulture);
-
-                        var endDate = calculateDuration(activityDate, time, duration);
-
-                        if (endDate.Date.CompareTo(currentDate.Date) == 1 && (duration.Split('/')[1] == "Hours" || duration.Split('/')[1] == "Minutes"))
-                            ModelState.AddModelError("Activity_Duration_SelectDays", Resources.WebResources.Activity_Duration_SelectDays);
-
-                    }
-
+                    
                     if (ModelState.IsValid)
                     {
                         if (activityViewModel.Activity.ActivityTime != "" && activityViewModel.Activity.ActivityTime != null)
