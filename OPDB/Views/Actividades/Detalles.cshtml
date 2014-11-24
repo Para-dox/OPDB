@@ -20,7 +20,7 @@
     input[type="search"] {
         padding: 0.2rem;
     }
-    
+
     .last, .first, .previous, .next {
         display: none !important;
     }
@@ -61,15 +61,19 @@
         }
 
     a span i:hover {
-        color: #008cba;
+        color: #007A0B;
     }
 
     .link:hover {
-        color: #008cba !important;
+        color: #007A0B !important;
     }
 
-    .fa-remove:hover {
-        color: #008cba !important;
+    .fa:hover {
+        color: #007A0B !important;
+    }
+
+    .media:hover {
+        color: black !important;
     }
 
     .disabled {
@@ -77,14 +81,14 @@
         cursor: default;
     }
 
-    .comment{
-        border-bottom: 1px solid #D8D8D8 !important; 
+    .comment {
+        border-bottom: 1px solid #D8D8D8 !important;
         border-top: 1px solid #D8D8D8 !important;
         border-left: 1px solid #D8D8D8 !important;
     }
 
-    .commentButtons{
-        border-bottom: 1px solid #D8D8D8 !important; 
+    .commentButtons {
+        border-bottom: 1px solid #D8D8D8 !important;
         border-top: 1px solid #D8D8D8 !important;
         border-right: 1px solid #D8D8D8 !important;
     }
@@ -202,20 +206,20 @@
             </div>
             }
             <br />
-        }  
+        }
 
         <a title="Regresar" id="admin" onclick="location.href='@Url.Action("Administracion", "Home")'"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-arrow-left fa-stack-1x fa-inverse"></i></span></a>
-        
+
         <a title="Regresar" id="list" onclick="location.href='@Url.Action("Lista", "Actividades")'"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-arrow-left fa-stack-1x fa-inverse"></i></span></a>
-       
+
         <a title="Regresar" id="home" onclick="location.href='@Url.Action("Index", "Home")'"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-arrow-left fa-stack-1x fa-inverse"></i></span></a>
-        
+
         <a title="Regresar" id="details" onclick="location.href='@Url.Action("Detalles", "Alcance", new { id = Model.Activity.UserID })'"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-arrow-left fa-stack-1x fa-inverse"></i></span></a>
-      
+
         <a title="Regresar" id="calendar" onclick="location.href='@Url.Action("Calendario", "Home")'"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-arrow-left fa-stack-1x fa-inverse"></i></span></a>
-        
+
         <a title="Regresar" id="interest" onclick="location.href='@Url.Action("DeInteres", "Actividades")'"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x" style="color:#222222;"></i><i class="fa fa-arrow-left fa-stack-1x fa-inverse"></i></span></a>
-         
+
         @if (User.Identity.IsAuthenticated)
         {
             if (Model.Interested != true && Int32.Parse(User.Identity.Name.Split(',')[1]) != 3)
@@ -280,7 +284,22 @@
                     <ol id="playlist" class="rounded-list">
                         @foreach (var video in Model.Videos)
                         {
-                            <li data-url="@video.MediaPath"><a>@video.MediaTitle</a></li>
+                            if (Request.IsAuthenticated)
+                            {
+                                if ((Int32.Parse(User.Identity.Name.Split(',')[0]) == Model.Activity.UserID && Boolean.Parse(User.Identity.Name.Split(',')[2])) || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                                {
+                                    <li data-url="@video.MediaPath"><a>@video.MediaTitle <i title="Remover" style="cursor:pointer; float:right;" class="fa fa-remove media" onclick="removeRecord(this)" data-url="@Url.Action("RemoverMultimedia", "Actividades", new { id = video.MediaID })"></i></a></li>
+                                }
+                                else
+                                {
+                                    <li data-url="@video.MediaPath"><a>@video.MediaTitle</a></li>
+                                }
+
+                            }
+                            else
+                            {
+                                <li data-url="@video.MediaPath"><a>@video.MediaTitle</a></li>
+                            }
                         }
                     </ol>
                 </div>
@@ -294,7 +313,21 @@
             <ul class="clearing-thumbs" data-clearing>
                 @foreach (var photo in Model.Photos)
                 {
-                    <li><a class="th thumb" href="@photo.MediaPath"><img data-caption="@photo.MediaTitle" src="@photo.MediaPath"></a></li>
+                    if (Request.IsAuthenticated)
+                    {
+                        if ((Int32.Parse(User.Identity.Name.Split(',')[0]) == Model.Activity.UserID && Boolean.Parse(User.Identity.Name.Split(',')[2])) || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                        {
+                            <li><a class="th thumb" href="@photo.MediaPath"><img data-caption="@photo.MediaTitle" src="@photo.MediaPath"></a><i title="Remover" style="cursor:pointer; float:right;" class="fa fa-remove" onclick="removeRecord(this)" data-url="@Url.Action("RemoverMultimedia", "Actividades", new { id = photo.MediaID })"></i></li>
+                        }
+                        else
+                        {
+                            <li><a class="th thumb" href="@photo.MediaPath"><img data-caption="@photo.MediaTitle" src="@photo.MediaPath"></a></li>
+                        }
+                    }
+                    else
+                    {
+                        <li><a class="th thumb" href="@photo.MediaPath"><img data-caption="@photo.MediaTitle" src="@photo.MediaPath"></a></li>
+                    }
                 }
             </ul>
         }
@@ -308,16 +341,25 @@
         <tr>
             <th></th>
             <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var feedback in Model.Feedbacks)
         {
+
             <tr style="background-color: #E6FFE6;">
+                <td>@feedback.Feedback.FeedbackID</td>
                 <td style="float:left; width:98%;" class="comment">
-                  <div><b> @feedback.UserDetail.FirstName @if (feedback.UserDetail.MiddleInitial != null)
-                   { @feedback.UserDetail.MiddleInitial } @feedback.UserDetail.LastName</b> dijo: </div><br />
-                     @feedback.Feedback.Feedback1
+                    <div>
+                        <b>
+                            @feedback.UserDetail.FirstName @if (feedback.UserDetail.MiddleInitial != null)
+                            { @feedback.UserDetail.MiddleInitial } @feedback.UserDetail.LastName
+                        </b> dijo:
+                    </div><br />
+                    @feedback.Feedback.Feedback1 <br /><br />
+                    <div style="text-align:right; color:#4d4d4d; font-size:0.875rem;" id="feedback-@feedback.Feedback.FeedbackID" data-create="@feedback.Feedback.CreateDate" data-update="@feedback.Feedback.UpdateDate"></div>
+
                 </td>
                 <td style="width:6%;" class="commentButtons">
                     @if (Request.IsAuthenticated)
@@ -345,7 +387,7 @@
 <script src="~/Scripts/myScripts.js"></script>
 <script>
     $(document).ready(function () {
-       
+
         activityReturn();
 
         $('#activityFeedback').DataTable({
@@ -356,6 +398,15 @@
             "oLanguage": {
                 "sEmptyTable": "No se ha recibido ningún comentario",
                 "sZeroRecords": "No se ha encontrado ningún registro"
+            },
+            "columnDefs": [
+            {
+                "targets": [0],
+                "visible": false,
+                "searchable": false
+            }],
+            "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+                createTimeTag(aData[0]);
             }
         });
 

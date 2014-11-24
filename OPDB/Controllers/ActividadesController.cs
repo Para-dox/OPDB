@@ -950,6 +950,7 @@ namespace OPDB.Controllers
             return RedirectToAction("AccesoDenegado", "Home");
         }
 
+
         //
         // GET: /Actividades/Delete/5
 
@@ -1046,6 +1047,32 @@ namespace OPDB.Controllers
 
             return RedirectToAction("AccesoDenegado", "Home");
         }
+
+        public ActionResult RemoverMultimedia(int id = 0)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                Medium media = db.Media.Find(id);
+                Activity activity = db.Activities.Find(media.ActivityID);
+
+                if (media == null)
+                {
+                    return HttpNotFound();
+                }
+
+                else if (Int32.Parse(User.Identity.Name.Split(',')[0]) == activity.UserID || Int32.Parse(User.Identity.Name.Split(',')[1]) == 1)
+                {
+                    media.DeletionDate = DateTime.Now;
+                    db.Entry(media).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Detalles", "Actividades", new { id = activity.ActivityID });
+                }
+
+            }
+
+            return RedirectToAction("AccesoDenegado", "Home");
+        }
+
 
 
         [HttpPost]

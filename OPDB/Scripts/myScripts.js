@@ -68,7 +68,8 @@ function removeRecord(e, table) {
         window.location.reload();
     }
 
-    $(table).dataTable().fnDraw();
+    if(table != undefined && table != null)
+        $(table).dataTable().fnDraw();
 
 }
 
@@ -424,63 +425,79 @@ function cancelReturn() {
     }
 }
 
-function timeDifference(current, previous) {
+function createTimeTag(id) {
+    var tag = document.getElementById("feedback-" + id);
+    var createDate = $('#feedback-' + id).attr('data-create');
+    createDate = new Date(createDate);
+    var updateDate = $('#feedback-' + id).attr('data-update');
+    updateDate = new Date(updateDate);
+    var now = new Date();
 
+    if (+createDate != +updateDate)
+        tag.innerHTML = "Creado " + timeDifference(now, createDate) + " <b>&middot;</b> " + "Editado " + timeDifference(now, updateDate);
+    else
+        tag.innerHTML = "Creado " + timeDifference(now, createDate);
+
+}
+
+function timeDifference(current, previous) {  
     var msPerMinute = 60 * 1000;
     var msPerHour = msPerMinute * 60;
     var msPerDay = msPerHour * 24;
     var msPerMonth = msPerDay * 30;
     var msPerYear = msPerDay * 365;
 
+
     var elapsed = current - previous;
+       
 
     var msg;
 
     if (elapsed < msPerMinute) {
         msg = Math.round(elapsed / 1000);
         if (msg == 1)
-            return msg + ' second ago';
+            return msg + ' segundo atrás';
         else
-            return msg + ' seconds ago';
+            return msg + ' segundos atrás';
     }
 
     else if (elapsed < msPerHour) {
         msg = Math.round(elapsed / msPerMinute);
         if (msg == 1)
-            return msg + ' minute ago';
+            return msg + ' minuto atrás';
         else
-            return msg + ' minutes ago';
+            return msg + ' minutos atrás';
     }
 
     else if (elapsed < msPerDay) {
         msg = Math.round(elapsed / msPerHour);
         if (msg == 1)
-            return msg + ' hour ago';
+            return msg + ' hora atrás';
         else
-            return msg + ' hours ago';
+            return msg + ' horas atrás';
     }
 
     else if (elapsed < msPerMonth) {
         msg = Math.round(elapsed / msPerDay);
         if (msg == 1)
-            return msg + ' day ago';
+            return msg + ' día atrás';
         else
-            return msg + ' days ago';
+            return msg + ' días atrás';
     }
 
     else if (elapsed < msPerYear) {
         msg = Math.round(elapsed / msPerMonth);
         if (msg == 1)
-            return msg + ' month ago';
+            return msg + ' mes atrás';
         else
-            return msg + ' months ago';
+            return msg + ' meses atrás';
     }
 
     else {
         msg = Math.round(elapsed / msPerYear);
         if (msg == 1)
-            return msg + ' year ago';
+            return msg + ' año atrás';
         else
-            return msg + ' years ago';
+            return msg + ' años atrás';
     }
 }
