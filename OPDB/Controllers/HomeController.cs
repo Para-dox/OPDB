@@ -45,7 +45,7 @@ namespace OPDB.Controllers
             DateTime start = DateTime.Now;
             DateTime end = DateTime.Now.AddDays(7);
 
-            var activities = (from activity in db.Activities.Include(a => a.ActivityType) where ((activity.ActivityDate >= start) && (activity.ActivityDate <= end)) && activity.DeletionDate == null orderby activity.UpdateDate descending select activity).Take(6).ToList();
+            var activities = (from activity in db.Activities.Include(a => a.ActivityType) where ((activity.ActivityDate >= start) && (activity.ActivityDate <= end)) && activity.DeletionDate == null orderby activity.ActivityDate ascending select activity).Take(6).ToList();
            
 
             foreach (var activity in activities)
