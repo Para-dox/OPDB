@@ -986,7 +986,7 @@ namespace OPDB.Controllers
             var maxYear = DateTime.Now.Year;
 
             if(maxYears.Count() > 0)
-                    maxYear = maxYears.Min();
+                    maxYear = maxYears.Max();
 
             semesters.Add(new SelectListItem
             {
