@@ -141,7 +141,7 @@ namespace OPDB.Controllers
 
         public ActionResult Lista()
         {
-            var activities = (from activity in db.Activities where activity.DeletionDate == null orderby activity.UpdateDate descending select activity).ToList();
+            var activities = (from activity in db.Activities where activity.DeletionDate == null orderby activity.CreateDate descending select activity).ToList();
 
             User currentUser = null;
 
@@ -226,10 +226,22 @@ namespace OPDB.Controllers
                   };
              }
 
+              if (activity.ActivityDate == null)
+              {
+                  activity.ActivityDate = new DateTime();
+              }
+
+              DateTime endDate = new DateTime();
+
+              if (activity.ActivityDate != new DateTime() && activity.ActivityTime != "" && activity.Duration != null)
+                  endDate = calculateDuration((DateTime)activity.ActivityDate, activity.ActivityTime, activity.Duration);
+
                 activityViewModel.Information.Add(new UserInfoViewModel
                 {
                     Activity = activity,
+                    EndDate = endDate,
                     OutreachEntity = db.OutreachEntityDetails.First(outreach => outreach.UserID == activity.UserID)
+
                 });
             }
 
@@ -505,7 +517,7 @@ namespace OPDB.Controllers
                 });
             }
 
-            var activity = db.Users.Find(id);
+            var activity = db.Activities.Find(id);
 
             foreach (var resource in allResources)
             {

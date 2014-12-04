@@ -56,23 +56,11 @@
                 <section class="top-bar-section">
                     <!-- Right Nav Section -->
                     <ul class="right">
-                        @if (ViewBag.Nav == "Calendario")
-                        {
-                            <li class="active">@Html.ActionLink("Calendario", "Calendario", "Home")</li>}
-                        else
-                        {
-                            <li>@Html.ActionLink("Calendario", "Calendario", "Home")</li>
-                        }
+                       <li>@Html.ActionLink("Calendario", "Calendario", "Home")</li>
                         <li class="has-dropdown not-click">
                             <a href="#">Navegar</a>
                             <ul class="dropdown">
-                                @if (ViewBag.Nav == "Alcance")
-                                {
-                                    <li class="active">@Html.ActionLink("Alcance", "Lista", "Alcance")</li>}
-                                else
-                                {
-                                    <li>@Html.ActionLink("Alcance", "Lista", "Alcance")</li>
-                                }
+                                <li>@Html.ActionLink("Alcance", "Lista", "Alcance")</li>
                                 <li>@Html.ActionLink("Actividades", "Lista", "Actividades")</li>
                                 <li>@Html.ActionLink("Escuelas", "Lista", "Escuelas")</li>
                                 <li>@Html.ActionLink("Unidades", "Lista", "Unidades")</li>
@@ -88,7 +76,6 @@
 
                             </ul>
                         </li>
-                        @*<li class="name"></li>*@
                         <li class="has-form busqueda">
                             <div class="row collapse">
                                 <div class="large-8 small-9 columns">
@@ -99,13 +86,7 @@
                                     </div>
                             </div>
                         </li>
-                        @if (ViewBag.Nav == "Advanced")
-                        {
-                            <li class="active">@Html.ActionLink("Búsqueda Avanzada", "BusquedaAvanzada", "Home")</li>}
-                        else
-                        {
-                            <li>@Html.ActionLink("Búsqueda Avanzada", "BusquedaAvanzada", "Home")</li>
-                        }
+                        <li>@Html.ActionLink("Búsqueda Avanzada", "BusquedaAvanzada", "Home")</li>
                         <li>@Html.Partial("_LoginPartial")</li>
 
                     </ul>
@@ -120,8 +101,7 @@
             
     </div>
     <div id="footer">
-        @*<div style="float:right;">@Html.ActionLink("Contacto", "Contact", "Home", null, new { @style = "font-size:0.6em; color:white;" })</div>*@
-        <p style="font-size:0.6em; color:white;">&copy; @DateTime.Now.Year - Paradox Solutions</p>        
+       <p style="font-size:0.6em; color:white;">&copy; @DateTime.Now.Year - Paradox Solutions</p>        
     </div>
 
 
@@ -145,9 +125,7 @@
     <script src="~/Scripts/myScripts.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-        
-            $('.busqueda').load("@Url.Action("_Buscar", "Home")");
-            //$("html").niceScroll();
+          $('.busqueda').load("@Url.Action("_Buscar", "Home")");
         });
     </script>
 

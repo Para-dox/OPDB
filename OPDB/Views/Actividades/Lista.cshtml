@@ -62,7 +62,7 @@
                         <div>@if (item.Activity.ActivityDate != new DateTime()){ <span>Fecha: </span> @item.Activity.ActivityDate.Value.ToString("dd/MM/yyyy") } @if(item.Activity.ActivityTime != ""){<span>Hora: </span> @item.Activity.ActivityTime}</div>
                         @if (item.EndDate != new DateTime())
                         {
-                            if (item.Activity.Duration.Split('/')[1] == "Minutes" || item.Activity.Duration.Split('/')[1] == "Hours")
+                            if (DateTime.Compare(item.Activity.ActivityDate.Value.Date, item.EndDate.Date) == 0)
                             {<span>Finaliza: </span> @item.EndDate.ToString("hh:mm tt")<br />
                                 
                             }

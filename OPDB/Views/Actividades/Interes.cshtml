@@ -31,6 +31,9 @@
         .last, .first, .previous, .next {
             display: none !important;
         }
+        .link:hover {
+        color: #007A0B !important;
+    }
     </style>
 
     <div><h2 style="float:left;">Actividades De Interes</h2> <a class="btn btn-sm" style="float:right; margin-top:2%;" href="@Url.Action("Lista", "Actividades", null)">Ver Lista Completa</a></div><br />
@@ -44,9 +47,19 @@
                 <tr>
                     <td class="panel callout large-12 columns">
                         <div class="large-10 columns">
-                            @Html.ActionLink(item.Activity.Title, "Detalles", "Actividades", new { id = item.Activity.ActivityID }, new { @onclick = "sessionStorage.setItem('Activity', 'interest');" })<br />
+                            <h5>@Html.ActionLink(item.Activity.Title, "Detalles", "Actividades", new { id = item.Activity.ActivityID }, new { @class = "link", @style = "color:black;", @onclick = "sessionStorage.setItem('Activity', 'interest');" })</h5>
                             <span>Propósito: </span> @item.Activity.Purpose<br />
                             <div>@if (item.Activity.ActivityDate != new DateTime()){ <span>Fecha: </span> @item.Activity.ActivityDate.Value.ToString("dd/MM/yyyy") } @if (item.Activity.ActivityTime != "") { <span>Hora: </span> @item.Activity.ActivityTime }</div>
+                            @if (item.EndDate != new DateTime())
+                            {
+                                if (DateTime.Compare(item.Activity.ActivityDate.Value.Date, item.EndDate.Date) == 0)
+                                {<span>Finaliza: </span> @item.EndDate.ToString("hh:mm tt")<br />
+
+                                }
+                                else
+                                {<span>Finaliza: </span> @item.EndDate.ToString("dd/MM/yyyy hh:mm tt")<br />}
+
+                            }
                             <span>Tipo: </span> @item.Activity.ActivityType.ActivityType1<br />
                             <span>Area de Especialidad: </span> @item.Activity.ActivityMajor.ActivityMajor1<br />
                             @if (item.Activity.ActivityDynamic.ActivityDynamic1 != "")
