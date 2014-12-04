@@ -7,29 +7,7 @@
 <h2>Resultados de Búsqueda</h2><br />
 <div class="large-12 columns panel">
     <div class="large-6 columns">
-        @if (Model.BuscarUsuarios == true)
-        {
-            <h5><b>Usuarios</b></h5>
-            <ul style="list-style-type: none;">
-                @if (Model.Users.Count() > 0)
-                {
-                    foreach (var user in Model.Users)
-                    {
-                        <li>
-                            @Html.ActionLink(user.FirstName + " " + user.LastName, "Detalles", "Usuarios", new { id = user.UserID }, new { @onclick = "sessionStorage.setItem('Route', 'home');" })
-                        </li>
-                    }
-                }
-                else
-                {
-                    <li>
-                        No hubo resultados.
-                    </li>
-                }
-            </ul>
-            <br />
-        }
-        @if (Model.BuscarAlcance == true)
+       @if (Model.BuscarAlcance == true)
         {
             <h5><b>Entidades de Alcance</b></h5>
             <ul style="list-style-type: none;">
@@ -73,6 +51,27 @@
             </ul>
             <br />
         }
+        @if (Model.BuscarEscuelas == true)
+        {
+            <h5><b>Escuelas</b></h5>
+            <ul style="list-style-type: none;">
+                @if (Model.Schools.Count() > 0)
+                {
+                    foreach (var school in Model.Schools)
+                    {
+                        <li>
+                            @Html.ActionLink(school.SchoolName, "Detalles", "Escuelas", new { id = school.SchoolID }, new { @onclick = "sessionStorage.setItem('Route', 'home');" })
+                        </li>
+                    }
+                }
+                else
+                {
+                    <li>
+                        No hubo resultados.
+                    </li>
+                }
+            </ul>
+        }
         @if (Model.BuscarUnidades == true)
         {
             <h5><b>Unidades</b></h5>
@@ -95,17 +94,16 @@
             </ul>
             <br />
         }
-
-        @if (Model.BuscarEscuelas == true)
+        @if (Model.BuscarUsuarios == true)
         {
-            <h5><b>Escuelas</b></h5>
+            <h5><b>Usuarios</b></h5>
             <ul style="list-style-type: none;">
-                @if (Model.Schools.Count() > 0)
+                @if (Model.Users.Count() > 0)
                 {
-                    foreach (var school in Model.Schools)
+                    foreach (var user in Model.Users)
                     {
                         <li>
-                            @Html.ActionLink(school.SchoolName, "Detalles", "Escuelas", new { id = school.SchoolID }, new { @onclick = "sessionStorage.setItem('Route', 'home');" })
+                            @Html.ActionLink(user.FirstName + " " + user.LastName, "Detalles", "Usuarios", new { id = user.UserID }, new { @onclick = "sessionStorage.setItem('Route', 'home');" })
                         </li>
                     }
                 }
@@ -116,7 +114,10 @@
                     </li>
                 }
             </ul>
+            <br />
         }
+
+       
     </div>
     <div class="large-6 columns"><center><img src="@Url.Content("~/Images/search.svg")" height="297" width="297" style="margin-top:100px;"/></center></div>
 </div>

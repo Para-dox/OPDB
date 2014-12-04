@@ -60,12 +60,6 @@
                         <li class="has-dropdown not-click">
                             <a href="#">Navegar</a>
                             <ul class="dropdown">
-                                <li>@Html.ActionLink("Alcance", "Lista", "Alcance")</li>
-                                <li>@Html.ActionLink("Actividades", "Lista", "Actividades")</li>
-                                <li>@Html.ActionLink("Escuelas", "Lista", "Escuelas")</li>
-                                <li>@Html.ActionLink("Unidades", "Lista", "Unidades")</li>
-                                <li>@Html.ActionLink("Usuarios", "Lista", "Usuarios")</li>
-
                                 @if (Request.IsAuthenticated)
                                 {
                                     if (Int32.Parse(User.Identity.Name.ToString().Split(',')[1]) == 1)
@@ -73,7 +67,11 @@
                                         <li>@Html.ActionLink("Admin", "Administracion", "Home")</li>
                                     }
                                 }
-
+                                <li>@Html.ActionLink("Alcance", "Lista", "Alcance")</li>
+                                <li>@Html.ActionLink("Actividades", "Lista", "Actividades")</li>
+                                <li>@Html.ActionLink("Escuelas", "Lista", "Escuelas")</li>
+                                <li>@Html.ActionLink("Unidades", "Lista", "Unidades")</li>
+                                <li>@Html.ActionLink("Usuarios", "Lista", "Usuarios")</li>
                             </ul>
                         </li>
                         <li class="has-form busqueda">
