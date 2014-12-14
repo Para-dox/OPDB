@@ -13,8 +13,11 @@ namespace OPDB.Models
         public List<SelectListItem> ActivityMajors { get; set; }
         public List<SelectListItem> ActivityDynamics { get; set; }
         public List<SelectListItem> TargetPopulations { get; set; }
+        public List<SelectListItem> SchoolRegions { get; set; }
 
         public Activity Activity { get; set; }
+
+        public School School { get; set; }
 
         public string TargetMonths { get; set; }
 

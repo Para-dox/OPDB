@@ -16,31 +16,37 @@
         @Html.LabelFor(model => model.TargetMonths, "Semestre Académico")
     </div>
     <div class="editor-field">
-        @Html.DropDownListFor(model => model.TargetMonths, Model.Semesters)
+        @Html.DropDownListFor(model => model.TargetMonths, Model.Semesters, new { @style = "height: 2.55rem !important;"})
     </div><br />
     <div class="editor-label">
         @Html.LabelFor(model => model.Activity.ActivityTypeID, "Tipo de Actividad")
     </div>
     <div class="editor-field">
-        @Html.DropDownListFor(model => model.Activity.ActivityTypeID, Model.ActivityTypes)
+        @Html.DropDownListFor(model => model.Activity.ActivityTypeID, Model.ActivityTypes, new { @style = "height: 2.55rem !important;" })
     </div><br />
     <div class="editor-label">
         @Html.LabelFor(model => model.Activity.ActivityMajorID, "Área de Especialidad")
     </div>
     <div class="editor-field">
-        @Html.DropDownListFor(model => model.Activity.ActivityMajorID, Model.ActivityMajors)
+        @Html.DropDownListFor(model => model.Activity.ActivityMajorID, Model.ActivityMajors, new { @style = "height: 2.55rem !important;" })
     </div><br />
     <div class="editor-label">
         @Html.LabelFor(model => model.Activity.ActivityDynamicID, "Dinámica de la Actividad")
     </div>
     <div class="editor-field">
-        @Html.DropDownListFor(model => model.Activity.ActivityDynamicID, Model.ActivityDynamics)
+        @Html.DropDownListFor(model => model.Activity.ActivityDynamicID, Model.ActivityDynamics, new { @style = "height: 2.55rem !important;" })
     </div><br />
     <div class="editor-label">
         @Html.LabelFor(model => model.Activity.TargetPopulationID, "Audiencia")
     </div>
     <div class="editor-field">
-        @Html.DropDownListFor(model => model.Activity.TargetPopulationID, Model.TargetPopulations)
+        @Html.DropDownListFor(model => model.Activity.TargetPopulationID, Model.TargetPopulations, new { @style = "height: 2.55rem !important;" })
+    </div><br />
+    <div class="editor-label">
+        @Html.LabelFor(model => model.School.SchoolRegionID, "Región Académica")
+    </div>
+    <div class="editor-field">
+        @Html.DropDownListFor(model => model.School.SchoolRegionID, Model.SchoolRegions, new { @style = "height: 2.55rem !important;" })
     </div><br />
 
     <p>

@@ -754,15 +754,20 @@ namespace OPDB.Controllers
             {
                 if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 1 && Boolean.Parse(requested))
                 {
+                    EscuelasController controller = new EscuelasController();
+
                     ReportViewModel reportViewModel = new ReportViewModel
                     {
                         Semesters = getSemesters(),
                         ActivityTypes = getActivityTypes(),
                         ActivityMajors = getActivityMajors(),
                         ActivityDynamics = getActivityDynamics(),
-                        TargetPopulations = getTargetPopulations()
+                        TargetPopulations = getTargetPopulations(),
+                        SchoolRegions = new List<SelectListItem>()
+                        
                     };
 
+                    
                     reportViewModel.ActivityTypes.Add(new SelectListItem
                     {
                         Text = "Todos",
@@ -782,6 +787,20 @@ namespace OPDB.Controllers
                     });
 
                     reportViewModel.TargetPopulations.Add(new SelectListItem
+                    {
+                        Text = "Todas",
+                        Value = "0"
+                    });
+
+                    reportViewModel.SchoolRegions.Add(new SelectListItem
+                    {
+                        Text = "",
+                        Value = "0"
+                    });
+
+                    reportViewModel.SchoolRegions.AddRange(controller.getSchoolRegions());
+
+                    reportViewModel.SchoolRegions.Add(new SelectListItem
                     {
                         Text = "Todas",
                         Value = "0"
@@ -884,6 +903,16 @@ namespace OPDB.Controllers
 
                             reportViewModel.Results = result;
                         }
+
+                        if (reportViewModel.School.SchoolRegionID != 0)
+                        {
+                            result = from activity in result join school in db.Schools on activity.SchoolID equals school.SchoolID
+                                     where school.SchoolRegionID == reportViewModel.School.SchoolRegionID
+                                     && activity.DeletionDate == null
+                                     select activity;
+
+                            reportViewModel.Results = result;
+                        }
                     }
 
                     return generateReportFile(result);
@@ -895,10 +924,10 @@ namespace OPDB.Controllers
 
         public FileStreamResult generateReportFile(IEnumerable<Activity> results)
         {
-            string dataText = "Título,Tipo,Dinámica,Concentración,Audiencia,Fecha,Hora,Asistencia";
+            string dataText = "Título,Tipo,Dinámica,Concentración,Audiencia,Región Académica,Fecha,Hora,Asistencia";
             string dataRow = "";
 
-            if (results != null)
+            if (results != null && results.Count() > 0)
             {
                 foreach (Activity activity in results.ToList())
                 {
@@ -907,6 +936,7 @@ namespace OPDB.Controllers
                     string activityDynamic = null;
                     string activityMajor = null;
                     string activityTargetPopulation = null;
+                    string academicRegion = null;
                     string activityDate = null;
                     string activityTime = null;
                     string activityAttendees = null;
@@ -915,7 +945,7 @@ namespace OPDB.Controllers
                     {
                         activityTitle = activity.Title;
                     }
-                    catch (NullReferenceException){}
+                    catch (NullReferenceException) { }
 
                     try
                     {
@@ -943,6 +973,12 @@ namespace OPDB.Controllers
 
                     try
                     {
+                        academicRegion = activity.School.SchoolRegion.SchoolRegion1; 
+                    }
+                    catch (NullReferenceException) { }
+
+                    try
+                    {
                         activityDate = activity.ActivityDate.Value.ToString("dd/MM/yyyy");
                     }
                     catch (Exception) { }
@@ -958,10 +994,14 @@ namespace OPDB.Controllers
                         activityAttendees = activity.Attendees.ToString();
                     }
                     catch (NullReferenceException) { }
-                    
-                    dataRow = string.Format("{0},{1},{2},{3},{4},{5},{6},{7}", activityTitle, activityType, activityDynamic, activityMajor, activityTargetPopulation, activityDate, activityTime, activityAttendees);
+
+                    dataRow = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8}", activityTitle, activityType, activityDynamic, activityMajor, activityTargetPopulation, academicRegion, activityDate, activityTime, activityAttendees);
                     dataText = dataText + "\n" + dataRow;
                 }
+            }
+            else 
+            {
+                dataRow = "No hubo resultados.";
             }
 
             var byteArray = Encoding.Unicode.GetBytes(dataText);
